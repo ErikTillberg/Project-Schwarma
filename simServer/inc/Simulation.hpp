@@ -15,6 +15,23 @@ namespace Schwarma
                 this->player2 = player2;
             }
             template<class T>
+            int run(T&stream)
+            {
+                int player1Action = Schwarma::NOOP;
+                int player2Action = Schwarma::NOOP;
+                int turn = 0;
+
+                while(this->player1->stats.health > 0 && this->player2->stats.health > 0)
+                {
+                    std::cin.get();
+                    if(turn == 0)
+                    {
+                        this->tickEntityAgainst<decltype(stream)>(player1,player2,player1->doAction(),stream);
+                    }
+                }
+            }
+        private:
+            template<class T>
             void tickEntityAgainst(Schwarma::Entity*entity1,Schwarma::Entity*entity2,int action,T&stream)
             {
                 if(action == Schwarma::NOOP)
@@ -34,22 +51,6 @@ namespace Schwarma
                         stream<<entity1->name<<" Attacked "<<entity2->name<<"\n";
                     else if(res == 0)
                         stream<<entity1->name<<" Did Not Attack\n";
-                }
-            }
-            template<class T>
-            int run(T&stream)
-            {
-                int player1Action = Schwarma::NOOP;
-                int player2Action = Schwarma::NOOP;
-                int turn = 0;
-
-                while(this->player1->stats.health > 0 && this->player2->stats.health > 0)
-                {
-                    std::cin.get();
-                    if(turn == 0)
-                    {
-                        this->tickEntityAgainst<decltype(stream)>(player1,player2,player1->doAction(),stream);
-                    }
                 }
             }
 
