@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <cstdlib>
 namespace Schwarma
 {
     int NOOP = -1;
@@ -24,7 +25,7 @@ namespace Schwarma
         public:
             BehaviourRolls()=default;
             ~BehaviourRolls()=default;
-            float actions[3] = {33.33,33.33,33.33};
+            float actions[3] = {0.33,0.33,0.33};
     };
     class Entity
     {
