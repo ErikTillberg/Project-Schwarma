@@ -59,6 +59,7 @@ namespace Schwarma
                         continue;
                     }
                 }
+                return 0;
             }
         private:
             template<class T>
