@@ -32,6 +32,7 @@ namespace Schwarma
         public:
             int position = 0;
             Schwarma::Stats baseStats;
+            Schwarma::Stats stats;
             Schwarma::BehaviourRolls behaviours;
             virtual bool loadFromSource(std::string&) = 0;
             virtual int attack(Schwarma::Entity*) = 0;

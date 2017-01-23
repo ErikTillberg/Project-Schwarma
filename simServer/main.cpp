@@ -10,8 +10,8 @@ int main(int argc,char*argv[])
     ::srand(::time(NULL));
     Schwarma::Player player1;
     Schwarma::Player player2;
-    player1.health = 10;
-    player2.health = 10;
+    player1.stats.health = 10;
+    player2.stats.health = 10;
 
     player1.position = 0;
     player2.position = 7;
