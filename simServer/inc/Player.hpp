@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include "Entity.hpp"
 namespace Schwarma

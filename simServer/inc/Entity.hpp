@@ -1,4 +1,4 @@
-#include <fstream>
+#pragma once
 #include <string>
 namespace Schwarma
 {
