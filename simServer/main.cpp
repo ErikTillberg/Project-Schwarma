@@ -9,15 +9,12 @@ int main(int argc,char*argv[])
 {
     ::srand(::time(NULL));
     Schwarma::Player player1;
-    for(int i = 0; i != 10; i++)
-    {
-        int action = player1.doAction();
-        if(action == Schwarma::ATTACK)
-            std::cout<<"Player 1 Attacked"<<std::endl;
-        if(action == Schwarma::DEFEND)
-            std::cout<<"Player 1 Defended"<<std::endl;
-        if(action == Schwarma::MOVE)
-            std::cout<<"Player 1 Moved"<<std::endl;
-    }
+    Schwarma::Player player2;
+    player1.health = 10;
+    player2.health = 10;
+
+    player1.position = 0;
+    player2.position = 7;
+    
     return 0;
 }
