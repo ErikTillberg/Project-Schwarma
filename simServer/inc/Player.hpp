@@ -31,8 +31,6 @@ namespace Schwarma
             }
             int attack(Schwarma::Entity*enemy)
             {
-                std::cout<<(this->position - enemy->position)<<"\n";
-                std::cout<<(enemy->position - this->position)<<"\n";
                 if((this->position - enemy->position) == 1 ||
                 (enemy->position - this->position) == 1)
                     return 1;
