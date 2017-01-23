@@ -15,6 +15,28 @@ namespace Schwarma
                 this->player2 = player2;
             }
             template<class T>
+            void tickEntityAgainst(Schwarma::Entity*entity1,Schwarma::Entity*entity2,int action,T&stream)
+            {
+                if(action == Schwarma::NOOP)
+                    stream<<entity1->name<<" Took No Action\n";
+                if(action == Schwarma::MOVE)
+                {
+                    int dist = entity1->move(entity2);
+                    if(dist == 1)
+                        stream<<entity1->name<<" Moved "<<dist<<" Spaces Towards"<<entity2->name<<"\n";
+                    else if(dist == 0)
+                        stream<<entity1->name<<" Did Not Move\n";
+                }
+                if(action == Schwarma::ATTACK)
+                {
+                    int res = entity1->attack(entity2);
+                    if(res)
+                        stream<<entity1->name<<" Attacked "<<entity2->name<<"\n";
+                    else if(res == 0)
+                        stream<<entity1->name<<" Did Not Attack\n";
+                }
+            }
+            template<class T>
             int run(T&stream)
             {
                 int player1Action = Schwarma::NOOP;
@@ -26,25 +48,7 @@ namespace Schwarma
                     std::cin.get();
                     if(turn == 0)
                     {
-                        player1Action = this->player1->doAction();
-                        if(player1Action == Schwarma::NOOP)
-                            stream<<"Player 1 Took No Action\n";
-                        if(player1Action == Schwarma::MOVE)
-                        {
-                            int dist = player1->move(player2);
-                            if(dist == 1)
-                                stream<<"Player 1 Moved "<<dist<<" Spaces Towards Player 2\n";
-                            else if(dist == 0)
-                                stream<<"Player 1 Did Not Move\n";
-                        }
-                        if(player1Action == Schwarma::ATTACK)
-                        {
-                            int res = player1->attack(player2);
-                            if(res)
-                                stream<<"Player 1 Attacked Player 2\n"<<player1->position<<" "<<player2->position<<"\n";
-                            else if(res == 0)
-                                stream<<"Player 1 Did Not Attack\n";
-                        }
+                        this->tickEntityAgainst<decltype(stream)>(player1,player2,player1->doAction(),stream);
                     }
                 }
             }

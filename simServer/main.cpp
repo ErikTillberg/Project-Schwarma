@@ -16,6 +16,8 @@ int main(int argc,char*argv[])
 
     player1.position = 1;
     player2.position = 7;
+    player1.name = "Player 1";
+    player2.name = "Player2";
     Schwarma::Simulation sim(&player1,&player2);
     sim.run<decltype(std::cout)>(std::cout);
     
