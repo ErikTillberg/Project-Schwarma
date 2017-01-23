@@ -11,7 +11,13 @@ int main(int argc,char*argv[])
     Schwarma::Player player1;
     for(int i = 0; i != 10; i++)
     {
-        std::cout<<player1.doAction()<<std::endl;
+        int action = player1.doAction();
+        if(action == Schwarma::ATTACK)
+            std::cout<<"Player 1 Attacked"<<std::endl;
+        if(action == Schwarma::DEFEND)
+            std::cout<<"Player 1 Defended"<<std::endl;
+        if(action == Schwarma::MOVE)
+            std::cout<<"Player 1 Moved"<<std::endl;
     }
     return 0;
 }
