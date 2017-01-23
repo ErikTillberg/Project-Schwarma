@@ -1,10 +1,12 @@
 #include <string>
 #include <fstream>
-
-class Player
+namespace Schwarma
 {
-    public:
-        Player()=default;
-        ~Player()=default;
+    class Player
+    {
+        public:
+            Player()=default;
+            ~Player()=default;
 
-};
+    };
+}
