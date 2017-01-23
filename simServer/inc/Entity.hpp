@@ -30,6 +30,7 @@ namespace Schwarma
     class Entity
     {
         public:
+            std::string name = "";
             int position = 0;
             Schwarma::Stats baseStats;
             Schwarma::Stats stats;
