@@ -1,12 +1,15 @@
 #include <string>
-#include <fstream>
+#include "Entity.hpp"
 namespace Schwarma
 {
-    class Player
+    class Player : public Schwarma::Entity
     {
         public:
             Player()=default;
             ~Player()=default;
-
+            bool loadFromSource(std::string&src)
+            {
+                return true;
+            }
     };
 }
