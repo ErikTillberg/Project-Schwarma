@@ -2,6 +2,9 @@
 #include <string>
 namespace Schwarma
 {
+    int ATTACK = 0;
+    int DEFEND = 1;
+    int MOVE = 2;
     class Stats
     {
         public:
@@ -15,11 +18,19 @@ namespace Schwarma
             int resistanceToEarth = 0;
             int movementSpeed = 0;
     };
+    class BehaviourRolls
+    {
+        public:
+            BehaviourRolls()=default;
+            ~BehaviourRolls()=default;
+            float actions[2] = {33.33,33.33,33.33};
+    };
     class Entity
     {
         public:
             int position = 0;
             Schwarma::Stats baseStats;
+            Schwarma::BehaviourRolls behaviours;
             virtual bool loadFromSource(std::string&) = 0;
     };
 }
