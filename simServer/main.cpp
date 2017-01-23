@@ -14,7 +14,7 @@ int main(int argc,char*argv[])
     //Setup some dummy player objects to test with
     Schwarma::Player player1;
     Schwarma::Player player2;
-    
+
     player1.stats.health = 10;
     player2.stats.health = 10;
 
@@ -26,7 +26,7 @@ int main(int argc,char*argv[])
     player2.name = "Player 2";
     //Setup a new simulation with our two players
     Schwarma::Simulation sim(&player1,&player2);
-    //Run the simulation (infinite loop for now)
+    //Run the simulation (infinite loop for now) and pipe results to console 
     sim.run<decltype(std::cout)>(std::cout);
     
     return 0;
