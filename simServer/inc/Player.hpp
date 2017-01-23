@@ -3,15 +3,20 @@
 #include "Entity.hpp"
 namespace Schwarma
 {
+    //class representing a player character in the game world
     class Player : public Schwarma::Entity
     {
         public:
             Player()=default;
             ~Player()=default;
+
+            //method to load a player from some source (probably JSON?)
             bool loadFromSource(std::string&src)
             {
                 return true;
             }
+
+            //move player toward target if not already 1 space away
             int move(Schwarma::Entity*enemy)
             {
                 if((this->position - enemy->position) == 1 ||
@@ -29,6 +34,9 @@ namespace Schwarma
                 }
                 return 0;
             }
+
+            //attack target if 1 space away
+            //needs to be thought out more
             int attack(Schwarma::Entity*enemy)
             {
                 if((this->position - enemy->position) == 1 ||
@@ -36,6 +44,9 @@ namespace Schwarma
                     return 1;
                 return 0;
             }
+
+            //this needs to be thought out more
+            //currently just prints result of enemy attack
             int defend(Schwarma::Entity*enemy)
             {
                 int damage = enemy->attack(this);
