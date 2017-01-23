@@ -38,7 +38,10 @@ namespace Schwarma
             }
             int defend(Schwarma::Entity*enemy)
             {
-                return 0;
+                int damage = enemy->attack(this);
+                if(damage)
+                    std::cout<<this->name<<" defended from "<<enemy->attack(this)<<" points of damage\n";
+                return damage;
             }
     };
 }

@@ -16,8 +16,6 @@ namespace Schwarma
             template<class T>
             int run(T&stream)
             {
-                int player1Action = Schwarma::NOOP;
-                int player2Action = Schwarma::NOOP;
                 int turn = 0;
 
                 while(this->players[0]->stats.health > 0 && this->players[1]->stats.health > 0)
