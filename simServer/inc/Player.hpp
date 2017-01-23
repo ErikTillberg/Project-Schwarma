@@ -14,6 +14,16 @@ namespace Schwarma
             }
             int move(Schwarma::Entity*enemy)
             {
+                if(enemy->position > this->position)
+                {
+                    this->position++;
+                    return 1;
+                }
+                else if (enemy->position < this->position)
+                {
+                    this->position--;
+                    return 1;
+                }
                 return 0;
             }
             int attack(Schwarma::Entity*enemy)
