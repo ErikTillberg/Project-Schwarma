@@ -6,13 +6,12 @@ namespace Schwarma
     class Simulation
     {
         private:
-            Schwarma::Player* player1;
-            Schwarma::Player* player2;
+            Schwarma::Player* players[2];
         public:
             Simulation(Schwarma::Player*player1,Schwarma::Player*player2)
             {
-                this->player1 = player1;
-                this->player2 = player2;
+                this->players[0] = player1;
+                this->players[1] = player2;
             }
             template<class T>
             int run(T&stream)
@@ -21,12 +20,45 @@ namespace Schwarma
                 int player2Action = Schwarma::NOOP;
                 int turn = 0;
 
-                while(this->player1->stats.health > 0 && this->player2->stats.health > 0)
+                while(this->players[0]->stats.health > 0 && this->players[1]->stats.health > 0)
                 {
                     std::cin.get();
+                    int action = Schwarma::NOOP;
+                    Schwarma::Player*p1;
+                    Schwarma::Player*p2;
                     if(turn == 0)
                     {
-                        this->tickEntityAgainst<decltype(stream)>(player1,player2,player1->doAction(),stream);
+                        p1 = this->players[0];
+                        p2 = this->players[1];
+                    }
+                    if(turn == 1)
+                    {
+                        p1 = this->players[1];
+                        p2 = this->players[0];
+                    }
+                        
+                    action = p1->doAction();
+                    if(action == Schwarma::ATTACK)
+                    {
+                        int defend = p2->doAction();
+                        if(defend == Schwarma::DEFEND)
+                        {
+                            p2->defend(p1);
+                        }
+                        else
+                        {
+                            tickEntityAgainst<decltype(stream)>(p1,p2,action,stream);
+                            if(turn == 0) turn++;
+                            else if (turn == 1) turn--;
+                            continue;
+                        }
+                    }
+                    else if(action == Schwarma::MOVE)
+                    {
+                        tickEntityAgainst<decltype(stream)>(p1,p2,action,stream);
+                        if(turn == 0) turn++;
+                        else if (turn == 1) turn--;
+                        continue;
                     }
                 }
             }
