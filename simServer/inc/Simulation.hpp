@@ -40,7 +40,7 @@ namespace Schwarma
                 {
                     int dist = entity1->move(entity2);
                     if(dist == 1)
-                        stream<<entity1->name<<" Moved "<<dist<<" Spaces Towards"<<entity2->name<<"\n";
+                        stream<<entity1->name<<" Moved "<<dist<<" Spaces Towards "<<entity2->name<<"\n";
                     else if(dist == 0)
                         stream<<entity1->name<<" Did Not Move\n";
                 }
@@ -48,7 +48,7 @@ namespace Schwarma
                 {
                     int res = entity1->attack(entity2);
                     if(res)
-                        stream<<entity1->name<<" Attacked "<<entity2->name<<"\n";
+                        stream<<entity1->name<<" inflicted "<<res<<" damage to "<<entity2->name<<"\n";
                     else if(res == 0)
                         stream<<entity1->name<<" Did Not Attack\n";
                 }
