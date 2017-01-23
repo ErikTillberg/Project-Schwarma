@@ -2,6 +2,7 @@
 #include <string>
 namespace Schwarma
 {
+    int NOOP = -1;
     int ATTACK = 0;
     int DEFEND = 1;
     int MOVE = 2;
@@ -46,6 +47,8 @@ namespace Schwarma
                 this->behaviours.actions[Schwarma::DEFEND] + 
                 this->behaviours.actions[Schwarma::MOVE]))
                     return Schwarma::MOVE;
+
+                return Schwarma::NOOP;
             }
     };
 }
