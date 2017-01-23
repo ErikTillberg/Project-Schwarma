@@ -34,6 +34,9 @@ namespace Schwarma
             Schwarma::Stats baseStats;
             Schwarma::BehaviourRolls behaviours;
             virtual bool loadFromSource(std::string&) = 0;
+            virtual int attack(Schwarma::Entity*) = 0;
+            virtual int defend(Schwarma::Entity*) = 0;
+            virtual int move(Schwarma::Entity*) = 0;
             int doAction()
             {
                 //Algorithm based on answer by jephthah

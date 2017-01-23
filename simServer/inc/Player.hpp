@@ -12,6 +12,17 @@ namespace Schwarma
             {
                 return true;
             }
-            
+            int move(Schwarma::Entity*enemy)
+            {
+                return 0;
+            }
+            int attack(Schwarma::Entity*enemy)
+            {
+                return 0;
+            }
+            int defend(Schwarma::Entity*enemy)
+            {
+                return 0;
+            }
     };
 }
