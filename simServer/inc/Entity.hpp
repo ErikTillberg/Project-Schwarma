@@ -23,7 +23,7 @@ namespace Schwarma
         public:
             BehaviourRolls()=default;
             ~BehaviourRolls()=default;
-            float actions[2] = {33.33,33.33,33.33};
+            float actions[3] = {33.33,33.33,33.33};
     };
     class Entity
     {
@@ -32,5 +32,9 @@ namespace Schwarma
             Schwarma::Stats baseStats;
             Schwarma::BehaviourRolls behaviours;
             virtual bool loadFromSource(std::string&) = 0;
+            int doAction()
+            {
+                float percent = (float)(rand()%1024)/1024;
+            }
     };
 }
