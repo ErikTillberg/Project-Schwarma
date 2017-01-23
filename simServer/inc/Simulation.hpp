@@ -23,6 +23,7 @@ namespace Schwarma
 
                 while(this->player1->stats.health > 0 && this->player2->stats.health > 0)
                 {
+                    std::cin.get();
                     if(turn == 0)
                     {
                         player1Action = this->player1->doAction();
@@ -32,7 +33,7 @@ namespace Schwarma
                         {
                             int dist = player1->move(player2);
                             if(dist == 1)
-                                stream<<"Player 1 Moved One Space Towards Player 2\n";
+                                stream<<"Player 1 Moved "<<dist<<" Spaces Towards Player 2\n";
                             else if(dist == 0)
                                 stream<<"Player 1 Did Not Move\n";
                         }
@@ -40,7 +41,7 @@ namespace Schwarma
                         {
                             int res = player1->attack(player2);
                             if(res)
-                                stream<<"Player 1 Attacked Player 2\n";
+                                stream<<"Player 1 Attacked Player 2\n"<<player1->position<<" "<<player2->position<<"\n";
                             else if(res == 0)
                                 stream<<"Player 1 Did Not Attack\n";
                         }
