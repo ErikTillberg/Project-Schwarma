@@ -1,6 +1,11 @@
 #pragma once
 #include <string>
 #include <cstdlib>
+
+#include "../rapidjson/include/rapidjson/document.h"
+#include "../rapidjson/include/rapidjson/istreamwrapper.h"
+#include "../rapidjson/include/rapidjson/ostreamwrapper.h"
+#include "../rapidjson/include/rapidjson/prettywriter.h"
 namespace Schwarma
 {
     //constants for action codes
