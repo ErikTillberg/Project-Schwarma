@@ -80,6 +80,7 @@ namespace Schwarma
             }
             bool loadFromFile(std::string file)
             {
+                //Load json file specified by file
                 rapidjson::GenericDocument<rapidjson::UTF8<>> json;
                 std::ifstream fileStream(file.c_str(),std::ios::in);
                 rapidjson::IStreamWrapper jsonFileStream(fileStream);
