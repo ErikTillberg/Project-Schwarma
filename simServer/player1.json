@@ -11,5 +11,49 @@
         "attack" : ".33",
         "defence" : ".33",
         "move" : ".33"
+    },
+    "weapons" :
+    [
+        {
+            "name" : "sword",
+            "range" : "touching",
+            "damage" : "5",
+            "element" : "steel"
+        }
+    ],
+    "triggers" :
+    {
+        "move" : 
+        [
+            {
+                "condition" : 
+                {
+                    "lhs" : "distance",
+                    "operator" : ">=",
+                    "rhs" : "touching"
+                },
+                "action" :
+                {
+                    "actionType" : "move",
+                    "direction" : "away"
+                }
+            }
+        ],
+        "attack" : 
+        [
+            {
+                "condition" : 
+                {
+                    "lhs" : "distance",
+                    "operator" : "==",
+                    "rhs" : "touching"
+                },
+                "action" : 
+                {
+                    "actionType" : "attack",
+                    "item" : "sword"
+                } 
+            }
+        ]
     }
 }
