@@ -87,10 +87,20 @@ namespace Schwarma
                 json.ParseStream(jsonFileStream);
                 if(json.HasParseError())
                     return false;
+                
                 auto actionPercentages = json["actionPercentages"].GetObject();
                 this->behaviours.actions[Schwarma::ATTACK] = std::atof(actionPercentages["attack"].GetString());
                 this->behaviours.actions[Schwarma::DEFEND] = std::atof(actionPercentages["defence"].GetString());
                 this->behaviours.actions[Schwarma::MOVE] = std::atof(actionPercentages["move"].GetString());
+
+                auto baseStats = json["baseStats"].GetObject();
+                this->baseStats.health = std::atof(baseStats["health"].GetString());
+                this->baseStats.damage = std::atof(baseStats["damage"].GetString());
+                this->baseStats.resistanceToDamage = std::atof(baseStats["resistanceToDamage"].GetString());
+                this->baseStats.resistanceToFire = std::atof(baseStats["resistanceToFire"].GetString());
+                this->baseStats.resistanceToIce = std::atof(baseStats["resistanceToIce"].GetString());
+                this->baseStats.resistanceToEarth = std::atof(baseStats["resistanceToEart"].GetString());
+                this->baseStats.movementSpeed = std::atoi(baseStats["movementSpeed"].GetString());
                 return true;
             }
     };

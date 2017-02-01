@@ -2,9 +2,9 @@
     "baseStats" : 
     {
         "health" : "100",
-        "attackPoints" : "2",
-        "defencePercent" : ".1",
-        "speed" : "1"
+        "damage" : "2",
+        "resistanceToDamage" : ".1",
+        "movementSpeed" : "1"
     },
     "actionPercentages" : 
     {
