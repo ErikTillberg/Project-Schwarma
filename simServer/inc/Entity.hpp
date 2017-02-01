@@ -22,6 +22,7 @@ namespace Schwarma
             Stats()=default;
             ~Stats()=default;
             int health = 0;
+            int damage = 0;
             int resistanceToDamage = 0;
             int resistanceToKinetic = 0;
             int resistanceToFire = 0;
