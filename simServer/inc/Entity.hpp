@@ -88,9 +88,9 @@ namespace Schwarma
                 if(json.HasParseError())
                     return false;
                 auto actionPercentages = json["actionPercentages"].GetObject();
-                this->behaviours.actions[Schwarma::ATTACK] = actionPercentages["attack"].GetString();
-                this->behaviours.actions[Schwarma::DEFEND] = actionPercentages["defence"].GetString();
-                this->behaviours.actions[Schwarma::MOVE] = actionPercentages["move"].GetString();
+                this->behaviours.actions[Schwarma::ATTACK] = std::atof(actionPercentages["attack"].GetString());
+                this->behaviours.actions[Schwarma::DEFEND] = std::atof(actionPercentages["defence"].GetString());
+                this->behaviours.actions[Schwarma::MOVE] = std::atof(actionPercentages["move"].GetString());
                 return true;
             }
     };
