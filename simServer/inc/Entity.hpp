@@ -79,6 +79,12 @@ namespace Schwarma
             }
             bool loadFromFile(std::string file)
             {
+                rapidjson::GenericDocument<rapidjson::UTF8<>> json;
+                std::ifstream fileStream(file.c_str(),std::ios::in);
+                rapidjson::IStreamWrapper jsonFileStream(fileStream);
+                json.ParseStream(jsonFileStream);
+                if(json.HasParseError())
+                    return false;
                 return true;
             }
     };
