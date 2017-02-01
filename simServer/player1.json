@@ -1,0 +1,8 @@
+{
+    "actionPercentages" : 
+    {
+        "attack" : ".33",
+        "defence" : ".33",
+        "move" : ".33"
+    }
+}
