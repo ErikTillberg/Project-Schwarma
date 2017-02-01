@@ -85,6 +85,10 @@ namespace Schwarma
                 json.ParseStream(jsonFileStream);
                 if(json.HasParseError())
                     return false;
+                auto actionPercentages = json["actionPercentages"].GetObject();
+                this->behaviours.actions[Schwarma::ATTACK] = actionPercentages["attack"].GetString();
+                this->behaviours.actions[Schwarma::DEFEND] = actionPercentages["defence"].GetString();
+                this->behaviours.actions[Schwarma::MOVE] = actionPercentages["move"].GetString();
                 return true;
             }
     };
