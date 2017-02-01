@@ -1,4 +1,11 @@
 {
+    "baseStats" : 
+    {
+        "health" : "100",
+        "attackPoints" : "2",
+        "defencePercent" : ".1",
+        "speed" : "1"
+    },
     "actionPercentages" : 
     {
         "attack" : ".33",
