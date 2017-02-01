@@ -71,5 +71,9 @@ namespace Schwarma
 
                 return Schwarma::NOOP;
             }
+            bool loadFromFile(std::string file)
+            {
+                return true;
+            }
     };
 }
