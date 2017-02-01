@@ -21,13 +21,13 @@ namespace Schwarma
         public:
             Stats()=default;
             ~Stats()=default;
-            int health = 0;
-            int damage = 0;
-            int resistanceToDamage = 0;
-            int resistanceToKinetic = 0;
-            int resistanceToFire = 0;
-            int resistanceToIce = 0;
-            int resistanceToEarth = 0;
+            float health = 0;
+            float damage = 0;
+            float resistanceToDamage = 0;
+            float resistanceToKinetic = 0;
+            float resistanceToFire = 0;
+            float resistanceToIce = 0;
+            float resistanceToEarth = 0;
             int movementSpeed = 0;
     };
 
