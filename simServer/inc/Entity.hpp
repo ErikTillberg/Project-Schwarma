@@ -112,7 +112,27 @@ namespace Schwarma
                 auto triggers = json["triggers"].GetObject();
                 if(triggers["move"].GetType() == rapidjson::Type::kObjectType)
                 {
-                       
+                       if(triggers["move"]["condition"].GetType() == rapidjson::Type::kObjectType)
+                       {
+                           if(triggers["move"]["action"].GetType() == rapidjson::Type::kObjectType)
+                           {
+                               this->triggers.push_back
+                               (
+                                   Schwarma::Trigger
+                                   (
+                                       "move",
+                                       Schwarma::Condition
+                                       (
+                                           "","",""
+                                       ),
+                                       Schwarma::Action
+                                       (
+                                           "","","",""
+                                       )
+                                   )
+                               );
+                           }
+                       }
                 }
                 return true;
             }
