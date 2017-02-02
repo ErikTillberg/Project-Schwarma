@@ -27,6 +27,12 @@ int main(int argc,char*argv[])
 
     player1.loadFromFile("player1.json");
 
+    for(auto it = player1.triggers.begin(); it != player1.triggers.end(); ++it)
+    {
+        std::cout<<"if "<<it->condition.lhs<<" "<<it->condition.op<<" "<<it->condition.rhs<<" then\n";
+        std::cout<<it->action.actionType<<" "<<it->action.direction<<" end\n";
+    }
+
     //Setup a new simulation with our two players
     //Schwarma::Simulation sim(&player1,&player2);
     //Run the simulation (infinite loop for now) and pipe results to console 

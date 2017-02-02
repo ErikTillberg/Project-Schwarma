@@ -40,6 +40,32 @@
                     "actionType" : "move",
                     "direction" : "away"
                 }
+            },
+            {
+                "condition":
+                {
+                    "lhs" : "distance",
+                    "operator" : ">=",
+                    "rhs" : "close"
+                },
+                "action":
+                {
+                    "actionType" : "move",
+                    "direction" : "away"
+                }
+            },
+            {
+                "condition" :
+                {
+                    "lhs" : "distance",
+                    "operator" : ">=",
+                    "rhs" : "far"
+                },
+                "action" : 
+                {
+                    "actionType" : "move",
+                    "direction" : "away"
+                }
             }
         ],
         "attack" : 
