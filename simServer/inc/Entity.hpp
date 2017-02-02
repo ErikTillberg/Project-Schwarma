@@ -95,13 +95,13 @@ namespace Schwarma
                 if(json.HasParseError())
                     return false;
                 
-                auto actionPercentages = json["actionPercentages"].GetObject();
+                auto& actionPercentages = json["actionPercentages"];
                 this->behaviours.actions[Schwarma::ATTACK] = std::atof(actionPercentages["attack"].GetString());
                 this->behaviours.actions[Schwarma::DEFEND] = std::atof(actionPercentages["defence"].GetString());
                 this->behaviours.actions[Schwarma::MOVE] = std::atof(actionPercentages["move"].GetString());
                 std::cout<<"loaded action percents\n";
 
-                auto baseStats = json["baseStats"].GetObject();
+                auto& baseStats = json["baseStats"];
                 this->baseStats.health = std::atof(baseStats["health"].GetString());
                 this->baseStats.damage = std::atof(baseStats["damage"].GetString());
                 this->baseStats.resistanceToDamage = std::atof(baseStats["resistanceToDamage"].GetString());
@@ -112,7 +112,7 @@ namespace Schwarma
 
                 std::cout<<"loaded base stats\n";
 
-                auto triggers = json["triggers"].GetObject();
+                auto& triggers = json["triggers"];
                 if(triggers["move"].GetType() == rapidjson::Type::kArrayType)
                 {
                     auto& move = triggers["move"];
