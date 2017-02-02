@@ -20,10 +20,19 @@ namespace Schwarma
     class Action
     {
         public:
-            Action()=default;
+            Action
+            (
+                std::string actionType,
+                std::string direction,
+                std::string item,
+                std::string card
+            ) :
+            actionType(actionType),direction(direction),item(item),card(card){}
             ~Action()=default;
             std::string actionType;
             std::string direction;
+            std::string item;
+            std::string card;
     };
     class Trigger
     {
