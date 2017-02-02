@@ -1,0 +1,88 @@
+{
+    "baseStats" : 
+    {
+        "health" : "100",
+        "damage" : "2",
+        "resistanceToDamage" : ".1",
+        "movementSpeed" : "1",
+        "resistanceToFire" : "0",
+        "resistanceToIce" : "0",
+        "resistanceToEarth" : "0"
+    },
+    "actionPercentages" : 
+    {
+        "attack" : ".33",
+        "defence" : ".33",
+        "move" : ".33"
+    },
+    "weapons" :
+    [
+        {
+            "name" : "sword",
+            "range" : "touching",
+            "damage" : "5",
+            "element" : "steel"
+        }
+    ],
+    "triggers" :
+    {
+        "move" : 
+        [
+            {
+                "condition" : 
+                {
+                    "lhs" : "distance",
+                    "operator" : ">=",
+                    "rhs" : "touching"
+                },
+                "action" :
+                {
+                    "actionType" : "move",
+                    "direction" : "away"
+                }
+            },
+            {
+                "condition":
+                {
+                    "lhs" : "distance",
+                    "operator" : ">=",
+                    "rhs" : "close"
+                },
+                "action":
+                {
+                    "actionType" : "move",
+                    "direction" : "away"
+                }
+            },
+            {
+                "condition" :
+                {
+                    "lhs" : "distance",
+                    "operator" : ">=",
+                    "rhs" : "far"
+                },
+                "action" : 
+                {
+                    "actionType" : "move",
+                    "direction" : "away"
+                }
+            }
+        ],
+        "attack" : 
+        [
+            {
+                "condition" : 
+                {
+                    "lhs" : "distance",
+                    "operator" : "==",
+                    "rhs" : "touching"
+                },
+                "action" : 
+                {
+                    "actionType" : "attack",
+                    "item" : "sword"
+                } 
+            }
+        ]
+    }
+}
