@@ -1,6 +1,7 @@
 #pragma once
 #include <fstream>
 #include <string>
+#include <vector>
 #include <cstdlib>
 
 #include "Trigger.hpp"
@@ -57,6 +58,9 @@ namespace Schwarma
             Schwarma::Stats stats;
             //percentage chance to take an action
             Schwarma::BehaviourRolls behaviours;
+
+            std::vector<Schwarma::Trigger> triggers;
+
             virtual bool loadFromSource(std::string&) = 0;
             virtual int attack(Schwarma::Entity*) = 0;
             virtual int defend(Schwarma::Entity*) = 0;
