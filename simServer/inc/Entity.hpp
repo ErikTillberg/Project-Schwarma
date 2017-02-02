@@ -118,36 +118,9 @@ namespace Schwarma
                     if(triggers["move"].GetType() == rapidjson::Type::kArrayType)
                     {
                         auto&move = triggers["move"];
-                        
                         for(rapidjson::SizeType i = 0; i < move.Size(); ++i)
                         {
                             Schwarma::Trigger::parseTrigger<decltype(move[i])>(move[i],"move");
-                           /* auto&condition = move[i]["condition"];
-                            auto&action = move[i]["action"];
-                            if(condition.GetType() == rapidjson::Type::kObjectType &&
-                            action.GetType() == rapidjson::Type::kObjectType)
-                            {
-                                this->triggers.push_back
-                                (
-                                    Schwarma::Trigger
-                                    (
-                                        "move",
-                                        Schwarma::Condition
-                                        (
-                                            condition.HasMember("lhs") ? condition["lhs"].GetString() : "",
-                                            condition.HasMember("operator") ? condition["operator"].GetString() : "",
-                                            condition.HasMember("rhs") ? condition["rhs"].GetString() : ""
-                                        ),
-                                        Schwarma::Action
-                                        (
-                                            action.HasMember("actionType") ? action["actionType"].GetString() : "",
-                                            action.HasMember("direction") ? action["direction"].GetString() : "",
-                                            action.HasMember("item") ? action["item"].GetString() : "",
-                                            action.HasMember("card") ? action["card"].GetString() : ""
-                                        )
-                                    )
-                                );
-                            }*/
                         }
                     }
                 }
