@@ -18,7 +18,7 @@ namespace Schwarma
             ~Action()=default;
             std::string actionType;
             std::string direction;
-    }
+    };
     class Trigger
     {
         public:
@@ -28,5 +28,5 @@ namespace Schwarma
             Condition condition;
             Action action;
 
-    }
+    };
 }
