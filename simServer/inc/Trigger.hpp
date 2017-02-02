@@ -1,5 +1,10 @@
 #pragma once
 #include <string>
+
+#include "../rapidjson/include/rapidjson/document.h"
+#include "../rapidjson/include/rapidjson/istreamwrapper.h"
+#include "../rapidjson/include/rapidjson/ostreamwrapper.h"
+#include "../rapidjson/include/rapidjson/prettywriter.h"
 namespace Schwarma
 {
     class Condition
@@ -49,5 +54,33 @@ namespace Schwarma
             Condition condition;
             Action action;
 
+            template< class T>
+            static Schwarma::Trigger parseTrigger(T&obj,const char*objName)
+            {
+                auto&condition = obj["condition"];
+                auto&action = obj["action"];
+                if(condition.GetType() == rapidjson::Type::kObjectType &&
+                action.GetType() == rapidjson::Type::kObjectType)
+                {
+                    return Schwarma::Trigger
+                    (
+                        objName,
+                        Schwarma::Condition
+                        (
+                            condition.HasMember("lhs") ? condition["lhs"].GetString() : "",
+                            condition.HasMember("operator") ? condition["operator"].GetString() : "",
+                            condition.HasMember("rhs") ? condition["rhs"].GetString() : ""
+                        ),
+                        Schwarma::Action
+                        (
+                            action.HasMember("actionType") ? action["actionType"].GetString() : "",
+                            action.HasMember("direction") ? action["direction"].GetString() : "",
+                            action.HasMember("item") ? action["item"].GetString() : "",
+                            action.HasMember("card") ? action["card"].GetString() : ""
+                        )
+                    );
+                }
+                return Schwarma::Trigger(objName,Schwarma::Condition("","",""),Schwarma::Action("","","",""));
+            }
     };
 }

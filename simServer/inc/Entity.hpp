@@ -118,10 +118,11 @@ namespace Schwarma
                     if(triggers["move"].GetType() == rapidjson::Type::kArrayType)
                     {
                         auto&move = triggers["move"];
-                    
+                        
                         for(rapidjson::SizeType i = 0; i < move.Size(); ++i)
                         {
-                            auto&condition = move[i]["condition"];
+                            Schwarma::Trigger::parseTrigger<decltype(move[i])>(move[i],"move");
+                           /* auto&condition = move[i]["condition"];
                             auto&action = move[i]["action"];
                             if(condition.GetType() == rapidjson::Type::kObjectType &&
                             action.GetType() == rapidjson::Type::kObjectType)
@@ -146,7 +147,7 @@ namespace Schwarma
                                         )
                                     )
                                 );
-                            }
+                            }*/
                         }
                     }
                 }
