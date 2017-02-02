@@ -37,7 +37,13 @@ namespace Schwarma
     class Trigger
     {
         public:
-            Trigger()=default;
+            Trigger
+            (
+                std::string name,
+                Schwarma::Condition condition,
+                Schwarma::Action action
+            ) :
+            name(name),condition(condition),action(action){}
             ~Trigger()=default;
             std::string name;
             Condition condition;
