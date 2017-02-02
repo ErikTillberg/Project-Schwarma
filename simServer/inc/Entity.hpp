@@ -113,36 +113,40 @@ namespace Schwarma
                 std::cout<<"loaded base stats\n";
 
                 auto&triggers = json["triggers"];
-                if(triggers["move"].GetType() == rapidjson::Type::kArrayType)
+                if(triggers.HasMember("move"))
                 {
-                    auto&move = triggers["move"];
-                    for(rapidjson::SizeType i = 0; i < move.Size(); ++i)
+                    if(triggers["move"].GetType() == rapidjson::Type::kArrayType)
                     {
-                        auto&condition = move[i]["condition"];
-                        auto&action = move[i]["action"];
-                        if(condition.GetType() == rapidjson::Type::kObjectType &&
-                        action.GetType() == rapidjson::Type::kObjectType)
+                        auto&move = triggers["move"];
+                    
+                        for(rapidjson::SizeType i = 0; i < move.Size(); ++i)
                         {
-                            this->triggers.push_back
-                            (
-                                Schwarma::Trigger
+                            auto&condition = move[i]["condition"];
+                            auto&action = move[i]["action"];
+                            if(condition.GetType() == rapidjson::Type::kObjectType &&
+                            action.GetType() == rapidjson::Type::kObjectType)
+                            {
+                                this->triggers.push_back
                                 (
-                                    "move",
-                                    Schwarma::Condition
+                                    Schwarma::Trigger
                                     (
-                                        condition["lhs"].GetString(),
-                                        condition["operator"].GetString(),
-                                        condition["rhs"].GetString()
-                                    ),
-                                    Schwarma::Action
-                                    (
-                                        action["actionType"].GetString(),
-                                        action["direction"].GetString(),
-                                        "",
-                                        ""
+                                        "move",
+                                        Schwarma::Condition
+                                        (
+                                            condition["lhs"].GetString(),
+                                            condition["operator"].GetString(),
+                                            condition["rhs"].GetString()
+                                        ),
+                                        Schwarma::Action
+                                        (
+                                            action["actionType"].GetString(),
+                                            action["direction"].GetString(),
+                                            "",
+                                            ""
+                                        )
                                     )
-                                )
-                            );
+                                );
+                            }
                         }
                     }
                 }
