@@ -54,7 +54,7 @@ namespace Schwarma
             Condition condition;
             Action action;
 
-            template< class T>
+            template<class T>
             static Schwarma::Trigger parseTrigger(T&obj,const char*objName)
             {
                 auto&condition = obj["condition"];
