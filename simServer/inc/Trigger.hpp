@@ -54,6 +54,10 @@ namespace Schwarma
             Condition condition;
             Action action;
 
+            //Parse the trigger out of the json object pointed to by obj
+            //Set its name to objName
+            //Will fill properties that don't exist with empty strings
+            //Returns Trigger full of empty strings on failure
             template<class T>
             static Schwarma::Trigger parseTrigger(T&obj,const char*objName)
             {
