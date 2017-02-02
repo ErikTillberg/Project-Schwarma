@@ -85,6 +85,7 @@ namespace Schwarma
 
                 return Schwarma::NOOP;
             }
+            //Loads an entity from file specifed by string file
             bool loadFromFile(std::string file)
             {
                 //Load json file specified by file
@@ -95,7 +96,9 @@ namespace Schwarma
                 if(json.HasParseError())
                     return false;
                 
+                //Get reference to actionPercentages object
                 auto&actionPercentages = json["actionPercentages"];
+                //Parse properties into class
                 this->behaviours.actions[Schwarma::ATTACK] = std::atof(actionPercentages["attack"].GetString());
                 this->behaviours.actions[Schwarma::DEFEND] = std::atof(actionPercentages["defence"].GetString());
                 this->behaviours.actions[Schwarma::MOVE] = std::atof(actionPercentages["move"].GetString());
@@ -109,12 +112,17 @@ namespace Schwarma
                 this->baseStats.resistanceToEarth = std::atof(baseStats["resistanceToEarth"].GetString());
                 this->baseStats.movementSpeed = std::atoi(baseStats["movementSpeed"].GetString());
 
+                //Get reference to triggers object
                 auto&triggers = json["triggers"];
+                //Check for move triggers
                 if(triggers.HasMember("move"))
                 {
+                    //triggers.move is of the right type
                     if(triggers["move"].GetType() == rapidjson::Type::kArrayType)
                     {
+                        //Get reference to triggers.move
                         auto&move = triggers["move"];
+                        //For each object in triggers.move, parse it into the entity's triggers vector
                         for(rapidjson::SizeType i = 0; i < move.Size(); ++i)
                         {
                             this->triggers.push_back(Schwarma::Trigger::parseTrigger<decltype(move[i])>(move[i],"move"));
