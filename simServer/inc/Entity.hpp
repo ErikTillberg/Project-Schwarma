@@ -108,6 +108,12 @@ namespace Schwarma
                 this->baseStats.resistanceToIce = std::atof(baseStats["resistanceToIce"].GetString());
                 this->baseStats.resistanceToEarth = std::atof(baseStats["resistanceToEart"].GetString());
                 this->baseStats.movementSpeed = std::atoi(baseStats["movementSpeed"].GetString());
+
+                auto triggers = json["triggers"].GetObject();
+                if(triggers["move"].GetType() == rapidjson::Type::kObjectType)
+                {
+                       
+                }
                 return true;
             }
     };

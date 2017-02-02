@@ -5,7 +5,13 @@ namespace Schwarma
     class Condition
     {
         public:
-            Condition()=default;
+            Condition
+            (
+                std::string lhs,
+                std::string op,
+                std::string rhs
+            ) :
+            lhs(lhs),op(op),rhs(rhs){}
             ~Condition()=default;
             std::string lhs;
             std::string op;
