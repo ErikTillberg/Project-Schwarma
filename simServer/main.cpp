@@ -27,6 +27,7 @@ int main(int argc,char*argv[])
 
     player1.loadFromFile("player1.json");
 
+    //Print all triggers loaded from player1.json
     for(auto it = player1.triggers.begin(); it != player1.triggers.end(); ++it)
     {
         std::cout<<"if "<<it->condition.lhs<<" "<<it->condition.op<<" "<<it->condition.rhs<<" then\n";
