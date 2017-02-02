@@ -124,6 +124,17 @@ namespace Schwarma
                         }
                     }
                 }
+                if(triggers.HasMember("attack"))
+                {
+                    if(triggers["attack"].GetType() == rapidjson::Type::kArrayType)
+                    {
+                        auto&attack = triggers["attack"];
+                        for(rapidjson::SizeType i = 0; i < attack.Size(); ++i)
+                        {
+                            this->triggers.push_back(Schwarma::Trigger::parseTrigger<decltype(attack[i])>(attack[i],"attack"));
+                        }
+                    }
+                }
                 return true;
             }
     };
