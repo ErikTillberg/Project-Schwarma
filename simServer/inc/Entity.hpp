@@ -120,7 +120,7 @@ namespace Schwarma
                         auto&move = triggers["move"];
                         for(rapidjson::SizeType i = 0; i < move.Size(); ++i)
                         {
-                            Schwarma::Trigger::parseTrigger<decltype(move[i])>(move[i],"move");
+                            this->triggers.push_back(Schwarma::Trigger::parseTrigger<decltype(move[i])>(move[i],"move"));
                         }
                     }
                 }
