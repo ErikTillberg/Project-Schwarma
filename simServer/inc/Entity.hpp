@@ -107,7 +107,7 @@ namespace Schwarma
                 this->baseStats.resistanceToDamage = std::atof(baseStats["resistanceToDamage"].GetString());
                 this->baseStats.resistanceToFire = std::atof(baseStats["resistanceToFire"].GetString());
                 this->baseStats.resistanceToIce = std::atof(baseStats["resistanceToIce"].GetString());
-                this->baseStats.resistanceToEarth = std::atof(baseStats["resistanceToEart"].GetString());
+                this->baseStats.resistanceToEarth = std::atof(baseStats["resistanceToEarth"].GetString());
                 this->baseStats.movementSpeed = std::atoi(baseStats["movementSpeed"].GetString());
 
                 std::cout<<"loaded base stats\n";
