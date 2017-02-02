@@ -4,7 +4,10 @@
         "health" : "100",
         "damage" : "2",
         "resistanceToDamage" : ".1",
-        "movementSpeed" : "1"
+        "movementSpeed" : "1",
+        "resistanceToFire" : "0",
+        "resistanceToIce" : "0",
+        "resistanceToEarth" : "0"
     },
     "actionPercentages" : 
     {
