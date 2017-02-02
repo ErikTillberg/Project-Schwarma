@@ -99,6 +99,7 @@ namespace Schwarma
                 this->behaviours.actions[Schwarma::ATTACK] = std::atof(actionPercentages["attack"].GetString());
                 this->behaviours.actions[Schwarma::DEFEND] = std::atof(actionPercentages["defence"].GetString());
                 this->behaviours.actions[Schwarma::MOVE] = std::atof(actionPercentages["move"].GetString());
+                std::cout<<"loaded action percents\n";
 
                 auto baseStats = json["baseStats"].GetObject();
                 this->baseStats.health = std::atof(baseStats["health"].GetString());
@@ -109,10 +110,18 @@ namespace Schwarma
                 this->baseStats.resistanceToEarth = std::atof(baseStats["resistanceToEart"].GetString());
                 this->baseStats.movementSpeed = std::atoi(baseStats["movementSpeed"].GetString());
 
+                std::cout<<"loaded base stats\n";
+
                 auto triggers = json["triggers"].GetObject();
-                if(triggers["move"].GetType() == rapidjson::Type::kObjectType)
+                if(triggers["move"].GetType() == rapidjson::Type::kArrayType)
                 {
-                    if(triggers["move"]["condition"].GetType() == rapidjson::Type::kObjectType)
+                    auto& move = triggers["move"];
+                    for(rapidjson::SizeType i = 0; i < move.Size(); ++i)
+                    {
+                        auto& condition = move[i]["condition"];
+                        auto& action = move[i]["action"];
+                    }
+                    /*if(triggers["move"]["condition"].GetType() == rapidjson::Type::kObjectType)
                     {
                         if(triggers["move"]["action"].GetType() == rapidjson::Type::kObjectType)
                         {
@@ -132,7 +141,7 @@ namespace Schwarma
                                 )
                             );
                         }
-                    }
+                    }*/
                 }
                 return true;
             }
