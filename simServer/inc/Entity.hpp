@@ -133,16 +133,16 @@ namespace Schwarma
                                         "move",
                                         Schwarma::Condition
                                         (
-                                            condition["lhs"].GetString(),
-                                            condition["operator"].GetString(),
-                                            condition["rhs"].GetString()
+                                            condition.HasMember("lhs") ? condition["lhs"].GetString() : "",
+                                            condition.HasMember("operator") ? condition["operator"].GetString() : "",
+                                            condition.HasMember("rhs") ? condition["rhs"].GetString() : ""
                                         ),
                                         Schwarma::Action
                                         (
-                                            action["actionType"].GetString(),
-                                            action["direction"].GetString(),
-                                            "",
-                                            ""
+                                            action.HasMember("actionType") ? action["actionType"].GetString() : "",
+                                            action.HasMember("direction") ? action["direction"].GetString() : "",
+                                            action.HasMember("item") ? action["item"].GetString() : "",
+                                            action.HasMember("card") ? action["card"].GetString() : ""
                                         )
                                     )
                                 );
