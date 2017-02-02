@@ -120,10 +120,8 @@ namespace Schwarma
                     {
                         auto& condition = move[i]["condition"];
                         auto& action = move[i]["action"];
-                    }
-                    /*if(triggers["move"]["condition"].GetType() == rapidjson::Type::kObjectType)
-                    {
-                        if(triggers["move"]["action"].GetType() == rapidjson::Type::kObjectType)
+                        if(condition.GetType() == rapidjson::Type::kObjectType &&
+                        action.GetType() == rapidjson::Type::kObjectType)
                         {
                             this->triggers.push_back
                             (
@@ -132,16 +130,21 @@ namespace Schwarma
                                     "move",
                                     Schwarma::Condition
                                     (
-                                        "","",""
+                                        condition["lhs"].GetString(),
+                                        condition["operator"].GetString(),
+                                        condition["rhs"].GetString()
                                     ),
                                     Schwarma::Action
                                     (
-                                        "","","",""
+                                        action["actionType"].GetString(),
+                                        action["direction"].GetString(),
+                                        "",
+                                        ""
                                     )
                                 )
                             );
                         }
-                    }*/
+                    }
                 }
                 return true;
             }
