@@ -3,6 +3,7 @@ package Controllers;
 import Models.User;
 import Utilities.ResponseError;
 import org.mindrot.jbcrypt.BCrypt;
+import spark.Response;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -18,6 +19,10 @@ import static Utilities.DBConn.datastore;
 public class AuthenticationCtrl {
 
     public static Object signup(String email, String username, String password){
+
+        if (email == null || password == null || username == null){
+            return new ResponseError("Missing information in request");
+        }
 
         String salt = BCrypt.gensalt(); //Generate a salt to hash the users password
 
