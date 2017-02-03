@@ -1,6 +1,10 @@
 package Controllers;
 
 import Models.User;
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
 import static Utilities.DBConn.datastore;
 
 /**
@@ -20,6 +24,15 @@ public class AuthenticationCtrl {
         }
 
         return "Signup Success"; //this should be some sort of json node at some point.
+    }
+
+    public static String login(String username, String password){
+        return "";
+    }
+
+    private String generateToken(){
+        SecureRandom random = new SecureRandom();
+        return new BigInteger(130, random).toString(32);
     }
 
 }
