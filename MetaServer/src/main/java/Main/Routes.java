@@ -1,4 +1,4 @@
-package Utilities; /**
+package Main; /**
  * Created by Erik Tillberg on 1/26/2017.
  */
 
@@ -23,11 +23,12 @@ public class Routes {
            return AuthenticationCtrl.login("test@test.com", "password");
         });
 
-        get("/signup", (req, res) -> {
+        post("/signup", (req, res) -> {
 
-            //signin with the Authentication Controller (which does nothing of the sort at the moment)
-
-            return AuthenticationCtrl.signup("test@test.com", "porkypig", "password");
+            String username = req.queryParams("username");
+            String email = req.queryParams("email");
+            String password = req.queryParams("password");
+            return AuthenticationCtrl.signup(email,username, password);
 
         }, regularJson());
         before((request, response) -> { //runs before any routes are called

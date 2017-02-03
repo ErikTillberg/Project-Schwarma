@@ -4,4 +4,4 @@ simServer/simServer
 .vscode
 .idea/
 *.iml
-/target/**
+MetaServer/target
