@@ -5,7 +5,7 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
 /**
- * Created by crese_000 on 2/1/2017.
+ * Created by Erik_Tillberg on 2/1/2017.
  */
 public class DBConn {
     //magic class for ORM

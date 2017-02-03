@@ -11,6 +11,7 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
 import static Utilities.DBConn.datastore;
+import static Utilities.JsonUtil.regularJson;
 import static spark.Spark.*;
 
 public class Routes {
@@ -18,8 +19,8 @@ public class Routes {
     public static void main(String[] args) {
         port(9000);
 
-        get("/login", (req, res) -> {
-           return "loggin in...";
+        post("/login", (req, res) -> {
+           return AuthenticationCtrl.login("test@test.com", "password");
         });
 
         get("/signup", (req, res) -> {
@@ -28,7 +29,7 @@ public class Routes {
 
             return AuthenticationCtrl.signup("test@test.com", "porkypig", "password");
 
-        });
+        }, regularJson());
         before((request, response) -> { //runs before any routes are called
             //My idea here is that we check for a session token that is generated on login
             //with the user that the token should have been generated in

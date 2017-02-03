@@ -1,6 +1,8 @@
 package Controllers;
 
 import Models.User;
+import Utilities.ResponseError;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -8,29 +10,39 @@ import java.security.SecureRandom;
 import static Utilities.DBConn.datastore;
 
 /**
- * Created by crese_000 on 2/1/2017.
+ * Created by Erik_Tillberg on 2/1/2017.
+ *
+ * Static class contains many of the functions that require authentication of some sort (login, signup, session tokens etc...)
+ * There may be a better name for this class. Who knows.
  */
 public class AuthenticationCtrl {
 
-    public static String signup(String email, String username, String password){
+    public static Object signup(String email, String username, String password){
 
-        //For now, just save a default user to the database.
+        String salt = BCrypt.gensalt(); //Generate a salt to hash the users password
 
-        final User porky = new User(email, username, password);
+        String hashedPass = BCrypt.hashpw(password, salt);
+
+        final User user = new User(email, username, hashedPass, salt);
+
+        //I'm assuming signing up is an auto-login situation, so assign a token here too.
+        user.setSessionToken(generateToken());
+
         try{
-            datastore.save(porky);
+            datastore.save(user);
         } catch (Exception e){
             e.printStackTrace();
+            return new ResponseError("Could not create user %s, %s", email, username);
         }
 
-        return "Signup Success"; //this should be some sort of json node at some point.
+        return user;
     }
 
-    public static String login(String username, String password){
-        return "";
+    public static Object login(String username, String password){
+        return null;
     }
 
-    private String generateToken(){
+    private static String generateToken(){
         SecureRandom random = new SecureRandom();
         return new BigInteger(130, random).toString(32);
     }
