@@ -21,8 +21,20 @@ public class Routes {
         port(9000);
 
         post("/login", (req, res) -> {
-           return AuthenticationCtrl.login("test@test.com", "password");
-        });
+
+            String username = req.queryParams("username");
+            String password = req.queryParams("password");
+            System.out.println(username + " " +password);
+            Object response =  AuthenticationCtrl.login(username, password);
+
+            if (response instanceof ResponseError){
+                res.status(400);
+                return response;
+            }
+
+            return response;
+
+        }, regularJson());
 
         post("/signup", (req, res) -> {
 

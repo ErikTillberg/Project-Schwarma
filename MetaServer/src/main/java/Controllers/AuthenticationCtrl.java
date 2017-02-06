@@ -2,11 +2,14 @@ package Controllers;
 
 import Models.User;
 import Utilities.ResponseError;
+import Utilities.ResponseSuccess;
 import org.mindrot.jbcrypt.BCrypt;
+import org.mongodb.morphia.query.Query;
 import spark.Response;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.List;
 
 import static Utilities.DBConn.datastore;
 
@@ -43,8 +46,46 @@ public class AuthenticationCtrl {
         return user;
     }
 
+    /**
+     *
+     * @param username username to query the database for
+     * @param password password that matches the username
+     * @return user object if there was a successful login
+     */
     public static Object login(String username, String password){
-        return null;
+
+        //First check to see if the parameters are there as required
+        if (username == null || password == null){
+            return new ResponseError("Missing fields");
+        }
+        System.out.println("Logging in...");
+        //Get user username:
+        final Query<User> query = datastore.createQuery(User.class)
+                .field("username").equal(username);
+        System.out.println(query);
+        User user;
+        try {
+            user = query.get();
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseError("Something went wrong");
+        }
+        System.out.println(user);
+        if (user==null){
+            return new ResponseSuccess("Could not find user %s", username);
+        }
+
+        //If the user exists, let's check the password
+        String candidatePassword = BCrypt.hashpw(password, user.getSalt());
+        System.out.println(candidatePassword);
+        System.out.println(user.getPassword());
+        //If the passwords match, there is a successful login and the user object should be returned to the client.
+        if (candidatePassword.equals(user.getPassword())){
+            return user;
+        } else {
+            return new ResponseSuccess("Password does not match");
+        }
+
     }
 
     private static String generateToken(){

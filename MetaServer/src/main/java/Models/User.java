@@ -24,12 +24,29 @@ public class User {
 
     //This means that the password won't be returned by GSON
     @Exclude
-    private String password; //transient variables will be ignored when converting this object to JSON.
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
     @Exclude
     private String salt;
 
     @Reference
     private List<Card> cards;
+
+    public User(){
+        super();
+    }
 
     public User(String email, String username, String password, String salt){
         this.email = email;
