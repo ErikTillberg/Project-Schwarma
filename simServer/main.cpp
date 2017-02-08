@@ -26,12 +26,21 @@ int main(int argc,char*argv[])
     player2.name = "Player 2";*/
 
     player1.loadFromFile("player1.json");
-
+    player1.position = 1;
+    player2.position = 2;
     //Print all triggers loaded from player1.json
-    for(auto it = player1.triggers.begin(); it != player1.triggers.end(); ++it)
+    /*for(auto it = player1.triggers.begin(); it != player1.triggers.end(); ++it)
     {
         std::cout<<"if "<<it->condition.lhs<<" "<<it->condition.op<<" "<<it->condition.rhs<<" then\n";
         std::cout<<it->action.actionType<<" "<<it->action.direction<<" end\n";
+    }*/
+    try
+    {
+        std::cout<<Schwarma::evalCondition(player1.triggers[0].condition,player1,player2)<<"\n";
+    }
+    catch(std::exception*e)
+    {
+        std::cout<<e->what()<<std::endl;
     }
 
     //Setup a new simulation with our two players

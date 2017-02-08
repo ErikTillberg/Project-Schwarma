@@ -32,7 +32,7 @@
                 "condition" : 
                 {
                     "lhs" : "distance",
-                    "operator" : ">=",
+                    "operator" : "==",
                     "rhs" : "touching"
                 },
                 "action" :

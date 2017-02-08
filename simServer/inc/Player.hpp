@@ -19,6 +19,15 @@ namespace Schwarma
             //move player toward target if not already 1 space away
             int move(Schwarma::Entity*enemy)
             {
+                auto end = this->triggers.end();
+                for(auto it = this->triggers.begin(); it != end; ++it)
+                {
+                    if(it->name == "move")
+                    {
+
+                    }
+                }
+                /*
                 if((this->position - enemy->position) == 1 ||
                 (enemy->position - this->position) == 1)
                     return 0;
@@ -31,7 +40,7 @@ namespace Schwarma
                 {
                     this->position--;
                     return 1;
-                }
+                }*/
                 return 0;
             }
 

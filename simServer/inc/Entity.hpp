@@ -2,8 +2,10 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <map>
 
 #include <cstdlib>
+#include <cmath>
 
 #include "Trigger.hpp"
 
@@ -18,6 +20,22 @@ namespace Schwarma
     int ATTACK = 0;
     int DEFEND = 1;
     int MOVE = 2;
+
+    std::map<std::string,int> Distance
+    {
+        std::make_pair("touching",1),
+        std::make_pair("close",2),
+        std::make_pair("far",3)
+    };
+
+    namespace ConditionalOperators
+    {
+        const char*GREATER_THAN_OR_EQUAL_TO = ">=";
+        const char*LESS_THAN_OR_EQUAL_TO = "<=";
+        const char*EQUALS = "==";
+        const char*GREATER_THAN = ">";
+        const char*LESS_THAN = "<";
+    }
 
     //class to hold statistics about an entity
     class Stats
@@ -142,5 +160,58 @@ namespace Schwarma
                 }
                 return true;
             }
+            int distance(Entity&b)
+            {
+                return std::abs(this->position - b.position);
+            }
     };
+    template<class T1,class T2>
+    inline bool evalConditionalExpression(std::string op,T1 lhs,T2 rhs)
+    {
+        std::cout<<lhs<<"\n";
+        std::cout<<rhs<<"\n";
+        if(op == Schwarma::ConditionalOperators::GREATER_THAN_OR_EQUAL_TO)
+        {
+            std::cout<<"GREATER_THAN_OR_EQUAL_TO\n";
+            if(lhs >= rhs)
+                return true;
+        }
+        else if(op == Schwarma::ConditionalOperators::GREATER_THAN)
+        {
+            if(lhs > rhs)
+                return true;
+        }
+        else if(op == Schwarma::ConditionalOperators::EQUALS)
+        {
+            std::cout<<"EQUALS\n";
+            if(lhs == rhs)
+                return true;
+        }
+        else if(op == Schwarma::ConditionalOperators::LESS_THAN_OR_EQUAL_TO)
+        {
+            if(lhs <= rhs)
+                return true;
+        }
+        else if(op == Schwarma::ConditionalOperators::LESS_THAN)
+        {
+            if(lhs < rhs)
+                return true;
+        }
+        return false;
+    }
+    inline bool evalCondition(const Schwarma::Condition&condition,Schwarma::Entity&a,Schwarma::Entity&b)
+    {
+        if(condition.lhs == "distance")
+        {
+            if(Schwarma::Distance.count(condition.rhs) == 0)
+                throw new std::runtime_error(std::string("Invalid rhs \"")+condition.rhs+std::string("\""));
+            return Schwarma::evalConditionalExpression<int,int>
+            (
+                condition.op,
+                a.distance(b),
+                Schwarma::Distance[condition.rhs]
+            );    
+        }
+        return false;
+    }
 }
