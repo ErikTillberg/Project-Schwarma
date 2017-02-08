@@ -27,23 +27,40 @@ public class AuthenticationCtrl {
             return new ResponseError("Missing information in request");
         }
 
-        String salt = BCrypt.gensalt(); //Generate a salt to hash the users password
+        User user_username, user_email, new_user = null;
 
-        String hashedPass = BCrypt.hashpw(password, salt);
+        // Check if user with same username or email already exists
+        final Query<User> query_username = datastore.createQuery(User.class).field("username").equal(username);
+        final Query<User> query_email = datastore.createQuery(User.class).field("email").equal(email);
 
-        final User user = new User(email, username, hashedPass, salt);
 
-        //I'm assuming signing up is an auto-login situation, so assign a token here too.
-        user.setSessionToken(generateToken());
-
-        try{
-            datastore.save(user);
+        try {
+            user_username = query_username.get();
+            user_email = query_email.get();
         } catch (Exception e){
             e.printStackTrace();
-            return new ResponseError("Could not create user %s, %s", email, username);
+            return new ResponseError("Something went wrong");
         }
 
-        return user;
+
+        if ((user_username==null) && (user_email==null)){
+
+            String salt = BCrypt.gensalt(); //Generate a salt to hash the users password
+            String hashedPass = BCrypt.hashpw(password, salt);
+
+            new_user = new User(email, username, hashedPass, salt);
+
+            //I'm assuming signing up is an auto-login situation, so assign a token here too.
+            new_user.setSessionToken(generateToken());
+
+            try {
+                datastore.save(new_user);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ResponseError("Could not create user %s, %s", email, username);
+            }
+        }
+        return new_user;
     }
 
     /**
@@ -59,6 +76,7 @@ public class AuthenticationCtrl {
             return new ResponseError("Missing fields");
         }
         System.out.println("Logging in...");
+
         //Get user username:
         final Query<User> query = datastore.createQuery(User.class)
                 .field("username").equal(username);
