@@ -3,13 +3,17 @@
  */
 
 // Displays simple messages at the bottom of the canvas for the user/developer.
+// Currently, must be initialized inside each state. Must be initialized after
+// Drawing any bakcgrounds so text does not wind up in the background
+// TODO make text float to top on init so invocation order doesn't matter
+// TODO see if there is a way to persists the text element between states and implement that
 
 console.log("debug_log");
 
 var debug_console = {
 
     debug_mode: true,
-    font_string: "10px Arial",
+    font_string: "14px Arial",
 
     init_log: function(){
         console.log("debug_console: init_log");

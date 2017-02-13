@@ -18,11 +18,17 @@ var load_state = {
 
         // Launch into either the signin or signup state, depending on whether the user
         // Already has an account or not. Determined by flag inside localStorage.
-        // TODO check that null case behaves as not false
 
-        if(JSON.parse(window.localStorage['new_user']) === false){
-            console.log("Returning user found, loading signin screen.");
-            game.state.start("signin");
+        if (window.localStorage['new_user']) {
+            if(JSON.parse(window.localStorage['new_user']) === false){
+                console.log("Returning user found, loading signin screen.");
+                game.state.start("signin");
+            }else{
+                // Set the flag so its checked if the user does not sign up before coming back to this point.
+                console.log("New user found, loading signup screen.");
+                window.localStorage['new_user'] = JSON.stringify(true);
+                game.state.start("signup");
+            }
         }else{
             // Set the flag so its checked if the user does not sign up before coming back to this point.
             console.log("New user found, loading signup screen.");

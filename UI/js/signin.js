@@ -89,17 +89,21 @@ var signin_state = {
     // Displays a success message to the user and transitions to the main menu
     signin_success: function(data, textStatus, jqXHR){
 
+        // TODO remove this check when server returns error code on null data
+        if (data === null) {
+            this.signin_failure("","","The server returned a null data object.");
+            return;
+        }
+
         console.log("signin_state: signin_success");
         console.log(data);
         console.log(textStatus);
-        console.log(jqXHR);
 
-        user_data = data;
-        user.init(user_data);
+        user.init(data);
 
         // Navigate the user to the main menu state, save a boolean flag in localStorage to indicate this is no longer
 
-        debug_console.message_log("Signed in as: " + user_data.username);
+        debug_console.message_log("Signed in as: " + user.username);
         game.state.start("main_menu");
     },
 

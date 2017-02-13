@@ -123,19 +123,23 @@ var signup_state = {
     // Displays a success message to the user and transitions to the signin state
     signup_success: function(data, textStatus, jqXHR){
 
+        // TODO remove this check when server returns error code on null data
+        if (data === null) {
+            this.signup_failure("","","The server returned a null data object.");
+            return;
+        }
+
         console.log("signup_state: signup_success");
         console.log(data);
         console.log(textStatus);
-        console.log(jqXHR);
 
-        user_data = data;
-        user.init(user_data);
+        user.init(data);
 
         // Navigate the user to the main menu state, save a boolean flag in localStorage to indicate this is not longer
         // A new user, next time they will arrive on the login screen.
         window.localStorage['new_user'] = JSON.stringify(false);
         console.log(JSON.parse(window.localStorage['new_user']));
-        debug_console.message_log("Signed in as: " + user_data.username);
+        debug_console.message_log("Signed in as: " + user.username);
         game.state.start("main_menu");
     },
 
