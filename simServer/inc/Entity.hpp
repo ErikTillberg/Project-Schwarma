@@ -21,6 +21,9 @@ namespace Schwarma
     int DEFEND = 1;
     int MOVE = 2;
 
+    int BOUND_LEFT = 0;
+    int BOUND_RIGHT = 7;
+
     std::map<std::string,int> Distance
     {
         std::make_pair("touching",1),

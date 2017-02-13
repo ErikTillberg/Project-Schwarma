@@ -27,7 +27,7 @@ int main(int argc,char*argv[])
 
     player1.loadFromFile("player1.json");
     player1.position = 1;
-    player2.position = 2;
+    player2.position = 6;
     //Print all triggers loaded from player1.json
     /*for(auto it = player1.triggers.begin(); it != player1.triggers.end(); ++it)
     {
@@ -36,7 +36,8 @@ int main(int argc,char*argv[])
     }*/
     try
     {
-        std::cout<<Schwarma::evalCondition(player1.triggers[0].condition,player1,player2)<<"\n";
+        //std::cout<<Schwarma::evalCondition(player1.triggers[0].condition,player1,player2)<<"\n";
+        std::cout<<player1.move(&player2)<<std::endl;
     }
     catch(std::exception*e)
     {

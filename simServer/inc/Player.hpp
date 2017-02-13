@@ -16,7 +16,6 @@ namespace Schwarma
                 return true;
             }
 
-            //move player toward target if not already 1 space away
             int move(Schwarma::Entity*enemy)
             {
                 auto end = this->triggers.end();
@@ -24,24 +23,34 @@ namespace Schwarma
                 {
                     if(it->name == "move")
                     {
-
+                        if(Schwarma::evalCondition(it->condition,*this,*enemy))
+                        {
+                            if(it->action.actionType == "move")
+                            {
+                                if(it->action.direction == "away")
+                                {
+                                    if(enemy->position > this->position &&
+                                    this->position != Schwarma::BOUND_LEFT)
+                                    {
+                                        this->position -= this->baseStats.movementSpeed;
+                                        if(this->position < Schwarma::BOUND_LEFT)
+                                            this->position = Schwarma::BOUND_LEFT;
+                                        return this->position;
+                                    }
+                                    else if(enemy->position < this->position &&
+                                    this->position != Schwarma::BOUND_RIGHT)
+                                    {
+                                        this->position += this->baseStats.movementSpeed;
+                                        if(this->position > Schwarma::BOUND_RIGHT)
+                                            this->position = Schwarma::BOUND_RIGHT;
+                                        return this->position;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-                /*
-                if((this->position - enemy->position) == 1 ||
-                (enemy->position - this->position) == 1)
-                    return 0;
-                else if(enemy->position > this->position)
-                {
-                    this->position++;
-                    return 1;
-                }
-                else if (enemy->position < this->position)
-                {
-                    this->position--;
-                    return 1;
-                }*/
-                return 0;
+                return -1;
             }
 
             //attack target if 1 space away
