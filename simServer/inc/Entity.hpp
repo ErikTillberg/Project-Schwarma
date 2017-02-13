@@ -119,6 +119,13 @@ namespace Schwarma
                 
                 if(!json.HasMember("baseStats"))
                     return false;
+                
+                if(!json.HasMember("actionPercentages"))
+                    return false;
+
+                if(!json.HasMember("weapons"))
+                    return false;
+                
                 //Get reference to actionPercentages object
                 auto&actionPercentages = json["actionPercentages"];
                 //Parse properties into class
