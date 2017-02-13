@@ -1,0 +1,427 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Battle Ground Animation Test</title>
+        <script src="//cdn.jsdelivr.net/phaser/2.5.0/phaser.min.js"></script>
+    </head>
+    <body>
+
+    <script type="text/javascript">
+
+    window.onload = function() {
+
+       
+        var game = new Phaser.Game( 1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update: update } );
+
+        var playerOne;
+        var playerTwo;
+        var playerOneShadow;
+        var playerTwoShadow;
+        var playerOneProj;
+        var playerTwoProj;
+        var playerOneFacing = 'right';
+        var playerTwoFacing = 'left';
+
+        var canIdle = true;
+        var canShoot = false;
+        var movePlayerX;
+        var playerOneLoc = 0;
+        var playerTwoLoc = 4;
+        
+       	var palyerMoveArray = [140, 390, 640, 890, 1140];
+        var animationTimer;
+        var animationCheck;
+        var playerSpacing = 60;
+        var attachCheck;
+
+        function preload () {
+
+            game.load.image('Background', 'BackGround1.png');
+            game.load.image('HUD', 'HUD1.png')
+            game.load.image('Shadow', 'shadow.png')
+            game.load.spritesheet('Knight', 'KnightSpriteSheet.png', 384, 384);
+            game.load.spritesheet('Thief', 'ThiefSpriteSheet.png', 384, 384);
+            game.load.spritesheet('Wizard', 'WizardSpriteSheet.png', 384, 384);
+           	game.load.spritesheet('Knife', 'KnifeSpriteSheet.png', 100, 100);
+            game.load.spritesheet('Fireball', 'FireBallSS.png', 102.5, 50);
+            game.load.spritesheet('Flash', 'FlashSpriteSheet.png', 100, 100);
+        }
+   
+        function create () {
+
+            var background = game.add.sprite(0,0, 'Background');
+            playerOneShadow = game.add.sprite(140 - playerSpacing, 405, 'Shadow');
+            playerTwoShadow = game.add.sprite(1140 + playerSpacing, 405, 'Shadow');
+            playerOneShadow.anchor.setTo(0.5, 0.5);
+            playerTwoShadow.anchor.setTo(0.5, 0.5);
+
+            playerOneProj = game.add.sprite(140 - playerSpacing, 360,'Flash'); 
+            playerOneProj.anchor.setTo(0.5, 0.5);
+            playerOneProj.scale.setTo(0.1, 0.1);
+            playerOneProj.animations.add('shootRight', [0, 1, 2, 3]);
+            playerOneProj.animations.add('shootLeft', [7, 6, 5, 4]);
+
+            playerTwoProj = game.add.sprite(1140 + playerSpacing, 360,'Fireball'); 
+            playerTwoProj.anchor.setTo(0.5, 0.5);
+            playerTwoProj.scale.setTo(0.1, 0.1);
+            playerTwoProj.animations.add('shootRight', [0, 1, 2, 3]);
+            playerTwoProj.animations.add('shootLeft', [7, 6, 5, 4]);
+
+            playerTwo= game.add.sprite(1140 + playerSpacing, 360, 'Wizard'); 
+            playerTwo.anchor.setTo(0.5, 0.5);
+
+			playerTwo.animations.add('attackRight', [0, 1, 2, 3, 4]);
+         	playerTwo.animations.add('attackLeft', [41, 40, 39, 38, 37]);
+         	playerTwo.animations.add('idleRight', [8, 9, 10, 11]);
+         	playerTwo.animations.add('idleLeft', [33, 32, 31, 30]);
+         	playerTwo.animations.add('walkRight', [18, 19, 20]);
+         	playerTwo.animations.add('walkLeft', [23, 22, 21]);
+         	playerTwo.animations.add('jumpRight', [12, 13, 14]);
+         	playerTwo.animations.add('jumpLeft', [29, 28, 27]);
+         	playerTwo.animations.add('dieRight', [6, 7]);
+         	playerTwo.animations.add('dieLeft', [35, 34]);
+         	playerTwo.animations.add('rollRight', [15, 16, 17]);
+         	playerTwo.animations.add('rollLeft', [26, 25, 24]);
+         	playerTwo.animations.add('blockRight', [5]);
+         	playerTwo.animations.add('blockLeft', [36]);            
+
+            playerOne = game.add.sprite(140 - playerSpacing, 360, 'Knight');
+            playerOne.anchor.setTo(0.5, 0.5)
+          
+         	playerOne.animations.add('attackRight', [0, 1, 2, 3, 4]);
+         	playerOne.animations.add('attackLeft', [41, 40, 39, 38, 37]);
+         	playerOne.animations.add('idleRight', [8, 9, 10, 11]);
+         	playerOne.animations.add('idleLeft', [33, 32, 31, 30]);
+         	playerOne.animations.add('walkRight', [18, 19, 20]);
+         	playerOne.animations.add('walkLeft', [23, 22, 21]);
+         	playerOne.animations.add('jumpRight', [12, 13, 14]);
+         	playerOne.animations.add('jumpLeft', [29, 28, 27]);
+         	playerOne.animations.add('dieRight', [6, 7]);
+         	playerOne.animations.add('dieLeft', [35, 34]);
+         	playerOne.animations.add('rollRight', [15, 16, 17]);
+         	playerOne.animations.add('rollLeft', [26, 25, 24]);
+         	playerOne.animations.add('blockRight', [5]);
+         	playerOne.animations.add('blockLeft', [36]);         
+        
+            var HUD1 = game.add.sprite(645, 580, 'HUD');
+            HUD1.anchor.setTo(0.5, 0.5);
+           
+        }
+
+       	function update() {
+
+
+			if (playerOne.x < playerTwo.x){
+
+				playerOneFacing = 'right';
+				playerTwoFacing = 'left';
+			}
+
+			else {
+
+				playerOneFacing = 'left';
+				playerTwoFacing = 'right';
+			}
+
+			playerOneShadow.x = playerOne.x;
+			playerTwoShadow.x = playerTwo.x;
+  
+		   if (game.input.keyboard.isDown(Phaser.Keyboard.ONE))
+		    {
+		       movePlayer(playerOne, 0);
+		    }
+		    else if (game.input.keyboard.isDown(Phaser.Keyboard.TWO))
+		    {
+		       movePlayer(playerOne, 1);  
+		    } 
+		    else if (game.input.keyboard.isDown(Phaser.Keyboard.THREE))
+		    {
+		       movePlayer(playerOne, 2);   
+		    }
+		     else if (game.input.keyboard.isDown(Phaser.Keyboard.FOUR))
+		    {
+		       movePlayer(playerOne, 3);     
+		    }
+		     else if (game.input.keyboard.isDown(Phaser.Keyboard.FIVE))
+		    {
+		       movePlayer(playerOne, 4);  
+		    }    
+		     else if (game.input.keyboard.isDown(Phaser.Keyboard.Q))
+		    {
+		       movePlayer(playerTwo, 0);       
+		    }
+		     else if (game.input.keyboard.isDown(Phaser.Keyboard.W))
+		    {
+		       movePlayer(playerTwo, 1);  
+		    }
+		     else if (game.input.keyboard.isDown(Phaser.Keyboard.E))
+		    {
+		       movePlayer(playerTwo, 2); 
+		    }
+		     
+		     else if (game.input.keyboard.isDown(Phaser.Keyboard.R))
+		    {
+		       movePlayer(playerTwo, 3);  
+		    }
+		    else if (game.input.keyboard.isDown(Phaser.Keyboard.T))
+		    {
+		       movePlayer(playerTwo, 4); 
+		    }
+		    else if (game.input.keyboard.isDown(Phaser.Keyboard.S))
+		    {
+		       attack(playerTwo);   
+		    }
+		    else if  (game.input.keyboard.isDown(Phaser.Keyboard.A))
+		    {
+		       attack(playerOne);
+		    }
+		     else if  (game.input.keyboard.isDown(Phaser.Keyboard.D))
+		    {
+		       die(playerTwo);
+		       die(playerOne);   
+		    }
+		     else if  (game.input.keyboard.isDown(Phaser.Keyboard.B))
+		    {
+		       block( playerOne);
+		       block(playerTwo);   
+		    }
+		   
+		   else
+		   {
+
+		   	if ( canIdle ) {
+
+		    	if ( playerOneFacing == 'right' ){
+
+		      		playerOne.animations.play('idleRight', 5, true);
+		      		playerTwo.animations.play('idleLeft', 5, true);
+		      	}
+
+		    	else {
+		    	
+		    		playerOne.animations.play('idleLeft', 5, true);
+		    		playerTwo.animations.play('idleRight', 5, true);
+		    	}
+		 	}
+
+		 	if ( !canShoot ) {
+
+		 		playerOneProj.x = playerOne.x;
+		    	playerTwoProj.x = playerTwo.x;
+		    	playerOneProj.scale.setTo(0.1, 0.1);
+		    	playerTwoProj.scale.setTo(0.1, 0.1);
+		  	}
+
+		    	
+			}
+		}
+
+
+		function movePlayer ( sprite, moveNum ){
+
+			if ( sprite == playerOne ){
+
+				movePlayerX = ( palyerMoveArray[moveNum] - playerSpacing);
+				animationCheck = (moveNum - playerOneLoc);
+				animationTimer = Math.abs(animationCheck)
+				console.log('AnimationtimerPlayerOne:' + animationTimer)
+			}
+
+			else {
+
+				movePlayerX = (palyerMoveArray[moveNum] + playerSpacing);
+				animationCheck = (moveNum - playerTwoLoc);
+				animationTimer = Math.abs(animationCheck)
+				console.log('AnimationtimerPlayerTwo:' + animationTimer)
+			}
+			
+			canIdle = false;
+
+			game.add.tween(sprite).to({ x: movePlayerX}, (1000 * animationTimer), Phaser.Easing.Linear.None, true);
+
+			if ( animationCheck > 0 && animationTimer <= 2){
+
+				sprite.animations.play('walkRight', 5, true);
+			}
+
+			else if (  animationCheck > 0 && animationTimer < 4 && animationTimer >= 3) { 
+
+				sprite.animations.play('rollRight', 5, true);
+			}
+
+			else if (  animationCheck > 0 && animationTimer >= 4 ) { 
+
+				sprite.animations.play('jumpRight', 5, true);
+			}
+
+			else if(  animationCheck < 0 && animationTimer < 4 && animationTimer >= 3) { 
+
+				sprite.animations.play('rollLeft', 5, true);
+			}
+
+			else if (  animationCheck < 0 && animationTimer >= 4 ) { 
+
+				sprite.animations.play('jumpLeft', 5, true);
+			}
+
+			 else {
+
+				sprite.animations.play('walkLeft', 5, true);
+			}
+			
+			game.time.events.add( (1000 * animationTimer), (function() { setPlayerLoc( sprite, moveNum); canIdle = true;  console.log(sprite.x);}), this ); 
+		}
+
+		function setPlayerLoc( sprite, moveNum){
+
+			if ( sprite == playerOne ){
+				
+				playerOneLoc = moveNum;	
+			}
+
+			else {
+				
+				playerTwoLoc = moveNum;
+			}
+				
+			console.log('PLayer One Loc: ' + playerOneLoc);
+			console.log('PLayer Two Loc: ' + playerTwoLoc);
+		}
+
+		function attack( sprite ){
+
+			attackCheck = Math.abs(playerOneLoc - playerTwoLoc);
+			
+			if ( attackCheck < 1){
+
+				attackClose ( sprite );
+			}
+
+			else{
+
+				attackFar ( sprite) ;
+			}
+		}
+
+		function attackClose( sprite ){ // Fix
+
+			canIdle = false;
+
+			if ( playerOneFacing == 'right' && sprite == playerOne ){
+
+				sprite.animations.play('attackRight', 5, false);
+				game.time.events.add( 500, (function() { block( playerTwo ); canShoot = false;}), this );
+			}
+
+			else if ( playerTwoFacing == 'right' && sprite == playerTwo ){ 
+
+				sprite.animations.play('attackRight', 5, false);
+				game.time.events.add( 500, (function() { block( playerOne ); canShoot = false;}), this );
+			}
+
+			else if (  playerOneFacing == 'left' && sprite == playerOne){
+
+				sprite.animations.play('attackLeft', 5, false);
+				game.time.events.add( 500, (function() { block( playerTwo ); canShoot = false;}), this );
+			}
+
+			else {
+
+				 sprite.animations.play('attackLeft', 5, false);
+				 game.time.events.add( 500, (function() { block( playerOne ); canShoot = false;}), this );
+			}
+		}
+			
+		function attackFar( sprite ){
+
+			canIdle = false;
+			canShoot = true;
+			var animationTimer2 = attackCheck
+
+			if (  playerOneFacing == 'right' && sprite == playerOne){
+
+				playerOneProj.scale.setTo(1, 1);
+				sprite.animations.play('attackRight', 5, false);
+				playerOneProj.animations.play('shootRight', 10, true);
+				game.add.tween(playerOneProj).to({ x: playerTwo.x}, (500 * animationTimer2 ), Phaser.Easing.Linear.None, true);
+				game.time.events.add( 500 * animationTimer2, (function() { block( playerTwo ); canShoot = false;}), this ); 
+			}
+
+			else if ( playerTwoFacing == 'right' && sprite == playerTwo){
+
+				playerTwoProj.scale.setTo(1, 1);
+				sprite.animations.play('attackRight', 5, false);
+				playerTwoProj.animations.play('shootRight', 5, true);
+				game.add.tween(playerTwoProj).to({ x: playerOne.x}, (500 * animationTimer2), Phaser.Easing.Linear.None, true);
+				game.time.events.add( 500 * animationTimer2, (function() { block( playerOne ); canShoot = false;}), this );
+			}
+
+			else if (  playerOneFacing == 'left' && sprite == playerOne){
+
+				playerOneProj.scale.setTo(1, 1);
+				sprite.animations.play('attackLeft', 5, false);
+				playerOneProj.animations.play('shootLeft', 5, true);
+				game.add.tween(playerOneProj).to({ x: playerTwo.x}, (500 * animationTimer2), Phaser.Easing.Linear.None, true);
+				game.time.events.add( 500 * animationTimer2, (function() { block( playerTwo ); canShoot = false;}), this ); 
+			}
+
+			else {
+
+				playerTwoProj.scale.setTo(1, 1);
+				sprite.animations.play('attackLeft', 5, false);
+				playerTwoProj.animations.play('shootLeft', 10, true);
+				game.add.tween(playerTwoProj).to({ x: playerOne.x}, (500 * animationTimer2), Phaser.Easing.Linear.None, true);
+				game.time.events.add( 500 * animationTimer2, (function() { block( playerOne ); canShoot = false;}), this );
+			}
+		}
+
+		function die( sprite ){
+
+			canIdle = false;
+
+			if ( playerOneFacing == 'right' && sprite == playerOne ){
+
+			 	sprite.animations.play('dieRight', 5, false);
+			}
+
+			else if ( playerTwoFacing == 'right' && sprite == playerTwo ){
+
+				sprite.animations.play('dieRight', 5, false);
+			}
+
+			else {
+
+				sprite.animations.play('dieLeft', 5, false);	 
+			}
+
+			game.time.events.add( 10000, (function() { canIdle = true; }), this ); 
+		}
+			
+		function block( sprite ){
+
+			canIdle = false;
+
+			if ( playerOneFacing == 'right' && sprite == playerOne){
+
+				sprite.animations.play('blockRight', 5, true);
+			}
+
+			else if ( playerTwoFacing == 'right' && sprite == playerTwo){
+
+				sprite.animations.play('blockRight', 5, true);
+			}
+
+			else {
+
+				sprite.animations.play('blockLeft', 5, true);
+			}
+
+			game.time.events.add( 1000, (function() { canIdle = true; }), this ); 
+		}
+    };
+
+    </script>
+
+    </body>
+</html>
