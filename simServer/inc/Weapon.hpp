@@ -1,0 +1,50 @@
+#pragma once
+#include <string>
+
+#include <cstdlib>
+
+#include "../rapidjson/include/rapidjson/document.h"
+#include "../rapidjson/include/rapidjson/istreamwrapper.h"
+#include "../rapidjson/include/rapidjson/ostreamwrapper.h"
+#include "../rapidjson/include/rapidjson/prettywriter.h"
+namespace Schwarma
+{
+    class Weapon
+    {
+        public:
+            Weapon
+            (
+                std::string name,
+                int damage,
+                std::string element
+            ) : 
+            name(name),damage(damage),element(element){}
+            ~Weapon() = default;
+            std::string name;
+            int damage;
+            std::string element;
+
+            template<class T>
+            static Schwarma::Weapon parseWeapon(T&obj)
+            {
+                if(obj.HasMember("name") && obj.HasMember("damage") && obj.HasMember("element"))
+                {
+                    return Schwarma::Weapon
+                    (
+                        obj["name"],
+                        std::atoi(obj["damage"]),
+                        obj["element"]
+                    );
+                }
+                else
+                {
+                    return Schwarma::Weapon
+                    (
+                        "",
+                        0,
+                        ""
+                    );
+                }
+            }
+    };
+}

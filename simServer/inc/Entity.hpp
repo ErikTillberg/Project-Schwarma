@@ -8,6 +8,7 @@
 #include <cmath>
 
 #include "Trigger.hpp"
+#include "Weapon.hpp"
 
 #include "../rapidjson/include/rapidjson/document.h"
 #include "../rapidjson/include/rapidjson/istreamwrapper.h"
