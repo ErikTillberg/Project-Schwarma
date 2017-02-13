@@ -117,6 +117,8 @@ namespace Schwarma
                 if(json.HasParseError())
                     return false;
                 
+                if(!json.HasMember("baseStats"))
+                    return false;
                 //Get reference to actionPercentages object
                 auto&actionPercentages = json["actionPercentages"];
                 //Parse properties into class
@@ -132,6 +134,8 @@ namespace Schwarma
                 this->baseStats.resistanceToIce = std::atof(baseStats["resistanceToIce"].GetString());
                 this->baseStats.resistanceToEarth = std::atof(baseStats["resistanceToEarth"].GetString());
                 this->baseStats.movementSpeed = std::atoi(baseStats["movementSpeed"].GetString());
+
+                
 
                 //Get reference to triggers object
                 auto&triggers = json["triggers"];
