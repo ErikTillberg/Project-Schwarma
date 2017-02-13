@@ -19,7 +19,6 @@
     [
         {
             "name" : "sword",
-            "range" : "touching",
             "damage" : "5",
             "element" : "steel"
         }
