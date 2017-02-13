@@ -34,6 +34,10 @@
         var animationCheck;
         var playerSpacing = 60;
         var attachCheck;
+        
+        var actionText;
+        var playerOneText;
+        var playerTwoText;
 
         function preload () {
 
@@ -46,6 +50,8 @@
            	game.load.spritesheet('Knife', 'KnifeSpriteSheet.png', 100, 100);
             game.load.spritesheet('Fireball', 'FireBallSS.png', 102.5, 50);
             game.load.spritesheet('Flash', 'FlashSpriteSheet.png', 100, 100);
+            
+            game.load.bitmapFont('carrier_command', 'Fonts/carrier_command.png', 'Fonts/carrier_command.xml');
         }
    
         function create () {
@@ -106,6 +112,20 @@
         
             var HUD1 = game.add.sprite(645, 580, 'HUD');
             HUD1.anchor.setTo(0.5, 0.5);
+            
+            actionText = game.add.bitmapText(645, 580, 'carrier_command','Action Text\n\nGoes Here',20);
+            actionText.anchor.setTo(0.5, 0.5);
+            actionText.align = 'center'
+
+            playerOneText = game.add.bitmapText(305, 580, 'carrier_command','Player\n\nOne\n\nInfo.\n\nGoes\n\nHere',10);
+            playerOneText.anchor.setTo(0.5, 0.5);
+
+            playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command','Player\n\nTwo\n\nInfo.\n\nGoes\n\nHere',10);
+            playerTwoText.anchor.setTo(0.5, 0.5);
+
+
+
+
            
         }
 
@@ -269,6 +289,9 @@
 
 				sprite.animations.play('walkLeft', 5, true);
 			}
+
+			actionText.setText("PLAYER MOVE TO\n\n" + moveNum );
+
 			
 			game.time.events.add( (1000 * animationTimer), (function() { setPlayerLoc( sprite, moveNum); canIdle = true;  console.log(sprite.x);}), this ); 
 		}
@@ -302,6 +325,8 @@
 
 				attackFar ( sprite) ;
 			}
+
+			actionText.setText("PLAYER ATTACK" );
 		}
 
 		function attackClose( sprite ){ // Fix
@@ -395,6 +420,8 @@
 				sprite.animations.play('dieLeft', 5, false);	 
 			}
 
+			actionText.setText("PLAYER DEAD");
+
 			game.time.events.add( 10000, (function() { canIdle = true; }), this ); 
 		}
 			
@@ -416,6 +443,8 @@
 
 				sprite.animations.play('blockLeft', 5, true);
 			}
+
+			actionText.setText("PLAYER BLOCK");
 
 			game.time.events.add( 1000, (function() { canIdle = true; }), this ); 
 		}
