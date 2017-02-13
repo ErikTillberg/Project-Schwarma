@@ -23,30 +23,38 @@ namespace Schwarma
                 {
                     if(it->name == "move")
                     {
-                        if(Schwarma::evalCondition(it->condition,*this,*enemy))
+                        try
                         {
-                            if(it->action.actionType == "move")
+                            if(Schwarma::evalCondition(it->condition,*this,*enemy))
                             {
-                                if(it->action.direction == "away")
+                                if(it->action.actionType == "move")
                                 {
-                                    if(enemy->position > this->position &&
-                                    this->position != Schwarma::BOUND_LEFT)
+                                    if(it->action.direction == "away")
                                     {
-                                        this->position -= this->baseStats.movementSpeed;
-                                        if(this->position < Schwarma::BOUND_LEFT)
-                                            this->position = Schwarma::BOUND_LEFT;
-                                        return this->position;
-                                    }
-                                    else if(enemy->position < this->position &&
-                                    this->position != Schwarma::BOUND_RIGHT)
-                                    {
-                                        this->position += this->baseStats.movementSpeed;
-                                        if(this->position > Schwarma::BOUND_RIGHT)
-                                            this->position = Schwarma::BOUND_RIGHT;
-                                        return this->position;
+                                        if(enemy->position > this->position &&
+                                        this->position != Schwarma::BOUND_LEFT)
+                                        {
+                                            this->position -= this->baseStats.movementSpeed;
+                                            if(this->position < Schwarma::BOUND_LEFT)
+                                                this->position = Schwarma::BOUND_LEFT;
+                                            return this->position;
+                                        }
+                                        else if(enemy->position < this->position &&
+                                        this->position != Schwarma::BOUND_RIGHT)
+                                        {
+                                            this->position += this->baseStats.movementSpeed;
+                                            if(this->position > Schwarma::BOUND_RIGHT)
+                                                this->position = Schwarma::BOUND_RIGHT;
+                                            return this->position;
+                                        }
                                     }
                                 }
                             }
+                        }
+                        catch(std::runtime_error*e)
+                        {
+                            std::cout<<e->what()<<std::endl;
+                            std::cout<<"In move trigger "<<it-this->triggers.begin()<<" for "<<this->name<<std::endl;
                         }
                     }
                 }

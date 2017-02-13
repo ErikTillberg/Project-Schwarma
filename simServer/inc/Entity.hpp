@@ -203,7 +203,7 @@ namespace Schwarma
         if(condition.lhs == "distance")
         {
             if(Schwarma::Distance.count(condition.rhs) == 0)
-                throw new std::runtime_error(std::string("Invalid rhs \"")+condition.rhs+std::string("\""));
+                throw new std::runtime_error(std::string("Invalid rhs \"")+condition.rhs+std::string("\"")+" in condition \""+condition.lhs+condition.op+condition.rhs+"\"");
             return Schwarma::evalConditionalExpression<int,int>
             (
                 condition.op,
