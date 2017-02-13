@@ -38,6 +38,10 @@ int main(int argc,char*argv[])
     {
         //std::cout<<Schwarma::evalCondition(player1.triggers[0].condition,player1,player2)<<"\n";
         std::cout<<player1.move(&player2)<<std::endl;
+        for(auto it = player1.weapons.begin(); it != player1.weapons.end(); ++it)
+        {
+            std::cout<<it->name<<std::endl;
+        }
     }
     catch(std::exception*e)
     {

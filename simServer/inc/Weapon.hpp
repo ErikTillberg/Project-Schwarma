@@ -31,9 +31,9 @@ namespace Schwarma
                 {
                     return Schwarma::Weapon
                     (
-                        obj["name"],
-                        std::atoi(obj["damage"]),
-                        obj["element"]
+                        obj["name"].GetString(),
+                        std::atoi(obj["damage"].GetString()),
+                        obj["element"].GetString()
                     );
                 }
                 else

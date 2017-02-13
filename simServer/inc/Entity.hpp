@@ -84,6 +84,8 @@ namespace Schwarma
 
             std::vector<Schwarma::Trigger> triggers;
 
+            std::vector<Schwarma::Weapon> weapons;
+
             virtual bool loadFromSource(std::string&) = 0;
             virtual int attack(Schwarma::Entity*) = 0;
             virtual int defend(Schwarma::Entity*) = 0;
@@ -143,6 +145,17 @@ namespace Schwarma
                 this->baseStats.resistanceToEarth = std::atof(baseStats["resistanceToEarth"].GetString());
                 this->baseStats.movementSpeed = std::atoi(baseStats["movementSpeed"].GetString());
 
+
+                auto&weapons = json["weapons"];
+                if(weapons.GetType() == rapidjson::Type::kArrayType)
+                {
+                    for(rapidjson::SizeType i = 0; i < weapons.Size(); ++i)
+                    {
+                        this->weapons.push_back(Schwarma::Weapon::parseWeapon<decltype(weapons[i])>(weapons[i]));
+                    }
+                }
+                else 
+                    return false;
                 
 
                 //Get reference to triggers object
