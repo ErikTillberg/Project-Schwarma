@@ -93,19 +93,12 @@ var signup_state = {
             debug_console.error_log("Confirm password is required");
         }else{
 
-            // Build the URL with query string for signup
-            var signup_endpoint = config.server_ip
-                + config.signup_endpoint
-                + "?username=" + username
-                + "&email=" + email
-                + "&password=" + password;
-
             // Send the request to the server
             $.ajax({
                 type: "POST",
                 crossDomain: true,
                 dataType: 'json',
-                url: signup_endpoint,
+                url: server.signup_endpoint(username, email, password),
                 success: this.signup_success,
                 error: this.signup_failure
             });

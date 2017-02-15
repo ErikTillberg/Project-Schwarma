@@ -60,18 +60,12 @@ var signin_state = {
             debug_console.error_log("Password is required");
         }else{
 
-            // Build the URL with query string for signup
-            var signin_endpoint = config.server_ip
-                + config.signin_endpoint
-                + "?username=" + username
-                + "&password=" + password;
-
             // Send the request to the server
             $.ajax({
                 type: "POST",
                 crossDomain: true,
                 dataType: 'json',
-                url: signin_endpoint,
+                url: server.signin_endpoint(username, password),
                 success: this.signin_success,
                 error: this.signin_failure
             });
@@ -102,7 +96,6 @@ var signin_state = {
         user.init(data);
 
         // Navigate the user to the main menu state, save a boolean flag in localStorage to indicate this is no longer
-
         debug_console.message_log("Signed in as: " + user.username);
         game.state.start("main_menu");
     },
