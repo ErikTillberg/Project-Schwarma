@@ -15,9 +15,6 @@ int main(int argc,char*argv[])
     Schwarma::Player player1;
     Schwarma::Player player2;
 
-    player1.stats.health = 10;
-    player2.stats.health = 10;
-
     //Set players on opposite ends of the stage
     player1.position = 1;
     player2.position = 7;
