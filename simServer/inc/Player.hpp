@@ -42,6 +42,19 @@ namespace Schwarma
                                             this->position += this->baseStats.movementSpeed;
                                         }
                                     }
+                                    else if(it->action.direction == "towards")
+                                    {
+                                        if(enemy->position > this->position &&
+                                        this->position != Schwarma::BOUND_LEFT)
+                                        {
+                                            this->position += this->baseStats.movementSpeed;
+                                        }
+                                        else if(enemy->position < this->position &&
+                                        this->position != Schwarma::BOUND_RIGHT)
+                                        {
+                                            this->position -= this->baseStats.movementSpeed;
+                                        }
+                                    }
 
                                     if(this->position < Schwarma::BOUND_LEFT)
                                         this->position = Schwarma::BOUND_LEFT;
