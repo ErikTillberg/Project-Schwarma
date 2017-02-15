@@ -50,7 +50,7 @@
                 "action":
                 {
                     "actionType" : "move",
-                    "direction" : "away"
+                    "direction" : "towards"
                 }
             },
             {
