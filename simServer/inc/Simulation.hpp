@@ -93,11 +93,11 @@ namespace Schwarma
                     stream<<entity1->name<<" Took No Action\n";
                 if(action == Schwarma::MOVE)
                 {
-                    int dist = entity1->move(entity2);
-                    if(dist)
-                        stream<<entity1->name<<" Moved "<<dist<<" Spaces Towards "<<entity2->name<<"\n";
-                    else if(dist == 0)
-                        stream<<entity1->name<<" Did Not Move\n";
+                    int pos = entity1->move(entity2);
+                    if(pos == -1)
+                        stream<<entity1->name<<" did not move\n";
+                    else if(pos)
+                        stream<<entity1->name<<" Moved to position "<<pos<<"\n";
                 }
                 if(action == Schwarma::ATTACK)
                 {
@@ -108,10 +108,6 @@ namespace Schwarma
                     }
                     else
                         std::cout<<entity1->name<<" attack nooped"<<std::endl;
-                    /*if(res)
-                        stream<<entity1->name<<" inflicted "<<res<<" damage to "<<entity2->name<<"\n";
-                    else if(res == 0)
-                        stream<<entity1->name<<" Did Not Attack\n";*/
                 }
             }
 

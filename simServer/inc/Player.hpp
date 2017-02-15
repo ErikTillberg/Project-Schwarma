@@ -106,21 +106,12 @@ namespace Schwarma
                     }
                 }
                 return nullptr;
-                /*
-                if((this->position - enemy->position) == 1 ||
-                (enemy->position - this->position) == 1)
-                    return 1;
-                return 0;*/
             }
 
             //this needs to be thought out more
             //currently just prints result of enemy attack
             int defend(Schwarma::Entity*enemy)
             {
-                //int damage = enemy->attack(this);
-                //if(damage)
-                  //  std::cout<<this->name<<" defended from "<<enemy->attack(this)<<" points of damage\n";
-                //return damage;
             }
     };
 }
