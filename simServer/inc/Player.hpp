@@ -60,25 +60,53 @@ namespace Schwarma
                 }
                 return -1;
             }
-
-            //attack target if 1 space away
-            //needs to be thought out more
-            int attack(Schwarma::Entity*enemy)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+            Schwarma::Weapon&attack(Schwarma::Entity*enemy)
             {
+                auto end = this->triggers.end();
+                for(auto it = this->triggers.begin(); it != end; ++it)
+                {
+                    if(it->name == "attack")
+                    {
+                        try
+                        {
+                            if(Schwarma::evalCondition(it->condition,*this,*enemy))
+                            {
+                                if(it->action.actionType == "attack")
+                                {
+                                   for(auto wit = this->weapons.begin(); wit != this->weapons.end(); ++wit)
+                                   {
+                                       if(wit->name == it->action.item)
+                                       {
+                                           return (*wit);
+                                       }
+                                   } 
+                                }
+                                throw new std::runtime_error("Attack trigger "+it-this->triggers.begin()+" evaluated true but could not execute");
+                            }
+                        }
+                        catch(std::runtime_error*e)
+                        {
+                            std::cout<<e->what()<<std::endl;
+                            std::cout<<"In attack trigger "<<it-this->triggers.begin()<<" for "<<this->name<<std::endl;
+                        }
+                    }
+                }
+                /*
                 if((this->position - enemy->position) == 1 ||
                 (enemy->position - this->position) == 1)
                     return 1;
-                return 0;
+                return 0;*/
             }
 
             //this needs to be thought out more
             //currently just prints result of enemy attack
             int defend(Schwarma::Entity*enemy)
             {
-                int damage = enemy->attack(this);
-                if(damage)
-                    std::cout<<this->name<<" defended from "<<enemy->attack(this)<<" points of damage\n";
-                return damage;
+                //int damage = enemy->attack(this);
+                //if(damage)
+                  //  std::cout<<this->name<<" defended from "<<enemy->attack(this)<<" points of damage\n";
+                //return damage;
             }
     };
 }
