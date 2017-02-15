@@ -1,6 +1,7 @@
 package Utilities;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
@@ -14,6 +15,8 @@ public class DBConn {
     //datastore connects to the default port (obviously have mongod running in background)
     //It uses the database named "Schwarma" (creates one if it doesn't exist)
     //Collections are created bsaed on the Models we define.
-    public static final Datastore datastore = morphia.createDatastore(new MongoClient(), "Schwarma");
+    static MongoClientURI uri  = new MongoClientURI("mongodb://schwarma_client:client@ds151279.mlab.com:51279/?authSource=heroku_45dzn51n");
+    public static final Datastore datastore = morphia.createDatastore(new MongoClient(uri), "heroku_45dzn51n");
+
 
 }
