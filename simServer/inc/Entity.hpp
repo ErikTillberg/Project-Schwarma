@@ -194,7 +194,7 @@ namespace Schwarma
             }
     };
     template<class T1,class T2>
-    inline bool evalConditionalExpression(std::string op,T1 lhs,T2 rhs)
+    inline bool evalConditionalExpression(const std::string&op,const T1&lhs,const T2&rhs)
     {
         if(op == Schwarma::ConditionalOperators::GREATER_THAN_OR_EQUAL_TO)
         {
