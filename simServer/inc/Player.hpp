@@ -82,13 +82,13 @@ namespace Schwarma
                                        }
                                    } 
                                 }
-                                throw new std::runtime_error("Attack trigger "+it-this->triggers.begin()+" evaluated true but could not execute");
+                                throw new std::runtime_error("Attack trigger "+(it-this->triggers.begin())+std::string(" evaluated true but could not execute"));
                             }
                         }
                         catch(std::runtime_error*e)
                         {
                             std::cout<<e->what()<<std::endl;
-                            std::cout<<"In attack trigger "<<it-this->triggers.begin()<<" for "<<this->name<<std::endl;
+                            std::cout<<"In attack trigger "<<(it-this->triggers.begin())<<" for "<<this->name<<std::endl;
                         }
                     }
                 }
