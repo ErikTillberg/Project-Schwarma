@@ -61,7 +61,7 @@ namespace Schwarma
                 return -1;
             }
                                                                                               
-            Schwarma::Weapon&attack(Schwarma::Entity*enemy)
+            Schwarma::Weapon*attack(Schwarma::Entity*enemy)
             {
                 auto end = this->triggers.end();
                 for(auto it = this->triggers.begin(); it != end; ++it)
@@ -78,7 +78,7 @@ namespace Schwarma
                                    {
                                        if(wit->name == it->action.item)
                                        {
-                                           return (*wit);
+                                           return &(*wit);
                                        }
                                    } 
                                 }
@@ -92,6 +92,7 @@ namespace Schwarma
                         }
                     }
                 }
+                return nullptr;
                 /*
                 if((this->position - enemy->position) == 1 ||
                 (enemy->position - this->position) == 1)

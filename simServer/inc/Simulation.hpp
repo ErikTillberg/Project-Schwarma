@@ -101,11 +101,17 @@ namespace Schwarma
                 }
                 if(action == Schwarma::ATTACK)
                 {
-                    int res = entity1->attack(entity2);
-                    if(res)
+                    Schwarma::Weapon&wep = *entity1->attack(entity2);
+                    if(&wep != nullptr)
+                    {
+                        std::cout<<entity1->name<<" attacked with "<<wep.name<<std::endl;
+                    }
+                    else
+                        std::cout<<entity1->name<<" attack nooped"<<std::endl;
+                    /*if(res)
                         stream<<entity1->name<<" inflicted "<<res<<" damage to "<<entity2->name<<"\n";
                     else if(res == 0)
-                        stream<<entity1->name<<" Did Not Attack\n";
+                        stream<<entity1->name<<" Did Not Attack\n";*/
                 }
             }
 
