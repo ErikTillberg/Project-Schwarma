@@ -74,7 +74,7 @@ namespace Schwarma
                 return -1;
             }
                                                                                               
-            Schwarma::Weapon*attack(Schwarma::Entity*enemy)
+            const Schwarma::Weapon*attack(Schwarma::Entity*enemy)
             {
                 auto end = this->triggers.end();
                 for(auto it = this->triggers.begin(); it != end; ++it)

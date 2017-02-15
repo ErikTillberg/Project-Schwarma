@@ -101,7 +101,7 @@ namespace Schwarma
                 }
                 if(action == Schwarma::ATTACK)
                 {
-                    Schwarma::Weapon&wep = *entity1->attack(entity2);
+                    const Schwarma::Weapon&wep = *entity1->attack(entity2);
                     if(&wep != nullptr)
                     {
                         std::cout<<entity1->name<<" attacked with "<<wep.name<<std::endl;
