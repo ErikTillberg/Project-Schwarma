@@ -9,6 +9,8 @@
 
 #include "Trigger.hpp"
 #include "Weapon.hpp"
+#include "Stats.hpp"
+#include "BehaviourRolls.hpp"
 
 #include "../rapidjson/include/rapidjson/document.h"
 #include "../rapidjson/include/rapidjson/istreamwrapper.h"
@@ -16,57 +18,6 @@
 #include "../rapidjson/include/rapidjson/prettywriter.h"
 namespace Schwarma
 {
-    //constants for action codes
-    int NOOP = -1;
-    int ATTACK = 0;
-    int DEFEND = 1;
-    int MOVE = 2;
-
-    int BOUND_LEFT = 0;
-    int BOUND_RIGHT = 7;
-
-    std::map<std::string,int> Distance
-    {
-        std::make_pair("touching",1),
-        std::make_pair("close",2),
-        std::make_pair("far",3)
-    };
-
-    namespace ConditionalOperators
-    {
-        const char*GREATER_THAN_OR_EQUAL_TO = ">=";
-        const char*LESS_THAN_OR_EQUAL_TO = "<=";
-        const char*EQUALS = "==";
-        const char*GREATER_THAN = ">";
-        const char*LESS_THAN = "<";
-    }
-
-    //class to hold statistics about an entity
-    class Stats
-    {
-        public:
-            Stats()=default;
-            ~Stats()=default;
-            float health = 0;
-            float damage = 0;
-            float resistanceToDamage = 0;
-            float resistanceToKinetic = 0;
-            float resistanceToFire = 0;
-            float resistanceToIce = 0;
-            float resistanceToEarth = 0;
-            int movementSpeed = 0;
-    };
-
-    //class to hold percentage chance to roll each action
-    //default is equal chance of all actions
-    class BehaviourRolls
-    {
-        public:
-            BehaviourRolls()=default;
-            ~BehaviourRolls()=default;
-            float actions[3] = {0.33,0.33,0.33};
-    };
-
     //class describing some actor in the game world
     class Entity
     {
@@ -192,50 +143,5 @@ namespace Schwarma
             {
                 return std::abs(this->position - b.position);
             }
-    };
-    template<class T1,class T2>
-    inline bool evalConditionalExpression(const std::string&op,const T1&lhs,const T2&rhs)
-    {
-        if(op == Schwarma::ConditionalOperators::GREATER_THAN_OR_EQUAL_TO)
-        {
-            if(lhs >= rhs)
-                return true;
-        }
-        else if(op == Schwarma::ConditionalOperators::GREATER_THAN)
-        {
-            if(lhs > rhs)
-                return true;
-        }
-        else if(op == Schwarma::ConditionalOperators::EQUALS)
-        {
-            if(lhs == rhs)
-                return true;
-        }
-        else if(op == Schwarma::ConditionalOperators::LESS_THAN_OR_EQUAL_TO)
-        {
-            if(lhs <= rhs)
-                return true;
-        }
-        else if(op == Schwarma::ConditionalOperators::LESS_THAN)
-        {
-            if(lhs < rhs)
-                return true;
-        }
-        return false;
-    }
-    inline bool evalCondition(const Schwarma::Condition&condition,Schwarma::Entity&a,Schwarma::Entity&b)
-    {
-        if(condition.lhs == "distance")
-        {
-            if(Schwarma::Distance.count(condition.rhs) == 0)
-                throw new std::runtime_error(std::string("Invalid rhs \"")+condition.rhs+std::string("\"")+" in condition \""+condition.lhs+condition.op+condition.rhs+"\"");
-            return Schwarma::evalConditionalExpression<int,int>
-            (
-                condition.op,
-                a.distance(b),
-                Schwarma::Distance[condition.rhs]
-            );    
-        }
-        return false;
-    }
+    }; 
 }

@@ -1,6 +1,8 @@
 #pragma once
+#include <iostream>
 #include <string>
 #include "Entity.hpp"
+#include "eval.hpp"
 namespace Schwarma
 {
     //class representing a player character in the game world

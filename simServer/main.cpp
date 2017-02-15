@@ -1,9 +1,6 @@
-#include <iostream>
-#include <fstream>
 #include <cstdlib>
 #include <ctime>
-#include "inc/Player.hpp"
-#include "inc/Simulation.hpp"
+#include "inc/simServer.hpp"
 using namespace std;
 
 int main(int argc,char*argv[])
