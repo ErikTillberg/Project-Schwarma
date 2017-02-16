@@ -1,7 +1,5 @@
-package Annotations;
-
-/**
- * Created by crese_000 on 2/3/2017.
+package Annotations; /**
+ * Created by Erik Tillberg on 2/3/2017.
  */
 
 import java.lang.annotation.ElementType;
