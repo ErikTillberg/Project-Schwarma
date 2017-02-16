@@ -46,6 +46,36 @@ public class Card {
     }
 
 
+    ///////////////////////
+    ////////EQUALS ////////
+    ///////////////////////
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Card card = (Card) o;
+
+        if (name != null ? !name.equals(card.name) : card.name != null) return false;
+        if (type != null ? !type.equals(card.type) : card.type != null) return false;
+        if (statBonusList != null ? !statBonusList.equals(card.statBonusList) : card.statBonusList != null)
+            return false;
+        return !(elementalStatBonusList != null ? !elementalStatBonusList.equals(card.elementalStatBonusList) : card.elementalStatBonusList != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (statBonusList != null ? statBonusList.hashCode() : 0);
+        result = 31 * result + (elementalStatBonusList != null ? elementalStatBonusList.hashCode() : 0);
+        return result;
+    }
+
+
+
     /**
      * This method constructs and returns a random card based on the rating that is sent to it
      * @param userRating the rating of the user
@@ -56,5 +86,4 @@ public class Card {
         //TODO implement this
         return null;
     }
-
 }

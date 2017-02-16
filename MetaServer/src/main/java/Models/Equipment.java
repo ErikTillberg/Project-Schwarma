@@ -25,6 +25,7 @@ public class Equipment {
     private List<StatBonus> statBonusList;
     private List<ElementalStatBonus> elementalStatBonusList;
 
+    public Equipment(){ super(); }
 
     public Equipment(String name, String type, List<StatBonus> statBonusList,
                      List<ElementalStatBonus> elementalStatBonusList){
@@ -85,5 +86,17 @@ public class Equipment {
         result = 31 * result + (statBonusList != null ? statBonusList.hashCode() : 0);
         result = 31 * result + (elementalStatBonusList != null ? elementalStatBonusList.hashCode() : 0);
         return result;
+    }
+
+
+    /**
+     * This method constructs and returns a random gear item based on the rating that is sent to it
+     * @param userRating the rating of the user
+     * @param type the type of gear to construct
+     * @return a randomized gear item
+     */
+    public static Equipment GenerateEquipment(int userRating, String type){
+        //TODO implement this
+        return null;
     }
 }
