@@ -1,6 +1,8 @@
 #pragma once
+#include <iostream>
 #include <string>
 #include "Entity.hpp"
+#include "eval.hpp"
 namespace Schwarma
 {
     //class representing a player character in the game world
@@ -16,43 +18,102 @@ namespace Schwarma
                 return true;
             }
 
-            //move player toward target if not already 1 space away
             int move(Schwarma::Entity*enemy)
             {
-                if((this->position - enemy->position) == 1 ||
-                (enemy->position - this->position) == 1)
-                    return 0;
-                else if(enemy->position > this->position)
+                auto end = this->triggers.end();
+                for(auto it = this->triggers.begin(); it != end; ++it)
                 {
-                    this->position++;
-                    return 1;
-                }
-                else if (enemy->position < this->position)
-                {
-                    this->position--;
-                    return 1;
-                }
-                return 0;
-            }
+                    if(it->name == "move")
+                    {
+                        try
+                        {
+                            if(Schwarma::evalCondition(it->condition,*this,*enemy))
+                            {
+                                if(it->action.actionType == "move")
+                                {
+                                    if(it->action.direction == "away")
+                                    {
+                                        if(enemy->position > this->position &&
+                                        this->position != Schwarma::BOUND_LEFT)
+                                        {
+                                            this->position -= this->baseStats.movementSpeed;
+                                        }
+                                        else if(enemy->position < this->position &&
+                                        this->position != Schwarma::BOUND_RIGHT)
+                                        {
+                                            this->position += this->baseStats.movementSpeed;
+                                        }
+                                    }
+                                    else if(it->action.direction == "towards")
+                                    {
+                                        if(enemy->position > this->position &&
+                                        this->position != Schwarma::BOUND_LEFT)
+                                        {
+                                            this->position += this->baseStats.movementSpeed;
+                                        }
+                                        else if(enemy->position < this->position &&
+                                        this->position != Schwarma::BOUND_RIGHT)
+                                        {
+                                            this->position -= this->baseStats.movementSpeed;
+                                        }
+                                    }
 
-            //attack target if 1 space away
-            //needs to be thought out more
-            int attack(Schwarma::Entity*enemy)
+                                    if(this->position < Schwarma::BOUND_LEFT)
+                                        this->position = Schwarma::BOUND_LEFT;
+                                    if(this->position > Schwarma::BOUND_RIGHT)
+                                        this->position = Schwarma::BOUND_RIGHT;
+                                    return this->position;
+                                }
+                            }
+                        }
+                        catch(std::runtime_error*e)
+                        {
+                            std::cout<<e->what()<<std::endl;
+                            std::cout<<"In move trigger "<<it-this->triggers.begin()<<" for "<<this->name<<std::endl;
+                        }
+                    }
+                }
+                return -1;
+            }
+                                                                                              
+            const Schwarma::Weapon*attack(Schwarma::Entity*enemy)
             {
-                if((this->position - enemy->position) == 1 ||
-                (enemy->position - this->position) == 1)
-                    return 1;
-                return 0;
+                auto end = this->triggers.end();
+                for(auto it = this->triggers.begin(); it != end; ++it)
+                {
+                    if(it->name == "attack")
+                    {
+                        try
+                        {
+                            if(Schwarma::evalCondition(it->condition,*this,*enemy))
+                            {
+                                if(it->action.actionType == "attack")
+                                {
+                                   for(auto wit = this->weapons.begin(); wit != this->weapons.end(); ++wit)
+                                   {
+                                       if(wit->name == it->action.item)
+                                       {
+                                           return &(*wit);
+                                       }
+                                   } 
+                                }
+                                throw new std::runtime_error("Attack trigger "+(it-this->triggers.begin())+std::string(" evaluated true but could not execute"));
+                            }
+                        }
+                        catch(std::runtime_error*e)
+                        {
+                            std::cout<<e->what()<<std::endl;
+                            std::cout<<"In attack trigger "<<(it-this->triggers.begin())<<" for "<<this->name<<std::endl;
+                        }
+                    }
+                }
+                return nullptr;
             }
 
             //this needs to be thought out more
             //currently just prints result of enemy attack
             int defend(Schwarma::Entity*enemy)
             {
-                int damage = enemy->attack(this);
-                if(damage)
-                    std::cout<<this->name<<" defended from "<<enemy->attack(this)<<" points of damage\n";
-                return damage;
             }
     };
 }

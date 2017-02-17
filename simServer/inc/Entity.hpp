@@ -2,10 +2,15 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <map>
 
 #include <cstdlib>
+#include <cmath>
 
 #include "Trigger.hpp"
+#include "Weapon.hpp"
+#include "Stats.hpp"
+#include "BehaviourRolls.hpp"
 
 #include "../rapidjson/include/rapidjson/document.h"
 #include "../rapidjson/include/rapidjson/istreamwrapper.h"
@@ -13,38 +18,6 @@
 #include "../rapidjson/include/rapidjson/prettywriter.h"
 namespace Schwarma
 {
-    //constants for action codes
-    int NOOP = -1;
-    int ATTACK = 0;
-    int DEFEND = 1;
-    int MOVE = 2;
-
-    //class to hold statistics about an entity
-    class Stats
-    {
-        public:
-            Stats()=default;
-            ~Stats()=default;
-            float health = 0;
-            float damage = 0;
-            float resistanceToDamage = 0;
-            float resistanceToKinetic = 0;
-            float resistanceToFire = 0;
-            float resistanceToIce = 0;
-            float resistanceToEarth = 0;
-            int movementSpeed = 0;
-    };
-
-    //class to hold percentage chance to roll each action
-    //default is equal chance of all actions
-    class BehaviourRolls
-    {
-        public:
-            BehaviourRolls()=default;
-            ~BehaviourRolls()=default;
-            float actions[3] = {0.33,0.33,0.33};
-    };
-
     //class describing some actor in the game world
     class Entity
     {
@@ -62,8 +35,10 @@ namespace Schwarma
 
             std::vector<Schwarma::Trigger> triggers;
 
+            std::vector<Schwarma::Weapon> weapons;
+
             virtual bool loadFromSource(std::string&) = 0;
-            virtual int attack(Schwarma::Entity*) = 0;
+            virtual const Schwarma::Weapon*attack(Schwarma::Entity*) = 0;
             virtual int defend(Schwarma::Entity*) = 0;
             virtual int move(Schwarma::Entity*) = 0;
 
@@ -96,6 +71,15 @@ namespace Schwarma
                 if(json.HasParseError())
                     return false;
                 
+                if(!json.HasMember("baseStats"))
+                    return false;
+                
+                if(!json.HasMember("actionPercentages"))
+                    return false;
+
+                if(!json.HasMember("weapons"))
+                    return false;
+                
                 //Get reference to actionPercentages object
                 auto&actionPercentages = json["actionPercentages"];
                 //Parse properties into class
@@ -111,6 +95,19 @@ namespace Schwarma
                 this->baseStats.resistanceToIce = std::atof(baseStats["resistanceToIce"].GetString());
                 this->baseStats.resistanceToEarth = std::atof(baseStats["resistanceToEarth"].GetString());
                 this->baseStats.movementSpeed = std::atoi(baseStats["movementSpeed"].GetString());
+
+
+                auto&weapons = json["weapons"];
+                if(weapons.GetType() == rapidjson::Type::kArrayType)
+                {
+                    for(rapidjson::SizeType i = 0; i < weapons.Size(); ++i)
+                    {
+                        this->weapons.push_back(Schwarma::Weapon::parseWeapon<decltype(weapons[i])>(weapons[i]));
+                    }
+                }
+                else 
+                    return false;
+                
 
                 //Get reference to triggers object
                 auto&triggers = json["triggers"];
@@ -142,5 +139,9 @@ namespace Schwarma
                 }
                 return true;
             }
-    };
+            int distance(Entity&b)
+            {
+                return std::abs(this->position - b.position);
+            }
+    }; 
 }

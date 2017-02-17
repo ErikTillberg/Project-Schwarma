@@ -21,6 +21,7 @@ public class User {
     private String email;
     private String username;
     private String sessionToken;
+    private int rating;
 
     //This means that the password won't be returned by GSON
     @Exclude
@@ -53,6 +54,7 @@ public class User {
         this.username = username;
         this.password = password; //this will already be hashed.
         this.salt = salt;
+        this.rating = 1000;
     }
 
     ///////////////////////
@@ -73,5 +75,37 @@ public class User {
 
     public String getUsername() {
         return username;
+    }
+
+    public int getRating() { return rating; }
+
+    public void setRating(int rating) { this.rating = rating; }
+
+
+    ///////////////////////
+    ////////EQUALS ////////
+    ///////////////////////
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (rating != user.rating) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+        return !(cards != null ? !cards.equals(user.cards) : user.cards != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = email != null ? email.hashCode() : 0;
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + rating;
+        result = 31 * result + (cards != null ? cards.hashCode() : 0);
+        return result;
     }
 }
