@@ -7,7 +7,6 @@ var signin_state = {
 
     preload: function(){
         console.log("signin_state: preload");
-
     },
 
     create: function(){
