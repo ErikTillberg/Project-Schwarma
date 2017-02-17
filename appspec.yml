@@ -1,0 +1,9 @@
+version: 0.0
+os: windows
+files:
+  - source: source
+    destination: C:\ProjectSchwarma
+hooks:
+  BeforeInstall:
+    - location: \before-install.bat
+      timeout: 900

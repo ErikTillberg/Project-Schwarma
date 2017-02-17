@@ -22,12 +22,12 @@ var signup_state = {
 
         // Add input fields for email, username, password and confirm password.
         this.username_input = game.add.inputField(game.world.centerX-200, game.world.centerY-300, {
-            font: '18px Arial',
-            fill: '#212121',
-            width: 400,
-            padding: 20,
-            borderWidth: 1,
-            borderColor: '#000',
+            // font: '18px Arial',
+            // fill: '#212121',
+            // width: 400,
+            // padding: 20,
+            // borderWidth: 1,
+            // borderColor: '#000',
             placeHolder: 'Username'
         });
 
@@ -118,7 +118,8 @@ var signup_state = {
 
         // TODO remove this check when server returns error code on null data
         if (data === null) {
-            this.signup_failure("","","The server returned a null data object.");
+            this.signup_failure(null, null, "The server returned a null data object."); // TODO fix this to pass a proper error object instead of a string
+            console.log("Data was null, could not sign up.");
             return;
         }
 
@@ -141,6 +142,7 @@ var signup_state = {
 
         console.error("signup_state: signup_failure");
         debug_console.error_log("Failed to signup:" + error);
+        return;
 
     }
 };
