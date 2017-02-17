@@ -39,9 +39,11 @@ var signin_state = {
 
         // Add a signin button to the screen
         this.signin_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.signin_btn_click, this, 2, 1, 0);
+        this.signin_btn_text = game.add.bitmapText(this.signin_btn.x + this.signin_btn.width/4, this.signin_btn.y + this.signin_btn.height/3, 'carrier_command','Sign In',20);
 
         // Add a signup button to the screen
         this.signup_btn = game.add.button(game.world.width-330, 580, 'red_button_img', this.signup_btn_click, this, 2, 1, 0);
+        this.signup_btn_text = game.add.bitmapText(this.signup_btn.x + this.signup_btn.width/4, this.signup_btn.y + this.signup_btn.height/3, 'carrier_command','Sign Up',20);
     },
 
     // Handles signin button click. Sends an ajax request to the server after extracting user data from input fields

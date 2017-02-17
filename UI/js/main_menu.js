@@ -21,9 +21,11 @@ var main_menu_state = {
         debug_console.debug_log("You're on the main menu screen. Signed in as: " + user.username);
 
         this.gear_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.gear_btn_click, this, 2, 1, 0);
-
+        this.gear_btn_text = game.add.bitmapText(this.gear_btn.x + this.gear_btn.width/5, this.gear_btn.y + this.gear_btn.height/4, 'carrier_command','Gear',20);
         this.matchmaking_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.matchmaking_btn_click, this, 2, 1, 0);
-
+        this.matchmaking_btn_text = game.add.bitmapText(this.matchmaking_btn.x + this.matchmaking_btn.width/4, this.matchmaking_btn.y + this.matchmaking_btn.height/3, 'carrier_command','Find Match',20);
+        this.battle_btn = game.add.button(game.world.centerX+130, 600, 'red_button_img', this.battle_btn_click, this, 2, 1, 0);
+        this.battle_btn_text = game.add.bitmapText(this.battle_btn.x + this.battle_btn.width/5, this.battle_btn.y + this.battle_btn.height/4, 'carrier_command','Battle Test',20);
     },
 
     // Move to the select gear screen, only if there is no matchmaking currently in progress
@@ -117,38 +119,10 @@ var main_menu_state = {
         this.matchmaking_time += server.matchmaking_timer_interval;
         debug_console.message_log("Time in matchmaking: " + this.matchmaking_time);
 
-    }
+    },
 
-    // // Matchmaking call to the server to request matchmaking data has succeeded, we need to
-    // // Parse the data to see if a match has been found, or if we are still looking
-    // matchmake_poll_result: function(data, textStatus, jqXHR) {
-    //
-    //     // Do not clear the interval and return, waiting for the next poll result
-    //
-    // },
-    //
-    // // A match has been found, format the returned data and move onto the battle screen
-    // matchmake_success: function(data) {
-    //
-    //     clearInterval(this.matchmaking_timer_id);
-    //
-    //     this.matchmaking_active = false;
-    //
-    //     // game.state.start("battle_screen");
-    //
-    // },
-    //
-    // // Matchmaking has failed, set the matchmaking flag to false, cancel the interval timer and tell the user
-    // matchmake_failure: function(error) {
-    //
-    //     console.log("main_menu: matchmake_failure");
-    //
-    //     // Clear the interval timer since we have found a match
-    //     clearInterval(this.matchmaking_timer_id);
-    //
-    //     this.matchmaking_active = false;
-    //
-    //     debug_console.error_log("Unable to find a match: " + error);
-    //
-    // }
+    battle_btn_click: function() {
+        console.log("mina_menu: battle_btn_click");
+        game.state.start("battle_system");
+    }
 };
