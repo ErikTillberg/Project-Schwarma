@@ -88,7 +88,6 @@ public class AuthenticationCtrl {
             e.printStackTrace();
             return new ResponseError("Something went wrong");
         }
-        System.out.println(user);
         if (user==null){
             return new ResponseSuccess("Could not find user %s", username);
         }

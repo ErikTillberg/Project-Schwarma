@@ -31,23 +31,12 @@ public class User {
     @Exclude
     private String password;
 
-    public String getPassword() {
-        return password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public List<Card> getCards() {
-        return cards;
-    }
-
     @Exclude
     private String salt;
 
-    @Reference
     private List<Card> cards;
+    private List<Equipment> equipment;
+
 
     public User(){
         super();
@@ -65,25 +54,41 @@ public class User {
     /////GETTER&SETTER/////
     ///////////////////////
 
-    public String getSessionToken(){return sessionToken;}
+    public ObjectId getId() { return id; }
 
-    public void setSessionToken(String sessionToken){this.sessionToken = sessionToken;}
+    public void setId(ObjectId id) { this.id = id; }
 
-    public ObjectId getId() {
-        return id;
-    }
+    public String getEmail() { return email; }
 
-    public String getEmail() {
-        return email;
-    }
+    public void setEmail(String email) { this.email = email; }
 
-    public String getUsername() {
-        return username;
-    }
+    public String getUsername() { return username; }
+
+    public void setUsername(String username) { this.username = username; }
+
+    public String getSessionToken() { return sessionToken; }
+
+    public void setSessionToken(String sessionToken) { this.sessionToken = sessionToken; }
 
     public int getRating() { return rating; }
 
     public void setRating(int rating) { this.rating = rating; }
+
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
+
+    public String getSalt() { return salt; }
+
+    public void setSalt(String salt) { this.salt = salt; }
+
+    public List<Card> getCards() { return cards; }
+
+    public void setCards(List<Card> cards) { this.cards = cards; }
+
+    public List<Equipment> getEquipment() { return equipment; }
+
+    public void setEquipment(List<Equipment> equipment) { this.equipment = equipment; }
 
 
     ///////////////////////

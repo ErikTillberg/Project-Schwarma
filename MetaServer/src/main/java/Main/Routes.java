@@ -3,6 +3,7 @@ package Main; /**
  */
 
 import Controllers.AuthenticationCtrl;
+import Controllers.InventoryCtrl;
 import Models.User;
 import Utilities.ResponseError;
 import com.mongodb.DB;
@@ -10,6 +11,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import spark.ResponseTransformer;
 
 import static Utilities.DBConn.datastore;
 import static Utilities.JsonUtil.regularJson;
@@ -22,14 +24,15 @@ public class Routes {
 
         enableCORS("*", "*", "*");
 
+
         post("/login", (req, res) -> {
 
             String username = req.queryParams("username");
             String password = req.queryParams("password");
-            System.out.println(username + " " +password);
-            Object response =  AuthenticationCtrl.login(username, password);
+            System.out.println(username + " " + password);
+            Object response = AuthenticationCtrl.login(username, password);
 
-            if (response instanceof ResponseError){
+            if (response instanceof ResponseError) {
                 res.status(400);
                 return response;
             }
@@ -37,6 +40,7 @@ public class Routes {
             return response;
 
         }, regularJson());
+
 
         post("/signup", (req, res) -> {
 
@@ -56,6 +60,26 @@ public class Routes {
 
         }, regularJson());
 
+
+        post("/deleteItem", (req, res) -> {
+
+            res.type("application/json"); //set the response type (i think this is just good practice)
+
+            String username = req.queryParams("username");
+            String item_type = req.queryParams("item_type");
+            String item_id = req.queryParams("item_id");
+
+            Object response = InventoryCtrl.deleteItem(username, item_type, item_id);
+            if (response instanceof ResponseError){
+                res.status(400); //we have to explicitly set the response as failure, this is the way I thought to do it, there is likely a better way.
+                return response;
+            }
+
+            return response;
+
+        }, regularJson());
+
+
         before((request, response) -> {
 
             //runs before any routes are called
@@ -70,6 +94,8 @@ public class Routes {
         });
     }
 
+
+
     private static void enableCORS(final String origin, final String methods, final String headers) {
         options("/*", (request, response) -> {
             String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
@@ -82,6 +108,7 @@ public class Routes {
             }
             return "OK";
         });
+
         before((request, response) -> {
             response.header("Access-Control-Allow-Origin", origin);
             response.header("Access-Control-Request-Method", methods);
