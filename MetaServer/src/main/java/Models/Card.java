@@ -11,6 +11,7 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,10 +29,8 @@ public class Card {
 
     //the type of the card, can be either 'attack', 'defense', 'mobility'
     private String type;
-
-    private List<StatBonus> statBonusList;
-
-    private List<ElementalStatBonus> elementalStatBonusList;
+    private List<StatBonus> statBonusList = new ArrayList<StatBonus>();
+    private List<ElementalStatBonus> elementalStatBonusList = new ArrayList<ElementalStatBonus>();
 
     //You need the default constructor specific for morphia for some reason
     public Card(){
@@ -44,7 +43,6 @@ public class Card {
         this.statBonusList = statBonusList;
         this.elementalStatBonusList = elementalStatBonusList;
     }
-
 
     ///////////////////////
     ////////EQUALS ////////
