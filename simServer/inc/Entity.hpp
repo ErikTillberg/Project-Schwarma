@@ -137,6 +137,7 @@ namespace Schwarma
                         }
                     }
                 }
+                this->stats = this->baseStats;
                 return true;
             }
             int distance(Entity&b)

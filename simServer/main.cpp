@@ -12,14 +12,11 @@ int main(int argc,char*argv[])
     Schwarma::Player player1;
     Schwarma::Player player2;
 
-    player1.stats.health = 10;
-    player2.stats.health = 10;
-
-
     player1.name = "Player 1";
     player2.name = "Player 2";
 
     player1.loadFromFile("player1.json");
+    player2.loadFromFile("player1.json");
     player1.position = 1;
     player2.position = 6;
 

@@ -23,7 +23,7 @@ namespace Schwarma
                 while(this->players[0]->stats.health > 0 && this->players[1]->stats.health > 0)
                 {
                     //pause until user hits enter (For debug purposes)
-                    std::cin.get();
+                    //std::cin.get();
 
                     //assume action is a non-operation
                     int action = Schwarma::NOOP;
@@ -104,10 +104,11 @@ namespace Schwarma
                     const Schwarma::Weapon&wep = *entity1->attack(entity2);
                     if(&wep != nullptr)
                     {
-                        std::cout<<entity1->name<<" attacked with "<<wep.name<<std::endl;
+                        entity2->stats.health -= wep.damage;
+                        stream<<entity1->name<<" attacked with "<<wep.name<<std::endl;
                     }
-                    else
-                        std::cout<<entity1->name<<" attack nooped"<<std::endl;
+                    /*else
+                        stream<<entity1->name<<" attack nooped"<<std::endl;*/
                 }
             }
 
