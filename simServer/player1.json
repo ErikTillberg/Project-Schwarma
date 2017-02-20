@@ -52,19 +52,6 @@
                     "actionType" : "move",
                     "direction" : "towards"
                 }
-            },
-            {
-                "condition" :
-                {
-                    "lhs" : "distance",
-                    "operator" : ">=",
-                    "rhs" : "far"
-                },
-                "action" : 
-                {
-                    "actionType" : "move",
-                    "direction" : "away"
-                }
             }
         ],
         "attack" : 
