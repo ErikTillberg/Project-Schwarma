@@ -1,3 +1,4 @@
+#include <fstream>
 #include <cstdlib>
 #include <ctime>
 #include "inc/simServer.hpp"
@@ -40,6 +41,11 @@ int main(int argc,char*argv[])
 
     if(argc >= 4 && (::strcmp(argv[3],"cout") == 0))
         sim.run<decltype(std::cout)>(std::cout);
+    else
+    {
+        std::ofstream stream(argv[3],std::ios::out|std::ios::trunc);
+        sim.run<std::ofstream>(stream);
+    }
     
     return 0;
 }
