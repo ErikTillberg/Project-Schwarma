@@ -15,6 +15,10 @@ import java.util.List;
 @Entity()
 public class User {
 
+    //This number represents the maximum rating at which there are no further rewards for gaining a higher rating
+    //(in regards to rewards generated). There is still the competitive nature.
+    public static int MAX_REWARD_RATING = 3000;
+
     @Id
     private ObjectId id;
 

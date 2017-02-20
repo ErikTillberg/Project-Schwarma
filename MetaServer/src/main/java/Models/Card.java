@@ -1,5 +1,6 @@
 package Models;
 
+import Utilities.RNGUtil;
 import jdk.nashorn.internal.ir.annotations.Reference;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
@@ -19,6 +20,10 @@ import java.util.List;
 
 @Entity()
 public class Card {
+
+    public static String ATTACK = "attack";
+    public static String DEFENSE = "defense";
+    public static String MOBILITY = "mobility";
 
     @Id
     private ObjectId id;
@@ -83,7 +88,67 @@ public class Card {
      * @return a randomized card
      */
     public static Card GenerateCard(int userRating, String type){
-        //TODO implement this
+        Card card = new Card();
+
+        if (Card.isValidCardType(type)){
+            card.setType(type);
+        } else { return null; } //If it's not a valid type return null.
+
+        //Decide whether or not an item should have elemental stats:
+        Boolean getsElementalStats = RNGUtil.getRandomBoolean(userRating/User.MAX_REWARD_RATING);
+        if(getsElementalStats){
+            //Then the card should:
+            //a. Decide how many elemental stats are to be generated
+            //b. Build that number of random elemental stats and add them to the card
+        } //else there is nothing, just don't add the stats
+
+        //Every card should have some sort of bonus that is given to the card.
+        //To start, let's start with a single bonus, to the stat of the type of card that is being created.
+
+        //TODO keep doing this.
+
         return null;
     }
+
+    public static boolean isValidCardType(String type){
+        return type.equals(Card.ATTACK) || type.equals(Card.DEFENSE) || type.equals(Card.MOBILITY);
+    }
+
+    /////////////////////////////////////////
+    ///////////GETTER AND SETTERS////////////
+    /////////////////////////////////////////
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<StatBonus> getStatBonusList() {
+        return statBonusList;
+    }
+
+    public void setStatBonusList(List<StatBonus> statBonusList) {
+        this.statBonusList = statBonusList;
+    }
+
+    public List<ElementalStatBonus> getElementalStatBonusList() {
+        return elementalStatBonusList;
+    }
+
+    public void setElementalStatBonusList(List<ElementalStatBonus> elementalStatBonusList) {
+        this.elementalStatBonusList = elementalStatBonusList;
+    }
+
+
 }
