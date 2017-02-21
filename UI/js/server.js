@@ -14,13 +14,15 @@ var server = {
     matchmaking_timer_interval: 1000, // controls how often the timer on screen updates with elapsed time
 
     // Builds a url with query string for signing up on the server
-    // TODO incorporate character class when its available
+    // TODO add a check to ensure the character type is not null or the server will catch fire.
     signup_endpoint: function (username, email, password, character_class) {
+
         return "http://" + this.host_name + this.port
             + "/signup"
             + "?username=" + username
             + "&email=" + email
-            + "&password=" + password;
+            + "&password=" + password
+            + "&characterType=" + "warrior";
     },
 
     // Builds a url with query string for signing in on the server
@@ -30,24 +32,6 @@ var server = {
             + "/login"
             + "?username=" + username
             + "&password=" + password;
-    },
-
-    matchmake_start_endpoint: function () {
-
-        return "http://" + this.host_name + this.port + "/matchmake_start"
-
-    },
-
-    matchmake_poll_endpoint: function () {
-
-        return "http://" + this.host_name + this.port + "/matchmake_poll"
-
-    },
-
-    matchmake_cancel_endpoint: function () {
-
-        return "http://" + this.host_name + this.port + "/matchmake_cancel"
-
     },
 
     // Creates an returns a web socket that connects to the matchmaking endpoint
@@ -66,7 +50,7 @@ var server = {
     }
 };
 
-// Initialize the server endpoint string based on the production mode flag at the top.
+// Initialize the server endpoint string based on the production mode flag at the top
 (function(){
     console.log("Server init.");
     server.host_name = server.production_mode === true ? "schwarma-meta-server.herokuapp.com": "localhost";
