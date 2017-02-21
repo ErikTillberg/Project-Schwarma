@@ -22,7 +22,7 @@ var signup_state = {
 
         // Add input fields for email, username, password and confirm password.
         this.username_input = game.add.inputField(game.world.centerX-200, game.world.centerY-300, {
-            font: '18px Arial',
+            font: '18px Ariel',
             fill: '#212121',
             width: 400,
             padding: 20,

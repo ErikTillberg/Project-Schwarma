@@ -23,7 +23,7 @@ var server = {
             + "&password=" + password;
     },
 
-    // Builds a url with query stirng for signing in on the server
+    // Builds a url with query string for signing in on the server
     signin_endpoint: function (username, password) {
 
         return "http://" + this.host_name + this.port

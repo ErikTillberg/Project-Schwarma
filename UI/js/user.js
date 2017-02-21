@@ -10,7 +10,5 @@ var user = {
         this.email = user_data.email;
         this.id = user_data.id;
         this.session_token = user_data.sessionToken;
-
-        console.log(this.session_token)
     }
 };
