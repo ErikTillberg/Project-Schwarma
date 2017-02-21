@@ -65,9 +65,11 @@ var signup_state = {
 
         // Add a signup button to the screen
         this.signup_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.signup_btn_click, this, 2, 1, 0);
+        this.signup_btn_text = game.add.bitmapText(this.signup_btn.x + this.signup_btn.width/4, this.signup_btn.y + this.signup_btn.height/3, 'carrier_command','Sign Up',20);
 
         // Add a signin button to the screen
         this.signin_btn = game.add.button(game.world.width-330, 580, 'red_button_img', this.signin_btn_click, this, 2, 1, 0);
+        this.signin_btn_text = game.add.bitmapText(this.signin_btn.x + this.signin_btn.width/4, this.signin_btn.y + this.signin_btn.height/3, 'carrier_command','Sign In',20);
     },
 
     // Handles signup button click. Sends an ajax request to the server after extracting user data from input fields
@@ -93,19 +95,12 @@ var signup_state = {
             debug_console.error_log("Confirm password is required");
         }else{
 
-            // Build the URL with query string for signup
-            var signup_endpoint = config.server_ip
-                + config.signup_endpoint
-                + "?username=" + username
-                + "&email=" + email
-                + "&password=" + password;
-
             // Send the request to the server
             $.ajax({
                 type: "POST",
                 crossDomain: true,
                 dataType: 'json',
-                url: signup_endpoint,
+                url: server.signup_endpoint(username, email, password),
                 success: this.signup_success,
                 error: this.signup_failure
             });
@@ -125,7 +120,8 @@ var signup_state = {
 
         // TODO remove this check when server returns error code on null data
         if (data === null) {
-            this.signup_failure("","","The server returned a null data object.");
+            this.signup_failure(null, null, "The server returned a null data object."); // TODO fix this to pass a proper error object instead of a string
+            console.log("Data was null, could not sign up.");
             return;
         }
 
@@ -148,6 +144,7 @@ var signup_state = {
 
         console.error("signup_state: signup_failure");
         debug_console.error_log("Failed to signup:" + error);
+        return;
 
     }
 };
