@@ -38,7 +38,7 @@ public class Routes {
 
             String username = req.queryParams("username");
             String password = req.queryParams("password");
-            System.out.println(username + " " + password);
+
             Object response = AuthenticationCtrl.login(username, password);
 
             if (response instanceof ResponseError) {

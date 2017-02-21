@@ -75,7 +75,6 @@ var main_menu_state = {
         console.log("main_menu: matchmaking_message");
 
         // TODO parse the message when it returns
-        var data = message;
 
         // var message = JSON.parse(response.data);
         console.log(response);

@@ -4,6 +4,7 @@ import Models.User;
 import Utilities.JsonUtil;
 import Utilities.ResponseError;
 import Utilities.ResponseSuccess;
+import Utilities.WebSocketMessage;
 import org.bson.types.ObjectId;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static Utilities.DBConn.datastore;
+import static Utilities.JsonUtil.toJson;
 
 /**
  * Created by Erik Tillberg on 2/21/2017.
@@ -38,22 +40,30 @@ public class MatchmakingCtrl {
 
     @OnWebSocketClose
     public void onClose(Session userSession, int statusCode, String reason){
-        System.out.println("Closing because something went horribly wrong");
-        try{
-            userSession.getRemote().sendString("{message: \"Closing connection\"");
+        System.out.println("Closing connection");
 
-            userMatchmakingMap.remove(userSession);
-
-        } catch (Exception e){
-            e.printStackTrace();
+        User user = null;
+        for (Map.Entry<User, Session> entry : userMatchmakingMap.entrySet()){
+            if (entry.getValue().equals(userSession)){
+                user = entry.getKey();
+                break;
+            }
         }
+
+        if (user == null){
+            System.out.println("Couldn't find the user even though they have to be there.");
+            return;
+        }
+
+        //Remove the user from the matchmaking list because you shouldn't match make with someone who is no longer there.
+        userMatchmakingMap.remove(user);
+
     }
 
     @OnWebSocketMessage
     public void onMessage(Session userSession, String message){
         try{
             //This converts the whole message to a map.
-
             Map<String,String> messageAsMap = JsonUtil.parseToMap(message);
 
             /*
@@ -63,12 +73,13 @@ public class MatchmakingCtrl {
                 id: someUserId
                 session: someToken
             }
-             */
+            */
 
             String messageType = messageAsMap.get("type");
-            if (messageType == null) {userSession.getRemote().sendString("ERROR 25");
+            if (messageType == null) {userSession.getRemote().sendString(toJson(new WebSocketMessage("error", "Invalid message")));
                 userSession.close(400, "couldn't find user");
-                return;}
+                return;
+            }
 
             String id = messageAsMap.get("id");
 
@@ -87,7 +98,9 @@ public class MatchmakingCtrl {
                 userSession.close(400, "Could not find user");
                 return;
             }
+
             if (user == null){
+                userSession.close(400, "Could not find user");
                 return;
             }
 
@@ -95,6 +108,7 @@ public class MatchmakingCtrl {
                 userMatchmakingMap.put(user, userSession);
             } else {
                 System.out.println("User already in the user map");
+                userSession.getRemote().sendString(toJson(new WebSocketMessage("error", "user already matchmaking")));
                 return;
             }
 
@@ -104,7 +118,7 @@ public class MatchmakingCtrl {
                 System.out.println(entry.getKey().getUsername());
             }
 
-            userSession.getRemote().sendString("{message: \"Matchmaking started\"}");
+            userSession.getRemote().sendString(toJson(new WebSocketMessage("success", "matchmaking started")));
 
         } catch (Exception e) {
             e.printStackTrace();
