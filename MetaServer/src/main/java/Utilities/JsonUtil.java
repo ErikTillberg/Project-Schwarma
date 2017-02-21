@@ -6,6 +6,7 @@ import spark.ResponseTransformer;
 import org.bson.types.ObjectId;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 /**
  * Created by Erik_Tillberg on 2/3/2017.
@@ -73,6 +74,10 @@ public class JsonUtil {
         public boolean shouldSkipClass(Class<?> aClass) {
             return false;
         }
+    }
+
+    public static Map<String, String> parseToMap(String object){
+        return new Gson().fromJson(object, Map.class);
     }
 
 }
