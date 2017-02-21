@@ -69,7 +69,7 @@ var server = {
 // Initialize the server endpoint string based on the production mode flag at the top.
 (function(){
     console.log("Server init.");
-    server.host_name = server.production_mode === true ? "schwarma-meta-server.herokuapp.com": "l92.168.101.167";
+    server.host_name = server.production_mode === true ? "schwarma-meta-server.herokuapp.com": "localhost";
     server.port = server.production_mode === true ? "" : ":9000";
     console.log("Production: " + server.production_mode);
     console.log("Host name: " + server.host_name);

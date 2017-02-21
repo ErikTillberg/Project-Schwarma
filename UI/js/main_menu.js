@@ -60,7 +60,7 @@ var main_menu_state = {
         // TODO insert the message when a JSON spec is agreed upon
         // this.matchmaking_socket.send("Hello server.");
 
-        this.matchmaking_timer_id = setInterval(this.matchmaking_timer, server.matchmaking_timer_interval);
+        //this.matchmaking_timer_id = setInterval(this.matchmaking_timer, server.matchmaking_timer_interval);
 
         // TODO test if this actually changes the event handler
         this.matchmaking_btn.onclick = this.cancel_matchmaking;
@@ -75,8 +75,8 @@ var main_menu_state = {
         console.log("main_menu: matchmaking_message");
 
         // TODO parse the message when it returns
-        var data = JSON.parse(message);
-
+        var data = message;
+        console.log(data);
     },
 
     // Send a message to the server to cancel the current matchmaking request and close the web socket
