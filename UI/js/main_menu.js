@@ -79,32 +79,31 @@ var main_menu_state = {
 
     // Handles messages being received from the web socket
     // Parse the message and take different actions based on what is sent.
-    matchmaking_message: function(response) {
+    matchmaking_message: function(message) {
 
         console.log("main_menu: matchmaking_message");
 
         // var message = JSON.parse(response.data);
-        console.log(response);
+        response = JSON.parse(message.data);
 
         // Parse the message type
-        if (response.data.type == "match_found") {
+        if (response.type == "match_found") {
             console.log(response);
-
-            var opponent = response.data.message;
-            debug_console.message_log("Found match. Opponent is " + opponent.username);
-            console.log(opponent);
 
             // Close the websocket now that we have the opponents data.
             this.cancel_matchmaking();
 
+            var opponent = response.message;
+            debug_console.message_log("Found match. Opponent is " + opponent.username);
+            console.log(opponent);
+
             return;
 
-
-        }else if (response.data.type == "error") {
-            console.log(response.data.message);
+        }else if (response.type == "error") {
+            console.log(response.message);
         }else{
             console.log("Malformed or unrecognized message type from server.");
-            console.log(response);
+            console.log(response.message);
         }
 
     },
