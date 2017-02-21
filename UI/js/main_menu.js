@@ -20,18 +20,10 @@ var main_menu_state = {
         debug_console.init_log();
         debug_console.debug_log("You're on the main menu screen. Signed in as: " + user.username);
 
-        // this.gear_btn = text_button({button_x: 400,
-        //                                 button_y: 400,
-        //     button_sprite: 'red_button_img',
-        //     on_click: this.gear_btn_click,
-        //     font: 'carrier_command',
-        //     text: 'Gear',
-        //     font_size: 20});
-
-        // this.gear_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.gear_btn_click, this, 2, 1, 0);
-        // this.gear_btn.anchor.set(0.5, 0.5);
-        // this.gear_btn_text = game.add.bitmapText(this.gear_btn.x, this.gear_btn.y, 'carrier_command', 'Gear', 20);
-        // this.gear_btn_text.anchor.set(0.5, 0.5);
+        this.gear_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.gear_btn_click, this, 2, 1, 0);
+        this.gear_btn.anchor.set(0.5, 0.5);
+        this.gear_btn_text = game.add.bitmapText(this.gear_btn.x, this.gear_btn.y, 'carrier_command', 'Gear', 20);
+        this.gear_btn_text.anchor.set(0.5, 0.5);
 
         this.matchmaking_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.matchmaking_btn_click, this, 2, 1, 0);
         this.matchmaking_btn_text = game.add.bitmapText(this.matchmaking_btn.x + this.matchmaking_btn.width/4, this.matchmaking_btn.y + this.matchmaking_btn.height/3, 'carrier_command','Find Match',20);
@@ -83,7 +75,7 @@ var main_menu_state = {
         console.log("main_menu: matchmaking_message");
 
         // TODO parse the message when it returns
-        var data = JSON.parse(message.data);
+        var data = JSON.parse(message);
 
     },
 
@@ -114,10 +106,10 @@ var main_menu_state = {
     },
 
     // Clean up after closing the matchmaking socket
-    matchmaking_end: function() {
+    matchmaking_end: function(code, message) {
 
         console.log("main_menu: matchmaking_end");
-        console.log("Matchmaking socket closed.");
+        console.log("Matchmaking socket closed: " + message);
         this.matchmaking_socket = null;
 
     },
@@ -138,25 +130,3 @@ var main_menu_state = {
         game.state.start("battle_system");
     }
 };
-
-// Create a button and a text element inside a single object
-/* x
-* y
-* key
-* callback
-* callbackContext
-* overFrame
-* outFrame
-* downFrame
-* upFrame
-* */
-// var text_button = function(options) {
-//
-//     var btn = game.add.button(options.x, options.y, options.key, options.on_click, this, 2, 1, 0);
-//     btn.anchor.set(0.5, 0.5);
-//     var btn_text = game.add.bitmapText(btn.x, btn.y, options.font,options.text, options.font_size);
-//     btn_text.anchor.set(0.5, 0.5);
-//
-//     return {btn: btn,
-//         text: btn_text}
-// };
