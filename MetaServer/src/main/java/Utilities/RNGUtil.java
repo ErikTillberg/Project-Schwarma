@@ -53,6 +53,17 @@ public class RNGUtil {
         return lr.getLogValue((double)y);
     }
 
+    public static Double getSqrtValueInRange(int y, Double maxReward){
+        Integer topValue = (y+RANGE_FOR_LOG) > MAX_REWARD_LEVEL? MAX_REWARD_LEVEL : y+RANGE_FOR_LOG;
+        Integer bottomValue = (y-RANGE_FOR_LOG) < 0? 0 : y-RANGE_FOR_LOG;
+
+        Random random = new Random();
+        Integer newYValue = getRandomInteger(bottomValue, topValue);
+        SqrtRandom sr = new SqrtRandom(maxReward);
+
+        return sr.getSqrtValue((double)y);
+    }
+
     public static Double getLogValue(int y, Double maxReward){
         LogRandom lr = new LogRandom(maxReward);
 
@@ -62,6 +73,30 @@ public class RNGUtil {
         else {val = y;}
 
         return lr.getLogValue((double)val);
+    }
+
+    public static Double getSqrtValue(int y, Double maxReward){
+        SqrtRandom sr = new SqrtRandom(maxReward);
+
+        int val;
+        if (y<0){
+            return 0.0;
+        } else if (y > MAX_REWARD_LEVEL) {
+            val = MAX_REWARD_LEVEL;
+        } else {
+            val = y;
+        }
+
+        return sr.getSqrtValue((double)val);
+
+    }
+
+    private static class SqrtRandom{
+        private Double maxReward;
+
+        public SqrtRandom(Double maxReward){this.maxReward = maxReward;}
+
+        public Double getSqrtValue(Double y) {return (this.maxReward/Math.sqrt(MAX_REWARD_LEVEL)*Math.sqrt(y));}
     }
 
     /**

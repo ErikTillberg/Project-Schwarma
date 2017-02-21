@@ -47,7 +47,10 @@ public class StringLists {
             "outlandish",
             "idiosyncratic",
             "aberrant",
-            ""
+            "embiggening",
+            "cromulent",
+            "illegitimate",
+            "varying"
     };
 
     public static String[] CARD_NOUNS = {
