@@ -90,8 +90,8 @@ var main_menu_state = {
         if (response.type == "match_found") {
             console.log(response);
 
-            // Close the websocket now that we have the opponents data.
-            this.cancel_matchmaking();
+            // Close the websocket now that we have the opponents data
+            main_menu_state.cancel_matchmaking();
 
             var opponent = response.message;
             debug_console.message_log("Found match. Opponent is " + opponent.username);
@@ -101,11 +101,12 @@ var main_menu_state = {
 
         }else if (response.type == "error") {
             console.log(response.message);
+        }else if(response.type == "success") {
+            console.log(response.message);
         }else{
             console.log("Malformed or unrecognized message type from server.");
             console.log(response.message);
         }
-
     },
 
     // Send a message to the server to cancel the current matchmaking request and close the web socket
