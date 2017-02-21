@@ -2,9 +2,9 @@ package Models;
 
 
 import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -12,7 +12,6 @@ import java.util.List;
  * @author FrancescosMac
  * @date 17-02-16.
  */
-@Entity()
 public class Equipment {
 
     @Id
@@ -22,8 +21,9 @@ public class Equipment {
 
     // Equipment can be either boots, weapons, or shield.
     private String type;
-    private List<StatBonus> statBonusList;
-    private List<ElementalStatBonus> elementalStatBonusList;
+    private List<StatBonus> statBonusList = new ArrayList<StatBonus>();
+    private List<ElementalStatBonus> elementalStatBonusList = new ArrayList<ElementalStatBonus>();
+
 
     public Equipment(){ super(); }
 

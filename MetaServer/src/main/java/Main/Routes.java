@@ -3,13 +3,19 @@ package Main; /**
  */
 
 import Controllers.AuthenticationCtrl;
+import Controllers.InventoryCtrl;
+import Controllers.MatchmakingCtrl;
+import Models.Card;
+import Models.Equipment;
 import Models.User;
 import Utilities.ResponseError;
+import com.google.gson.Gson;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import spark.ResponseTransformer;
 
 import static Utilities.DBConn.datastore;
 import static Utilities.JsonUtil.regularJson;
@@ -20,16 +26,22 @@ public class Routes {
     public static void main(String[] args) {
         port(9000);
 
+        webSocket("/matchmaking", MatchmakingCtrl.class);
+
         enableCORS("*", "*", "*");
+//some tests for cards
+        for (int i = 0; i<10; i++){
+            System.out.println(Card.GenerateCard(1500, "attack"));
+        }
 
         post("/login", (req, res) -> {
 
             String username = req.queryParams("username");
             String password = req.queryParams("password");
-            System.out.println(username + " " +password);
-            Object response =  AuthenticationCtrl.login(username, password);
+            System.out.println(username + " " + password);
+            Object response = AuthenticationCtrl.login(username, password);
 
-            if (response instanceof ResponseError){
+            if (response instanceof ResponseError) {
                 res.status(400);
                 return response;
             }
@@ -37,6 +49,7 @@ public class Routes {
             return response;
 
         }, regularJson());
+
 
         post("/signup", (req, res) -> {
 
@@ -47,6 +60,62 @@ public class Routes {
             String password = req.queryParams("password");
 
             Object response = AuthenticationCtrl.signup(email, username, password);
+            if (response instanceof ResponseError){
+                res.status(400); //we have to explicitly set the response as failure, this is the way I thought to do it, there is likely a better way.
+                return response;
+            }
+
+            return response;
+
+        }, regularJson());
+
+
+        post("/listInventory", (req, res) -> {
+
+            res.type("application/json"); //set the response type (i think this is just good practice)
+
+            String username = req.queryParams("username");
+
+            Object response = InventoryCtrl.listInventory(username);
+            if (response instanceof ResponseError){
+                res.status(400); //we have to explicitly set the response as failure, this is the way I thought to do it, there is likely a better way.
+                return response;
+            }
+
+            return response;
+
+        }, regularJson());
+
+
+        post("/deleteCard", (req, res) -> {
+
+            res.type("application/json"); //set the response type (i think this is just good practice)
+
+            String username = req.queryParams("username");
+            String body = req.body();
+            System.out.println(body);
+            Card aCard = new Gson().fromJson(body, Card.class);
+
+            Object response = InventoryCtrl.deleteCard(username, aCard);
+            if (response instanceof ResponseError){
+                res.status(400); //we have to explicitly set the response as failure, this is the way I thought to do it, there is likely a better way.
+                return response;
+            }
+
+            return response;
+
+        }, regularJson());
+
+
+        post("/deleteEquipment", (req, res) -> {
+
+            res.type("application/json"); //set the response type (i think this is just good practice)
+
+            String username = req.queryParams("username");
+            String body = req.body();
+            Equipment aGear = new Gson().fromJson(body, Equipment.class);
+
+            Object response = InventoryCtrl.deleteEquipment(username, aGear);
             if (response instanceof ResponseError){
                 res.status(400); //we have to explicitly set the response as failure, this is the way I thought to do it, there is likely a better way.
                 return response;
@@ -70,6 +139,8 @@ public class Routes {
         });
     }
 
+
+
     private static void enableCORS(final String origin, final String methods, final String headers) {
         options("/*", (request, response) -> {
             String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
@@ -82,6 +153,7 @@ public class Routes {
             }
             return "OK";
         });
+
         before((request, response) -> {
             response.header("Access-Control-Allow-Origin", origin);
             response.header("Access-Control-Request-Method", methods);

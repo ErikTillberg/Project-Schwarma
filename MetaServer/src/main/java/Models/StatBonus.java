@@ -45,7 +45,7 @@ public class StatBonus {
      * @return a random stat bonus
      * @throws Exception in the event of something going horribly wrong
      */
-    public static StatBonus GenerateRandomStatBonus(double min, double max, String type) throws Exception {
+    public static StatBonus GenerateRandomStatBonus(double min, double max, String type) {
         StatBonus randomBonus = new StatBonus();
 
         double randomBonusNumber = ThreadLocalRandom.current().nextDouble(min, max);
@@ -116,4 +116,17 @@ public class StatBonus {
         this.bonus = bonus;
     }
 
+
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("[")
+                .append(this.getStat())
+                .append(", ")
+                .append(this.getBonus())
+                .append("]");
+        return stringBuilder.toString();
+    }
 }
