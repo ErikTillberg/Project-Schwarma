@@ -24,10 +24,10 @@ public class Routes {
         port(9000);
 
         enableCORS("*", "*", "*");
-
-        for (int i = 0; i<10; i++){
-            System.out.println(Card.GenerateCard(1500, "attack"));
-        }
+//some tests for cards
+//        for (int i = 0; i<10; i++){
+//            System.out.println(Card.GenerateCard(1500, "attack"));
+//        }
 
         post("/login", (req, res) -> {
 

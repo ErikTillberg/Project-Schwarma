@@ -31,6 +31,23 @@ public class StringLists {
             "not very much",
             "kind of okay",
             "head scratching",
+            "radical",
+            "unprecedented",
+            "bifurcating",
+            "orwellian",
+            "mediocre",
+            "tremendous",
+            "unusual",
+            "miraculous",
+            "remarkable",
+            "unparalleled",
+            "abnormal",
+            "anomalous",
+            "newfangled",
+            "outlandish",
+            "idiosyncratic",
+            "aberrant",
+            ""
     };
 
     public static String[] CARD_NOUNS = {
@@ -69,7 +86,14 @@ public class StringLists {
             "eminence",
             "bulge",
             "greatness",
-            "renown"
+            "renown",
+            "bequest",
+            "legacy",
+            "apathy",
+            "lethargy",
+            "impotence",
+            "clumsiness",
+            "tuck"
         //I could go on forever.
     };
 
