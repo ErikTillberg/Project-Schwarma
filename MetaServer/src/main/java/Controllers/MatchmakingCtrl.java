@@ -29,7 +29,7 @@ public class MatchmakingCtrl {
     @OnWebSocketConnect
     public void onConnect(Session user) throws Exception {
             try{
-            user.getRemote().sendString("{message:\"Wow thanks for connecting, that's really nice.\"}");
+            user.getRemote().sendString("{\"message\":\"Wow thanks for connecting, that's really nice.\"}");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -37,8 +37,9 @@ public class MatchmakingCtrl {
 
     @OnWebSocketClose
     public void onClose(Session userSession, int statusCode, String reason){
+        System.out.println("Closing because something went horribly wrong");
         try{
-            userSession.getRemote().sendString("{message: Closing connection");
+            userSession.getRemote().sendString("{message: \"Closing connection\"");
 
             userMatchmakingMap.remove(userSession);
 
@@ -50,7 +51,6 @@ public class MatchmakingCtrl {
     @OnWebSocketMessage
     public void onMessage(Session userSession, String message){
         try{
-
             //This converts the whole message to a map.
 
             Map<String,String> messageAsMap = JsonUtil.parseToMap(message);
@@ -65,11 +65,13 @@ public class MatchmakingCtrl {
              */
 
             String messageType = messageAsMap.get("type");
-            if (messageType == null) {userSession.getRemote().sendString("{message:no, bad}"); userSession.close(); return;}
+            if (messageType == null) {userSession.getRemote().sendString("{message:\"no, bad\"}");
+                userSession.close(400, "couldn't find user");
+                return;}
 
             String id = messageAsMap.get("id");
 
-            String sessionToken = messageAsMap.get("session");
+            String sessionToken = messageAsMap.get("sessionToken");
 
             System.out.println(messageType + id + sessionToken);
 
@@ -81,21 +83,25 @@ public class MatchmakingCtrl {
                 user = query.get();
             } catch (Exception e){
                 e.printStackTrace();
-                userSession.getRemote().sendString("{message:no, bad}"); userSession.close(); return;
+                userSession.getRemote().sendString("{message:\"no, bad\"}");
+                userSession.close();
+                return;
             }
 
             userMatchmakingMap.put(userSession, user);
 
             System.out.println("PRINTING EVERYONE IN THE USER MAP");
 
+            for(Map.Entry<Session, User> entry: userMatchmakingMap.entrySet()){
+                System.out.println(entry.getValue().getUsername());
+            }
 
-            userSession.getRemote().sendString("{message: Matchmaking started}");
+            userSession.getRemote().sendString("{message: \"Matchmaking started\"}");
         } catch (Exception e) {
             e.printStackTrace();
             userSession.close();
         }
 
     }
-
 
 }

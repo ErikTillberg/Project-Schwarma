@@ -89,7 +89,7 @@ public class AuthenticationCtrl {
             return new ResponseError("Something went wrong");
         }
         if (user==null){
-            return new ResponseSuccess("Could not find user %s", username);
+            return new ResponseError("Could not find user %s", username);
         }
 
         //If the user exists, let's check the password
@@ -100,7 +100,7 @@ public class AuthenticationCtrl {
         if (candidatePassword.equals(user.getPassword())){
             return user;
         } else {
-            return new ResponseSuccess("Password does not match");
+            return new ResponseError("Password does not match");
         }
 
     }
