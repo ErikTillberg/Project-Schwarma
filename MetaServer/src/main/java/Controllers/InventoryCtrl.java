@@ -68,7 +68,7 @@ public class InventoryCtrl {
         final Query<User> user_query = datastore.createQuery(User.class).field("username").equal(username);
 
 
-        if (item_type.equals("Card"))
+        if (item_type.equalsIgnoreCase("Card"))
             ops = datastore.createUpdateOperations(User.class).removeAll("cards", item_id);
         else
             ops = datastore.createUpdateOperations(User.class).removeAll("equipment", item_id);

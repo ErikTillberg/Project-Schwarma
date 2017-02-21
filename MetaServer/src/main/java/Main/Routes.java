@@ -4,6 +4,7 @@ package Main; /**
 
 import Controllers.AuthenticationCtrl;
 import Controllers.InventoryCtrl;
+import Controllers.MatchmakingCtrl;
 import Models.Card;
 import Models.User;
 import Utilities.ResponseError;
@@ -22,6 +23,8 @@ public class Routes {
 
     public static void main(String[] args) {
         port(9000);
+
+        webSocket("/matchmaking", MatchmakingCtrl.class);
 
         enableCORS("*", "*", "*");
 //some tests for cards
@@ -82,7 +85,6 @@ public class Routes {
             return response;
 
         }, regularJson());
-
 
         before((request, response) -> {
 
