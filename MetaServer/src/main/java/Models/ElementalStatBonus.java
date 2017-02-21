@@ -1,5 +1,7 @@
 package Models;
 
+import Utilities.RNGUtil;
+
 import javax.lang.model.element.Element;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -50,7 +52,7 @@ public class ElementalStatBonus extends StatBonus {
         }
 
         if (ElementalStatBonus.isValidElementalStat(statType)){
-            esb.setElement(statType);
+            esb.setStat(statType);
         } else {
             System.out.println("Could not create elemental stat bonus of type " + statType + ", defaulting to attack");
             esb.setStat(StatBonus.ATTACK);
@@ -60,12 +62,33 @@ public class ElementalStatBonus extends StatBonus {
 
     }
 
+    public static ElementalStatBonus GenerateRandomElementalStatBonusWithRandomElement(double min, double max, String statType){
+        String element = getRandomElement();
+        return ElementalStatBonus.GenerateRandomElementalStatBonus(min, max, element, statType);
+    }
+
     public static boolean isValidElementalStat(String statType) {
         return statType == "attack" || statType == "defense";
     }
 
     public static boolean isValidElement(String element)        {
         return element == ElementalStatBonus.WATER || element == ElementalStatBonus.EARTH || element == ElementalStatBonus.FIRE;
+    }
+
+    public static String getRandomElement(){
+        Integer elementToChoose = RNGUtil.getRandomInteger(0, 3);
+
+        switch(elementToChoose){
+            case 0:
+                return ElementalStatBonus.FIRE;
+            case 1:
+                return ElementalStatBonus.WATER;
+            case 2:
+                return ElementalStatBonus.EARTH;
+            default:
+                return null;
+        }
+
     }
 
     //////////////////////////////////////////
@@ -80,5 +103,17 @@ public class ElementalStatBonus extends StatBonus {
         this.element = element;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
 
+        stringBuilder.append("[")
+                .append(this.getStat())
+                .append(", ")
+                .append(this.element)
+                .append(", ")
+                .append(this.getBonus())
+                .append("]");
+        return stringBuilder.toString();
+    }
 }

@@ -4,6 +4,7 @@ package Main; /**
 
 import Controllers.AuthenticationCtrl;
 import Controllers.InventoryCtrl;
+import Models.Card;
 import Models.User;
 import Utilities.ResponseError;
 import com.mongodb.DB;
@@ -24,6 +25,9 @@ public class Routes {
 
         enableCORS("*", "*", "*");
 
+        for (int i = 0; i<10; i++){
+            System.out.println(Card.GenerateCard(1500, "attack"));
+        }
 
         post("/login", (req, res) -> {
 

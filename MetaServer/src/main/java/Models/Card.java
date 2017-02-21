@@ -1,5 +1,6 @@
 package Models;
 
+import Resources.StringLists;
 import Utilities.RNGUtil;
 import jdk.nashorn.internal.ir.annotations.Reference;
 import org.bson.types.ObjectId;
@@ -93,19 +94,56 @@ public class Card {
         } else { return null; } //If it's not a valid type return null.
 
         //Decide whether or not an item should have elemental stats:
-        Boolean getsElementalStats = RNGUtil.getRandomBoolean(userRating/User.MAX_REWARD_RATING);
+        //First get the chance of getting an elemental stat:
+        //Here the maximum reward is 1.0 or 100% at the maximum reward.
+        Double chanceofElementalStat = RNGUtil.getLogValueInRange(userRating, 1.0);
+        Boolean getsElementalStats = RNGUtil.getRandomBoolean(chanceofElementalStat);
         if(getsElementalStats){
             //Then the card should:
             //a. Decide how many elemental stats are to be generated
             //b. Build that number of random elemental stats and add them to the card
+
+            //FOR NOW LETS JUST ADD ONE ELEMENTAL STAT FOR FUN
+            //IT WILL HAVE A RANDOM ELEMENT TYPE AND BE OF THE STAT TYPE OF THE CARD
+            Double maxReward = 50.0;
+            Double min = RNGUtil.getLogValue(userRating-500, maxReward);
+            Double max = RNGUtil.getLogValue(userRating+500, maxReward);
+
+            ElementalStatBonus elementalStatBonus =
+                    ElementalStatBonus.GenerateRandomElementalStatBonusWithRandomElement(min, max, type); //wowza
+
+            ArrayList<ElementalStatBonus> elementalStatBonusArrayList = new ArrayList<>();
+
+            elementalStatBonusArrayList.add(elementalStatBonus);
+
+            card.setElementalStatBonusList(elementalStatBonusArrayList);
         } //else there is nothing, just don't add the stats
 
         //Every card should have some sort of bonus that is given to the card.
         //To start, let's start with a single bonus, to the stat of the type of card that is being created.
+        Double maxReward = 50.0; //I guess just +50% for now is fine I dunno
+        Double min = RNGUtil.getLogValue(userRating-500, maxReward);
+        Double max = RNGUtil.getLogValue(userRating+500, maxReward);
 
-        //TODO keep doing this.
+        StatBonus statBonus = StatBonus.GenerateRandomStatBonus(min, max, type);
+        if(statBonus == null){return null;}
 
-        return null;
+        ArrayList<StatBonus> statBonusList = new ArrayList<>();
+        statBonusList.add(statBonus);
+
+        //Add the stat bonus list to the card.
+        card.setStatBonusList(statBonusList);
+
+        //Last thing to do is add the name of the card. Let's do this by getting random strings from lists.
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(type).append(" card of ").append(StringLists.getRandomCardAdjective()).append(" ").append(StringLists.getRandomCardNoun());
+
+        String name = stringBuilder.toString();
+        card.setName(name);
+
+        //I think that's everything!!!
+
+        return card;
     }
 
     public static boolean isValidCardType(String type){
@@ -148,5 +186,18 @@ public class Card {
         this.elementalStatBonusList = elementalStatBonusList;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
 
+        stringBuilder.append("[")
+                .append(this.name)
+                .append(", ")
+                .append(statBonusList)
+                .append(", ")
+                .append(elementalStatBonusList)
+                .append("]");
+
+        return stringBuilder.toString();
+    }
 }
