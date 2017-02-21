@@ -30,9 +30,9 @@ public class Routes {
 
         enableCORS("*", "*", "*");
 //some tests for cards
-        for (int i = 0; i<10; i++){
-            System.out.println(Card.GenerateCard(1500, "attack"));
-        }
+//        for (int i = 0; i<10; i++){
+//            System.out.println(Card.GenerateCard(1500, "attack"));
+//        }
 
         post("/login", (req, res) -> {
 
