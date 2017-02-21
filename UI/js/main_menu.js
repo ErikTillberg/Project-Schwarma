@@ -20,8 +20,19 @@ var main_menu_state = {
         debug_console.init_log();
         debug_console.debug_log("You're on the main menu screen. Signed in as: " + user.username);
 
-        this.gear_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.gear_btn_click, this, 2, 1, 0);
-        this.gear_btn_text = game.add.bitmapText(this.gear_btn.x + this.gear_btn.width/5, this.gear_btn.y + this.gear_btn.height/4, 'carrier_command','Gear',20);
+        // this.gear_btn = text_button({button_x: 400,
+        //                                 button_y: 400,
+        //     button_sprite: 'red_button_img',
+        //     on_click: this.gear_btn_click,
+        //     font: 'carrier_command',
+        //     text: 'Gear',
+        //     font_size: 20});
+
+        // this.gear_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.gear_btn_click, this, 2, 1, 0);
+        // this.gear_btn.anchor.set(0.5, 0.5);
+        // this.gear_btn_text = game.add.bitmapText(this.gear_btn.x, this.gear_btn.y, 'carrier_command', 'Gear', 20);
+        // this.gear_btn_text.anchor.set(0.5, 0.5);
+
         this.matchmaking_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.matchmaking_btn_click, this, 2, 1, 0);
         this.matchmaking_btn_text = game.add.bitmapText(this.matchmaking_btn.x + this.matchmaking_btn.width/4, this.matchmaking_btn.y + this.matchmaking_btn.height/3, 'carrier_command','Find Match',20);
         this.battle_btn = game.add.button(game.world.centerX+130, 600, 'red_button_img', this.battle_btn_click, this, 2, 1, 0);
@@ -55,7 +66,7 @@ var main_menu_state = {
 
         // Send a request to start matchmaking to the server
         // TODO insert the message when a JSON spec is agreed upon
-        this.matchmaking_socket.send();
+        // this.matchmaking_socket.send("Hello server.");
 
         this.matchmaking_timer_id = setInterval(this.matchmaking_timer, server.matchmaking_timer_interval);
 
@@ -116,8 +127,9 @@ var main_menu_state = {
 
         console.log("main_menu: matchmaking_timer");
 
-        this.matchmaking_time += server.matchmaking_timer_interval;
-        debug_console.message_log("Time in matchmaking: " + this.matchmaking_time);
+        main_menu_state.matchmaking_time += server.matchmaking_timer_interval/1000;
+        console.log(main_menu_state.matchmaking_time);
+        debug_console.message_log("Time in matchmaking: " + String(main_menu_state.matchmaking_time) + " seconds.");
 
     },
 
@@ -126,3 +138,25 @@ var main_menu_state = {
         game.state.start("battle_system");
     }
 };
+
+// Create a button and a text element inside a single object
+/* x
+* y
+* key
+* callback
+* callbackContext
+* overFrame
+* outFrame
+* downFrame
+* upFrame
+* */
+// var text_button = function(options) {
+//
+//     var btn = game.add.button(options.x, options.y, options.key, options.on_click, this, 2, 1, 0);
+//     btn.anchor.set(0.5, 0.5);
+//     var btn_text = game.add.bitmapText(btn.x, btn.y, options.font,options.text, options.font_size);
+//     btn_text.anchor.set(0.5, 0.5);
+//
+//     return {btn: btn,
+//         text: btn_text}
+// };

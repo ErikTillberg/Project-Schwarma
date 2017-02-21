@@ -7,7 +7,7 @@
 
 var server = {
 
-    production_mode: true, // switch to false to use local host
+    production_mode: false, // switch to false to use local host
     host_name: null,
     port: null,
 
@@ -15,7 +15,7 @@ var server = {
 
     // Builds a url with query string for signing up on the server
     // TODO incorporate character class when its available
-    signup_endpoint: function(username, email, password, character_class) {
+    signup_endpoint: function (username, email, password, character_class) {
         return "http://" + this.host_name + this.port
             + "/signup"
             + "?username=" + username
@@ -24,42 +24,50 @@ var server = {
     },
 
     // Builds a url with query stirng for signing in on the server
-    signin_endpoint: function(username, password) {
+    signin_endpoint: function (username, password) {
 
         return "http://" + this.host_name + this.port
-        + "/login"
-        + "?username=" + username
-        + "&password=" + password;
+            + "/login"
+            + "?username=" + username
+            + "&password=" + password;
 
     },
 
-    matchmake_start_endpoint: function() {
+    matchmake_start_endpoint: function () {
 
         return "http://" + this.host_name + this.port + "/matchmake_start"
 
     },
 
-    matchmake_poll_endpoint: function() {
+    matchmake_poll_endpoint: function () {
 
         return "http://" + this.host_name + this.port + "/matchmake_poll"
 
     },
 
-    matchmake_cancel_endpoint: function() {
+    matchmake_cancel_endpoint: function () {
 
         return "http://" + this.host_name + this.port + "/matchmake_cancel"
 
     },
 
     // Creates an returns a web socket that connects to the matchmaking endpoint
-    matchmaking_socket: function() {
+    matchmaking_socket: function () {
 
-        var web_socket = new WebSocket("ws://" + this.host_name + this.port + "/matchmaking");
+        var web_socket;
+        web_socket = new WebSocket("ws://" + this.host_name + this.port + "/matchmaking");
         web_socket.onmessage = main_menu_state.matchmaking_message;
         web_socket.onclose = main_menu_state.matchmaking_end;
+
+        web_socket.onopen = function() {
+            web_socket.send(JSON.stringify({type: 'start', id: user.id, sessionToken: user.session_token})); // Send the user ID
+        };
+
+        return web_socket;
     }
 };
 
+// Initialize the server endpoint string based on the production mode flag at the top.
 (function(){
     console.log("Server init.");
     server.host_name = server.production_mode === true ? "schwarma-meta-server.herokuapp.com": "localhost";
