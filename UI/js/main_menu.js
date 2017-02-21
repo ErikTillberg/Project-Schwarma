@@ -83,19 +83,29 @@ var main_menu_state = {
 
         console.log("main_menu: matchmaking_message");
 
-        // TODO parse the message when it returns
-
         // var message = JSON.parse(response.data);
         console.log(response);
 
-        //
-        // if (response.data.type == "matchfound") {
-        //     console.log(response.data.message);
-        // }else if (response.data.type == "error") {
-        //     console.log(response.data.message);
-        // }else{
-        //     console.log("Malformed or unrecognized message type from server.");
-        // }
+        // Parse the message type
+        if (response.data.type == "match_found") {
+            console.log(response);
+
+            var opponent = response.data.message;
+            debug_console.message_log("Found match. Opponent is " + opponent.username);
+            console.log(opponent);
+
+            // Close the websocket now that we have the opponents data.
+            this.cancel_matchmaking();
+
+            return;
+
+
+        }else if (response.data.type == "error") {
+            console.log(response.data.message);
+        }else{
+            console.log("Malformed or unrecognized message type from server.");
+            console.log(response);
+        }
 
     },
 
@@ -125,12 +135,12 @@ var main_menu_state = {
     },
 
     // Clean up after closing the matchmaking socket
-    matchmaking_end: function(code, message) {
-
+    matchmaking_end: function(object) {
         console.log("main_menu: matchmaking_end");
-        console.log("Matchmaking socket closed.\nCode: " + code + "\nMessage: " + message);
-        this.matchmaking_socket = null;
 
+        console.log("Matchmaking socket closed.\nCode: " + object.code + "\nMessage: " + object.reason);
+        debug_console.message_log(object.reason);
+        this.matchmaking_socket = null;
     },
 
     // Update the canvas log with the elapsed time in matchmaking
