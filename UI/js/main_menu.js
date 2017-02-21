@@ -61,6 +61,10 @@ var main_menu_state = {
         // Socket is now open
         this.matchmaking_socket = server.matchmaking_socket();
 
+        // Send a request to start matchmaking to the server
+        // TODO insert the message when a JSON spec is agreed upon
+        // this.matchmaking_socket.send("Hello server.");
+
         this.matchmaking_timer_id = setInterval(this.matchmaking_timer, server.matchmaking_timer_interval);
 
         // TODO test if this actually changes the event handler
@@ -80,6 +84,7 @@ var main_menu_state = {
         console.log("main_menu: matchmaking_message");
 
         // TODO parse the message when it returns
+
         // var message = JSON.parse(response.data);
         console.log(response);
 

@@ -21,5 +21,4 @@ public class ResponseError {
     public String getMessage(){
         return this.message;
     }
-
 }

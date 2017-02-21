@@ -80,7 +80,7 @@ public class AuthenticationCtrl {
         //Get user username:
         final Query<User> query = datastore.createQuery(User.class)
                 .field("username").equal(username);
-        System.out.println(query);
+
         User user;
         try {
             user = query.get();
