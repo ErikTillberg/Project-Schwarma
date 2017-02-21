@@ -84,7 +84,7 @@ var main_menu_state = {
         console.log("main_menu: matchmaking_message");
 
         // var message = JSON.parse(response.data);
-        response = JSON.parse(message.data);
+        var response = JSON.parse(message.data);
 
         // Parse the message type
         if (response.type == "match_found") {
