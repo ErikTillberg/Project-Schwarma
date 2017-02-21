@@ -6,8 +6,10 @@ import Controllers.AuthenticationCtrl;
 import Controllers.InventoryCtrl;
 import Controllers.MatchmakingCtrl;
 import Models.Card;
+import Models.Equipment;
 import Models.User;
 import Utilities.ResponseError;
+import com.google.gson.Gson;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
@@ -68,15 +70,52 @@ public class Routes {
         }, regularJson());
 
 
-        post("/deleteItem", (req, res) -> {
+        post("/listInventory", (req, res) -> {
 
             res.type("application/json"); //set the response type (i think this is just good practice)
 
             String username = req.queryParams("username");
-            String item_type = req.queryParams("item_type");
-            String item_id = req.queryParams("item_id");
 
-            Object response = InventoryCtrl.deleteItem(username, item_type, item_id);
+            Object response = InventoryCtrl.listInventory(username);
+            if (response instanceof ResponseError){
+                res.status(400); //we have to explicitly set the response as failure, this is the way I thought to do it, there is likely a better way.
+                return response;
+            }
+
+            return response;
+
+        }, regularJson());
+
+
+        post("/deleteCard", (req, res) -> {
+
+            res.type("application/json"); //set the response type (i think this is just good practice)
+
+            String username = req.queryParams("username");
+            String body = req.body();
+            System.out.println(body);
+            Card aCard = new Gson().fromJson(body, Card.class);
+
+            Object response = InventoryCtrl.deleteCard(username, aCard);
+            if (response instanceof ResponseError){
+                res.status(400); //we have to explicitly set the response as failure, this is the way I thought to do it, there is likely a better way.
+                return response;
+            }
+
+            return response;
+
+        }, regularJson());
+
+
+        post("/deleteEquipment", (req, res) -> {
+
+            res.type("application/json"); //set the response type (i think this is just good practice)
+
+            String username = req.queryParams("username");
+            String body = req.body();
+            Equipment aGear = new Gson().fromJson(body, Equipment.class);
+
+            Object response = InventoryCtrl.deleteEquipment(username, aGear);
             if (response instanceof ResponseError){
                 res.status(400); //we have to explicitly set the response as failure, this is the way I thought to do it, there is likely a better way.
                 return response;
