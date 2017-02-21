@@ -60,7 +60,7 @@ var main_menu_state = {
         // TODO insert the message when a JSON spec is agreed upon
         // this.matchmaking_socket.send("Hello server.");
 
-        //this.matchmaking_timer_id = setInterval(this.matchmaking_timer, server.matchmaking_timer_interval);
+        this.matchmaking_timer_id = setInterval(this.matchmaking_timer, server.matchmaking_timer_interval);
 
         // TODO test if this actually changes the event handler
         this.matchmaking_btn.onclick = this.cancel_matchmaking;
@@ -70,13 +70,23 @@ var main_menu_state = {
 
     // Handles messages being received from the web socket
     // Parse the message and take different actions based on what is sent.
-    matchmaking_message: function(message) {
+    matchmaking_message: function(response) {
 
         console.log("main_menu: matchmaking_message");
 
         // TODO parse the message when it returns
         var data = message;
-        console.log(data);
+
+        // var message = JSON.parse(response.data);
+        console.log(response);
+
+        // if (message.type == "matchfound") {
+        //
+        //
+        // }else{
+        //     console.log("Malformed or unrecognized message type from server.");
+        // }
+
     },
 
     // Send a message to the server to cancel the current matchmaking request and close the web socket
@@ -109,7 +119,7 @@ var main_menu_state = {
     matchmaking_end: function(code, message) {
 
         console.log("main_menu: matchmaking_end");
-        console.log("Matchmaking socket closed: " + message);
+        console.log("Matchmaking socket closed.\nCode: " + code + "\nMessage: " + message);
         this.matchmaking_socket = null;
 
     },
@@ -117,16 +127,12 @@ var main_menu_state = {
     // Update the canvas log with the elapsed time in matchmaking
     matchmaking_timer: function() {
 
-        console.log("main_menu: matchmaking_timer");
-
         main_menu_state.matchmaking_time += server.matchmaking_timer_interval/1000;
-        console.log(main_menu_state.matchmaking_time);
         debug_console.message_log("Time in matchmaking: " + String(main_menu_state.matchmaking_time) + " seconds.");
-
     },
 
     battle_btn_click: function() {
-        console.log("mina_menu: battle_btn_click");
+        console.log("main_menu: battle_btn_click");
         game.state.start("battle_system");
     }
 };
