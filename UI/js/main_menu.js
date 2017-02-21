@@ -29,6 +29,12 @@ var main_menu_state = {
         this.matchmaking_btn_text = game.add.bitmapText(this.matchmaking_btn.x + this.matchmaking_btn.width/4, this.matchmaking_btn.y + this.matchmaking_btn.height/3, 'carrier_command','Find Match',20);
         this.battle_btn = game.add.button(game.world.centerX+130, 600, 'red_button_img', this.battle_btn_click, this, 2, 1, 0);
         this.battle_btn_text = game.add.bitmapText(this.battle_btn.x + this.battle_btn.width/5, this.battle_btn.y + this.battle_btn.height/4, 'carrier_command','Battle Test',20);
+
+        this.matchmaking_cancel_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.cancel_matchmaking, this, 2, 1, 0);
+        this.matchmaking_cancel_btn_text = game.add.bitmapText(this.matchmaking_cancel_btn.x + this.matchmaking_cancel_btn.width/4, this.matchmaking_cancel_btn.y + this.matchmaking_cancel_btn.height/3, 'carrier_command','Cancel',20);
+        this.matchmaking_cancel_btn.visible = false;
+        this.matchmaking_cancel_btn_text.visible = false;
+
     },
 
     // Move to the select gear screen, only if there is no matchmaking currently in progress
@@ -41,7 +47,6 @@ var main_menu_state = {
         }else{
             debug_console.error_log("Cannot change gear while you are looking for a match.");
         }
-
     },
 
     // Open a web socket for the matchmaking tunnel, then send a matchmaking request message
@@ -63,7 +68,11 @@ var main_menu_state = {
         this.matchmaking_timer_id = setInterval(this.matchmaking_timer, server.matchmaking_timer_interval);
 
         // TODO test if this actually changes the event handler
-        this.matchmaking_btn.onclick = this.cancel_matchmaking;
+        this.matchmaking_cancel_btn.visible = true;
+        this.matchmaking_cancel_btn_text.visible = true;
+
+        this.matchmaking_btn.visible = false;
+        this.matchmaking_btn_text.visible =false;
 
         return;
     },
@@ -79,9 +88,11 @@ var main_menu_state = {
         // var message = JSON.parse(response.data);
         console.log(response);
 
-        // if (message.type == "matchfound") {
         //
-        //
+        // if (response.data.type == "matchfound") {
+        //     console.log(response.data.message);
+        // }else if (response.data.type == "error") {
+        //     console.log(response.data.message);
         // }else{
         //     console.log("Malformed or unrecognized message type from server.");
         // }
@@ -93,11 +104,8 @@ var main_menu_state = {
 
         console.log("main_menu: cancel_matchmaking");
 
-        // TODO insert the cancel message when a JSON spec is agreed upon
-        this.matchmaking_socket.send();
-
         // This will trigger the matchmaking_end callback for onclose event
-        this.matchmaking_socket.close();
+        this.matchmaking_socket.close(4000, "User cancelled matchmaking.");
 
         debug_console.message_log("Matchmaking cancelled.");
 
@@ -108,9 +116,11 @@ var main_menu_state = {
         // Clear the timer that is updating the matchmaking elapsed time
         clearInterval(this.matchmaking_timer_id);
 
+        this.matchmaking_cancel_btn.visible = false;
+        this.matchmaking_cancel_btn_text.visible = false;
 
-        // TODO test if this actually changes the event handler
-        this.matchmaking_btn.onclick = this.matchmaking_btn_click;
+        this.matchmaking_btn.visible = true;
+        this.matchmaking_btn_text.visible = true;
 
     },
 
