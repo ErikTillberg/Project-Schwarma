@@ -4,6 +4,7 @@ import Models.User;
 import Utilities.JsonUtil;
 import Utilities.ResponseError;
 import Utilities.ResponseSuccess;
+import org.bson.types.ObjectId;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -24,7 +25,7 @@ import static Utilities.DBConn.datastore;
 public class MatchmakingCtrl {
 
     //Map shared between threads so it needs to be a concurrent map.
-    private static Map<Session, User> userMatchmakingMap = new ConcurrentHashMap<>();
+    private static Map<User, Session> userMatchmakingMap = new ConcurrentHashMap<>();
 
     @OnWebSocketConnect
     public void onConnect(Session user) throws Exception {
@@ -65,7 +66,7 @@ public class MatchmakingCtrl {
              */
 
             String messageType = messageAsMap.get("type");
-            if (messageType == null) {userSession.getRemote().sendString("{message:\"no, bad\"}");
+            if (messageType == null) {userSession.getRemote().sendString("ERROR 25");
                 userSession.close(400, "couldn't find user");
                 return;}
 
@@ -73,33 +74,46 @@ public class MatchmakingCtrl {
 
             String sessionToken = messageAsMap.get("sessionToken");
 
-            System.out.println(messageType + id + sessionToken);
+            ObjectId oi = new ObjectId(id);
 
             final Query<User> query = datastore.createQuery(User.class)
-                    .field("id").equal(id);
+                    .field("id").equal(oi);
 
             User user;
             try {
                 user = query.get();
             } catch (Exception e){
                 e.printStackTrace();
-                userSession.getRemote().sendString("{message:\"no, bad\"}");
-                userSession.close();
+                userSession.close(400, "Could not find user");
+                return;
+            }
+            if (user == null){
                 return;
             }
 
-            userMatchmakingMap.put(userSession, user);
+            if (userMatchmakingMap.get(user) == null){
+                userMatchmakingMap.put(user, userSession);
+            } else {
+                System.out.println("User already in the user map");
+                return;
+            }
 
             System.out.println("PRINTING EVERYONE IN THE USER MAP");
 
-            for(Map.Entry<Session, User> entry: userMatchmakingMap.entrySet()){
-                System.out.println(entry.getValue().getUsername());
+            for(Map.Entry<User, Session> entry: userMatchmakingMap.entrySet()){
+                System.out.println(entry.getKey().getUsername());
             }
 
             userSession.getRemote().sendString("{message: \"Matchmaking started\"}");
+
         } catch (Exception e) {
             e.printStackTrace();
-            userSession.close();
+            try{
+                userSession.getRemote().sendString("Error in message");
+            } catch (Exception e2){
+                e2.printStackTrace();
+                userSession.close(400, "Something went horribly wrong");
+            }
         }
 
     }
