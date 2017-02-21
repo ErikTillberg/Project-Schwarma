@@ -23,7 +23,6 @@ public class Battle {
     private Date date;
     private JsonObject battle_json = new JsonObject();
 
-
     public Battle(String player1, String player2, JsonObject battle_json){
         this.player1 = player1;
         this.player2 = player2;

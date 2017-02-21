@@ -43,7 +43,7 @@ public class User {
         this.username = username;
         this.password = password; //this will already be hashed.
         this.salt = salt;
-        this.rating = 1000;
+        this.rating = 100;
     }
 
     ///////////////////////
