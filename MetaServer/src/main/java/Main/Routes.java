@@ -58,8 +58,9 @@ public class Routes {
             String username = req.queryParams("username");
             String email = req.queryParams("email");
             String password = req.queryParams("password");
+            String characterType = req.queryParams("characterType");
 
-            Object response = AuthenticationCtrl.signup(email, username, password);
+            Object response = AuthenticationCtrl.signup(email, username, password, characterType);
             if (response instanceof ResponseError){
                 res.status(400); //we have to explicitly set the response as failure, this is the way I thought to do it, there is likely a better way.
                 return response;

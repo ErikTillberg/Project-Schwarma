@@ -52,14 +52,13 @@ public class MatchmakingCtrl {
             }
         }
 
+        //Couldn't find the user.
         if (user == null){
-            System.out.println("Couldn't find the user even though they have to be there.");
             return;
         }
 
         //Remove the user from the matchmaking list because you shouldn't match make with someone who is no longer there.
         userMatchmakingMap.remove(user);
-
     }
 
     @OnWebSocketMessage
@@ -116,12 +115,13 @@ public class MatchmakingCtrl {
                 return;
             }
 
-//            System.out.println("PRINTING EVERYONE IN THE USER MAP");
-//
-//            for(Map.Entry<User, Session> entry: userMatchmakingMap.entrySet()){
-//                System.out.println(entry.getKey().getUsername());
-//            }
+//          System.out.println("PRINTING EVERYONE IN THE USER MAP");
 
+            for(Map.Entry<User, Session> entry: userMatchmakingMap.entrySet()){
+                System.out.println(entry.getKey().getUsername());
+            }
+
+            //Try find a match
             attemptToFindMatch(user, userSession);
 
             userSession.getRemote().sendString(toJson(new WebSocketMessage("success", "matchmaking started")));
@@ -173,8 +173,10 @@ public class MatchmakingCtrl {
             }
         }
 
+        System.out.println(closestUser);
+
         //Here we'll check if the difference is within the threshold that was set
-        if(!(minRatingDiff < RATING_MATCH_THRESHOLD)){
+        if(!(minRatingDiff <= RATING_MATCH_THRESHOLD)){
             //Then we should just return and not continue, no match was found.
             return;
         }

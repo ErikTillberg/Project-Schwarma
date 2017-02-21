@@ -15,12 +15,19 @@ import java.util.List;
 @Entity()
 public class User {
 
+    public static final String WARRIOR = "warrior";
+    public static final String MAGE = "mage";
+    public static final String THIEF = "thief";
+
     @Id
     private ObjectId id;
 
     private String email;
     private String username;
     private String sessionToken;
+
+
+    private String characterType;
     private int rating;
 
     //This means that the password won't be returned by GSON
@@ -86,7 +93,13 @@ public class User {
 
     public void setEquipment(List<Equipment> equipment) { this.equipment = equipment; }
 
+    public String getCharacterType() {
+        return characterType;
+    }
 
+    public void setCharacterType(String characterType) {
+        this.characterType = characterType;
+    }
     ///////////////////////
     ////////EQUALS ////////
     ///////////////////////
@@ -113,4 +126,9 @@ public class User {
         result = 31 * result + (cards != null ? cards.hashCode() : 0);
         return result;
     }
+
+    public static boolean isValidCharacterType(String characterType){
+        return characterType.equals(MAGE) || characterType.equals(THIEF) || characterType.equals(WARRIOR);
+    }
+
 }
