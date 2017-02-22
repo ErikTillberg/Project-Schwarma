@@ -89,8 +89,8 @@ namespace Schwarma
             template<class T>
             void tickEntityAgainst(Schwarma::Entity*entity1,Schwarma::Entity*entity2,int action,T&stream)
             {
-                if(action == Schwarma::NOOP)
-                    stream<<entity1->name<<" Took No Action\n";
+                /*if(action == Schwarma::NOOP)
+                    stream<<entity1->name<<" Took No Action\n";*/
                 if(action == Schwarma::MOVE)
                 {
                     int pos = entity1->move(entity2);
