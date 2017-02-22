@@ -114,6 +114,7 @@ namespace Schwarma
             //currently just prints result of enemy attack
             int defend(Schwarma::Entity*enemy)
             {
+                return 0;
             }
     };
 }
