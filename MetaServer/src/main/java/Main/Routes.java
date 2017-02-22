@@ -4,6 +4,7 @@ package Main; /**
 
 import Controllers.AuthenticationCtrl;
 import Controllers.InventoryCtrl;
+import Controllers.MatchmakingCtrl;
 import Models.Card;
 import Models.Equipment;
 import Models.User;
@@ -25,13 +26,22 @@ public class Routes {
     public static void main(String[] args) {
         port(9000);
 
+        webSocket("/matchmaking", MatchmakingCtrl.class);
+
         enableCORS("*", "*", "*");
+<<<<<<< HEAD
+=======
+//some tests for cards
+//        for (int i = 0; i<10; i++){
+//            System.out.println(Card.GenerateCard(1500, "attack"));
+//        }
+>>>>>>> origin/master
 
         post("/login", (req, res) -> {
 
             String username = req.queryParams("username");
             String password = req.queryParams("password");
-            System.out.println(username + " " + password);
+
             Object response = AuthenticationCtrl.login(username, password);
 
             if (response instanceof ResponseError) {
@@ -51,8 +61,9 @@ public class Routes {
             String username = req.queryParams("username");
             String email = req.queryParams("email");
             String password = req.queryParams("password");
+            String characterType = req.queryParams("characterType");
 
-            Object response = AuthenticationCtrl.signup(email, username, password);
+            Object response = AuthenticationCtrl.signup(email, username, password, characterType);
             if (response instanceof ResponseError){
                 res.status(400); //we have to explicitly set the response as failure, this is the way I thought to do it, there is likely a better way.
                 return response;
@@ -116,7 +127,6 @@ public class Routes {
             return response;
 
         }, regularJson());
-
 
         before((request, response) -> {
 
