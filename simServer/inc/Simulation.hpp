@@ -16,7 +16,7 @@ namespace Schwarma
             template<class T>
             int run(T&stream,const char*formatType = nullptr)
             {
-                if(::strcmp(formatType,"json"))
+                if((::strcmp(formatType,"json")) == 0)
                     stream<<"["<<std::endl;
                 //0 for player1, 1 for player 2
                 int turn = 0;
@@ -82,7 +82,7 @@ namespace Schwarma
                         continue;
                     }
                 }
-                if(::strcmp(formatType,"json"))
+                if((::strcmp(formatType,"json")) == 0)
                     stream<<"]";
                 return 0;
             }
@@ -104,7 +104,7 @@ namespace Schwarma
                     {
                         if(!formatType)
                             stream<<entity1->name<<" Moved to position "<<pos<<"\n";
-                        else if(formatType(::strcmp(formatType,"json")))
+                        else if(formatType && (::strcmp(formatType,"json") == 0))
                         {
                             stream<<"{\"player\":\""<<player1->name<<"\",\"position\":\""<<pos<<"\"}"<<std::endl;
                         }
@@ -118,7 +118,7 @@ namespace Schwarma
                         entity2->stats.health -= wep.damage;
                         if(!formatType)
                             stream<<entity1->name<<" attacked with "<<wep.name<<std::endl;
-                        else if(formatType(::strcmp(formatType,"json")))
+                        else if(formatType && (::strcmp(formatType,"json") == 0))
                         {
                             stream<<"{\"player\":\""<<player1->name<<"\",\"inflictedDamage\":\""<<wep.damage<<"\"}"<<std::endl;
                         }
