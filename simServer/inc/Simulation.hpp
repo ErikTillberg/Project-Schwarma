@@ -14,8 +14,10 @@ namespace Schwarma
                 this->players[1] = player2;
             }
             template<class T>
-            int run(T&stream)
+            int run(T&stream,const char*formatType = nullptr)
             {
+                if(formatType && (::strcmp(formatType,"json")) == 0)
+                    stream<<"["<<std::endl;
                 //0 for player1, 1 for player 2
                 int turn = 0;
 
@@ -63,7 +65,7 @@ namespace Schwarma
                         else
                         {
                             //simulate turn
-                            tickEntityAgainst<decltype(stream)>(p1,p2,action,stream);
+                            tickEntityAgainst<decltype(stream)>(p1,p2,action,stream,formatType);
                             //next turn
                             if(turn == 0) turn++;
                             else if (turn == 1) turn--;
@@ -73,13 +75,15 @@ namespace Schwarma
                     //simulate the turn
                     else if(action == Schwarma::MOVE)
                     {
-                        tickEntityAgainst<decltype(stream)>(p1,p2,action,stream);
+                        tickEntityAgainst<decltype(stream)>(p1,p2,action,stream,formatType);
                         //next turn
                         if(turn == 0) turn++;
                         else if (turn == 1) turn--;
                         continue;
                     }
                 }
+                if(formatType && (::strcmp(formatType,"json")) == 0)
+                    stream<<"]";
                 return 0;
             }
         private:
@@ -87,17 +91,24 @@ namespace Schwarma
             //simulates a turn for entity1 "Against" entity2
             //entity1 will move toward and attack entity2 if those actions are passed 
             template<class T>
-            void tickEntityAgainst(Schwarma::Entity*entity1,Schwarma::Entity*entity2,int action,T&stream)
+            void tickEntityAgainst(Schwarma::Entity*entity1,Schwarma::Entity*entity2,int action,T&stream,const char*formatType = nullptr)
             {
-                if(action == Schwarma::NOOP)
-                    stream<<entity1->name<<" Took No Action\n";
+                /*if(action == Schwarma::NOOP)
+                    stream<<entity1->name<<" Took No Action\n";*/
                 if(action == Schwarma::MOVE)
                 {
                     int pos = entity1->move(entity2);
-                    if(pos == -1)
-                        stream<<entity1->name<<" did not move\n";
-                    else if(pos)
-                        stream<<entity1->name<<" Moved to position "<<pos<<"\n";
+                    /*if(pos == -1)
+                        stream<<entity1->name<<" did not move\n";*/
+                    if(pos)
+                    {
+                        if(!formatType)
+                            stream<<entity1->name<<" Moved to position "<<pos<<"\n";
+                        else if(formatType && (::strcmp(formatType,"json") == 0))
+                        {
+                            stream<<"{\"player\":\""<<entity1->name<<"\",\"position\":\""<<pos<<"\"}"<<std::endl;
+                        }
+                    }
                 }
                 if(action == Schwarma::ATTACK)
                 {
@@ -105,7 +116,12 @@ namespace Schwarma
                     if(&wep != nullptr)
                     {
                         entity2->stats.health -= wep.damage;
-                        stream<<entity1->name<<" attacked with "<<wep.name<<std::endl;
+                        if(!formatType)
+                            stream<<entity1->name<<" attacked with "<<wep.name<<std::endl;
+                        else if(formatType && (::strcmp(formatType,"json") == 0))
+                        {
+                            stream<<"{\"player\":\""<<entity1->name<<"\",\"inflictedDamage\":\""<<wep.damage<<"\"}"<<std::endl;
+                        }
                     }
                     /*else
                         stream<<entity1->name<<" attack nooped"<<std::endl;*/

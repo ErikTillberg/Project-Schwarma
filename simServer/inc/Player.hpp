@@ -68,8 +68,8 @@ namespace Schwarma
                         }
                         catch(std::runtime_error*e)
                         {
-                            std::cout<<e->what()<<std::endl;
-                            std::cout<<"In move trigger "<<it-this->triggers.begin()<<" for "<<this->name<<std::endl;
+                            std::cerr<<e->what()<<std::endl;
+                            std::cerr<<"In move trigger "<<it-this->triggers.begin()<<" for "<<this->name<<std::endl;
                         }
                     }
                 }
@@ -102,8 +102,8 @@ namespace Schwarma
                         }
                         catch(std::runtime_error*e)
                         {
-                            std::cout<<e->what()<<std::endl;
-                            std::cout<<"In attack trigger "<<(it-this->triggers.begin())<<" for "<<this->name<<std::endl;
+                            std::cerr<<e->what()<<std::endl;
+                            std::cerr<<"In attack trigger "<<(it-this->triggers.begin())<<" for "<<this->name<<std::endl;
                         }
                     }
                 }
@@ -114,6 +114,7 @@ namespace Schwarma
             //currently just prints result of enemy attack
             int defend(Schwarma::Entity*enemy)
             {
+                return 0;
             }
     };
 }
