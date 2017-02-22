@@ -39,12 +39,20 @@ int main(int argc,char*argv[])
 
     //If arg 3 is cout then pipe to stdout
     if(argc >= 4 && (::strcmp(argv[3],"cout") == 0))
-        sim.run<decltype(std::cout)>(std::cout);
+    {
+        if(argc >= 5 && (::strcmp(argv[4],"json") == 0))
+            sim.run<decltype(std::cout)>(std::cout,"json");
+        else
+            sim.run<decltype(std::cout)>(std::cout);
+    }
     //Otherwise interpret arg 3 as a file to pipe to
     else
     {
         std::ofstream stream(argv[3],std::ios::out|std::ios::trunc);
-        sim.run<std::ofstream>(stream);
+        if(argc >= 5 && (::strcmp(argv[4],"json") == 0))
+            sim.run<std::ofstream>(stream,"json");
+        else
+            sim.run<std::ofstream>(stream);
     }
     
     return 0;
