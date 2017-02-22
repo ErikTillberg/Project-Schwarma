@@ -11,7 +11,7 @@ int main(int argc,char*argv[])
         std::cout<<"Invalid number of arguments!\n";
         return 1;
     }
-    //see rnadom number generator for weighted decision making
+    //seed random number generator for weighted decision making
     ::srand(::time(NULL));
 
     Schwarma::Player player1;
