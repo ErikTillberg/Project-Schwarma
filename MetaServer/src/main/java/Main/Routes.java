@@ -26,10 +26,6 @@ public class Routes {
         port(9000);
 
         enableCORS("*", "*", "*");
-//some tests for cards
-        for (int i = 0; i<10; i++){
-            System.out.println(Card.GenerateCard(1500, "attack"));
-        }
 
         post("/login", (req, res) -> {
 
@@ -90,7 +86,6 @@ public class Routes {
 
             String username = req.queryParams("username");
             String body = req.body();
-            System.out.println(body);
             Card aCard = new Gson().fromJson(body, Card.class);
 
             Object response = InventoryCtrl.deleteCard(username, aCard);
