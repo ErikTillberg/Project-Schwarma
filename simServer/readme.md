@@ -2,7 +2,7 @@
 
 Simulation process used to simulate one round of a battle between two players.
 ## Building
-Assumes g++ in your systems PATH.
+Assumes g++ is in your systems PATH.
 ### Windows
 ```
 > install
@@ -20,7 +20,7 @@ simServer player1.json player2.json outPutFile outPutFormat
 Where
 
 player1.json, player2.json are the paths to two unique JSON files describing players
-1 and 2 respectively.  
+1 and 2 respectively. See sample.json for outline of document format.
   
 outPutFile is the path to a file to write output to.  
 Note: If a value of "cout" is passed for outPutFile then output will be directed to the console.
