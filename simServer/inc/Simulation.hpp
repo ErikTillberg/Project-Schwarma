@@ -14,8 +14,10 @@ namespace Schwarma
                 this->players[1] = player2;
             }
             template<class T>
-            int run(T&stream)
+            int run(T&stream,const char*formatType = nullptr)
             {
+                if(::strcmp(formatType,"json"))
+                    stream<<"["<<std::endl;
                 //0 for player1, 1 for player 2
                 int turn = 0;
 
@@ -80,6 +82,8 @@ namespace Schwarma
                         continue;
                     }
                 }
+                if(::strcmp(formatType,"json"))
+                    stream<<"]";
                 return 0;
             }
         private:
@@ -97,7 +101,14 @@ namespace Schwarma
                     /*if(pos == -1)
                         stream<<entity1->name<<" did not move\n";*/
                     else if(pos)
-                        stream<<entity1->name<<" Moved to position "<<pos<<"\n";
+                    {
+                        if(!formatType)
+                            stream<<entity1->name<<" Moved to position "<<pos<<"\n";
+                        else if(formatType(::strcmp(formatType,"json")))
+                        {
+                            stream<<"{\"player\":\""<<player1->name<<"\",\"position\":\""<<pos<<"\"}"<<std::endl;
+                        }
+                    }
                 }
                 if(action == Schwarma::ATTACK)
                 {
@@ -105,7 +116,12 @@ namespace Schwarma
                     if(&wep != nullptr)
                     {
                         entity2->stats.health -= wep.damage;
-                        stream<<entity1->name<<" attacked with "<<wep.name<<std::endl;
+                        if(!formatType)
+                            stream<<entity1->name<<" attacked with "<<wep.name<<std::endl;
+                        else if(formatType(::strcmp(formatType,"json")))
+                        {
+                            stream<<"{\"player\":\""<<player1->name<<"\",\"inflictedDamage\":\""<<wep.damage<<"\"}"<<std::endl;
+                        }
                     }
                     /*else
                         stream<<entity1->name<<" attack nooped"<<std::endl;*/
