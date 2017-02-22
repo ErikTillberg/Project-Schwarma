@@ -65,7 +65,7 @@ namespace Schwarma
                         else
                         {
                             //simulate turn
-                            tickEntityAgainst<decltype(stream)>(p1,p2,action,stream);
+                            tickEntityAgainst<decltype(stream)>(p1,p2,action,stream,formatType);
                             //next turn
                             if(turn == 0) turn++;
                             else if (turn == 1) turn--;
@@ -75,7 +75,7 @@ namespace Schwarma
                     //simulate the turn
                     else if(action == Schwarma::MOVE)
                     {
-                        tickEntityAgainst<decltype(stream)>(p1,p2,action,stream);
+                        tickEntityAgainst<decltype(stream)>(p1,p2,action,stream,formatType);
                         //next turn
                         if(turn == 0) turn++;
                         else if (turn == 1) turn--;
@@ -91,7 +91,7 @@ namespace Schwarma
             //simulates a turn for entity1 "Against" entity2
             //entity1 will move toward and attack entity2 if those actions are passed 
             template<class T>
-            void tickEntityAgainst(Schwarma::Entity*entity1,Schwarma::Entity*entity2,int action,T&stream)
+            void tickEntityAgainst(Schwarma::Entity*entity1,Schwarma::Entity*entity2,int action,T&stream,const char*formatType = nullptr)
             {
                 /*if(action == Schwarma::NOOP)
                     stream<<entity1->name<<" Took No Action\n";*/
