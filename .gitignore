@@ -1,6 +1,7 @@
 *~
 rapidjson
 simServer/simServer
+simServer/simServer.exe
 .vscode
 .idea/
 *.iml
