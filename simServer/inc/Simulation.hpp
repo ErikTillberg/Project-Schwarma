@@ -100,13 +100,13 @@ namespace Schwarma
                     int pos = entity1->move(entity2);
                     /*if(pos == -1)
                         stream<<entity1->name<<" did not move\n";*/
-                    else if(pos)
+                    if(pos)
                     {
                         if(!formatType)
                             stream<<entity1->name<<" Moved to position "<<pos<<"\n";
                         else if(formatType && (::strcmp(formatType,"json") == 0))
                         {
-                            stream<<"{\"player\":\""<<player1->name<<"\",\"position\":\""<<pos<<"\"}"<<std::endl;
+                            stream<<"{\"player\":\""<<entity1->name<<"\",\"position\":\""<<pos<<"\"}"<<std::endl;
                         }
                     }
                 }
