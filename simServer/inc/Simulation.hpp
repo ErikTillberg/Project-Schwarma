@@ -120,7 +120,7 @@ namespace Schwarma
                             stream<<entity1->name<<" attacked with "<<wep.name<<std::endl;
                         else if(formatType && (::strcmp(formatType,"json") == 0))
                         {
-                            stream<<"{\"player\":\""<<player1->name<<"\",\"inflictedDamage\":\""<<wep.damage<<"\"}"<<std::endl;
+                            stream<<"{\"player\":\""<<entity1->name<<"\",\"inflictedDamage\":\""<<wep.damage<<"\"}"<<std::endl;
                         }
                     }
                     /*else
