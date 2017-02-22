@@ -16,7 +16,7 @@ namespace Schwarma
             template<class T>
             int run(T&stream,const char*formatType = nullptr)
             {
-                if((::strcmp(formatType,"json")) == 0)
+                if(formatType && (::strcmp(formatType,"json")) == 0)
                     stream<<"["<<std::endl;
                 //0 for player1, 1 for player 2
                 int turn = 0;
@@ -82,7 +82,7 @@ namespace Schwarma
                         continue;
                     }
                 }
-                if((::strcmp(formatType,"json")) == 0)
+                if(formatType && (::strcmp(formatType,"json")) == 0)
                     stream<<"]";
                 return 0;
             }
