@@ -1,5 +1,6 @@
 package Controllers;
 
+import Models.Card;
 import Models.User;
 import Utilities.ResponseError;
 import Utilities.ResponseSuccess;
@@ -9,6 +10,7 @@ import spark.Response;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 
 import static Utilities.DBConn.datastore;
@@ -21,10 +23,14 @@ import static Utilities.DBConn.datastore;
  */
 public class AuthenticationCtrl {
 
-    public static Object signup(String email, String username, String password){
+    public static Object signup(String email, String username, String password, String characterType){
 
-        if (email == null || password == null || username == null){
+        if (email == null || password == null || username == null || characterType == null){
             return new ResponseError("Missing information in request");
+        }
+
+        if (!User.isValidCharacterType(characterType)){
+            return new ResponseError("Invalid character type");
         }
 
         User user_username, user_email, new_user = null;
@@ -32,7 +38,6 @@ public class AuthenticationCtrl {
         // Check if user with same username or email already exists
         final Query<User> query_username = datastore.createQuery(User.class).field("username").equal(username);
         final Query<User> query_email = datastore.createQuery(User.class).field("email").equal(email);
-
 
         try {
             user_username = query_username.get();
@@ -42,16 +47,33 @@ public class AuthenticationCtrl {
             return new ResponseError("Something went wrong");
         }
 
-
         if ((user_username==null) && (user_email==null)){
 
             String salt = BCrypt.gensalt(); //Generate a salt to hash the users password
             String hashedPass = BCrypt.hashpw(password, salt);
 
             new_user = new User(email, username, hashedPass, salt);
-
+            new_user.setCharacterType(characterType);
             //I'm assuming signing up is an auto-login situation, so assign a token here too.
             new_user.setSessionToken(generateToken());
+
+            //Add some cards on sign up
+
+            ArrayList<Card> cardArrayList = new ArrayList<>();
+
+            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.ATTACK));
+            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.ATTACK));
+            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.ATTACK));
+
+            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.DEFENSE));
+            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.DEFENSE));
+            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.DEFENSE));
+
+            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.MOBILITY));
+            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.MOBILITY));
+            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.MOBILITY));
+
+            new_user.setCards(cardArrayList);
 
             try {
                 datastore.save(new_user);
@@ -60,6 +82,7 @@ public class AuthenticationCtrl {
                 return new ResponseError("Could not create user %s, %s", email, username);
             }
         }
+
         return new_user;
     }
 
@@ -80,7 +103,7 @@ public class AuthenticationCtrl {
         //Get user username:
         final Query<User> query = datastore.createQuery(User.class)
                 .field("username").equal(username);
-        System.out.println(query);
+
         User user;
         try {
             user = query.get();
@@ -88,9 +111,8 @@ public class AuthenticationCtrl {
             e.printStackTrace();
             return new ResponseError("Something went wrong");
         }
-        System.out.println(user);
         if (user==null){
-            return new ResponseSuccess("Could not find user %s", username);
+            return new ResponseError("Could not find user %s", username);
         }
 
         //If the user exists, let's check the password
@@ -101,7 +123,7 @@ public class AuthenticationCtrl {
         if (candidatePassword.equals(user.getPassword())){
             return user;
         } else {
-            return new ResponseSuccess("Password does not match");
+            return new ResponseError("Password does not match");
         }
 
     }

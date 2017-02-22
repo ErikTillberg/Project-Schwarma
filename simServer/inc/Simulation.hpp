@@ -23,7 +23,7 @@ namespace Schwarma
                 while(this->players[0]->stats.health > 0 && this->players[1]->stats.health > 0)
                 {
                     //pause until user hits enter (For debug purposes)
-                    std::cin.get();
+                    //std::cin.get();
 
                     //assume action is a non-operation
                     int action = Schwarma::NOOP;
@@ -93,19 +93,22 @@ namespace Schwarma
                     stream<<entity1->name<<" Took No Action\n";
                 if(action == Schwarma::MOVE)
                 {
-                    int dist = entity1->move(entity2);
-                    if(dist)
-                        stream<<entity1->name<<" Moved "<<dist<<" Spaces Towards "<<entity2->name<<"\n";
-                    else if(dist == 0)
-                        stream<<entity1->name<<" Did Not Move\n";
+                    int pos = entity1->move(entity2);
+                    if(pos == -1)
+                        stream<<entity1->name<<" did not move\n";
+                    else if(pos)
+                        stream<<entity1->name<<" Moved to position "<<pos<<"\n";
                 }
                 if(action == Schwarma::ATTACK)
                 {
-                    int res = entity1->attack(entity2);
-                    if(res)
-                        stream<<entity1->name<<" inflicted "<<res<<" damage to "<<entity2->name<<"\n";
-                    else if(res == 0)
-                        stream<<entity1->name<<" Did Not Attack\n";
+                    const Schwarma::Weapon&wep = *entity1->attack(entity2);
+                    if(&wep != nullptr)
+                    {
+                        entity2->stats.health -= wep.damage;
+                        stream<<entity1->name<<" attacked with "<<wep.name<<std::endl;
+                    }
+                    /*else
+                        stream<<entity1->name<<" attack nooped"<<std::endl;*/
                 }
             }
 

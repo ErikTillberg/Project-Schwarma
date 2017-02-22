@@ -15,6 +15,10 @@ import java.util.List;
 @Entity()
 public class User {
 
+    public static final String WARRIOR = "warrior";
+    public static final String MAGE = "mage";
+    public static final String THIEF = "thief";
+
     @Id
     private ObjectId id;
 
@@ -22,27 +26,20 @@ public class User {
     private String username;
     private String sessionToken;
 
+
+    private String characterType;
+    private int rating;
+
     //This means that the password won't be returned by GSON
     @Exclude
     private String password;
 
-    public String getPassword() {
-        return password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public List<Card> getCards() {
-        return cards;
-    }
-
     @Exclude
     private String salt;
 
-    @Reference
     private List<Card> cards;
+    private List<Equipment> equipment;
+
 
     public User(){
         super();
@@ -53,25 +50,85 @@ public class User {
         this.username = username;
         this.password = password; //this will already be hashed.
         this.salt = salt;
+        this.rating = 100;
     }
 
     ///////////////////////
     /////GETTER&SETTER/////
     ///////////////////////
 
-    public String getSessionToken(){return sessionToken;}
+    public ObjectId getId() { return id; }
 
-    public void setSessionToken(String sessionToken){this.sessionToken = sessionToken;}
+    public void setId(ObjectId id) { this.id = id; }
 
-    public ObjectId getId() {
-        return id;
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
+
+    public String getUsername() { return username; }
+
+    public void setUsername(String username) { this.username = username; }
+
+    public String getSessionToken() { return sessionToken; }
+
+    public void setSessionToken(String sessionToken) { this.sessionToken = sessionToken; }
+
+    public int getRating() { return rating; }
+
+    public void setRating(int rating) { this.rating = rating; }
+
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
+
+    public String getSalt() { return salt; }
+
+    public void setSalt(String salt) { this.salt = salt; }
+
+    public List<Card> getCards() { return cards; }
+
+    public void setCards(List<Card> cards) { this.cards = cards; }
+
+    public List<Equipment> getEquipment() { return equipment; }
+
+    public void setEquipment(List<Equipment> equipment) { this.equipment = equipment; }
+
+    public String getCharacterType() {
+        return characterType;
     }
 
-    public String getEmail() {
-        return email;
+    public void setCharacterType(String characterType) {
+        this.characterType = characterType;
+    }
+    ///////////////////////
+    ////////EQUALS ////////
+    ///////////////////////
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (rating != user.rating) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+        return !(cards != null ? !cards.equals(user.cards) : user.cards != null);
+
     }
 
-    public String getUsername() {
-        return username;
+    @Override
+    public int hashCode() {
+        int result = email != null ? email.hashCode() : 0;
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + rating;
+        result = 31 * result + (cards != null ? cards.hashCode() : 0);
+        return result;
     }
+
+    public static boolean isValidCharacterType(String characterType){
+        return characterType.equals(MAGE) || characterType.equals(THIEF) || characterType.equals(WARRIOR);
+    }
+
 }

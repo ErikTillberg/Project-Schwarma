@@ -19,7 +19,6 @@
     [
         {
             "name" : "sword",
-            "range" : "touching",
             "damage" : "5",
             "element" : "steel"
         }
@@ -32,7 +31,7 @@
                 "condition" : 
                 {
                     "lhs" : "distance",
-                    "operator" : ">=",
+                    "operator" : "==",
                     "rhs" : "touching"
                 },
                 "action" :
@@ -51,20 +50,7 @@
                 "action":
                 {
                     "actionType" : "move",
-                    "direction" : "away"
-                }
-            },
-            {
-                "condition" :
-                {
-                    "lhs" : "distance",
-                    "operator" : ">=",
-                    "rhs" : "far"
-                },
-                "action" : 
-                {
-                    "actionType" : "move",
-                    "direction" : "away"
+                    "direction" : "towards"
                 }
             }
         ],
