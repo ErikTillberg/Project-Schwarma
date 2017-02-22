@@ -94,8 +94,8 @@ namespace Schwarma
                 if(action == Schwarma::MOVE)
                 {
                     int pos = entity1->move(entity2);
-                    if(pos == -1)
-                        stream<<entity1->name<<" did not move\n";
+                    /*if(pos == -1)
+                        stream<<entity1->name<<" did not move\n";*/
                     else if(pos)
                         stream<<entity1->name<<" Moved to position "<<pos<<"\n";
                 }
