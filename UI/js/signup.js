@@ -14,62 +14,77 @@ var signup_state = {
     create: function(){
         console.log("signup_state: create");
 
-        tilesprite = game.add.tileSprite(0, 0, 1280, 720, 'green_field');
+        game.stage.backgroundColor = 'rgb(255, 255, 255)';
+        var background = game.add.sprite(0,0, 'menu_background');
 
+        var background = game.add.sprite(0,0, 'menu_background');
+        var banner = game.add.sprite(640,225,'Banner');
+        banner.frame = randomInt(0, 5);
+        banner.anchor.setTo(0.5, 0.5);
+
+        var num = randomInt(0, 5);
+        
+        var sword = game.add.sprite( 640, 475,'Sword');
+        sword.frame = num;
+        sword.anchor.setTo(0.5, 0.5);
+
+        var titleText = game.add.bitmapText(banner.x, banner.y - 80, 'carrier_command_black','SIGN UP',40);
+        titleText.anchor.setTo(0.5, 0.5);
+        titleText.align = 'center';
         // Initialize the debug_console
         debug_console.init_log();
         debug_console.debug_log("You're on the signup screen.");
 
         // Add input fields for email, username, password and confirm password.
-        this.username_input = game.add.inputField(game.world.centerX-200, game.world.centerY-300, {
+        this.username_input = game.add.inputField(sword.x - 100, sword.y - 130, {
             font: '18px Ariel',
             fill: '#212121',
-            width: 400,
+            width: 150,
             padding: 20,
-            borderWidth: 1,
+            borderWidth: 10,
             borderColor: '#000',
-            placeHolder: 'Username'
+            placeHolder: 'USER NAME'
         });
 
-        this.email_input = game.add.inputField(game.world.centerX-200, game.world.centerY-240, {
+        this.email_input = game.add.inputField(sword.x - 100, sword.y - 70, {
             font: '18px Arial',
             fill: '#212121',
-            width: 400,
+            width: 150,
             padding: 20,
-            borderWidth: 1,
+            borderWidth: 10,
             borderColor: '#000',
-            placeHolder: 'Email'
+            placeHolder: 'EMAIL'
         });
 
-        this.password_input = game.add.inputField(game.world.centerX-200, game.world.centerY-180, {
+        this.password_input = game.add.inputField(sword.x - 100, sword.y - 10,  {
             font: '18px Arial',
             fill: '#212121',
-            width: 400,
+            width: 150,
             padding: 20,
-            borderWidth: 1,
+            borderWidth: 10,
             borderColor: '#000',
-            placeHolder: 'Password',
+            placeHolder: 'PASSWORD',
             type: PhaserInput.InputType.password
         });
 
-        this.confirm_password_input = game.add.inputField(game.world.centerX-200, game.world.centerY-120, {
+        this.confirm_password_input = game.add.inputField(sword.x - 100, sword.y +50, {
             font: '18px Arial',
             fill: '#212121',
-            width: 400,
+            width: 150,
             padding: 20,
-            borderWidth: 1,
+            borderWidth: 10,
             borderColor: '#000',
-            placeHolder: 'Confirm Password',
+            placeHolder: 'CONFIRM PASS',
             type: PhaserInput.InputType.password
         });
 
         // Add a signup button to the screen
-        this.signup_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.signup_btn_click, this, 2, 1, 0);
-        this.signup_btn_text = game.add.bitmapText(this.signup_btn.x + this.signup_btn.width/4, this.signup_btn.y + this.signup_btn.height/3, 'carrier_command','Sign Up',20);
+         this.signin_btn = game.add.button(game.world.centerX+250, 450, 'Submit_button', this.signup_btn_click, this, 2, 1, 0);
+        //this.signin_btn_text = game.add.bitmapText(this.signin_btn.x + this.signin_btn.width/4, this.signin_btn.y + this.signin_btn.height/3, 'carrier_command','SUBMIT',20);
 
-        // Add a signin button to the screen
-        this.signin_btn = game.add.button(game.world.width-330, 580, 'red_button_img', this.signin_btn_click, this, 2, 1, 0);
-        this.signin_btn_text = game.add.bitmapText(this.signin_btn.x + this.signin_btn.width/4, this.signin_btn.y + this.signin_btn.height/3, 'carrier_command','Sign In',20);
+        // Add a signup button to the screen
+        this.back_btn= game.add.button(game.world.centerX-530, 450, 'Home_button', this.back_btn_click, this, 2, 1, 0);
+       //this.back_btn_text = game.add.bitmapText(this.back_btn.x + this.back_btn.width/4, this.back_btn.y + this.back_btn.height/3, 'carrier_command','BACK',20);
     },
 
     // Handles signup button click. Sends an ajax request to the server after extracting user data from input fields
@@ -81,6 +96,8 @@ var signup_state = {
         var email = this.email_input.value;
         var password = this.password_input.value;
         var confirm_password = this.confirm_password_input.value;
+
+         console.log("Character: " + character);
 
         // Perform some simple validation on the inputs
         if (password !== confirm_password) {
@@ -100,7 +117,7 @@ var signup_state = {
                 type: "POST",
                 crossDomain: true,
                 dataType: 'json',
-                url: server.signup_endpoint(username, email, password),
+                url: server.signup_endpoint(username, email, password, character),
                 success: this.signup_success,
                 error: this.signup_failure
             });
@@ -108,10 +125,10 @@ var signup_state = {
     },
 
     // Handles signin button click. Transitions the game to the signin state.
-    signin_btn_click: function(){
+    back_btn_click: function(){
 
         console.log("signup_state: signin_btn_click");
-        game.state.start("signin");
+        game.state.start("load");
 
     },
 
