@@ -22,7 +22,7 @@ var server = {
             + "?username=" + username
             + "&email=" + email
             + "&password=" + password
-            + "&characterType=" + "warrior";
+            + "&characterType=" + character_class;
     },
 
     // Builds a url with query string for signing in on the server
