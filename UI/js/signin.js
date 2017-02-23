@@ -15,17 +15,18 @@ var signin_state = {
         var background = game.add.sprite(0,0, 'menu_background');
 
         var background = game.add.sprite(0,0, 'menu_background');
-        var banner = game.add.sprite(640,225,'Banner');
+        var banner = game.add.sprite(640,210,'Banner');
         banner.frame = randomInt(0, 4);
         banner.anchor.setTo(0.5, 0.5);
 
         var num = randomInt(0, 4);
         
-        var sword = game.add.sprite( 640, 480,'Sword');
+        var sword = game.add.sprite( 640, 460,'Sword');
         sword.frame = num;
         sword.anchor.setTo(0.5, 0.5);
+        sword.scale.setTo(1.2, 1.2);
 
-        var titleText = game.add.bitmapText(banner.x, banner.y - 80, 'carrier_command_black','SIGN IN',40);
+        var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','SIGN IN',40);
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
@@ -33,20 +34,20 @@ var signin_state = {
         debug_console.init_log();
         debug_console.debug_log("You're on the signin screen.");
 
-        this.username_input = game.add.inputField(sword.x - 100, sword.y - 80, {
+        this.username_input = game.add.inputField(sword.x - 115, sword.y - 80, {
             font: '18px Arial',
             fill: '#212121',
-            width: 150,
+            width: 180,
             padding: 20,
             borderWidth: 10,
             borderColor: '#000',
             placeHolder: 'USERNAME'
         });
 
-        this.password_input = game.add.inputField(sword.x - 100, sword.y - 20, {
+        this.password_input = game.add.inputField(sword.x - 115, sword.y - 20, {
             font: '18px Arial',
             fill: '#212121',
-            width: 150,
+            width: 180,
             padding: 20,
             borderWidth: 10,
             borderColor: '#000',

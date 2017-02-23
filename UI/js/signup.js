@@ -18,17 +18,19 @@ var signup_state = {
         var background = game.add.sprite(0,0, 'menu_background');
 
         var background = game.add.sprite(0,0, 'menu_background');
-        var banner = game.add.sprite(640,225,'Banner');
+
+        var banner = game.add.sprite(640,210,'Banner');
         banner.frame = randomInt(0, 4);
         banner.anchor.setTo(0.5, 0.5);
 
         var num = randomInt(0, 4);
         
-        var sword = game.add.sprite( 640, 480,'Sword');
+        var sword = game.add.sprite( 640, 460,'Sword');
         sword.frame = num;
         sword.anchor.setTo(0.5, 0.5);
+        sword.scale.setTo(1.2, 1.2);
 
-        var titleText = game.add.bitmapText(banner.x, banner.y - 80, 'carrier_command_black','SIGN UP',40);
+        var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','SIGN UP',40);
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
         // Initialize the debug_console
@@ -36,30 +38,30 @@ var signup_state = {
         debug_console.debug_log("You're on the signup screen.");
 
         // Add input fields for email, username, password and confirm password.
-        this.username_input = game.add.inputField(sword.x - 100, sword.y - 130, {
+        this.username_input = game.add.inputField(sword.x - 115, sword.y - 140, {
             font: '18px Ariel',
             fill: '#212121',
-            width: 150,
+            width: 180,
             padding: 20,
             borderWidth: 10,
             borderColor: '#000',
             placeHolder: 'USER NAME'
         });
 
-        this.email_input = game.add.inputField(sword.x - 100, sword.y - 70, {
+        this.email_input = game.add.inputField(sword.x - 115, sword.y - 80, {
             font: '18px Arial',
             fill: '#212121',
-            width: 150,
+            width: 180,
             padding: 20,
             borderWidth: 10,
             borderColor: '#000',
             placeHolder: 'EMAIL'
         });
 
-        this.password_input = game.add.inputField(sword.x - 100, sword.y - 10,  {
+        this.password_input = game.add.inputField(sword.x - 115, sword.y - 20,  {
             font: '18px Arial',
             fill: '#212121',
-            width: 150,
+            width: 180,
             padding: 20,
             borderWidth: 10,
             borderColor: '#000',
@@ -67,10 +69,10 @@ var signup_state = {
             type: PhaserInput.InputType.password
         });
 
-        this.confirm_password_input = game.add.inputField(sword.x - 100, sword.y +50, {
+        this.confirm_password_input = game.add.inputField(sword.x - 115, sword.y +40, {
             font: '18px Arial',
             fill: '#212121',
-            width: 150,
+            width: 180,
             padding: 20,
             borderWidth: 10,
             borderColor: '#000',

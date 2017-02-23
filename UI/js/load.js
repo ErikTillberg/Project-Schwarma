@@ -52,15 +52,16 @@ var load_state = {
         var name = randomName (nouns);
 
         var background = game.add.sprite(0,0, 'menu_background');
-        var banner = game.add.sprite(640,225,'Banner');
+        var banner = game.add.sprite(640,210,'Banner');
         banner.frame = randomInt(0, 4);
         banner.anchor.setTo(0.5, 0.5);
 
         var num = randomInt(0, 4);
 
-        var sword = game.add.sprite( 640, 480,'Sword');
+        var sword = game.add.sprite( 640, 460,'Sword');
         sword.frame = num;
         sword.anchor.setTo(0.5, 0.5);
+        sword.scale.setTo(1.2, 1.2);
 
         var button1 = game.add.sprite(banner.x,425 ,'Button_back',signin_btn_click);
         button1.frame = num;
@@ -74,15 +75,15 @@ var load_state = {
         button2.inputEnabled = true;
         button2.events.onInputDown.add(signup_btn_click, this);
                        
-        var titleText = game.add.bitmapText(banner.x, banner.y - 80, 'carrier_command_black','PROJECT ' + name,40);
+        var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','PROJECT ' + name,40);
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
-        var signInText = game.add.bitmapText(button1.x, 425, 'carrier_command_black','SIGN IN',20);
+        var signInText = game.add.bitmapText(button1.x, 415, 'carrier_command_black','SIGN IN',25);
         signInText.anchor.setTo(0.5, 0.5);
         signInText.align = 'center';
 
-        var signUpText = game.add.bitmapText(button2.x, 485, 'carrier_command_black','SIGN UP',20);
+        var signUpText = game.add.bitmapText(button2.x, 475, 'carrier_command_black','SIGN UP',25);
         signUpText.anchor.setTo(0.5, 0.5);
         signUpText.align = 'center'; 
         

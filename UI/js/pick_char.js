@@ -20,15 +20,17 @@ var pick_state = {
 
                  
         var background = game.add.sprite(0,0, 'menu_background');
-        var banner = game.add.sprite(640,225,'Banner');
+
+        var banner = game.add.sprite(640,210,'Banner');
         banner.frame = randomInt(0, 4);
         banner.anchor.setTo(0.5, 0.5);
 
         var num = randomInt(0, 4);
         
-        sword = game.add.sprite( 640, 480,'Sword');
+        sword = game.add.sprite( 640, 460,'Sword');
         sword.frame = num;
         sword.anchor.setTo(0.5, 0.5);
+        sword.scale.setTo(1.2, 1.2);
 
         playerCharcter = game.add.sprite(640, sword.y + 20, characterPick[i]); 
         playerCharcter.anchor.setTo(0.5, 0.5);
@@ -36,15 +38,15 @@ var pick_state = {
         var walk = playerCharcter.animations.add('walk');
         playerCharcter.animations.play('walk', 3, true);
 
-        var arrowRight = game.add.sprite( game.world.centerX+250, playerCharcter.y+80, 'ArroeRight');
+        var arrowRight = game.add.sprite( game.world.centerX+270, playerCharcter.y+80, 'ArroeRight');
         arrowRight.inputEnabled = true;
         arrowRight.events.onInputDown.add(pickRight, this);
                
-        var arrowLeft = game.add.sprite( game.world.centerX-350, playerCharcter.y+80, 'ArrowLeft');
+        var arrowLeft = game.add.sprite( game.world.centerX-380, playerCharcter.y+80, 'ArrowLeft');
         arrowLeft.inputEnabled = true;
         arrowLeft.events.onInputDown.add(pickLeft, this);
                         
-        var titleText = game.add.bitmapText(640, 150, 'carrier_command_black','PICK A CHARATCER',40);
+        var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','PICK A CHARATCER',40);
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
