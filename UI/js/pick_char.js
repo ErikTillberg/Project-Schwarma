@@ -26,7 +26,7 @@ var pick_state = {
 
         var num = randomInt(0, 4);
         
-        var sword = game.add.sprite( 640, 480,'Sword');
+        sword = game.add.sprite( 640, 480,'Sword');
         sword.frame = num;
         sword.anchor.setTo(0.5, 0.5);
 
