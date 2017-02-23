@@ -150,6 +150,7 @@ public class Card {
         return type.equals(Card.ATTACK) || type.equals(Card.DEFENSE) || type.equals(Card.MOBILITY);
     }
 
+
     /////////////////////////////////////////
     ///////////GETTER AND SETTERS////////////
     /////////////////////////////////////////
