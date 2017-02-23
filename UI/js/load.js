@@ -53,12 +53,12 @@ var load_state = {
 
         var background = game.add.sprite(0,0, 'menu_background');
         var banner = game.add.sprite(640,225,'Banner');
-        banner.frame = randomInt(0, 5);
+        banner.frame = randomInt(0, 4);
         banner.anchor.setTo(0.5, 0.5);
 
-        var num = randomInt(0, 5);
+        var num = randomInt(0, 4);
 
-        var sword = game.add.sprite( 640, 475,'Sword');
+        var sword = game.add.sprite( 640, 480,'Sword');
         sword.frame = num;
         sword.anchor.setTo(0.5, 0.5);
 
