@@ -29,13 +29,6 @@ public class Routes {
         webSocket("/matchmaking", MatchmakingCtrl.class);
 
         enableCORS("*", "*", "*");
-<<<<<<< HEAD
-=======
-//some tests for cards
-//        for (int i = 0; i<10; i++){
-//            System.out.println(Card.GenerateCard(1500, "attack"));
-//        }
->>>>>>> origin/master
 
         post("/login", (req, res) -> {
 
@@ -64,6 +57,43 @@ public class Routes {
             String characterType = req.queryParams("characterType");
 
             Object response = AuthenticationCtrl.signup(email, username, password, characterType);
+            if (response instanceof ResponseError){
+                res.status(400); //we have to explicitly set the response as failure, this is the way I thought to do it, there is likely a better way.
+                return response;
+            }
+
+            return response;
+
+        }, regularJson());
+
+
+        post("/generateInitialInventory", (req, res) -> {
+
+            res.type("application/json"); //set the response type (i think this is just good practice)
+
+            String username = req.queryParams("username");
+            String[] card_types = {"attack", "defense", "mobility"};
+            String[] equipment_types = {"head", "weapon", "offhand"};
+            int random_type;
+            String type;
+
+            for (int i = 0; i < 3; i++) {
+
+                random_type = (int)(Math.random() * 3);
+
+                if(Math.random() > 0.75){
+                    type = equipment_types[random_type];
+                    Equipment aGear = Equipment.GenerateEquipment(100, type);
+                    InventoryCtrl.addEquipment(username, aGear);
+
+                } else{
+                    type = card_types[random_type];
+                    Card aCard = Card.GenerateCard(100, type);
+                    InventoryCtrl.addCard(username, aCard);
+                }
+            }
+
+            Object response = InventoryCtrl.listInventory(username);
             if (response instanceof ResponseError){
                 res.status(400); //we have to explicitly set the response as failure, this is the way I thought to do it, there is likely a better way.
                 return response;
