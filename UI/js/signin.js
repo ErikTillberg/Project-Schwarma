@@ -35,20 +35,20 @@ var signin_state = {
         debug_console.debug_log("You're on the signin screen.");
 
         this.username_input = game.add.inputField(sword.x - 115, sword.y - 80, {
-            font: '18px Arial',
+            font: '30px VT323',
             fill: '#212121',
-            width: 180,
-            padding: 20,
+            width: 200,
+            padding: 10,
             borderWidth: 10,
             borderColor: '#000',
             placeHolder: 'USERNAME'
         });
 
-        this.password_input = game.add.inputField(sword.x - 115, sword.y - 20, {
-            font: '18px Arial',
+        this.password_input = game.add.inputField(sword.x - 115, sword.y - 30, {
+            font: '30px VT323',
             fill: '#212121',
-            width: 180,
-            padding: 20,
+            width: 200,
+            padding: 10,
             borderWidth: 10,
             borderColor: '#000',
             placeHolder: 'PASSWORD',

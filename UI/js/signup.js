@@ -38,42 +38,42 @@ var signup_state = {
         debug_console.debug_log("You're on the signup screen.");
 
         // Add input fields for email, username, password and confirm password.
-        this.username_input = game.add.inputField(sword.x - 115, sword.y - 140, {
-            font: '18px Ariel',
+        this.username_input = game.add.inputField(sword.x - 115, sword.y - 130, {
+            font: '30px VT323',
             fill: '#212121',
-            width: 180,
-            padding: 20,
+            width: 200,
+            padding: 10,
             borderWidth: 10,
             borderColor: '#000',
             placeHolder: 'USER NAME'
         });
 
         this.email_input = game.add.inputField(sword.x - 115, sword.y - 80, {
-            font: '18px Arial',
+            font: '30px VT323',
             fill: '#212121',
-            width: 180,
-            padding: 20,
+            width: 200,
+            padding: 10,
             borderWidth: 10,
             borderColor: '#000',
             placeHolder: 'EMAIL'
         });
 
-        this.password_input = game.add.inputField(sword.x - 115, sword.y - 20,  {
-            font: '18px Arial',
+        this.password_input = game.add.inputField(sword.x - 115, sword.y - 30,  {
+            font: '30px VT323',
             fill: '#212121',
-            width: 180,
-            padding: 20,
+            width: 200,
+            padding: 10,
             borderWidth: 10,
             borderColor: '#000',
             placeHolder: 'PASSWORD',
             type: PhaserInput.InputType.password
         });
 
-        this.confirm_password_input = game.add.inputField(sword.x - 115, sword.y +40, {
-            font: '18px Arial',
+        this.confirm_password_input = game.add.inputField(sword.x - 115, sword.y +20, {
+            font: '30px VT323',
             fill: '#212121',
-            width: 180,
-            padding: 20,
+            width: 200,
+            padding: 10,
             borderWidth: 10,
             borderColor: '#000',
             placeHolder: 'CONFIRM PASS',
