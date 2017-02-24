@@ -99,11 +99,11 @@ var battle_system_state = {
         actionText.anchor.setTo(0.5, 0.5);
         actionText.align = 'center';
 
-        playerOneText = game.add.bitmapText(305, 580, 'carrier_command','Player\n\nOne\n\nInfo\n\nGoes\n\nHere',10);
+        playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.username + '\n\nInfo\n\nGoes\n\nHere',10);
         playerOneText.anchor.setTo(0.5, 0.5);
         playerOneText.align = 'left';
 
-        playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command','Player\n\nTwo\n\nInfo\n\nGoes\n\nHere',10);
+        playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.opponent.username + '\n\nInfo\n\nGoes\n\nHere',10);
         playerTwoText.anchor.setTo(0.5, 0.5);
         playerTwoText.align = 'right';
 

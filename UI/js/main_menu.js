@@ -20,21 +20,33 @@ var main_menu_state = {
         debug_console.init_log();
         debug_console.debug_log("You're on the main menu screen. Signed in as: " + user.username);
 
-        this.gear_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.gear_btn_click, this, 2, 1, 0);
+        // Button to select the gear screen, currently invisible because it goes notwhere
+        this.gear_btn = game.add.button(game.world.centerX, 200, 'red_button_img', this.gear_btn_click, this, 2, 1, 0);
         this.gear_btn.anchor.set(0.5, 0.5);
         this.gear_btn_text = game.add.bitmapText(this.gear_btn.x, this.gear_btn.y, 'carrier_command', 'Gear', 20);
         this.gear_btn_text.anchor.set(0.5, 0.5);
+        this.gear_btn.visible = false;
+        this.gear_btn_text.visible = false;
 
-        this.matchmaking_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.matchmaking_btn_click, this, 2, 1, 0);
-        this.matchmaking_btn_text = game.add.bitmapText(this.matchmaking_btn.x + this.matchmaking_btn.width/4, this.matchmaking_btn.y + this.matchmaking_btn.height/3, 'carrier_command','Find Match',20);
-        this.battle_btn = game.add.button(game.world.centerX+130, 600, 'red_button_img', this.battle_btn_click, this, 2, 1, 0);
-        this.battle_btn_text = game.add.bitmapText(this.battle_btn.x + this.battle_btn.width/5, this.battle_btn.y + this.battle_btn.height/4, 'carrier_command','Battle Test',20);
+        // Matchmaking button, visible while matchmaking is not taking place, hidden during matchmaking to show cancel button
+        this.matchmaking_btn = game.add.button(game.world.centerX, 200, 'red_button_img', this.matchmaking_btn_click, this, 2, 1, 0);
+        this.matchmaking_btn_text = game.add.bitmapText(this.matchmaking_btn.x, this.matchmaking_btn.y, 'carrier_command','Find Match',20);
+        this.matchmaking_btn.anchor.set(0.5, 0.5);
+        this.matchmaking_btn_text.anchor.set(0.5, 0.5);
 
-        this.matchmaking_cancel_btn = game.add.button(game.world.centerX-130, 400, 'red_button_img', this.cancel_matchmaking, this, 2, 1, 0);
-        this.matchmaking_cancel_btn_text = game.add.bitmapText(this.matchmaking_cancel_btn.x + this.matchmaking_cancel_btn.width/4, this.matchmaking_cancel_btn.y + this.matchmaking_cancel_btn.height/3, 'carrier_command','Cancel',20);
+        // Brings the user to a test battle screen
+        this.battle_btn = game.add.button(game.world.centerX, 400, 'red_button_img', this.battle_btn_click, this, 2, 1, 0);
+        this.battle_btn_text = game.add.bitmapText(this.battle_btn.x, this.battle_btn.y, 'carrier_command','Battle Test',20);
+        this.battle_btn.anchor.set(0.5, 0.5);
+        this.battle_btn_text.anchor.set(0.5, 0.5);
+
+        // Shown when matchmaking is in progress so it can be cancelled
+        this.matchmaking_cancel_btn = game.add.button(game.world.centerX, 200, 'red_button_img', this.cancel_matchmaking, this, 2, 1, 0);
+        this.matchmaking_cancel_btn_text = game.add.bitmapText(this.matchmaking_cancel_btn.x, this.matchmaking_cancel_btn.y, 'carrier_command','Cancel',20);
+        this.matchmaking_cancel_btn_text.anchor.set(0.5, 0.5);
+        this.matchmaking_cancel_btn.anchor.set(0.5, 0.5);
         this.matchmaking_cancel_btn.visible = false;
         this.matchmaking_cancel_btn_text.visible = false;
-
     },
 
     // Move to the select gear screen, only if there is no matchmaking currently in progress
@@ -96,6 +108,8 @@ var main_menu_state = {
             var opponent = response.message;
             debug_console.message_log("Found match. Opponent is " + opponent.username);
             console.log(opponent);
+            user.init_opponent(opponent);
+            game.state.start('battle_system');
 
             return;
 

@@ -17,7 +17,7 @@ var debug_console = {
 
     init_log: function(){
         console.log("debug_console: init_log");
-        this.output_box = game.add.text(20, 700, "");
+        this.output_box = game.add.text(40, 680, "");
     },
 
     // Outputs the message to the canvas if debug_mode is true, otherwise writes it to the js console

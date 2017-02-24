@@ -7,7 +7,7 @@
 
 var server = {
 
-    production_mode: false, // switch to false to use local host
+    production_mode: true, // switch to false to use local host
     host_name: null,
     port: null,
 
