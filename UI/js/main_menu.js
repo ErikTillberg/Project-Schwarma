@@ -10,7 +10,6 @@ var main_menu_state = {
 
     preload: function(){
         console.log("main_menu_state: preload");
-
     },
 
     create: function(){
@@ -123,7 +122,7 @@ var main_menu_state = {
         }
     },
 
-    // Send a message to the server to cancel the current matchmaking request and close the web socket
+    // Send a message to the server to cancel the current matchmaking request, closing the WebSocket
     cancel_matchmaking: function() {
 
         console.log("main_menu: cancel_matchmaking");
@@ -148,7 +147,7 @@ var main_menu_state = {
 
     },
 
-    // Clean up after closing the matchmaking socket
+    // Clean up after closing the matchmaking socket: reset timer, clear matchmaking flag, output message to the user
     matchmaking_end: function(object) {
         console.log("main_menu: matchmaking_end");
 
@@ -157,13 +156,14 @@ var main_menu_state = {
         this.matchmaking_socket = null;
     },
 
-    // Update the canvas log with the elapsed time in matchmaking
+    // Update the canvas log with the elapsed time spent in matchmaking in seconds
     matchmaking_timer: function() {
 
         main_menu_state.matchmaking_time += server.matchmaking_timer_interval/1000;
         debug_console.message_log("Time in matchmaking: " + String(main_menu_state.matchmaking_time) + " seconds.");
     },
 
+    // Loads the battle_system state
     battle_btn_click: function() {
         console.log("main_menu: battle_btn_click");
         game.state.start("battle_system");

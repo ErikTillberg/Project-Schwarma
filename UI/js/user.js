@@ -11,6 +11,8 @@ var user = {
         this.id = user_data.id;
         this.session_token = user_data.sessionToken;
         this.cards = user_data.cards;
+        this.character_type = user_data.characterType;
+        this.rating = user_data.rating;
     },
     init_opponent: function(opponent_data){
         this.opponent.username = opponent_data.username;
@@ -18,7 +20,7 @@ var user = {
         this.opponent.rating = opponent_data.rating;
     },
     opponent: {
-        username: "Player2",
+        username: "Player2", // Default which shows up inside the battle test, overwritten when match is found
         character_type: null,
         rating: null
     }

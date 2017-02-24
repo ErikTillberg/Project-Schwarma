@@ -15,6 +15,7 @@ var debug_console = {
     debug_mode: true,
     font_string: "14px Arial",
 
+    // Builds a text box inside the canvas each state can write messages to
     init_log: function(){
         console.log("debug_console: init_log");
         this.output_box = game.add.text(40, 680, "");
