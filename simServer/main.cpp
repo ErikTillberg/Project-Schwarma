@@ -17,8 +17,8 @@ int main(int argc,char*argv[])
     Schwarma::Player player1;
     Schwarma::Player player2;
 
-    player1.name = "Player 1";
-    player2.name = "Player 2";
+    player1.name = "playerOne";
+    player2.name = "playerTwo";
 
     bool res = player1.loadFromFile(argv[1]);
     if(!res)
