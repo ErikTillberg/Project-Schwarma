@@ -109,7 +109,7 @@ namespace Schwarma
                             stream<<entity1->name<<" Moved to position "<<pos<<"\n";
                         else if(formatType && (::strcmp(formatType,"json") == 0))
                         {
-                            stream<<"{\"player\":\""<<entity1->name<<"\",\"position\":\""<<pos<<"\"}"<<std::endl;
+                            stream<<"{\"action\":\"movePlayer\",\"player\":\""<<entity1->name<<"\",\"number\":\""<<pos<<"\"}"<<std::endl;
                         }
                     }
                 }
