@@ -83,7 +83,10 @@ namespace Schwarma
                     }
                 }
                 if(formatType && (::strcmp(formatType,"json")) == 0)
+                {
+                    stream<<"{}"<<std::endl;
                     stream<<"]";
+                }
                 return 0;
             }
         private:
@@ -106,7 +109,7 @@ namespace Schwarma
                             stream<<entity1->name<<" Moved to position "<<pos<<"\n";
                         else if(formatType && (::strcmp(formatType,"json") == 0))
                         {
-                            stream<<"{\"player\":\""<<entity1->name<<"\",\"position\":\""<<pos<<"\"}"<<std::endl;
+                            stream<<"{\"action\":\"movePlayer\",\"player\":\""<<entity1->name<<"\",\"number\":\""<<pos<<"\"},"<<std::endl;
                         }
                     }
                 }
@@ -120,7 +123,7 @@ namespace Schwarma
                             stream<<entity1->name<<" attacked with "<<wep.name<<std::endl;
                         else if(formatType && (::strcmp(formatType,"json") == 0))
                         {
-                            stream<<"{\"player\":\""<<entity1->name<<"\",\"inflictedDamage\":\""<<wep.damage<<"\"}"<<std::endl;
+                            stream<<"{\"action\":\"attack\",\"player\":\""<<entity1->name<<"\",\"number\":\""<<wep.damage<<"\"},"<<std::endl;
                         }
                     }
                     /*else
