@@ -83,7 +83,10 @@ namespace Schwarma
                     }
                 }
                 if(formatType && (::strcmp(formatType,"json")) == 0)
+                {
+                    stream<<"{}"<<std::endl;
                     stream<<"]";
+                }
                 return 0;
             }
         private:
