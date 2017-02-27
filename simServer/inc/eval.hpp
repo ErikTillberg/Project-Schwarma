@@ -33,6 +33,7 @@ namespace Schwarma
         }
         return false;
     }
+    //! Evaluates the condition condition, using Entitys a and b. Validates the condition, throws exception if invalid.
     inline bool evalCondition(const Schwarma::Condition&condition,Schwarma::Entity&a,Schwarma::Entity&b)
     {
         if(condition.lhs == "distance")
