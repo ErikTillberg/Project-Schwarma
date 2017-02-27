@@ -5,19 +5,22 @@
 #include "eval.hpp"
 namespace Schwarma
 {
-    //class representing a player character in the game world
+    //! Class representing a player character in the game world
     class Player : public Schwarma::Entity
     {
         public:
             Player()=default;
             ~Player()=default;
 
-            //method to load a player from some source (probably JSON?)
+            //! Method to load a player from some source (probably JSON?)
             bool loadFromSource(std::string&src)
             {
                 return true;
             }
-
+            //! Attempt to evaluate a move trigger against enemy
+            /*!
+                \return new position in the world if successful, -1 on failure
+            */
             int move(Schwarma::Entity*enemy)
             {
                 auto end = this->triggers.end();
@@ -75,7 +78,10 @@ namespace Schwarma
                 }
                 return -1;
             }
-                                                                                              
+            //! Attempt to evaluate an attack trigger against enemy
+            /*!
+                \return weapon used to attack if successful, nullptr on failure
+            */
             const Schwarma::Weapon*attack(Schwarma::Entity*enemy)
             {
                 auto end = this->triggers.end();

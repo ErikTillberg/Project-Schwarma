@@ -9,6 +9,7 @@
 #include "../rapidjson/include/rapidjson/prettywriter.h"
 namespace Schwarma
 {
+    //! Class describing a weapon wielded by an Entity  
     class Weapon
     {
         public:

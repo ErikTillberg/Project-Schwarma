@@ -2,6 +2,7 @@
 #include "Entity.hpp"
 namespace Schwarma
 {
+    //! Evaluates the conditional expression given in it's parameters.
     template<class T1,class T2>
     inline bool evalConditionalExpression(const std::string&op,const T1&lhs,const T2&rhs)
     {
@@ -32,6 +33,7 @@ namespace Schwarma
         }
         return false;
     }
+    //! Evaluates the Condition condition, using Entity a and b. Validates the Condition, throws exception if invalid.
     inline bool evalCondition(const Schwarma::Condition&condition,Schwarma::Entity&a,Schwarma::Entity&b)
     {
         if(condition.lhs == "distance")

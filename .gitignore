@@ -5,6 +5,8 @@ simServer/simServer.exe
 simServer/doxygen
 simServer/doxyindexer
 simServer/doxysearch.cgi
+simServer/html/**
+simServer/latex/**
 .vscode
 .idea/
 *.iml

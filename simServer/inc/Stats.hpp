@@ -1,7 +1,7 @@
 #pragma once
 namespace Schwarma
 {
-    //class to hold statistics about an entity
+    //! Class to hold statistics about an entity
     class Stats
     {
         public:
