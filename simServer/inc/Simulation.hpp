@@ -13,6 +13,7 @@ namespace Schwarma
                 this->players[0] = player1;
                 this->players[1] = player2;
             }
+            //! Run a simulation, outputting results to stream
             template<class T>
             int run(T&stream,const char*formatType = nullptr)
             {
