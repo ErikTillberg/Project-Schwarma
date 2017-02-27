@@ -2,6 +2,7 @@
 #include "Entity.hpp"
 namespace Schwarma
 {
+    //! Evaluates the conditional expression given in it's parameters.
     template<class T1,class T2>
     inline bool evalConditionalExpression(const std::string&op,const T1&lhs,const T2&rhs)
     {
