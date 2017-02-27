@@ -2,6 +2,9 @@
 rapidjson
 simServer/simServer
 simServer/simServer.exe
+simServer/doxygen
+simServer/doxyindexer
+simServer/doxysearch.cgi
 .vscode
 .idea/
 *.iml
