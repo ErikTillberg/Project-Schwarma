@@ -140,7 +140,7 @@ namespace Schwarma
                 this->stats = this->baseStats;
                 return true;
             }
-            //! Calculate distance between Entitys a and b
+            //! Calculate distance between Entity this and b
             int distance(Entity&b)
             {
                 return std::abs(this->position - b.position);
