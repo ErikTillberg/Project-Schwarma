@@ -3,6 +3,7 @@
 #include "Player.hpp"
 namespace Schwarma
 {
+    //! Singleton class used to generate a simulation between two Player
     class Simulation
     {
         private:
