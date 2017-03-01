@@ -16,9 +16,7 @@ var signup_state = {
 
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
         var background = game.add.sprite(0,0, 'menu_background');
-
-        var background = game.add.sprite(0,0, 'menu_background');
-
+      
         var banner = game.add.sprite(640,210,'Banner');
         banner.frame = randomInt(0, 4);
         banner.anchor.setTo(0.5, 0.5);
