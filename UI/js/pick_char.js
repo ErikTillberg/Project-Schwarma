@@ -46,7 +46,7 @@ var pick_state = {
         arrowLeft.inputEnabled = true;
         arrowLeft.events.onInputDown.add(pickLeft, this);
                         
-        var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','PICK A CHARATCER',40);
+        var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','PICK A CHARACTER',40);
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
