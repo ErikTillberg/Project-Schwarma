@@ -3,6 +3,7 @@ var characterPick = ["Knight", "Wizard", "Thief"];
 var i = 0;
 var sword;
 var playerCharcter;
+var playerCharacterShadow;
 
 
 var pick_state = {
@@ -34,6 +35,8 @@ var pick_state = {
 
         playerCharcter = game.add.sprite(640, sword.y + 20, characterPick[i]); 
         playerCharcter.anchor.setTo(0.5, 0.5);
+        playerCharacterShadow = game.add.sprite(playerCharcter.x, playerCharcter.y + 42, 'Shadow');
+        playerCharacterShadow.anchor.setTo(0.5, 0.5);
 
         var walk = playerCharcter.animations.add('walk');
         playerCharcter.animations.play('walk', 3, true);
