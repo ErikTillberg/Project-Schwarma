@@ -4,6 +4,8 @@
 
 // Create a new Phaser game instance
 var game = new Phaser.Game(1280, 720, Phaser.AUTO, 'gameDiv');
+
+// Set the default character to mage so one is always sent on signup.
 var character = 'mage';
 
 // Create game all the game states and attach them to the game object.

@@ -127,7 +127,7 @@ var signup_state = {
     // Handles signin button click. Transitions the game to the signin state.
     back_btn_click: function(){
 
-        console.log("signup_state: signin_btn_click");
+        console.log("signup_state: back_btn_click");
         game.state.start("load");
 
     },

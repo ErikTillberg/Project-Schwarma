@@ -41,10 +41,13 @@ var load_state = {
 
     create: function() {
 
+    	// Set the background color of the canvas.
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
 
+        // Get the name to display by picking randomly from nouns array.
         var name = randomName (nouns);
 
+        // Add the menu background to screen
         var background = game.add.sprite(0,0, 'menu_background');
         var banner = game.add.sprite(640,210,'Banner');
         banner.frame = randomInt(0, 4);
@@ -52,6 +55,7 @@ var load_state = {
 
         var num = randomInt(0, 4);
 
+        // Add the sword/sheild art to the screen, picking randomly from sword_ss sprite sheet
         var sword = game.add.sprite( 640, 460,'Sword');
         sword.frame = num;
         sword.anchor.setTo(0.5, 0.5);
@@ -69,18 +73,20 @@ var load_state = {
         button2.anchor.setTo(0.5, 0.5);
         button2.inputEnabled = true;
         button2.events.onInputDown.add(signup_btn_click, this);*/
-                       
+        
+        // Add the title text to the screen
         var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','PROJECT ' + name,40);
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
+        // Add the sign in text to screen, and when clicked launch sighin_btn_click function
         var signInText = game.add.bitmapText(banner.x, 415, 'carrier_command_black','SIGN IN',25);
         signInText.anchor.setTo(0.5, 0.5);
         signInText.align = 'center';
         signInText.inputEnabled = true;
         signInText.events.onInputDown.add(signin_btn_click, this);
 
-
+        // Add the sign up text to screen, and when clicked launch sighup_btn_click function
         var signUpText = game.add.bitmapText(banner.x, 475, 'carrier_command_black','SIGN UP',25);
         signUpText.anchor.setTo(0.5, 0.5);
         signUpText.align = 'center'; 
@@ -111,12 +117,23 @@ var load_state = {
 
 };
 
+/**
+ * Function creates a rondom integer, then uses it to pick a string from an array list.
+ * @param list
+ * @returns {string}
+ */
 function randomName (list) {
 
     var i = Math.floor(Math.random() * list.length);
     return list[i];
 }
 
+/**
+ * Function creates a random integer between min and max and returns it.
+ * @param min
+ * @param max
+ * @returns {integer}
+ */
 function randomInt (min, max) {
 
     min = Math.ceil(min);
@@ -124,12 +141,18 @@ function randomInt (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+/**
+ * Function sends the user to the signin state.
+ */
 function signin_btn_click (){
 
     console.log("signin_state: signin_btn_click");
     game.state.start("signin");
 }
 
+/**
+ * Function sends the user to the pick_char state.
+ */
 function signup_btn_click(){
 
         console.log("signin_state: signup_btn_click");

@@ -652,25 +652,25 @@ function die( sprite, dieTimer ){
     if ( playerOneFacing == 'right' && sprite == playerOne ){
 
         sprite.animations.play('dieRight', 5, false);
-        actionText.setText(user.opponent.username + ' WINS THE BATTLE');
+        actionText.setText(user.opponent.username + '\n\n WINS THE BATTLE');
     }
 
     else if ( playerTwoFacing == 'right' && sprite == playerTwo ){
 
         sprite.animations.play('dieRight', 5, false);
-        actionText.setText(user.username + ' WINS THE BATTLE');
+        actionText.setText(user.username + '\n\n WINS THE BATTLE');
     }
 
     else if ( playerOneFacing == 'left' && sprite == playerOne ){
 
         sprite.animations.play('dieLeft', 5, false);
-        actionText.setText(user.opponent.username+ ' WINS THE BATTLE');
+        actionText.setText(user.opponent.username + '\n\n WINS THE BATTLE');
     }
 
     else{
 
         sprite.animations.play('dieLeft', 5, false);
-        actionText.setText(user.username + ' WINS THE BATTLE');
+        actionText.setText(user.username + '\n\n WINS THE BATTLE');
     }
 
     //actionText.setText("PLAYER " + playerNum + " DEAD");
