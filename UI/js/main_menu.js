@@ -15,20 +15,24 @@ var main_menu_state = {
     create: function(){
         console.log("main_menu_state: create");
 
+        // Set the background color of the canvas.
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
-        var background = game.add.sprite(0,0, 'menu_background');
 
+        // Add the menu background to screen
+        var background = game.add.sprite(0,0, 'menu_background');
         var banner = game.add.sprite(640,210,'Banner');
         banner.frame = randomInt(0, 4);
         banner.anchor.setTo(0.5, 0.5);
 
         var num = randomInt(0, 4);
        
+       	// Add the sword/sheild art to the screen, picking randomly from sword_ss sprite sheet
         var sword = game.add.sprite( 640, 460,'Sword');
         sword.frame = num;
         sword.anchor.setTo(0.5, 0.5);
         sword.scale.setTo(1.2, 1.2);
-
+        
+        // Add the title text to the screen
         var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','MAIN MENU',40);
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
@@ -191,6 +195,12 @@ var main_menu_state = {
     }
 };
 
+/**
+ * Function creates a random integer between min and max and returns it.
+ * @param min
+ * @param max
+ * @returns {integer}
+ */
 function randomInt (min, max) {
 
     min = Math.ceil(min);
