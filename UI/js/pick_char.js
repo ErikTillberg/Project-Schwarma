@@ -3,6 +3,7 @@ var characterPick = ["Knight", "Wizard", "Thief"];
 var i = 0;
 var sword;
 var playerCharcter;
+var playerCharacterShadow;
 
 
 var pick_state = {
@@ -34,6 +35,8 @@ var pick_state = {
 
         playerCharcter = game.add.sprite(640, sword.y + 20, characterPick[i]); 
         playerCharcter.anchor.setTo(0.5, 0.5);
+        playerCharacterShadow = game.add.sprite(playerCharcter.x, playerCharcter.y + 42, 'Shadow');
+        playerCharacterShadow.anchor.setTo(0.5, 0.5);
 
         var walk = playerCharcter.animations.add('walk');
         playerCharcter.animations.play('walk', 3, true);
@@ -46,7 +49,7 @@ var pick_state = {
         arrowLeft.inputEnabled = true;
         arrowLeft.events.onInputDown.add(pickLeft, this);
                         
-        var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','PICK A CHARATCER',40);
+        var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','PICK A CHARACTER',40);
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
@@ -115,16 +118,18 @@ function pickLeft () {
 function setCharacter (num){
 
     if (num == 0){
+        
         character = 'warrior';
     }
 
     else if (num == 1){
+
         character = 'mage';
     }
 
     else{
 
-        character = 'theif';
+        character = 'thief';
     }
 }
 

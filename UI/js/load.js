@@ -23,8 +23,6 @@ var load_state = {
         game.load.image('ArroeRight', 'Assets/Art/arrowRight.png');
         game.load.image('ArrowLeft', 'Assets/Art/arrowLeft.png');
 
-
-
         game.load.spritesheet('Knight', 'assets/Art/KnightSpriteSheet.png', 384, 384);
         game.load.spritesheet('Thief', 'assets/Art/ThiefSpriteSheet.png', 384, 384);
         game.load.spritesheet('Wizard', 'assets/Art/WizardSpriteSheet.png', 384, 384);
@@ -35,10 +33,6 @@ var load_state = {
 
         game.load.spritesheet('Sword', 'assets/Art/sword_ss.png', 750, 750);
         game.load.spritesheet('Button_back', 'assets/Art/button_ss.png', 200, 70);
-
-
-       // game.load.image('Blue_1', 'assets/Art/blue_button.png');
-       // game.load.image('Sword', 'assets/Art/sword_sheild.png');
         game.load.image('menu_background', 'assets/Art/menu_background.png');
 
         game.load.bitmapFont('carrier_command', 'assets/fonts/carrier_command.png', 'assets/fonts/carrier_command.xml');
@@ -63,7 +57,8 @@ var load_state = {
         sword.anchor.setTo(0.5, 0.5);
         sword.scale.setTo(1.2, 1.2);
 
-        var button1 = game.add.sprite(banner.x,425 ,'Button_back',signin_btn_click);
+        
+        /*var button1 = game.add.sprite(banner.x,425 ,'Button_back',signin_btn_click);
         button1.frame = num;
         button1.anchor.setTo(0.5, 0.5);
         button1.inputEnabled = true;
@@ -73,19 +68,25 @@ var load_state = {
         button2.frame = num;
         button2.anchor.setTo(0.5, 0.5);
         button2.inputEnabled = true;
-        button2.events.onInputDown.add(signup_btn_click, this);
+        button2.events.onInputDown.add(signup_btn_click, this);*/
                        
         var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','PROJECT ' + name,40);
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
-        var signInText = game.add.bitmapText(button1.x, 415, 'carrier_command_black','SIGN IN',25);
+        var signInText = game.add.bitmapText(banner.x, 415, 'carrier_command_black','SIGN IN',25);
         signInText.anchor.setTo(0.5, 0.5);
         signInText.align = 'center';
+        signInText.inputEnabled = true;
+        signInText.events.onInputDown.add(signin_btn_click, this);
 
-        var signUpText = game.add.bitmapText(button2.x, 475, 'carrier_command_black','SIGN UP',25);
+
+        var signUpText = game.add.bitmapText(banner.x, 475, 'carrier_command_black','SIGN UP',25);
         signUpText.anchor.setTo(0.5, 0.5);
         signUpText.align = 'center'; 
+        signUpText.inputEnabled = true;
+        signUpText.events.onInputDown.add(signup_btn_click, this);
+
         
         // Launch into either the signin or signup state, depending on whether the user
         // Already has an account or not. Determined by flag inside localStorage.
