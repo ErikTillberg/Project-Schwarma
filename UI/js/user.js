@@ -21,7 +21,7 @@ var user = {
     },
     opponent: {
         username: "Player2", // Default which shows up inside the battle test, overwritten when match is found
-        character_type: null,
+        character_type: "theif",
         rating: null
     }
 };

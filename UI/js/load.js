@@ -57,6 +57,7 @@ var load_state = {
         sword.anchor.setTo(0.5, 0.5);
         sword.scale.setTo(1.2, 1.2);
 
+        
         /*var button1 = game.add.sprite(banner.x,425 ,'Button_back',signin_btn_click);
         button1.frame = num;
         button1.anchor.setTo(0.5, 0.5);

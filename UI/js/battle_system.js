@@ -1,10 +1,111 @@
 
+// sample output provied by the sim server
+var battleData = [
+            {"action":"movePlayer","player":"playerOne","number":"2"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"movePlayer","player":"playerOne","number":"3"},
+            {"action":"movePlayer","player":"playerTwo","number":"4"},
+            {"action":"movePlayer","player":"playerOne","number":"2"},
+            {"action":"movePlayer","player":"playerOne","number":"3"},
+            {"action":"movePlayer","player":"playerTwo","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"4"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"movePlayer","player":"playerOne","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"3"},
+            {"action":"movePlayer","player":"playerOne","number":"1"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {"action":"movePlayer","player":"playerTwo","number":"2"},
+            {"action":"movePlayer","player":"playerTwo","number":"1"},
+            {"action":"attack","player":"playerOne","number":"5"},
+            {"action":"attack","player":"playerTwo","number":"5"},
+            {'action':'die', 'player':'playerOne', 'number':'10'}
+            ]
+
 var playerOne;
 var playerTwo;
 var playerOneShadow;
 var playerTwoShadow;
 var playerOneProj;
 var playerTwoProj;
+var background;
+var HUD1;
+
 var playerOneFacing = 'right';
 var playerTwoFacing = 'left';
 
@@ -27,7 +128,13 @@ var playerTwoText;
 var playerOneHPText;
 var playerTwoHPText;
 
+var playerOneHP = 100;
+var playerTwoHP = 100;
+
 var playerNum;
+
+var i = 0; 
+var delayTimer = 4000; 
 
 var battle_system_state = {
 
@@ -38,26 +145,28 @@ var battle_system_state = {
     create: function() {
         console.log("battle_system_state: create");
 
-        var background = game.add.sprite(0,0, 'Background');
+        background = game.add.sprite(0,0, 'Background');
         playerOneShadow = game.add.sprite(140 - playerSpacing, 405, 'Shadow');
         playerTwoShadow = game.add.sprite(1140 + playerSpacing, 405, 'Shadow');
         playerOneShadow.anchor.setTo(0.5, 0.5);
         playerTwoShadow.anchor.setTo(0.5, 0.5);
 
-        playerOneProj = game.add.sprite(140 - playerSpacing, 360,'Flash');
+        playerOneProj = game.add.sprite(140 - playerSpacing, 360, pickCharWeapon ( user.character_type));
         playerOneProj.anchor.setTo(0.5, 0.5);
         playerOneProj.visible = false;
         playerOneProj.animations.add('shootRight', [0, 1, 2, 3]);
         playerOneProj.animations.add('shootLeft', [7, 6, 5, 4]);
 
-        playerTwoProj = game.add.sprite(1140 + playerSpacing, 360,'Knife');
+        playerTwoProj = game.add.sprite(1140 + playerSpacing, 360, pickCharWeapon ( user.opponent.character_type));
         playerTwoProj.anchor.setTo(0.5, 0.5);
         playerTwoProj.visible = false;
         playerTwoProj.animations.add('shootRight', [0, 1, 2, 3]);
         playerTwoProj.animations.add('shootLeft', [7, 6, 5, 4]);
 
-        playerTwo= game.add.sprite(1140 + playerSpacing, 360, 'Thief');
+        playerTwo= game.add.sprite(1140 + playerSpacing, 360, pickCharacter (  user.opponent.character_type));
         playerTwo.anchor.setTo(0.5, 0.5);
+
+        console.log (user.opponent.character_type);
 
         playerTwo.animations.add('attackRight', [0, 1, 2, 3, 4]);
         playerTwo.animations.add('attackLeft', [41, 40, 39, 38, 37]);
@@ -74,7 +183,7 @@ var battle_system_state = {
         playerTwo.animations.add('blockRight', [5]);
         playerTwo.animations.add('blockLeft', [36]);
 
-        playerOne = game.add.sprite(140 - playerSpacing, 360, 'Knight');
+        playerOne = game.add.sprite(140 - playerSpacing, 360, pickCharacter ( user.character_type));
         playerOne.anchor.setTo(0.5, 0.5);
 
         playerOne.animations.add('attackRight', [0, 1, 2, 3, 4]);
@@ -92,28 +201,31 @@ var battle_system_state = {
         playerOne.animations.add('blockRight', [5]);
         playerOne.animations.add('blockLeft', [36]);
 
-        var HUD1 = game.add.sprite(645, 580, 'HUD');
+        HUD1 = game.add.sprite(645, 580, 'HUD');
         HUD1.anchor.setTo(0.5, 0.5);
         // TODO re-enable the text
-        actionText = game.add.bitmapText(645, 580, 'carrier_command','Action Text\n\nGoes Here',20);
+        actionText = game.add.bitmapText(645, 580, 'carrier_command', 'Simulating Battle', 20);
         actionText.anchor.setTo(0.5, 0.5);
         actionText.align = 'center';
 
-        playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.username + '\n\nInfo\n\nGoes\n\nHere',10);
+        playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.username + '\n\nHP: ' + playerOneHP, 10);
         playerOneText.anchor.setTo(0.5, 0.5);
         playerOneText.align = 'left';
 
-        playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.opponent.username + '\n\nInfo\n\nGoes\n\nHere',10);
+        playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.opponent.username + '\n\nHP: ' + playerTwoHP, 10);
         playerTwoText.anchor.setTo(0.5, 0.5);
         playerTwoText.align = 'right';
 
-        playerOneHPText = game.add.bitmapText((140 - playerSpacing), 200, 'carrier_command',"-23",20);
+        playerOneHPText = game.add.bitmapText((140 - playerSpacing), 200, 'carrier_command', ' ' , 20);
         playerOneHPText.anchor.setTo(0.5, 0.5);
         playerOneHPText.visible = false;
 
-        playerTwoHPText = game.add.bitmapText((1140 + playerSpacing), 200, 'carrier_command',"-16",20);
+        playerTwoHPText = game.add.bitmapText((1140 + playerSpacing), 200, 'carrier_command', ' ', 20);
         playerTwoHPText.anchor.setTo(0.5, 0.5);
         playerTwoHPText.visible = false;
+
+        battleLoop(battleData);   
+
     },
 
     update: function() {
@@ -135,9 +247,12 @@ var battle_system_state = {
         playerOneHPText.x = playerOne.x;
         playerTwoHPText.x = playerTwo.x;
 
+        playerOneText.setText (user.username + '\n\nHP: ' + playerOneHP );
+        playerTwoText.setText (user.opponent.username + '\n\nHP: ' + playerTwoHP );
+
         // Input for testing
 
-        if (game.input.keyboard.isDown(Phaser.Keyboard.ONE))
+       /* if (game.input.keyboard.isDown(Phaser.Keyboard.ONE))
         {
             movePlayer(playerOne, 0);
         }
@@ -205,33 +320,32 @@ var battle_system_state = {
         }
 
         else
-        {
+        {*/
 
-            if ( canIdle ) {
+        if ( canIdle ) {
 
-                if ( playerOneFacing == 'right' ){
+            if ( playerOneFacing == 'right' ){
 
-                    playerOne.animations.play('idleRight', 5, true);
-                    playerTwo.animations.play('idleLeft', 5, true);
-                }
-
-                else {
-
-                    playerOne.animations.play('idleLeft', 5, true);
-                    playerTwo.animations.play('idleRight', 5, true);
-                }
+                playerOne.animations.play('idleRight', 5, true);
+                playerTwo.animations.play('idleLeft', 5, true);
             }
 
-            if ( !canShoot ) {
+        else {
 
-                playerOneProj.x = playerOne.x;
-                playerTwoProj.x = playerTwo.x;
-                playerOneProj.visible = false;
-                playerTwoProj.visible = false;
+                playerOne.animations.play('idleLeft', 5, true);
+                playerTwo.animations.play('idleRight', 5, true);
             }
-
-
         }
+
+        if ( !canShoot ) {
+
+            playerOneProj.x = playerOne.x;
+            playerTwoProj.x = playerTwo.x;
+            playerOneProj.visible = false;
+            playerTwoProj.visible = false;
+        }
+
+       // }
     }
 };
 
@@ -256,9 +370,12 @@ function update() {
     playerOneHPText.x = playerOne.x;
     playerTwoHPText.x = playerTwo.x;
 
+    playerOneText.setText ('Player\n\nOne\n\nHP: ' + playerOneHP );
+    playerTwoText.setText ('Player\n\nTwo\n\nHP: ' + playerTwoHP );
+
     // Input for testing
 
-    if (game.input.keyboard.isDown(Phaser.Keyboard.ONE))
+    /*if (game.input.keyboard.isDown(Phaser.Keyboard.ONE))
     {
         movePlayer(playerOne, 0);
     }
@@ -326,33 +443,31 @@ function update() {
     }
 
     else
-    {
+    {*/
 
-        if ( canIdle ) {
+    if ( canIdle ) {
 
-            if ( playerOneFacing == 'right' ){
+        if ( playerOneFacing == 'right' ){
 
-                playerOne.animations.play('idleRight', 5, true);
-                playerTwo.animations.play('idleLeft', 5, true);
-            }
-
-            else {
-
-                playerOne.animations.play('idleLeft', 5, true);
-                playerTwo.animations.play('idleRight', 5, true);
-            }
+            playerOne.animations.play('idleRight', 5, true);
+            playerTwo.animations.play('idleLeft', 5, true);
         }
 
-        if ( !canShoot ) {
+    else {
 
-            playerOneProj.x = playerOne.x;
-            playerTwoProj.x = playerTwo.x;
-            playerOneProj.visible = false;
-            playerTwoProj.visible = false;
+            playerOne.animations.play('idleLeft', 5, true);
+            playerTwo.animations.play('idleRight', 5, true);
         }
-
-
     }
+
+    if ( !canShoot ) {
+
+        playerOneProj.x = playerOne.x;
+        playerTwoProj.x = playerTwo.x;
+        playerOneProj.visible = false;
+        playerTwoProj.visible = false;
+    }
+// }
 }
 
 function movePlayer ( sprite, moveNum ){
@@ -431,59 +546,62 @@ function setPlayerLoc( sprite, moveNum){
     console.log('PLayer Two Loc: ' + playerTwoLoc);
 }
 
-function attack( sprite ){
+function attack( sprite, damageNum ){
 
     attackCheck = Math.abs(playerOneLoc - playerTwoLoc);
 
     setPlayerNumber ( sprite );
-
+            
     if ( attackCheck < 1){
 
-        attackClose ( sprite );
+        attackClose ( sprite, damageNum );
     }
 
     else{
 
-        attackFar ( sprite) ;
+        attackFar ( sprite, damageNum) ;
     }
 
     actionText.setText("PLAYER " + playerNum + " ATTACK" );
 }
 
-function attackClose( sprite ){ // Fix
+function attackClose( sprite, damageNum ){ 
 
     canIdle = false;
-
+            
     if ( playerOneFacing == 'right' && sprite == playerOne ){
 
         sprite.animations.play('attackRight', 5, false);
-        game.time.events.add( 500, (function() { block( playerTwo ); canShoot = false;}), this );
+        game.time.events.add( 500, (function() { block( playerTwo, damageNum ); canShoot = false;}), this );
     }
 
-    else if ( playerTwoFacing == 'right' && sprite == playerTwo ){
+    else if ( playerTwoFacing == 'right' && sprite == playerTwo ){ 
 
         sprite.animations.play('attackRight', 5, false);
-        game.time.events.add( 500, (function() { block( playerOne ); canShoot = false;}), this );
+        game.time.events.add( 500, (function() { block( playerOne, damageNum ); canShoot = false;}), this );
     }
 
     else if (  playerOneFacing == 'left' && sprite == playerOne){
 
         sprite.animations.play('attackLeft', 5, false);
-        game.time.events.add( 500, (function() { block( playerTwo ); canShoot = false;}), this );
+        game.time.events.add( 500, (function() { block( playerTwo, damageNum ); canShoot = false;}), this );
     }
 
     else {
 
         sprite.animations.play('attackLeft', 5, false);
-        game.time.events.add( 500, (function() { block( playerOne ); canShoot = false;}), this );
+        game.time.events.add( 500, (function() { block( playerOne, damageNum ); canShoot = false;}), this );
     }
-}
 
-function attackFar( sprite ){
+            //delayTimer = 500;
+}
+            
+function attackFar( sprite, damageNum){
 
     canIdle = false;
     canShoot = true;
-    var animationTimer2 = attackCheck;
+            
+    var animationTimer2 = attackCheck
 
     if (  playerOneFacing == 'right' && sprite == playerOne){
 
@@ -491,7 +609,7 @@ function attackFar( sprite ){
         sprite.animations.play('attackRight', 5, false);
         playerOneProj.animations.play('shootRight', 10, true);
         game.add.tween(playerOneProj).to({ x: playerTwo.x}, (500 * animationTimer2 ), Phaser.Easing.Linear.None, true);
-        game.time.events.add( 500 * animationTimer2, (function() { block( playerTwo ); canShoot = false;}), this );
+        game.time.events.add( 500 * animationTimer2, (function() { block( playerTwo, damageNum); canShoot = false;}), this ); 
     }
 
     else if ( playerTwoFacing == 'right' && sprite == playerTwo){
@@ -500,7 +618,7 @@ function attackFar( sprite ){
         sprite.animations.play('attackRight', 5, false);
         playerTwoProj.animations.play('shootRight', 5, true);
         game.add.tween(playerTwoProj).to({ x: playerOne.x}, (500 * animationTimer2), Phaser.Easing.Linear.None, true);
-        game.time.events.add( 500 * animationTimer2, (function() { block( playerOne ); canShoot = false;}), this );
+        game.time.events.add( 500 * animationTimer2, (function() { block( playerOne, damageNum ); canShoot = false;}), this );
     }
 
     else if (  playerOneFacing == 'left' && sprite == playerOne){
@@ -509,7 +627,7 @@ function attackFar( sprite ){
         sprite.animations.play('attackLeft', 5, false);
         playerOneProj.animations.play('shootLeft', 5, true);
         game.add.tween(playerOneProj).to({ x: playerTwo.x}, (500 * animationTimer2), Phaser.Easing.Linear.None, true);
-        game.time.events.add( 500 * animationTimer2, (function() { block( playerTwo ); canShoot = false;}), this );
+        game.time.events.add( 500 * animationTimer2, (function() { block( playerTwo, damageNum ); canShoot = false;}), this ); 
     }
 
     else {
@@ -518,11 +636,13 @@ function attackFar( sprite ){
         sprite.animations.play('attackLeft', 5, false);
         playerTwoProj.animations.play('shootLeft', 10, true);
         game.add.tween(playerTwoProj).to({ x: playerOne.x}, (500 * animationTimer2), Phaser.Easing.Linear.None, true);
-        game.time.events.add( 500 * animationTimer2, (function() { block( playerOne ); canShoot = false;}), this );
+        game.time.events.add( 500 * animationTimer2, (function() { block( playerOne, damageNum ); canShoot = false;}), this );
     }
+
+            //delayTimer = 500 * animationTimer2;
 }
 
-function die( sprite ){
+function die( sprite, dieTimer ){
 
     canIdle = false;
 
@@ -531,24 +651,33 @@ function die( sprite ){
     if ( playerOneFacing == 'right' && sprite == playerOne ){
 
         sprite.animations.play('dieRight', 5, false);
+        actionText.setText(user.opponent.username + ' WINS THE BATTLE');
     }
 
     else if ( playerTwoFacing == 'right' && sprite == playerTwo ){
 
         sprite.animations.play('dieRight', 5, false);
+        actionText.setText(user.username + ' WINS THE BATTLE');
     }
 
-    else {
+    else if ( playerOneFacing == 'left' && sprite == playerOne ){
 
         sprite.animations.play('dieLeft', 5, false);
+        actionText.setText(user.opponent.username+ ' WINS THE BATTLE');
     }
 
-    actionText.setText("PLAYER " + playerNum + " DEAD");
+    else{
 
-    game.time.events.add( 10000, (function() { canIdle = true; }), this );
+        sprite.animations.play('dieLeft', 5, false);
+        actionText.setText(user.username + ' WINS THE BATTLE');
+    }
+
+    //actionText.setText("PLAYER " + playerNum + " DEAD");
+
+    game.time.events.add( dieTimer * 1000 , (function() { canIdle = true; }), this );
 }
 
-function block( sprite ){
+function block( sprite, damageNum){
 
     canIdle = false;
 
@@ -558,30 +687,38 @@ function block( sprite ){
     if ( playerOneFacing == 'right' && sprite == playerOne){
 
         sprite.animations.play('blockRight', 5, true);
+        playerOneHPText.setText('-' + damageNum);
+        playerOneHP -= parseInt(damageNum);
         playerOneHPText.visible = true;
     }
 
     else if ( playerTwoFacing == 'right' && sprite == playerTwo){
 
         sprite.animations.play('blockRight', 5, true);
+        playerTwoHPText.setText('-' + damageNum);
+        playerTwoHP -= parseInt(damageNum);
         playerTwoHPText.visible = true;
     }
 
-    else if ( playerOneFacing == 'left' && sprite == playerOne){
+     else if ( playerOneFacing == 'left' && sprite == playerOne){
 
         sprite.animations.play('blockLeft', 5, true);
+        playerOneHPText.setText('-'+damageNum);
+        playerOneHP -= parseInt(damageNum);
         playerOneHPText.visible = true;
     }
 
     else {
 
         sprite.animations.play('blockLeft', 5, true);
-        playerTwoHPText.visible = true;
+        playerTwoHPText.setText('-' + damageNum);
+        playerTwoHP -= parseInt(damageNum);
+        playerTwoHPText.visible = true;              
     }
 
     actionText.setText("PLAYER " + playerNum +" BLOCK ");
-
-    game.time.events.add( 1000, (function() { canIdle = true; playerOneHPText.visible = false; playerTwoHPText.visible = false}), this );
+            
+    game.time.events.add( 1000, (function() { canIdle = true; playerOneHPText.visible = false; playerTwoHPText.visible = false}), this ); 
 }
 
 function setPlayerNumber( sprite ){
@@ -594,5 +731,92 @@ function setPlayerNumber( sprite ){
     else{
 
         playerNum = 2;
+    }
+}
+
+function battleLoop ( battleObj ) {  
+
+    setTimeout(function () { 
+
+        if (battleObj[i].action == 'movePlayer') {
+
+            if (battleObj[i].player == 'playerOne'){
+
+                player = playerOne;
+            }
+            else{ player = playerTwo;}
+                             
+            movePlayer(player, battleObj[i].number - 1); 
+        } 
+
+        else if (battleObj[i].action == 'attack'){
+
+            if ( battleObj[i].player == 'playerOne'){
+
+                player = playerOne;
+            }
+            else { player = playerTwo;}
+             
+            attack(player, battleObj[i].number ); 
+        }
+
+        else if (battleObj[i].action == 'block'){
+
+            if ( battleObj[i].player == 'playerOne'){
+
+                player = playerOne;
+            }
+            else { player = playerTwo;}
+             
+            block(player, battleObj[i].number); 
+        }
+
+        else {
+
+            if ( battleObj[i].player== 'playerOne'){
+
+                player = playerOne;
+            }
+            else { player = playerTwo;}
+
+            die (player, battleObj[i].number);
+        }   
+  
+        i++;
+                                
+        if (i < battleObj.length) {  
+
+            battleLoop( battleObj);           
+        }                        
+    }, delayTimer)
+}
+
+function pickCharacter ( charName ){
+
+    if (charName == 'warrior'){
+        return 'Knight';
+    }
+
+    else if (charName == 'thief'){
+        return 'Thief';
+    }
+
+    else {
+        return 'Wizard';
+    }
+}
+
+function pickCharWeapon ( charName ){
+
+    if (charName == 'warrior'){
+        return 'Flash';
+    }
+
+    else if (charName == 'thief'){
+        return 'Knife';
+    }
+
+    else {
+        return 'Fireball';
     }
 }
