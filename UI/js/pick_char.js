@@ -118,16 +118,18 @@ function pickLeft () {
 function setCharacter (num){
 
     if (num == 0){
+        
         character = 'warrior';
     }
 
     else if (num == 1){
+
         character = 'mage';
     }
 
     else{
 
-        character = 'theif';
+        character = 'thief';
     }
 }
 

@@ -203,6 +203,7 @@ var battle_system_state = {
 
         HUD1 = game.add.sprite(645, 580, 'HUD');
         HUD1.anchor.setTo(0.5, 0.5);
+        
         // TODO re-enable the text
         actionText = game.add.bitmapText(645, 580, 'carrier_command', 'Simulating Battle', 20);
         actionText.anchor.setTo(0.5, 0.5);
