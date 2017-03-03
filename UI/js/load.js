@@ -5,9 +5,17 @@
 
 
 var nouns = ["ninja", "pancake", "statue", "unicorn", "rainbows", "laser", "bunny", "captain", "nibblets", "cupcake", "carrot", "gnomes", "glitter", "potato", "salad", "toejam", "beets", "toilet", "eggs",  "dragons", "jellybeans", "snakes", "dolls", "bushes", "cookies", "apples", "ice cream", "ukulele", "kazoo", "banjo", "circus", "trampoline", "schwarma"];
-var load_state = {
- 
 
+/**
+ * Loads all game assets into Phaser. Launches the landing page for the user to decide where they wish to go next.
+ * @namespace
+ * @type {{preload: load_state.preload, create: load_state.create}}
+ */
+var load_state = {
+
+    /**
+     * Load game assets (sprite sheets, images, fonts, sounds). Overrides Phaser state preload method.
+     */
     preload: function() {
 
         // TODO load game assets here when they exist
@@ -39,6 +47,9 @@ var load_state = {
         game.load.bitmapFont('carrier_command_black', 'assets/Fonts/carrier_command_black.png', 'assets/Fonts/carrier_command.xml');
     },
 
+    /**
+     * Initialize the landing page. Overrides Phaser state create method.
+     */
     create: function() {
 
     	// Set the background color of the canvas.

@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: battle_system.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: battle_system.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
 * Created by Bryon on 2017-02-03.
 */
 
@@ -209,7 +237,7 @@ var battle_system_state = {
     update: function() {
 
         // Check the players.x coordinate to see witch way to face the characters, and make them face each other.
-        if (playerOne.x < playerTwo.x){
+        if (playerOne.x &lt; playerTwo.x){
 
             playerOneFacing = 'right';
             playerTwoFacing = 'left';
@@ -263,7 +291,7 @@ var battle_system_state = {
 /*function update() {
 
 
-    if (playerOne.x < playerTwo.x){
+    if (playerOne.x &lt; playerTwo.x){
 
         playerOneFacing = 'right';
         playerTwoFacing = 'left';
@@ -344,27 +372,27 @@ function movePlayer ( sprite, moveNum ){
     game.add.tween(sprite).to({ x: movePlayerX}, (1000 * animationTimer), Phaser.Easing.Linear.None, true);
 
     // Play different animation based on how far player is way from space they are moving to.
-    if ( animationCheck > 0 && animationTimer <= 2){
+    if ( animationCheck > 0 &amp;&amp; animationTimer &lt;= 2){
 
         sprite.animations.play('walkRight', 5, true);
     }
 
-    else if (  animationCheck > 0 && animationTimer < 4 && animationTimer >= 3) {
+    else if (  animationCheck > 0 &amp;&amp; animationTimer &lt; 4 &amp;&amp; animationTimer >= 3) {
 
         sprite.animations.play('rollRight', 5, true);
     }
 
-    else if (  animationCheck > 0 && animationTimer >= 4 ) {
+    else if (  animationCheck > 0 &amp;&amp; animationTimer >= 4 ) {
 
         sprite.animations.play('jumpRight', 5, true);
     }
 
-    else if(  animationCheck < 0 && animationTimer < 4 && animationTimer >= 3) {
+    else if(  animationCheck &lt; 0 &amp;&amp; animationTimer &lt; 4 &amp;&amp; animationTimer >= 3) {
 
         sprite.animations.play('rollLeft', 5, true);
     }
 
-    else if (  animationCheck < 0 && animationTimer >= 4 ) {
+    else if (  animationCheck &lt; 0 &amp;&amp; animationTimer >= 4 ) {
 
         sprite.animations.play('jumpLeft', 5, true);
     }
@@ -414,8 +442,8 @@ function attack( sprite, damageNum ){
 
     setPlayerNumber ( sprite );
 
-    // If they are < 1 call the attackClose function, if farther call the attackFar function.
-    if ( attackCheck < 1){
+    // If they are &lt; 1 call the attackClose function, if farther call the attackFar function.
+    if ( attackCheck &lt; 1){
 
         attackClose ( sprite, damageNum );
     }
@@ -439,19 +467,19 @@ function attackClose( sprite, damageNum ){
     canIdle = false;
 
     // Pick sprite and animation to play, when animation is done call the block function.
-    if ( playerOneFacing == 'right' && sprite == playerOne ){
+    if ( playerOneFacing == 'right' &amp;&amp; sprite == playerOne ){
 
         sprite.animations.play('attackRight', 5, false);
         game.time.events.add( 500, (function() { block( playerTwo, damageNum ); canShoot = false;}), this );
     }
 
-    else if ( playerTwoFacing == 'right' && sprite == playerTwo ){ 
+    else if ( playerTwoFacing == 'right' &amp;&amp; sprite == playerTwo ){ 
 
         sprite.animations.play('attackRight', 5, false);
         game.time.events.add( 500, (function() { block( playerOne, damageNum ); canShoot = false;}), this );
     }
 
-    else if (  playerOneFacing == 'left' && sprite == playerOne){
+    else if (  playerOneFacing == 'left' &amp;&amp; sprite == playerOne){
 
         sprite.animations.play('attackLeft', 5, false);
         game.time.events.add( 500, (function() { block( playerTwo, damageNum ); canShoot = false;}), this );
@@ -480,7 +508,7 @@ function attackFar( sprite, damageNum){
     var animationTimer2 = attackCheck
 
     // Pick sprite and animations to play, when animation is done call the block function.
-    if (  playerOneFacing == 'right' && sprite == playerOne){
+    if (  playerOneFacing == 'right' &amp;&amp; sprite == playerOne){
 
         playerOneProj.visible = true;
         sprite.animations.play('attackRight', 5, false);
@@ -489,7 +517,7 @@ function attackFar( sprite, damageNum){
         game.time.events.add( 500 * animationTimer2, (function() { block( playerTwo, damageNum); canShoot = false;}), this ); 
     }
 
-    else if ( playerTwoFacing == 'right' && sprite == playerTwo){
+    else if ( playerTwoFacing == 'right' &amp;&amp; sprite == playerTwo){
 
         playerTwoProj.visible = true;
         sprite.animations.play('attackRight', 5, false);
@@ -498,7 +526,7 @@ function attackFar( sprite, damageNum){
         game.time.events.add( 500 * animationTimer2, (function() { block( playerOne, damageNum ); canShoot = false;}), this );
     }
 
-    else if (  playerOneFacing == 'left' && sprite == playerOne){
+    else if (  playerOneFacing == 'left' &amp;&amp; sprite == playerOne){
 
         playerOneProj.visible = true;
         sprite.animations.play('attackLeft', 5, false);
@@ -531,19 +559,19 @@ function die( sprite, dieTimer ){
     setPlayerNumber ( sprite );
 
     // Pick sprite and animations to play, and update action text.
-    if ( playerOneFacing == 'right' && sprite == playerOne ){
+    if ( playerOneFacing == 'right' &amp;&amp; sprite == playerOne ){
 
         sprite.animations.play('dieRight', 5, false);
         actionText.setText(user.opponent.username + '\n\n WINS THE BATTLE');
     }
 
-    else if ( playerTwoFacing == 'right' && sprite == playerTwo ){
+    else if ( playerTwoFacing == 'right' &amp;&amp; sprite == playerTwo ){
 
         sprite.animations.play('dieRight', 5, false);
         actionText.setText(user.username + '\n\n WINS THE BATTLE');
     }
 
-    else if ( playerOneFacing == 'left' && sprite == playerOne ){
+    else if ( playerOneFacing == 'left' &amp;&amp; sprite == playerOne ){
 
         sprite.animations.play('dieLeft', 5, false);
         actionText.setText(user.opponent.username + '\n\n WINS THE BATTLE');
@@ -573,7 +601,7 @@ function block( sprite, damageNum){
     setPlayerNumber ( sprite );
 
     // Pick sprite and animations to play, and update HP based on damageNum, set HPText to visable and update it.
-    if ( playerOneFacing == 'right' && sprite == playerOne){
+    if ( playerOneFacing == 'right' &amp;&amp; sprite == playerOne){
 
         sprite.animations.play('blockRight', 5, true);
         playerOneHPText.setText('-' + damageNum);
@@ -581,7 +609,7 @@ function block( sprite, damageNum){
         playerOneHPText.visible = true;
     }
 
-    else if ( playerTwoFacing == 'right' && sprite == playerTwo){
+    else if ( playerTwoFacing == 'right' &amp;&amp; sprite == playerTwo){
 
         sprite.animations.play('blockRight', 5, true);
         playerTwoHPText.setText('-' + damageNum);
@@ -589,7 +617,7 @@ function block( sprite, damageNum){
         playerTwoHPText.visible = true;
     }
 
-     else if ( playerOneFacing == 'left' && sprite == playerOne){
+     else if ( playerOneFacing == 'left' &amp;&amp; sprite == playerOne){
 
         sprite.animations.play('blockLeft', 5, true);
         playerOneHPText.setText('-'+damageNum);
@@ -691,7 +719,7 @@ function battleLoop ( battleObj ) {
         i++;
 
         // Loop for the length of battleObj
-        if (i < battleObj.length) {  
+        if (i &lt; battleObj.length) {  
 
             battleLoop( battleObj);           
         }                        
@@ -737,3 +765,26 @@ function pickCharWeapon ( charName ){
         return 'Fireball';
     }
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="battle_system_state.html">battle_system_state</a></li><li><a href="debug_console.html">debug_console</a></li><li><a href="load_state.html">load_state</a></li><li><a href="main_menu_state.html">main_menu_state</a></li><li><a href="server.html">server</a></li><li><a href="signin_state.html">signin_state</a></li><li><a href="signup_state.html">signup_state</a></li><li><a href="user.html">user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#attack">attack</a></li><li><a href="global.html#attackClose">attackClose</a></li><li><a href="global.html#attackFar">attackFar</a></li><li><a href="global.html#battleData">battleData</a></li><li><a href="global.html#battleLoop">battleLoop</a></li><li><a href="global.html#block">block</a></li><li><a href="global.html#die">die</a></li><li><a href="global.html#game">game</a></li><li><a href="global.html#movePlayer">movePlayer</a></li><li><a href="global.html#nouns">nouns</a></li><li><a href="global.html#pick_state">pick_state</a></li><li><a href="global.html#pickCharacter">pickCharacter</a></li><li><a href="global.html#pickCharWeapon">pickCharWeapon</a></li><li><a href="global.html#pickLeft">pickLeft</a></li><li><a href="global.html#pickRight">pickRight</a></li><li><a href="global.html#randomInt">randomInt</a></li><li><a href="global.html#randomName">randomName</a></li><li><a href="global.html#setCharacter">setCharacter</a></li><li><a href="global.html#setPlayerLoc">setPlayerLoc</a></li><li><a href="global.html#setPlayerNumber">setPlayerNumber</a></li><li><a href="global.html#signin_btn_click">signin_btn_click</a></li><li><a href="global.html#signup_btn_click">signup_btn_click</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Mar 02 2017 22:04:18 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

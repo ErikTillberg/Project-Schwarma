@@ -214,8 +214,8 @@ var main_menu_state = {
     },
     /**
      * Function creates a random integer between min and max and returns it.
-     * @param min
-     * @param max
+     * @param {Number} min
+     * @param {Number} max
      * @returns {Number}
      */
     randomInt: function(min, max) {
