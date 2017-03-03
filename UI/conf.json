@@ -3,8 +3,8 @@
     "allowUnknownTags": true
   },
   "source": {
-    "include": ["./"],
-    "includePattern": ".+\.js(doc)?$",
+    "include": ["./UI/js"],
+    "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "docs"
   },
   "plugins": [],
@@ -19,12 +19,7 @@
     "linenums": true,
     "collapseSymbols": true,
     "inverseNav": false
-  },
-  "opts": {
-    "template": "C:\\Users\\Public\\WebsiteTools\\jsdoc3\\templates\\docstrap\\template",
-    "encoding": "utf8",
-    "destination": "docs/js",
-    "recurse": true,
-    "private": true
-  }
+  }, "opts": {
+    "destination": "./Documentation/UI"
+}
 }
