@@ -116,10 +116,10 @@ public class MatchmakingCtrl {
             }
 
 //          System.out.println("PRINTING EVERYONE IN THE USER MAP");
-
-            for(Map.Entry<User, Session> entry: userMatchmakingMap.entrySet()){
-                System.out.println(entry.getKey().getUsername());
-            }
+//
+//            for(Map.Entry<User, Session> entry: userMatchmakingMap.entrySet()){
+//                System.out.println(entry.getKey().getUsername());
+//            }
 
             //Try find a match
             attemptToFindMatch(user, userSession);
@@ -204,7 +204,6 @@ public class MatchmakingCtrl {
         userMatchmakingMap.remove(user);
 
         //all done, nice.
-
     }
 
 }
