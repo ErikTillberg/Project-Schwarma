@@ -6,54 +6,55 @@
 // Sample output provided by the sim server
 var battleData = [
 
-        {"action":"attack","player":"playerOne","number":"17"},
-        {"action":"movePlayer","player":"playerTwo","number":"3"},
-        {"action":"attack","player":"playerOne","number":"6"},
-        {"action":"movePlayer","player":"playerTwo","number":"4"},
-        {"action":"movePlayer","player":"playerOne","number":"2"},
-        {"action":"movePlayer","player":"playerTwo","number":"3"},
-        {"action":"movePlayer","player":"playerOne","number":"1"},
-        {"action":"attack","player":"playerTwo","number":"8"},
-        {"action":"movePlayer","player":"playerOne","number":"2"},
-        {"action":"movePlayer","player":"playerTwo","number":"4"},
-        {"action":"attack","player":"playerOne","number":"23"},
-        {"action":"movePlayer","player":"playerTwo","number":"3"},
-        {"action":"movePlayer","player":"playerOne","number":"1"},
-        {"action":"attack","player":"playerTwo","number":"5"},
-        {"action":"attack","player":"playerOne","number":"11"},
-        {"action":"movePlayer","player":"playerTwo","number":"2"},
-        {"action":"attack","player":"playerTwo","number":"19"},
-        {"action":"attack","player":"playerOne","number":"11"},
-        {"action":"movePlayer","player":"playerTwo","number":"1"},
-        {"action":"attack","player":"playerOne","number":"15"},
-        {"action":"movePlayer","player":"playerTwo","number":"2"},
-        {"action":"movePlayer","player":"playerTwo","number":"1"},
-        {"action":"movePlayer","player":"playerTwo","number":"2"},
-        {"action":"movePlayer","player":"playerTwo","number":"1"},
-        {"action":"movePlayer","player":"playerTwo","number":"2"},
-        {"action":"attack","player":"playerTwo","number":"7"},
-        {"action":"attack","player":"playerOne","number":"10"},
-        {"action":"movePlayer","player":"playerTwo","number":"1"},
-        {"action":"movePlayer","player":"playerTwo","number":"2"},
-        {"action":"movePlayer","player":"playerTwo","number":"1"},
-        {"action":"movePlayer","player":"playerTwo","number":"2"},
-        {"action":"attack","player":"playerTwo","number":"12"},
-        {"action":"movePlayer","player":"playerTwo","number":"1"},
-        {"action":"movePlayer","player":"playerTwo","number":"2"},
-        {"action":"movePlayer","player":"playerTwo","number":"1"},
-        {"action":"attack","player":"playerOne","number":"2"},
-        {"action":"attack","player":"playerTwo","number":"11"},
-        {"action":"attack","player":"playerTwo","number":"3"},
-        {"action":"movePlayer","player":"playerTwo","number":"2"},
-        {"action":"movePlayer","player":"playerTwo","number":"1"},
-        {"action":"attack","player":"playerOne","number":"2"},
-        {"action":"movePlayer","player":"playerTwo","number":"2"},
-        {"action":"movePlayer","player":"playerTwo","number":"1"},
-        {"action":"movePlayer","player":"playerTwo","number":"2"},
-        {"action":"attack","player":"playerTwo","number":"7"},
-        {"action":"movePlayer","player":"playerTwo","number":"1"},
-        {"action":"attack","player":"playerOne","number":"3"},
-        {"action":"die","player":"playerTwo","number":"20"}
+    {"action":"attack","player":"playerOne","number":"17"},
+    {"action":"movePlayer","player":"playerTwo","number":"3"},
+    {"action":"attack","player":"playerOne","number":"6"},
+    {"action":"movePlayer","player":"playerTwo","number":"4"},
+    {"action":"movePlayer","player":"playerOne","number":"2"},
+    {"action":"movePlayer","player":"playerTwo","number":"3"},
+    {"action":"movePlayer","player":"playerOne","number":"1"},
+    {"action":"attack","player":"playerTwo","number":"8"},
+    {"action":"movePlayer","player":"playerOne","number":"2"},
+    {"action":"movePlayer","player":"playerTwo","number":"4"},
+    {"action":"attack","player":"playerOne","number":"23"},
+    {"action":"movePlayer","player":"playerTwo","number":"3"},
+    {"action":"movePlayer","player":"playerOne","number":"1"},
+    {"action":"attack","player":"playerTwo","number":"5"},
+    {"action":"attack","player":"playerOne","number":"11"},
+    {"action":"movePlayer","player":"playerTwo","number":"2"},
+    {"action":"attack","player":"playerTwo","number":"19"},
+    {"action":"attack","player":"playerOne","number":"11"},
+    {"action":"movePlayer","player":"playerTwo","number":"1"},
+    {"action":"attack","player":"playerOne","number":"15"},
+    {"action":"movePlayer","player":"playerTwo","number":"2"},
+    {"action":"movePlayer","player":"playerTwo","number":"1"},
+    {"action":"movePlayer","player":"playerTwo","number":"2"},
+    {"action":"movePlayer","player":"playerTwo","number":"1"},
+    {"action":"movePlayer","player":"playerTwo","number":"2"},
+    {"action":"attack","player":"playerTwo","number":"7"},
+    {"action":"attack","player":"playerOne","number":"10"},
+    {"action":"movePlayer","player":"playerTwo","number":"1"},
+    {"action":"movePlayer","player":"playerTwo","number":"2"},
+    {"action":"movePlayer","player":"playerTwo","number":"1"},
+    {"action":"movePlayer","player":"playerTwo","number":"2"},
+    {"action":"attack","player":"playerTwo","number":"12"},
+    {"action":"movePlayer","player":"playerTwo","number":"1"},
+    {"action":"movePlayer","player":"playerTwo","number":"2"},
+    {"action":"movePlayer","player":"playerTwo","number":"1"},
+    {"action":"attack","player":"playerOne","number":"2"},
+    {"action":"attack","player":"playerTwo","number":"11"},
+    {"action":"attack","player":"playerTwo","number":"3"},
+    {"action":"movePlayer","player":"playerTwo","number":"2"},
+    {"action":"movePlayer","player":"playerTwo","number":"1"},
+    {"action":"attack","player":"playerOne","number":"2"},
+    {"action":"movePlayer","player":"playerTwo","number":"2"},
+    {"action":"movePlayer","player":"playerTwo","number":"1"},
+    {"action":"movePlayer","player":"playerTwo","number":"2"},
+    {"action":"attack","player":"playerTwo","number":"7"},
+    {"action":"movePlayer","player":"playerTwo","number":"1"},
+    {"action":"attack","player":"playerOne","number":"3"},
+    {"action":"die","player":"playerTwo","number":"20"
+
     ]
 
 var playerOne;
@@ -87,6 +88,9 @@ var playerTwoText;
 var playerOneHPText;
 var playerTwoHPText;
 
+var winnerText;
+var winTextVisible = false;
+
 var playerOneHP = 100;
 var playerTwoHP = 100;
 
@@ -95,11 +99,12 @@ var playerNum;
 var i = 0; 
 var delayTimer = 4000;
 
+
 /**
- * Manages game assets and rendering of all battle animations.
- * @namespace
- * @type {{preload: battle_system_state.preload, create: battle_system_state.create, update: battle_system_state.update}}
- */
+* Manages game assets and rendering of all battle animations.
+* @namespace
+* @type {{preload: battle_system_state.preload, create: battle_system_state.create, update: battle_system_state.update}}
+*/
 var battle_system_state = {
 
     /**
@@ -199,10 +204,15 @@ var battle_system_state = {
         playerTwoHPText.anchor.setTo(0.5, 0.5);
         playerTwoHPText.visible = false;
 
+        winnerText = game.add.bitmapText(640, 180, 'carrier_command', ' ', 5);
+        winnerText.anchor.setTo(0.5, 0.5);
+        winnerText.visible = false;
+
         // Run the battleLoop function.
         battleLoop(battleData);   
 
     },
+
     /**
      * Handles orientation of player sprites, projectile lifecycle, shadow movement and idle animations for character sprites.
      */
@@ -257,58 +267,16 @@ var battle_system_state = {
             playerOneProj.visible = false;
             playerTwoProj.visible = false;
         }
+
+        if ( winTextVisible ) {
+
+            if (winnerText.fontSize < 40)
+            {
+                winnerText.fontSize += 1;
+            }
+        }
     }
 };
-
-/*function update() {
-
-
-    if (playerOne.x < playerTwo.x){
-
-        playerOneFacing = 'right';
-        playerTwoFacing = 'left';
-    }
-
-    else {
-
-        playerOneFacing = 'left';
-        playerTwoFacing = 'right';
-    }
-
-    playerOneShadow.x = playerOne.x;
-    playerTwoShadow.x = playerTwo.x;
-
-    playerOneHPText.x = playerOne.x;
-    playerTwoHPText.x = playerTwo.x;
-
-    playerOneText.setText ('Player\n\nOne\n\nHP: ' + playerOneHP );
-    playerTwoText.setText ('Player\n\nTwo\n\nHP: ' + playerTwoHP );
-
-    // If canIdle is ture play the idle animation the way the player is facing
-    if ( canIdle ) {
-
-        if ( playerOneFacing == 'right' ){
-
-            playerOne.animations.play('idleRight', 5, true);
-            playerTwo.animations.play('idleLeft', 5, true);
-        }
-
-    else {
-
-            playerOne.animations.play('idleLeft', 5, true);
-            playerTwo.animations.play('idleRight', 5, true);
-        }
-    }
-
-    // Set the player projectiles to invisible.
-    if ( !canShoot ) {
-
-        playerOneProj.x = playerOne.x;
-        playerTwoProj.x = playerTwo.x;
-        playerOneProj.visible = false;
-        playerTwoProj.visible = false;
-    }
-}*/
 
 /**
  * Function moves the player sprite to the x location in playerMove arrya [num]
@@ -375,7 +343,7 @@ function movePlayer ( sprite, moveNum ){
     }
 
     // Update action text.
-    actionText.setText(playerNum + "\n\n MOVE TO\n\nSPOT " + moveNum );
+    actionText.setText(playerNum + " MOVE TO\n\nSPOT " + moveNum );
 
     // set the player location after the sprite moves to the right location
     game.time.events.add( (1000 * animationTimer), (function() { setPlayerLoc( sprite, moveNum); canIdle = true;  console.log(sprite.x);}), this );
@@ -426,7 +394,7 @@ function attack( sprite, damageNum ){
     }
 
     // Update the actionText.
-    actionText.setText(playerNum + "\n\n ATTACK" );
+    actionText.setText(playerNum + " ATTACK" );
 }
 
 /**
@@ -534,40 +502,38 @@ function die( sprite, dieTimer ){
     if ( playerOneFacing == 'right' && sprite == playerOne ){
 
         sprite.animations.play('dieRight', 5, false);
-       // win(playerTwo);
+        win (playerTwo);
         actionText.setText(user.opponent.username + '\n\n WINS THE BATTLE');
-
     }
 
     else if ( playerTwoFacing == 'right' && sprite == playerTwo ){
 
         sprite.animations.play('dieRight', 5, false);
-        //win(playerOne);
+        win (playerOne);
         actionText.setText(user.username + '\n\n WINS THE BATTLE');
     }
 
     else if ( playerOneFacing == 'left' && sprite == playerOne ){
 
         sprite.animations.play('dieLeft', 5, false);
-       // win(playerTwo);
+        win (playerTwo);
         actionText.setText(user.opponent.username + '\n\n WINS THE BATTLE');
-
     }
 
     else{
 
         sprite.animations.play('dieLeft', 5, false);
-       // win(playerOne);
+        win (playerOne);
         actionText.setText(user.username + '\n\n WINS THE BATTLE');
     }
 
     //actionText.setText("PLAYER " + playerNum + " DEAD");
 
     // Pause for dieTimer seconds
-    game.time.events.add( dieTimer * 1000 , (function() { canIdle = true; }), this );
-}
+    //game.time.events.add( dieTimer * 1000 , (function() { canIdle = true; }), this );
+ }
 
-/**
+ /**
  * Function decides what sprite to animate and what version(left, right) of the block animation to play.
  * @param sprite
  * @param damageNum
@@ -612,7 +578,7 @@ function block( sprite, damageNum){
     }
 
     // Update actionText.
-    actionText.setText(playerNum +"\n\n BLOCK ");
+    actionText.setText(playerNum +" BLOCK ");
 
     // Set HPText to invisible after animation plays.
     game.time.events.add( 1000, (function() { canIdle = true; playerOneHPText.visible = false; playerTwoHPText.visible = false}), this ); 
@@ -727,7 +693,7 @@ function pickCharacter ( charName ){
 /**
  * Function picks what character projectile sprite to load.
  * @param charName
- * @returns {*}
+ * @returns {string}
  */
 function pickCharWeapon ( charName ){
 
@@ -744,3 +710,33 @@ function pickCharWeapon ( charName ){
     }
 }
 
+/**
+ * Function moves the player to the middle of the screen and then plays the jump animation.
+ * It also scales the winner message and displays it.
+ * @param sprite
+ */
+function win ( sprite ) {
+
+    canIdle = false;
+
+    if ( sprite == playerOne){
+
+        winnerText.setText (user.username + ' Is The Winner' );
+    }
+    else{
+
+        winnerText.setText (user.opponent.username + ' Is The Winner' );
+    }
+
+    if (sprite.x <= 640) {
+
+        sprite.animations.play('rollRight', 5, true);
+    }
+    else {
+
+        sprite.animations.play('rollLeft', 5, true);
+    }
+
+    game.add.tween(sprite).to({ x: 640}, 2000, Phaser.Easing.Linear.None, true);
+    game.time.events.add( 2000, (function() { winnerText.visible = true; winTextVisible = true; sprite.animations.play('jumpLeft', 5, true);}), this );
+}
