@@ -53,7 +53,7 @@ var battleData = [
     {"action":"attack","player":"playerTwo","number":"7"},
     {"action":"movePlayer","player":"playerTwo","number":"1"},
     {"action":"attack","player":"playerOne","number":"3"},
-    {"action":"die","player":"playerTwo","number":"20"
+    {"action":"die","player":"playerTwo","number":"20"}
 
     ]
 
@@ -343,7 +343,7 @@ function movePlayer ( sprite, moveNum ){
     }
 
     // Update action text.
-    actionText.setText(playerNum + " MOVE TO\n\nSPOT " + moveNum );
+    actionText.setText(playerNum + "\n\nMOVES TO\n\nSPOT " + moveNum );
 
     // set the player location after the sprite moves to the right location
     game.time.events.add( (1000 * animationTimer), (function() { setPlayerLoc( sprite, moveNum); canIdle = true;  console.log(sprite.x);}), this );
@@ -394,7 +394,7 @@ function attack( sprite, damageNum ){
     }
 
     // Update the actionText.
-    actionText.setText(playerNum + " ATTACK" );
+    actionText.setText(playerNum + "\n\nATTACKS" );
 }
 
 /**
@@ -503,28 +503,28 @@ function die( sprite, dieTimer ){
 
         sprite.animations.play('dieRight', 5, false);
         win (playerTwo);
-        actionText.setText(user.opponent.username + '\n\n WINS THE BATTLE');
+        actionText.setText(user.opponent.username + '\n\nWINS THE BATTLE');
     }
 
     else if ( playerTwoFacing == 'right' && sprite == playerTwo ){
 
         sprite.animations.play('dieRight', 5, false);
         win (playerOne);
-        actionText.setText(user.username + '\n\n WINS THE BATTLE');
+        actionText.setText(user.username + '\n\nWINS THE BATTLE');
     }
 
     else if ( playerOneFacing == 'left' && sprite == playerOne ){
 
         sprite.animations.play('dieLeft', 5, false);
         win (playerTwo);
-        actionText.setText(user.opponent.username + '\n\n WINS THE BATTLE');
+        actionText.setText(user.opponent.username + '\n\nWINS THE BATTLE');
     }
 
     else{
 
         sprite.animations.play('dieLeft', 5, false);
         win (playerOne);
-        actionText.setText(user.username + '\n\n WINS THE BATTLE');
+        actionText.setText(user.username + '\n\nWINS THE BATTLE');
     }
 
     //actionText.setText("PLAYER " + playerNum + " DEAD");
@@ -578,7 +578,7 @@ function block( sprite, damageNum){
     }
 
     // Update actionText.
-    actionText.setText(playerNum +" BLOCK ");
+    actionText.setText(playerNum +"\n\nBLOCKS");
 
     // Set HPText to invisible after animation plays.
     game.time.events.add( 1000, (function() { canIdle = true; playerOneHPText.visible = false; playerTwoHPText.visible = false}), this ); 
