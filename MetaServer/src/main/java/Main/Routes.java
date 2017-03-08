@@ -3,6 +3,7 @@ package Main; /**
  */
 
 import Controllers.AuthenticationCtrl;
+import Controllers.BattleSocketCtrl;
 import Controllers.InventoryCtrl;
 import Controllers.MatchmakingCtrl;
 import Models.Card;
@@ -15,6 +16,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.query.Query;
 import spark.ResponseTransformer;
 
 import static Utilities.DBConn.datastore;
@@ -27,6 +29,7 @@ public class Routes {
         port(9000);
 
         webSocket("/matchmaking", MatchmakingCtrl.class);
+        webSocket("/battleSocket", BattleSocketCtrl.class);
 
         enableCORS("*", "*", "*");
 
