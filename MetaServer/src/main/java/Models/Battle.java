@@ -4,8 +4,12 @@ import com.google.gson.JsonObject;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.query.Query;
 
 import java.util.Date;
+import java.util.List;
+
+import static Utilities.DBConn.datastore;
 
 /**
  * @author FrancescosMac
@@ -24,15 +28,15 @@ public class Battle {
     private Boolean player2_ready = false;
     private Date date;
     private JsonObject battle_json = new JsonObject();
-    private JsonObject player1_gear = new JsonObject();
-    private JsonObject player2_gear = new JsonObject();
-    private JsonObject player1_equipment = new JsonObject();
-    private JsonObject player2_equipment= new JsonObject();
+    private JsonObject player1_cards = new JsonObject();
+    private JsonObject player2_cards = new JsonObject();
+    private List<Equipment> player1_equipment;
+    private List<Equipment> player2_equipment;
 
 
     public Battle(){}
 
-    public Battle(String player1, String player2, JsonObject player1_equipment, JsonObject player2_equipment){
+    public Battle(String player1, String player2, List<Equipment> player1_equipment, List<Equipment> player2_equipment){
         this.player1 = player1;
         this.player2 = player2;
         this.player1_equipment = player1_equipment;
@@ -86,4 +90,28 @@ public class Battle {
         result = 31 * result + (battle_json != null ? battle_json.hashCode() : 0);
         return result;
     }
+
+    public static Battle getBattleById(String id){
+        ObjectId oi = new ObjectId(id);
+
+        final Query<Battle> query = datastore.createQuery(Battle.class)
+                .field("id").equal(oi);
+
+        Battle battle;
+        try {
+            battle = query.get();
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return battle;
+
+    }
+
+    public boolean save(){
+        datastore.save(this);
+        return true;
+    }
+
+
 }
