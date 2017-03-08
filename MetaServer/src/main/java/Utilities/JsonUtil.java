@@ -1,6 +1,7 @@
 package Utilities;
 
 import Annotations.Exclude;
+import Models.Card;
 import Models.Equipment;
 import com.google.gson.*;
 import spark.ResponseTransformer;
@@ -92,5 +93,7 @@ public class JsonUtil {
     }
 
     public static Equipment parseToEquipment(String object) { return new Gson().fromJson(object, Equipment.class);}
+
+    public static Card parseToCard(String object) { return new Gson().fromJson(object, Card.class);}
 
 }

@@ -59,9 +59,19 @@ public class Battle {
 
     public void setPlayer2(String player2) { this.player2 = player2; }
 
+    public Boolean getPlayer1_ready(){return player1_ready;}
+
+    public void setPlayer1_ready(Boolean state){ this.player1_ready = state;}
+
+    public Boolean getPlayer2_ready(){return player2_ready;}
+
+    public void setPlayer2_ready(Boolean state){ this.player2_ready = state;}
+
     public JsonObject getBattle_json() { return battle_json; }
 
     public Date getDate() { return date; }
+
+
 
 
     ///////////////////////
@@ -107,11 +117,4 @@ public class Battle {
         return battle;
 
     }
-
-    public boolean save(){
-        datastore.save(this);
-        return true;
-    }
-
-
 }

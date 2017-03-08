@@ -52,26 +52,20 @@ public class BattleSocketCtrl {
             The whole map should have the form
             {
                 battle_id: battle id received during matchmaking
-                user_id: user id
+                user_name: user name
                 user_cards: user cards selected for this battle
             }
             */
 
-            ObjectId user_id = new ObjectId(messageAsMap.get("user_id"));
+            String user_id = messageAsMap.get("user_id");
             ObjectId battle_id = new ObjectId(messageAsMap.get("battle_id"));
-            JsonObject user_cards = JsonUtil.stringToJson(messageAsMap.get("user_cards"));
-
-            final Query<Battle> query = datastore.createQuery(Battle.class)
-                    .field("id").equal(battle_id);
-
-            Battle battle;
-            try{
-                battle = query.get();
-            }catch (Exception e){
-                System.out.println(e);
-            }
+            List<Card> user_cards = messageAsMap.get("user_cards");
 
 
+            BattleCtrl.updateReadiness(battle_id, user_id, user_cards);
+
+            if (checkReadiness(battle_id))
+                System.out.println("Ready to send to sim server.");
 
 
 
@@ -80,8 +74,8 @@ public class BattleSocketCtrl {
         }
     }
 
-    public void checkReadiness(Battle battle_id){
-
+    public boolean checkReadiness(ObjectId battle_id){
+        return BattleCtrl.readyToStart(battle_id);
     }
 
 }
