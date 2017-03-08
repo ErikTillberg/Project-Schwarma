@@ -15,6 +15,7 @@ game.state.add('signup', signup_state);
 game.state.add('pick_char', pick_state);
 game.state.add('signin', signin_state);
 game.state.add('main_menu', main_menu_state);
+game.state.add('gear_menu', gear_menu_state);
 game.state.add('battle_system', battle_system_state);
 
 // Start the load state to import game assets

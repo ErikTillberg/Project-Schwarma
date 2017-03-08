@@ -5,7 +5,7 @@
 /**
  * Main hub for the user when they are outside of a match. Provides access to matchmaking, gear selection and card selection.
  * @namespace
- * @type {{matchmaking_active: boolean, matchmaking_time: number, matchmaking_socket: null, preload: main_menu_state.preload, create: main_menu_state.create, gear_btn_click: main_menu_state.gear_btn_click, matchmaking_btn_click: main_menu_state.matchmaking_btn_click, matchmaking_message: main_menu_state.matchmaking_message, cancel_matchmaking: main_menu_state.cancel_matchmaking, matchmaking_end: main_menu_state.matchmaking_end, matchmaking_timer: main_menu_state.matchmaking_timer, back_btn_click: main_menu_state.back_btn_click, battle_btn_click: main_menu_state.battle_btn_click}}
+ * @type {{matchmaking_active: boolean, matchmaking_time: number, matchmaking_socket: null, preload: main_menu_state.preload, create: main_menu_state.create, gear_btn_click: main_menu_state.gear_btn_click, matchmaking_btn_click: main_menu_state.matchmaking_btn_click, matchmaking_message: main_menu_state.matchmaking_message, cancel_matchmaking: main_menu_state.cancel_matchmaking, matchmaking_end: main_menu_state.matchmaking_end, matchmaking_timer: main_menu_state.matchmaking_timer, back_btn_click: main_menu_...(line truncated)...
  */
 var main_menu_state = {
 
@@ -19,6 +19,7 @@ var main_menu_state = {
     preload: function(){
         console.log("main_menu_state: preload");
     },
+
     /**
      * Initializes sprites, buttons, text and event handlers for the main menu state. Overrides Phaser state create method.
      */
@@ -30,18 +31,19 @@ var main_menu_state = {
 
         // Add the menu background to screen
         var background = game.add.sprite(0,0, 'menu_background');
+
         var banner = game.add.sprite(640,210,'Banner');
         banner.frame = this.randomInt(0, 4);
         banner.anchor.setTo(0.5, 0.5);
 
         var num = this.randomInt(0, 4);
-       
-       	// Add the sword/sheild art to the screen, picking randomly from sword_ss sprite sheet
+
+        // Add the sword/sheild art to the screen, picking randomly from sword_ss sprite sheet
         var sword = game.add.sprite( 640, 460,'Sword');
         sword.frame = num;
         sword.anchor.setTo(0.5, 0.5);
         sword.scale.setTo(1.2, 1.2);
-        
+
         // Add the title text to the screen
         var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','MAIN MENU',40);
         titleText.anchor.setTo(0.5, 0.5);
@@ -50,23 +52,23 @@ var main_menu_state = {
         debug_console.init_log();
         debug_console.debug_log("You're on the main menu screen. Signed in as: " + user.username);
 
-         // Button to select the gear screen, currently invisible because it goes notwhere    
-        this.gear_btn_text = game.add.bitmapText(banner.x, 475, 'carrier_command_black','GEAR',22);
+        // Button to select the gear screen
+        this.gear_btn_text = game.add.bitmapText(banner.x, 375, 'carrier_command_black','EQUIP GEAR',22);
         this.gear_btn_text.align = 'center';
         this.gear_btn_text.anchor.set(0.5, 0.5);
         this.gear_btn_text.inputEnabled = true;
         this.gear_btn_text.events.onInputDown.add(this.gear_btn_click, this);
-        this.gear_btn_text.visible = false;
+      //  this.gear_btn_text.visible = false;
 
         // Matchmaking button, visible while matchmaking is not taking place, hidden during matchmaking to show cancel button
-        this.matchmaking_btn_text = game.add.bitmapText(banner.x, 415, 'carrier_command_black','FIND MATCH',22);
+        this.matchmaking_btn_text = game.add.bitmapText(banner.x, 425, 'carrier_command_black','FIND MATCH',22);
         this.matchmaking_btn_text.align = 'center';
         this.matchmaking_btn_text.anchor.set(0.5, 0.5);
         this.matchmaking_btn_text.inputEnabled = true;
         this.matchmaking_btn_text.events.onInputDown.add(this.matchmaking_btn_click, this);
 
         // Brings the user to a test battle screen
-        this.battle_btn_text = game.add.bitmapText(banner.x, 475, 'carrier_command_black','BATTLE SYSTEM\nDEMO',18);
+        this.battle_btn_text = game.add.bitmapText(banner.x, 485, 'carrier_command_black','BATTLE SYSTEM\nDEMO',18);
         this.battle_btn_text.align = 'center';
         this.battle_btn_text.anchor.set(0.5, 0.5);
         this.battle_btn_text.inputEnabled = true;
@@ -82,6 +84,7 @@ var main_menu_state = {
 
         this.back_btn= game.add.button(game.world.centerX-530, 450, 'Home_button', this.back_btn_click, this, 2, 1, 0);
     },
+
     /**
      * Move to the player to the select gear screen, only if there is no matchmaking currently in progress.
      */
@@ -90,11 +93,12 @@ var main_menu_state = {
         console.log("main_menu: gear_btn_click");
 
         if (!this.matchmaking_active) {
-            game.state.start("gear");
+            game.state.start("gear_menu");
         }else{
             debug_console.error_log("Cannot change gear while you are looking for a match.");
         }
     },
+
     /**
      * Open a WebSocket connection for matchmaking, enable the cancel matchmaking button, and set matchmaking_active flag to true.
      */
@@ -116,10 +120,11 @@ var main_menu_state = {
 
         // TODO test if this actually changes the event handler
         this.matchmaking_cancel_btn_text.visible = true;
-        this.matchmaking_btn_text.visible =false;
+        this.matchmaking_btn_text.visible = false;
 
         return;
     },
+
     /**
      * Handles messages being received from the WebSocket. Parses the message and take different actions based on what is sent.
      * @param {Object} message JSON object that arrived over the matchmaking WebSocket.
@@ -155,6 +160,7 @@ var main_menu_state = {
             console.log(response.message);
         }
     },
+
     /**
      * Send a message along the matchmaking WebSocket to cancel matchmaking. Close the connection to the server.
      */
@@ -178,6 +184,7 @@ var main_menu_state = {
         this.matchmaking_btn_text.visible = true;
 
     },
+
     /**
      * Clean up after closing the matchmaking socket: reset timer, clear matchmaking flag, output message to the user
      * @param {Object} object Object containing information about the closing of the WebSocket.
@@ -189,6 +196,7 @@ var main_menu_state = {
         debug_console.message_log(object.reason);
         this.matchmaking_socket = null;
     },
+
     /**
      * Update the canvas debug_log with the elapsed seconds spent in matchmaking.
      */
@@ -197,14 +205,16 @@ var main_menu_state = {
         main_menu_state.matchmaking_time += server.matchmaking_timer_interval/1000;
         debug_console.message_log("Time in matchmaking: " + String(main_menu_state.matchmaking_time) + " seconds.");
     },
+
     /**
      * Handles back button click. Returns the user to the landing page, inside the load state.
      */
-     back_btn_click: function(){
+    back_btn_click: function(){
 
         console.log("signin_state: signup_btn_click");
         game.state.start("load");
     },
+
     /**
      * Handles back button click. Loads the battle_system state.
      */
@@ -224,3 +234,4 @@ var main_menu_state = {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 };
+

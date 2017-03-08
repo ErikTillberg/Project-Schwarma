@@ -28,8 +28,8 @@ var load_state = {
 
         game.load.image('Home_button', 'assets/Art/home_button.png');
         game.load.image('Submit_button', 'assets/Art/submit_button.png');
-        game.load.image('ArroeRight', 'Assets/Art/arrowRight.png');
-        game.load.image('ArrowLeft', 'Assets/Art/arrowLeft.png');
+        game.load.image('ArroeRight', 'assets/Art/arrowRight.png');
+        game.load.image('ArrowLeft', 'assets/Art/arrowLeft.png');
 
         game.load.spritesheet('Knight', 'assets/Art/KnightSpriteSheet.png', 384, 384);
         game.load.spritesheet('Thief', 'assets/Art/ThiefSpriteSheet.png', 384, 384);
@@ -41,6 +41,10 @@ var load_state = {
 
         game.load.spritesheet('Sword', 'assets/Art/sword_ss.png', 750, 750);
         game.load.spritesheet('Button_back', 'assets/Art/button_ss.png', 200, 70);
+
+        game.load.spritesheet('Card', 'assets/Art/cardSS.png', 194, 279);
+        game.load.spritesheet('Card_Item', 'assets/Art/cardthingSS.png', 100, 100);
+
         game.load.image('menu_background', 'assets/Art/menu_background.png');
 
         game.load.bitmapFont('carrier_command', 'assets/fonts/carrier_command.png', 'assets/fonts/carrier_command.xml');
@@ -52,7 +56,7 @@ var load_state = {
      */
     create: function() {
 
-    	// Set the background color of the canvas.
+        // Set the background color of the canvas.
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
 
         // Get the name to display by picking randomly from nouns array.
@@ -72,19 +76,18 @@ var load_state = {
         sword.anchor.setTo(0.5, 0.5);
         sword.scale.setTo(1.2, 1.2);
 
-        
-        /*var button1 = game.add.sprite(banner.x,425 ,'Button_back',signin_btn_click);
+        /*var button1 = game.add.sprite(banner.x,415 ,'Button_back',signin_btn_click);
         button1.frame = num;
         button1.anchor.setTo(0.5, 0.5);
         button1.inputEnabled = true;
         button1.events.onInputDown.add(signin_btn_click, this);
 
-        var button2= game.add.sprite(banner.x,485,'Button_back');
-        button2.frame = num;
-        button2.anchor.setTo(0.5, 0.5);
-        button2.inputEnabled = true;
-        button2.events.onInputDown.add(signup_btn_click, this);*/
-        
+	    var button2= game.add.sprite(banner.x,475,'Button_back');
+	    button2.frame = num;
+	    button2.anchor.setTo(0.5, 0.5);
+	    button2.inputEnabled = true;
+	    button2.events.onInputDown.add(signup_btn_click, this);*/
+
         // Add the title text to the screen
         var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','PROJECT ' + name,40);
         titleText.anchor.setTo(0.5, 0.5);
