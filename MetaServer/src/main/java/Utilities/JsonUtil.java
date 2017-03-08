@@ -12,6 +12,16 @@ import java.util.Map;
  * Created by Erik_Tillberg on 2/3/2017.
  */
 public class JsonUtil {
+
+    /**
+     *
+     * @param s Some string in appropriate JSON format
+     * @return Returns the above string as a JSON object.
+     */
+    public static JsonObject stringToJson(String s){
+        return new JsonParser().parse(s).getAsJsonObject();
+    }
+
     /**
      *
      * @param object Some object with member variables
