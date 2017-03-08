@@ -30,6 +30,9 @@ public class User {
     private String username;
     private String sessionToken;
 
+    private Equipment equippedChest;
+    private Equipment equippedWeapon;
+    private Equipment equippedBoots;
 
     private String characterType;
     private int rating;
@@ -104,6 +107,30 @@ public class User {
     public void setCharacterType(String characterType) {
         this.characterType = characterType;
     }
+
+    public Equipment getEquippedChest() {
+        return equippedChest;
+    }
+
+    public void setEquippedChest(Equipment equippedChest) {
+        this.equippedChest = equippedChest;
+    }
+
+    public Equipment getEquippedWeapon() {
+        return equippedWeapon;
+    }
+
+    public void setEquippedWeapon(Equipment equippedWeapon) {
+        this.equippedWeapon = equippedWeapon;
+    }
+
+    public Equipment getEquippedBoots() {
+        return equippedBoots;
+    }
+
+    public void setEquippedBoots(Equipment equippedBoots) {
+        this.equippedBoots = equippedBoots;
+    }
     ///////////////////////
     ////////EQUALS ////////
     ///////////////////////
@@ -148,6 +175,11 @@ public class User {
             return null;
         }
         return user;
+    }
+
+    public boolean save(){
+        datastore.save(this);
+        return true;
     }
 
 }
