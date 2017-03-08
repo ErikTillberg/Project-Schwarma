@@ -60,6 +60,7 @@ public class User {
         this.password = password; //this will already be hashed.
         this.salt = salt;
         this.rating = 100;
+        this.coins = 0;
     }
 
     ///////////////////////
