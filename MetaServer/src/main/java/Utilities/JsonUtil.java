@@ -4,10 +4,12 @@ import Annotations.Exclude;
 import Models.Card;
 import Models.Equipment;
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import spark.ResponseTransformer;
 import org.bson.types.ObjectId;
 
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -94,6 +96,8 @@ public class JsonUtil {
 
     public static Equipment parseToEquipment(String object) { return new Gson().fromJson(object, Equipment.class);}
 
-    public static Card parseToCard(String object) { return new Gson().fromJson(object, Card.class);}
+    public static Card parseToListOfCards(String object) {
+        return new Gson().fromJson(object, new TypeToken<List<Card>>(){}.getType());
+    }
 
 }
