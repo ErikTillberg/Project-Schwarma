@@ -91,13 +91,13 @@ var gear_menu_state = {
         var card1 = new card(game, 800, 360, 'Water', 'Mobility', 'Mobility card of Head-scratching Effectiveness', +10, +13);
         game.add.existing(card1);
 
-        var card2 = new card(game, 1100, 360, 'Fire', 'Attack', 'Attack card of Stupid Stuff', +10, +13);
+        var card2 = new card(game, 1100, 360, 'Fire', 'Attack', 'Attack card of Stupid Stuff', 10, 13);
         game.add.existing(card2);
 
-        var card3 = new card(game, 200, 360, 'Earth', 'Defence', 'Defence card of Total Strangeness', +10, +13);
+        var card3 = new card(game, 200, 360, 'Earth', 'Defence', 'Defence card of Total Strangeness', 10, 13);
         game.add.existing(card3);
 
-        var card4 = new card(game, 500, 360, '', 'Defence', 'Defence card of Boring Thing', +10, +13);
+        var card4 = new card(game, 500, 360, '', 'Defence', 'Defence card of Boring Thing', 10, 13);
         game.add.existing(card4);
 
     },
