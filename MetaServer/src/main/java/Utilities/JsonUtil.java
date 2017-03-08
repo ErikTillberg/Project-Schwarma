@@ -1,6 +1,7 @@
 package Utilities;
 
 import Annotations.Exclude;
+import Models.Equipment;
 import com.google.gson.*;
 import spark.ResponseTransformer;
 import org.bson.types.ObjectId;
@@ -89,5 +90,7 @@ public class JsonUtil {
     public static Map<String, String> parseToMap(String object){
         return new Gson().fromJson(object, Map.class);
     }
+
+    public static Equipment parseToEquipment(String object) { return new Gson().fromJson(object, Equipment.class);}
 
 }

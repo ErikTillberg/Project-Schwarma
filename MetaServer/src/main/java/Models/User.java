@@ -1,12 +1,16 @@
 package Models;
 
 import Annotations.Exclude;
+import Utilities.ResponseError;
 import jdk.nashorn.internal.ir.annotations.Reference;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.query.Query;
 
 import java.util.List;
+
+import static Utilities.DBConn.datastore;
 
 /**
  * Created by Erik Tillberg on 1/26/2017.
@@ -26,6 +30,9 @@ public class User {
     private String username;
     private String sessionToken;
 
+    private Equipment equippedChest;
+    private Equipment equippedWeapon;
+    private Equipment equippedBoots;
 
     private String characterType;
     private int rating;
@@ -100,6 +107,30 @@ public class User {
     public void setCharacterType(String characterType) {
         this.characterType = characterType;
     }
+
+    public Equipment getEquippedChest() {
+        return equippedChest;
+    }
+
+    public void setEquippedChest(Equipment equippedChest) {
+        this.equippedChest = equippedChest;
+    }
+
+    public Equipment getEquippedWeapon() {
+        return equippedWeapon;
+    }
+
+    public void setEquippedWeapon(Equipment equippedWeapon) {
+        this.equippedWeapon = equippedWeapon;
+    }
+
+    public Equipment getEquippedBoots() {
+        return equippedBoots;
+    }
+
+    public void setEquippedBoots(Equipment equippedBoots) {
+        this.equippedBoots = equippedBoots;
+    }
     ///////////////////////
     ////////EQUALS ////////
     ///////////////////////
@@ -129,6 +160,26 @@ public class User {
 
     public static boolean isValidCharacterType(String characterType){
         return characterType.equals(MAGE) || characterType.equals(THIEF) || characterType.equals(WARRIOR);
+    }
+
+    public static User getUserByUsername(String username){
+        //Get user username:
+        final Query<User> query = datastore.createQuery(User.class)
+                .field("username").equal(username);
+
+        User user;
+        try {
+            user = query.get();
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return user;
+    }
+
+    public boolean save(){
+        datastore.save(this);
+        return true;
     }
 
 }

@@ -4,12 +4,16 @@ import Models.Card;
 import Models.Equipment;
 import Models.User;
 import Utilities.InventoryUtil;
+import Utilities.JsonUtil;
 import Utilities.ResponseError;
 import Utilities.ResponseSuccess;
+import org.bson.types.ObjectId;
+import org.eclipse.jetty.server.Response;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
 import java.util.List;
+import java.util.Map;
 
 import static Utilities.DBConn.datastore;
 
@@ -125,4 +129,71 @@ public class InventoryCtrl {
 
         return true;
     }
+
+    /**
+     * Function takes a message body of the form:
+     * {
+     *     username: 'some user',
+     *     equippedChest: 'some chest ID',
+     *     equippedBoots: 'some boots ID',
+     *     equippedWeapon: 'some weapon ID'
+     * }
+     * @param messageBody
+     * @return
+     */
+    public static Object setActiveEquipment(Map<String, String> messageBody){
+        String username = messageBody.get("username");
+        Equipment equippedChest = JsonUtil.parseToEquipment(messageBody.get("equippedChest"));
+        Equipment equippedBoots = JsonUtil.parseToEquipment(messageBody.get("equippedBoots"));
+        Equipment equippedWeapon = JsonUtil.parseToEquipment(messageBody.get("equippedWeapon"));
+
+        // If one of the fields are missing, then that's not good, so return an error.
+        if (username == null || equippedChest == null || equippedBoots == null || equippedWeapon == null){
+            return new ResponseError("Error", "Invalid form submission");
+        }
+
+        //Otherwise, continue on.
+
+        User user = User.getUserByUsername(username);
+
+        if (user == null){
+            System.out.println("Could not find user");
+            return new ResponseError("Invalid username", "Could not find user " + username);
+        }
+
+        //Validate that the user has the equipment that was sent to us.
+        boolean hasChest = false;
+        boolean hasBoots = false;
+        boolean hasWeapon = false;
+        //Nice.
+
+        for (Equipment equipment : user.getEquipment()){
+            if (equipment.equals(equippedChest)){
+                hasChest = true;
+            }
+
+            if (equipment.equals(equippedBoots)){
+                hasBoots = true;
+            }
+
+            if (equipment.equals(equippedWeapon)){
+                hasWeapon = true;
+            }
+        }
+        //If they don't have one of the things they say they have, they should be punished.
+        if (!(hasBoots && hasChest && hasWeapon)){
+            System.out.println("Does not have equipment as specified");
+            return new ResponseError("Error in equipment", "User doesn't have specified equipment");
+        }
+
+        // Otherwise we are good to store the equipped items in the user database.
+        user.setEquippedBoots(equippedBoots);
+        user.setEquippedChest(equippedChest);
+        user.setEquippedWeapon(equippedWeapon);
+        user.save();
+
+        return user;
+
+    }
+
 }
