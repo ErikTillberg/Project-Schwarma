@@ -74,9 +74,12 @@ public class InventoryCtrl {
         else if (aGear == null) { return new ResponseError("Missing item to delete"); }
         final UpdateOperations<User> ops;
 
-        final Query<User> user_query = datastore.createQuery(User.class).field("username").equal(username);
-        ops = datastore.createUpdateOperations(User.class).removeAll("equipment", aGear);
+        User user = User.getUserByUsername(username);
 
+        int newWealth = user.changeCoins(aGear.getValue());
+
+        final Query<User> user_query = datastore.createQuery(User.class).field("username").equal(username);
+        ops = datastore.createUpdateOperations(User.class).removeAll("equipment", aGear).set("coins", newWealth);
 
         try {
             datastore.update(user_query, ops);
@@ -85,7 +88,7 @@ public class InventoryCtrl {
             return new ResponseError("Something went wrong");
         }
 
-        return true;
+        return user;
     }
 
 
@@ -115,10 +118,12 @@ public class InventoryCtrl {
         if (username == null){ return new ResponseError("Missing username"); }
         else if (aCard == null) { return new ResponseError("Missing item to delete"); }
         final UpdateOperations<User> ops;
-
+        final User user = User.getUserByUsername(username);
         final Query<User> user_query = datastore.createQuery(User.class).field("username").equal(username);
-        ops = datastore.createUpdateOperations(User.class).removeAll("cards", aCard);
 
+        int newWealth = user.changeCoins(aCard.getValue());
+
+        ops = datastore.createUpdateOperations(User.class).removeAll("cards", aCard).set("coins", newWealth);
 
         try {
             datastore.update(user_query, ops);
@@ -127,7 +132,7 @@ public class InventoryCtrl {
             return new ResponseError("Something went wrong");
         }
 
-        return true;
+        return user;
     }
 
     /**
