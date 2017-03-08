@@ -75,7 +75,7 @@ var main_menu_state = {
         this.battle_btn_text.events.onInputDown.add(this.battle_btn_click, this);
        
         // Shown when matchmaking is in progress so it can be cancelled
-        this.matchmaking_cancel_btn_text = game.add.bitmapText(banner.x, 415, 'carrier_command_black','CANCEL',22);
+        this.matchmaking_cancel_btn_text = game.add.bitmapText(banner.x, 425, 'carrier_command_black','CANCEL',22);
         this.matchmaking_cancel_btn_text.align = 'center';
         this.matchmaking_cancel_btn_text.anchor.set(0.5, 0.5);
         this.matchmaking_cancel_btn_text.inputEnabled = true;

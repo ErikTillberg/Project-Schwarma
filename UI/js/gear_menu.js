@@ -29,7 +29,7 @@ card = function (game, x, y, element, type, text, num1, num2) {
     if ( type == 'Attack'){
         Card_item.frame = 2;
     }
-    else if (type == 'Defend'){
+    else if (type == 'Defence'){
         Card_item.frame = 0;
     }
     else{
@@ -48,10 +48,14 @@ card = function (game, x, y, element, type, text, num1, num2) {
     textNum1.align = 'left';
     this.addChild(textNum1);
 
-    var textNum2 = game.add.bitmapText(-20, 105, 'carrier_command_black', element + ':' + '+' + num2, 9);
-    textNum2.anchor.setTo(0.5, 0.5);
-    textNum2.align = 'left';
-    this.addChild(textNum2);
+    if ( element != '') {
+
+        var textNum2 = game.add.bitmapText(-20, 105, 'carrier_command_black', element + ':' + '+' + num2, 9);
+        textNum2.anchor.setTo(0.5, 0.5);
+        textNum2.align = 'left';
+        this.addChild(textNum2);
+    }
+
 };
 
 card.prototype = Object.create(Phaser.Sprite.prototype);
@@ -81,22 +85,26 @@ var gear_menu_state = {
         debug_console.debug_log("You're on the gear menu screen. Signed in as: " + user.username);
 
 
-        this.signin_btn = game.add.button(game.world.centerX+250, 450, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
-        this.back_btn= game.add.button(game.world.centerX-530, 450, 'Home_button', this.back_btn_click, this, 2, 1, 0);
+        this.signin_btn = game.add.button(game.world.centerX+250, 600, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
+        this.back_btn= game.add.button(game.world.centerX-530, 600, 'Home_button', this.back_btn_click, this, 2, 1, 0);
 
-        var card1 = new card(game, 640, 360, 'Water', 'Mobility', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+        var card1 = new card(game, 800, 360, 'Water', 'Mobility', 'Mobility card of Head-scratching Effectiveness', +10, +13);
         game.add.existing(card1);
 
-        var card2 = new card(game, 1000, 360, 'Fire', 'Attack', 'Attack card of Stupid Stuff', +10, +13);
+        var card2 = new card(game, 1100, 360, 'Fire', 'Attack', 'Attack card of Stupid Stuff', +10, +13);
         game.add.existing(card2);
 
+        var card3 = new card(game, 200, 360, 'Earth', 'Defence', 'Defence card of Total Strangeness', +10, +13);
+        game.add.existing(card3);
+
+        var card4 = new card(game, 500, 360, '', 'Defence', 'Defence card of Boring Thing', +10, +13);
+        game.add.existing(card4);
 
     },
 
    submit_btn_click: function(){
 
        console.log("trigger_state: submit_btn_click");
-       //var card1 = makeCard('hi', 'earth', 'dd ',1,2, 640, 360);
     },
 
     back_btn_click: function(){
