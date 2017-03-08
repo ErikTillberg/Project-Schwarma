@@ -38,6 +38,8 @@ public class Card {
     private List<StatBonus> statBonusList = new ArrayList<StatBonus>();
     private List<ElementalStatBonus> elementalStatBonusList = new ArrayList<ElementalStatBonus>();
 
+    private Integer value; //Some value, in coins (or Schwarma?)
+
     //You need the default constructor specific for morphia for some reason
     public Card(){
         super();
@@ -143,6 +145,8 @@ public class Card {
 
         //I think that's everything!!!
 
+        card.setValue(Card.getCardValue(card));
+
         return card;
     }
 
@@ -187,6 +191,15 @@ public class Card {
         this.elementalStatBonusList = elementalStatBonusList;
     }
 
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
+
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -201,4 +214,28 @@ public class Card {
 
         return stringBuilder.toString();
     }
+
+    /**
+     * Function that takes a card and returns its value. This is where the value logic is happenin'.
+     * @param card
+     * @return
+     */
+    private static Integer getCardValue(Card card){
+
+        //For now let's just look at the cards stats and tally their values:
+        int bonusTotal = 0;
+        for (StatBonus bonus : card.getStatBonusList()){
+            bonusTotal += (int)bonus.getBonus();
+        }
+        for (ElementalStatBonus bonus : card.getElementalStatBonusList()){
+            bonusTotal += (int)bonus.getBonus();
+        }
+
+        //(value/50)^4 is the value of the card, rounded to nearest integer.
+        //Subject to change.
+        double val = Math.pow((double)bonusTotal/50, 4);
+
+        return (int)Math.round(val);
+    }
+
 }

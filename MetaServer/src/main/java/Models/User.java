@@ -37,6 +37,8 @@ public class User {
     private String characterType;
     private int rating;
 
+    private int coins;
+
     //This means that the password won't be returned by GSON
     @Exclude
     private String password;
@@ -131,6 +133,28 @@ public class User {
     public void setEquippedBoots(Equipment equippedBoots) {
         this.equippedBoots = equippedBoots;
     }
+
+    public int getCoins() {
+        return coins;
+    }
+
+
+    /**
+     * Changes the amount of coins a user has, (change can be positive or negative)
+     * returns null if you go below 0, and doesn't make a change.
+     * @param change
+     * @return
+     */
+    public Integer changeCoins(int change){
+        if ((coins + change) < 0){
+            return null;
+        } else {
+            this.coins += change;
+            return this.coins;
+        }
+
+    }
+
     ///////////////////////
     ////////EQUALS ////////
     ///////////////////////
