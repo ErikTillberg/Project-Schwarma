@@ -210,7 +210,7 @@ public class MatchmakingCtrl {
         matchedEquip.add(closestUser.getEquippedWeapon());
 
         Battle battle = new Battle(user.getUsername(), closestUser.getUsername(), userEquip, matchedEquip);
-        battle.save();
+        BattleCtrl.addBattle(battle);
 
         //Send the messages to confirm the matchmaking.
         try {

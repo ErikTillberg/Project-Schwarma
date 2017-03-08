@@ -96,7 +96,7 @@ public class JsonUtil {
 
     public static Equipment parseToEquipment(String object) { return new Gson().fromJson(object, Equipment.class);}
 
-    public static Card parseToListOfCards(String object) {
+    public static List<Card> parseToListOfCards(String object) {
         return new Gson().fromJson(object, new TypeToken<List<Card>>(){}.getType());
     }
 
