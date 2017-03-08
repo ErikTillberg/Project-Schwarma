@@ -7,6 +7,7 @@ import Utilities.JsonUtil;
 import Utilities.WebSocketMessage;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mongodb.util.JSON;
 import org.bson.types.ObjectId;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -59,7 +60,7 @@ public class BattleSocketCtrl {
 
             String user_id = messageAsMap.get("user_id");
             ObjectId battle_id = new ObjectId(messageAsMap.get("battle_id"));
-            List<Card> user_cards = messageAsMap.get("user_cards");
+            List<Card> user_cards = JsonUtil.parseToListOfCards(messageAsMap.get("user_cards"));
 
 
             BattleCtrl.updateReadiness(battle_id, user_id, user_cards);

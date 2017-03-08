@@ -28,8 +28,8 @@ public class Battle {
     private Boolean player2_ready = false;
     private Date date;
     private JsonObject battle_json = new JsonObject();
-    private JsonObject player1_cards = new JsonObject();
-    private JsonObject player2_cards = new JsonObject();
+    private List<Card> player1_cards;
+    private List<Card> player2_cards;
     private List<Equipment> player1_equipment;
     private List<Equipment> player2_equipment;
 

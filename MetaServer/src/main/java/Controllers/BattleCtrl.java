@@ -33,7 +33,8 @@ public class BattleCtrl {
     public static Object updateReadiness(ObjectId battle_id, String user_id, List<Card> user_cards){
 
         String player_to_update;
-        final UpdateOperations<Battle> ops;
+        final UpdateOperations<Battle> update_readiness;
+        final UpdateOperations<Battle> update_cards;
         final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(battle_id);
 
         Battle battle = null;
@@ -48,14 +49,16 @@ public class BattleCtrl {
         }
 
         if(battle.getPlayer1().equals(user_id))
-            player_to_update = "player1_ready";
+            player_to_update = "player1";
         else
-            player_to_update = "player2_ready";
+            player_to_update = "player2";
 
-        ops = datastore.createUpdateOperations(Battle.class).set(player_to_update, true);
+        update_readiness = datastore.createUpdateOperations(Battle.class).set(player_to_update+"_ready", true);
+        update_cards = datastore.createUpdateOperations(Battle.class).set(player_to_update+"_cards", user_cards);
 
         try {
-            datastore.update(battle_query, ops);
+            datastore.update(battle_query, update_readiness);
+            datastore.update(battle_query, update_cards);
         } catch (Exception e){
             e.printStackTrace();
             return new ResponseError("Something went wrong");
