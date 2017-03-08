@@ -27,6 +27,10 @@ public class Equipment {
 
     private String name;
 
+
+
+    private Integer value;
+
     // Equipment can be either boots, weapons, or shield.
     private String type;
     private List<StatBonus> statBonusList = new ArrayList<StatBonus>();
@@ -67,6 +71,13 @@ public class Equipment {
     public void setElementalStatBonusList(List<ElementalStatBonus> elementalStatBonusList)
     { this.elementalStatBonusList = elementalStatBonusList;}
 
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
 
     ///////////////////////
     ////////EQUALS ////////
@@ -169,17 +180,23 @@ public class Equipment {
         ArrayList<StatBonus> statBonusList = new ArrayList<>();
         statBonusList.add(statBonus);
 
-        //Add the stat bonus list to the card.
+        //Add the stat bonus list to the equipment.
         aGear.setStatBonusList(statBonusList);
 
-        //Last thing to do is add the name of the card. Let's do this by getting random strings from lists.
+        //Last thing to do is add the name of the equipment. Let's do this by getting random strings from lists.
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(slot_bonus).append(" card of ").append(StringLists.getRandomCardAdjective()).append(" ").append(StringLists.getRandomCardNoun());
 
         String name = stringBuilder.toString();
         aGear.setName(name);
 
+        //Set the value of the equipment:
+
+        aGear.setValue(Equipment.getEquipmentValue(aGear));
+
         //I think that's everything!!!
+
+
 
         return aGear;
     }
@@ -204,4 +221,29 @@ public class Equipment {
 
         return stringBuilder.toString();
     }
+
+    /**
+     * Presently identical to that in the card value generator.
+     * @param equipment
+     * @return
+     */
+    private static Integer getEquipmentValue(Equipment equipment){
+
+        //For now let's just look at the cards stats and tally their values:
+        int bonusTotal = 0;
+        for (StatBonus bonus : equipment.getStatBonusList()){
+            bonusTotal += (int)bonus.getBonus();
+        }
+        for (ElementalStatBonus bonus : equipment.getElementalStatBonusList()){
+            bonusTotal += (int)bonus.getBonus();
+        }
+
+        //(value/50)^4 is the value of the card, rounded to nearest integer.
+        //Subject to change.
+        double val = Math.pow((double)bonusTotal/50, 4);
+
+        return (int)Math.round(val);
+    }
+
+
 }
