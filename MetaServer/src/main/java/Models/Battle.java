@@ -20,13 +20,23 @@ public class Battle {
     //User IDs
     private String player1;
     private String player2;
+    private Boolean player1_ready = false;
+    private Boolean player2_ready = false;
     private Date date;
     private JsonObject battle_json = new JsonObject();
+    private JsonObject player1_gear = new JsonObject();
+    private JsonObject player2_gear = new JsonObject();
+    private JsonObject player1_equipment = new JsonObject();
+    private JsonObject player2_equipment= new JsonObject();
 
-    public Battle(String player1, String player2, JsonObject battle_json){
+
+    public Battle(){}
+
+    public Battle(String player1, String player2, JsonObject player1_equipment, JsonObject player2_equipment){
         this.player1 = player1;
         this.player2 = player2;
-        this.battle_json = battle_json;
+        this.player1_equipment = player1_equipment;
+        this.player2_equipment = player2_equipment;
         this.date = new Date();
     }
 
