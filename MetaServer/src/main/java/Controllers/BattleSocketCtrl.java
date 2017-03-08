@@ -36,5 +36,5 @@ public class BattleSocketCtrl {
     public void onMessage(Session userSession, String message){
 
     }
-
+    
 }

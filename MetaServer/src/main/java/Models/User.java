@@ -1,12 +1,16 @@
 package Models;
 
 import Annotations.Exclude;
+import Utilities.ResponseError;
 import jdk.nashorn.internal.ir.annotations.Reference;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.query.Query;
 
 import java.util.List;
+
+import static Utilities.DBConn.datastore;
 
 /**
  * Created by Erik Tillberg on 1/26/2017.
@@ -129,6 +133,21 @@ public class User {
 
     public static boolean isValidCharacterType(String characterType){
         return characterType.equals(MAGE) || characterType.equals(THIEF) || characterType.equals(WARRIOR);
+    }
+
+    public static User getUserByUsername(String username){
+        //Get user username:
+        final Query<User> query = datastore.createQuery(User.class)
+                .field("username").equal(username);
+
+        User user;
+        try {
+            user = query.get();
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return user;
     }
 
 }

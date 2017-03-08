@@ -10,6 +10,7 @@ import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
 import java.util.List;
+import java.util.Map;
 
 import static Utilities.DBConn.datastore;
 
@@ -125,4 +126,48 @@ public class InventoryCtrl {
 
         return true;
     }
+
+    /**
+     * Function takes a message body of the form:
+     * {
+     *     username: 'some user',
+     *     equippedChest: 'some chest ID',
+     *     equippedBoots: 'some boots ID',
+     *     equippedWeapon: 'some weapon ID'
+     * }
+     * @param messageBody
+     * @return
+     */
+    public static Object setActiveEquipment(Map<String, String> messageBody){
+        String username = messageBody.get("username");
+        String equippedChestID = messageBody.get("equippedChest");
+        String equippedBootsID = messageBody.get("equippedBoots");
+        String equippedWeaponID = messageBody.get("equippedWeapon");
+
+        // If one of the fields are missing, then that's not good, so return an error.
+        if (username == null || equippedChestID == null || equippedBootsID == null || equippedWeaponID == null){
+            return new ResponseError("Error", "Invalid form submission");
+        }
+
+        //Otherwise, continue on.
+
+        //Get user username:
+        final Query<User> query = datastore.createQuery(User.class)
+                .field("username").equal(username);
+
+        User user;
+        try {
+            user = query.get();
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseError("Something went wrong");
+        }
+        if (user==null){
+            return new ResponseError("Could not find user %s", username);
+        }
+
+    return null;
+
+    }
+
 }
