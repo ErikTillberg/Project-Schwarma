@@ -100,6 +100,9 @@ public class Card {
         //Here the maximum reward is 1.0 or 100% at the maximum reward.
         Double chanceofElementalStat = RNGUtil.getSqrtValueInRange(userRating, 1.0);
         Boolean getsElementalStats = RNGUtil.getRandomBoolean(chanceofElementalStat);
+        ElementalStatBonus elementalStatBonus;
+        ArrayList<ElementalStatBonus> elementalStatBonusArrayList = new ArrayList<>();
+
         if(getsElementalStats){
             //Then the card should:
             //a. Decide how many elemental stats are to be generated
@@ -108,18 +111,19 @@ public class Card {
             //FOR NOW LETS JUST ADD ONE ELEMENTAL STAT FOR FUN
             //IT WILL HAVE A RANDOM ELEMENT TYPE AND BE OF THE STAT TYPE OF THE CARD
             Double maxReward = 50.0;
-            Double min = RNGUtil.getSqrtValue(userRating-500, maxReward);
+            Double min = RNGUtil.getSqrtValue(userRating - 500, maxReward);
             Double max = RNGUtil.getSqrtValue(userRating+500, maxReward);
 
-            ElementalStatBonus elementalStatBonus =
+            elementalStatBonus =
                     ElementalStatBonus.GenerateRandomElementalStatBonusWithRandomElement(min, max, type); //wowza
 
-            ArrayList<ElementalStatBonus> elementalStatBonusArrayList = new ArrayList<>();
 
-            elementalStatBonusArrayList.add(elementalStatBonus);
-
-            card.setElementalStatBonusList(elementalStatBonusArrayList);
-        } //else there is nothing, just don't add the stats
+        } else{
+            elementalStatBonus =
+                    ElementalStatBonus.GenerateRandomElementalStatBonusWithRandomElement(0, 0, "none"); //wowza
+        }
+        elementalStatBonusArrayList.add(elementalStatBonus);
+        card.setElementalStatBonusList(elementalStatBonusArrayList);
 
         //Every card should have some sort of bonus that is given to the card.
         //To start, let's start with a single bonus, to the stat of the type of card that is being created.
