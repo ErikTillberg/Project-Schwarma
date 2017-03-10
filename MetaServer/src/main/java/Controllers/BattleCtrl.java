@@ -2,11 +2,21 @@ package Controllers;
 
 import Models.Battle;
 import Models.Card;
+import Utilities.JsonUtil;
 import Utilities.ResponseError;
+import com.google.gson.JsonObject;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
+import java.io.*;
 import java.util.List;
 
 import static Utilities.DBConn.datastore;
@@ -86,4 +96,32 @@ public class BattleCtrl {
         return battle.getPlayer1_ready() && battle.getPlayer2_ready();
     }
 
+    public static String postToSimServer(ObjectId battle_id)
+            throws ClientProtocolException, IOException {
+
+        final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(battle_id);
+
+        Battle battle = null;
+        try{
+            battle = battle_query.get();
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost("http://localhost:3000");
+
+        String json = JsonUtil.toJson(battle);
+        StringEntity entity = new StringEntity(json);
+        httpPost.setEntity(entity);
+        httpPost.setHeader("Accept", "application/json");
+        httpPost.setHeader("Content-type", "application/json");
+        System.out.println(entity);
+
+        CloseableHttpResponse response = client.execute(httpPost);
+        System.out.println(response.getStatusLine().getStatusCode());
+        client.close();
+
+        return EntityUtils.toString(response.getEntity());
+    }
 }

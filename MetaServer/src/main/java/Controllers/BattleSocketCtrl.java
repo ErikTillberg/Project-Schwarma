@@ -65,9 +65,12 @@ public class BattleSocketCtrl {
 
             BattleCtrl.updateReadiness(battle_id, user_id, user_cards);
 
-            if (checkReadiness(battle_id))
-                System.out.println("Ready to send to sim server.");
+            if (checkReadiness(battle_id)){
+                System.out.println("Sending battle to sim server.");
+                String battle_results = BattleCtrl.postToSimServer(battle_id);
+            }
 
+            // Send battle results back to UI
 
 
         }catch(Exception e){
