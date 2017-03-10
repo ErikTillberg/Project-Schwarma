@@ -38,6 +38,8 @@ public class Card {
     private List<StatBonus> statBonusList = new ArrayList<StatBonus>();
     private List<ElementalStatBonus> elementalStatBonusList = new ArrayList<ElementalStatBonus>();
 
+    private String trigger = "";
+
     private Integer value; //Some value, in coins (or Schwarma?)
 
     //You need the default constructor specific for morphia for some reason
@@ -78,6 +80,76 @@ public class Card {
         result = 31 * result + (statBonusList != null ? statBonusList.hashCode() : 0);
         result = 31 * result + (elementalStatBonusList != null ? elementalStatBonusList.hashCode() : 0);
         return result;
+    }
+
+
+
+    /////////////////////////////////////////
+    ///////////GETTER AND SETTERS////////////
+    /////////////////////////////////////////
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<StatBonus> getStatBonusList() {
+        return statBonusList;
+    }
+
+    public void setStatBonusList(List<StatBonus> statBonusList) {
+        this.statBonusList = statBonusList;
+    }
+
+    public List<ElementalStatBonus> getElementalStatBonusList() {
+        return elementalStatBonusList;
+    }
+
+    public void setElementalStatBonusList(List<ElementalStatBonus> elementalStatBonusList) {
+        this.elementalStatBonusList = elementalStatBonusList;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
+
+
+    public String getTrigger() {
+        return trigger;
+    }
+
+    public void setTrigger(String trigger) {
+        this.trigger = trigger;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("[")
+                .append(this.name)
+                .append(", ")
+                .append(statBonusList)
+                .append(", ")
+                .append(elementalStatBonusList)
+                .append("]");
+
+        return stringBuilder.toString();
     }
 
 
@@ -158,66 +230,6 @@ public class Card {
         return type.equals(Card.ATTACK) || type.equals(Card.DEFENSE) || type.equals(Card.MOBILITY);
     }
 
-
-    /////////////////////////////////////////
-    ///////////GETTER AND SETTERS////////////
-    /////////////////////////////////////////
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public List<StatBonus> getStatBonusList() {
-        return statBonusList;
-    }
-
-    public void setStatBonusList(List<StatBonus> statBonusList) {
-        this.statBonusList = statBonusList;
-    }
-
-    public List<ElementalStatBonus> getElementalStatBonusList() {
-        return elementalStatBonusList;
-    }
-
-    public void setElementalStatBonusList(List<ElementalStatBonus> elementalStatBonusList) {
-        this.elementalStatBonusList = elementalStatBonusList;
-    }
-
-    public Integer getValue() {
-        return value;
-    }
-
-    public void setValue(Integer value) {
-        this.value = value;
-    }
-
-
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append("[")
-                .append(this.name)
-                .append(", ")
-                .append(statBonusList)
-                .append(", ")
-                .append(elementalStatBonusList)
-                .append("]");
-
-        return stringBuilder.toString();
-    }
 
     /**
      * Function that takes a card and returns its value. This is where the value logic is happenin'.

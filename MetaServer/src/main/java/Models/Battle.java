@@ -100,21 +100,4 @@ public class Battle {
         result = 31 * result + (battle_json != null ? battle_json.hashCode() : 0);
         return result;
     }
-
-    public static Battle getBattleById(String id){
-        ObjectId oi = new ObjectId(id);
-
-        final Query<Battle> query = datastore.createQuery(Battle.class)
-                .field("id").equal(oi);
-
-        Battle battle;
-        try {
-            battle = query.get();
-        } catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-        return battle;
-
-    }
 }
