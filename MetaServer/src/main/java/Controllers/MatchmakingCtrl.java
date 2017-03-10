@@ -210,10 +210,11 @@ public class MatchmakingCtrl {
         matchedEquip.add(closestUser.getEquippedWeapon());
 
         Battle battle = new Battle(user.getUsername(), closestUser.getUsername(), userEquip, matchedEquip);
-        BattleCtrl.addBattle(battle);
+        ObjectId battle_id = (ObjectId) BattleCtrl.addBattle(battle);
 
         //Send the messages to confirm the matchmaking.
         try {
+            userSession.getRemote().sendString(toJson(new WebSocketMessage("battle_id", battle_id)));
             userSession.getRemote().sendString(toJson(responseToUser));
             matchedUserSession.getRemote().sendString(toJson(responseToMatchedUser));
         } catch (Exception e){

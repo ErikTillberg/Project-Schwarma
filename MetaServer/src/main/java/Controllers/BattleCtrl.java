@@ -26,7 +26,7 @@ public class BattleCtrl {
             return new ResponseError("Something went wrong");
         }
 
-        return true;
+        return battle.getId();
     }
 
 
