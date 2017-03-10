@@ -53,17 +53,16 @@ public class BattleSocketCtrl {
             The whole map should have the form
             {
                 battle_id: battle id received during matchmaking
-                user_name: user name
+                username: username
                 user_cards: user cards selected for this battle
             }
             */
 
-            String user_id = messageAsMap.get("user_id");
+            String username = messageAsMap.get("username");
             ObjectId battle_id = new ObjectId(messageAsMap.get("battle_id"));
             List<Card> user_cards = JsonUtil.parseToListOfCards(messageAsMap.get("user_cards"));
 
-
-            BattleCtrl.updateReadiness(battle_id, user_id, user_cards);
+            BattleCtrl.updateReadiness(battle_id, username, user_cards);
 
             if (checkReadiness(battle_id))
                 System.out.println("Ready to send to sim server.");
