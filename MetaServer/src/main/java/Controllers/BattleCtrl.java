@@ -2,6 +2,7 @@ package Controllers;
 
 import Models.Battle;
 import Models.Card;
+import Utilities.BattlePlayer;
 import Utilities.JsonUtil;
 import Utilities.ResponseError;
 import com.google.gson.JsonObject;
@@ -40,11 +41,13 @@ public class BattleCtrl {
     }
 
 
-    public static Object updateReadiness(ObjectId battle_id, String user_id, List<Card> user_cards){
+    public static Object updateReadiness(ObjectId battle_id, String user_id, String att_attribute,
+                                         String def_attribute, String mov_attribute, List<Card> user_cards){
 
         String player_to_update;
         final UpdateOperations<Battle> update_readiness;
         final UpdateOperations<Battle> update_cards;
+        final UpdateOperations<Battle> update_battleplayer;
         final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(battle_id);
 
         Battle battle = null;
@@ -58,17 +61,26 @@ public class BattleCtrl {
             System.out.println("Could not find battle %s" + battle_id.toString());
         }
 
-        if(battle.getPlayer1().equals(user_id))
+        BattlePlayer battle_player;
+        if(battle.getPlayer1().equals(user_id)){
             player_to_update = "player1";
-        else
+            battle_player = battle.getPlayer1_battleplayer();
+        }
+        else {
             player_to_update = "player2";
+            battle_player = battle.getPlayer2_battleplayer();
+        }
+
+        battle_player.prepareForBattle(user_id,att_attribute, def_attribute, mov_attribute, user_cards);
 
         update_readiness = datastore.createUpdateOperations(Battle.class).set(player_to_update+"_ready", true);
         update_cards = datastore.createUpdateOperations(Battle.class).set(player_to_update+"_cards", user_cards);
+        update_battleplayer = datastore.createUpdateOperations(Battle.class).set(player_to_update+"_battleplayer", battle_player);
 
         try {
             datastore.update(battle_query, update_readiness);
             datastore.update(battle_query, update_cards);
+            datastore.update(battle_query, update_battleplayer);
         } catch (Exception e){
             e.printStackTrace();
             return new ResponseError("Something went wrong");

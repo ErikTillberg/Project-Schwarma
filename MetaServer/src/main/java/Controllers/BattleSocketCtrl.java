@@ -60,10 +60,13 @@ public class BattleSocketCtrl {
 
             String user_id = messageAsMap.get("user_id");
             ObjectId battle_id = new ObjectId(messageAsMap.get("battle_id"));
+            String att_attribute = messageAsMap.get("att_attribute");
+            String def_attribute = messageAsMap.get("def_attribute");
+            String mov_attribute = messageAsMap.get("mov_attribute");
             List<Card> user_cards = JsonUtil.parseToListOfCards(messageAsMap.get("user_cards"));
 
 
-            BattleCtrl.updateReadiness(battle_id, user_id, user_cards);
+            BattleCtrl.updateReadiness(battle_id, user_id, att_attribute, def_attribute, mov_attribute, user_cards);
 
             if (checkReadiness(battle_id)){
                 System.out.println("Sending battle to sim server.");

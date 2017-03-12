@@ -79,7 +79,7 @@ public class Routes {
 
             String username = req.queryParams("username");
             String[] card_types = {"attack", "defense", "mobility"};
-            String[] equipment_types = {"head", "weapon", "offhand"};
+            String[] equipment_types = {"weapon", "shield", "boots"};
             int random_type;
             String type;
 

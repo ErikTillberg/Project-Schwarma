@@ -209,7 +209,7 @@ public class MatchmakingCtrl {
         matchedEquip.add(closestUser.getEquippedChest());
         matchedEquip.add(closestUser.getEquippedWeapon());
 
-        Battle battle = new Battle(user.getUsername(), closestUser.getUsername(), userEquip, matchedEquip);
+        Battle battle = Battle.createNewBattle(user.getUsername(), closestUser.getUsername(), userEquip, matchedEquip);
         ObjectId battle_id = (ObjectId) BattleCtrl.addBattle(battle);
 
         //Send the messages to confirm the matchmaking.
