@@ -7,7 +7,7 @@
 var battleData = [
 
     {"action":"attack","player":"playerOne","number":"17"},
-    {"action":"movePlayer","player":"playerTwo","number":"3"},
+   /* {"action":"movePlayer","player":"playerTwo","number":"3"},
     {"action":"attack","player":"playerOne","number":"6"},
     {"action":"movePlayer","player":"playerTwo","number":"4"},
     {"action":"movePlayer","player":"playerOne","number":"2"},
@@ -50,8 +50,8 @@ var battleData = [
     {"action":"movePlayer","player":"playerTwo","number":"2"},
     {"action":"movePlayer","player":"playerTwo","number":"1"},
     {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"7"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
+    {"action":"attack","player":"playerTwo","number":"7"},*/
+    {"action":"defence","player":"playerTwo","number":"1"},
     {"action":"attack","player":"playerOne","number":"3"},
     {"action":"die","player":"playerTwo","number":"20"}
 
@@ -98,6 +98,10 @@ var playerNum;
 
 var i = 0; 
 var delayTimer = 4000;
+
+var card1;
+var card2;
+var card3;
 
 
 /**
@@ -602,6 +606,57 @@ function setPlayerNumber( sprite ){
 }
 
 /**
+ * Function decides what sprite to animate and what version(left, right) of the block animation to play.
+ * @param sprite
+ * @param damageNum
+ */
+function heal( sprite, healNum){
+
+    canIdle = false;
+
+    setPlayerNumber ( sprite );
+
+    // Pick sprite and animations to play, and update HP based on damageNum, set HPText to visable and update it.
+    if ( playerOneFacing == 'right' && sprite == playerOne){
+
+        sprite.animations.play('blockRight', 5, true);
+        playerOneHPText.setText('+' + healNum);
+        playerOneHP += parseInt(healNum);
+        playerOneHPText.visible = true;
+    }
+
+    else if ( playerTwoFacing == 'right' && sprite == playerTwo){
+
+        sprite.animations.play('blockRight', 5, true);
+        playerTwoHPText.setText('+' + healNum);
+        playerTwoHP += parseInt(healNum);
+        playerTwoHPText.visible = true;
+    }
+
+    else if ( playerOneFacing == 'left' && sprite == playerOne){
+
+        sprite.animations.play('blockLeft', 5, true);
+        playerOneHPText.setText('+'+ healNum);
+        playerOneHP += parseInt(healNum);
+        playerOneHPText.visible = true;
+    }
+
+    else {
+
+        sprite.animations.play('blockLeft', 5, true);
+        playerTwoHPText.setText('+' + healNum);
+        playerTwoHP += parseInt(healNum);
+        playerTwoHPText.visible = true;
+    }
+
+    // Update actionText.
+    actionText.setText(playerNum +"\n\nHEALS");
+
+    // Set HPText to invisible after animation plays.
+    game.time.events.add( 1000, (function() { canIdle = true; playerOneHPText.visible = false; playerTwoHPText.visible = false}), this );
+}
+
+/**
  * Function loops through battleObj and picks what sprite, and what function to call based on
  * what is in thr obj. It delayes 4 sec after each loop to let the animations plat out.
  * @param battleObj
@@ -646,6 +701,18 @@ function battleLoop ( battleObj ) {
             else { player = playerTwo;}
              
             block(player, battleObj[i].number); 
+        }
+
+        // Call the heal function
+        else if (battleObj[i].action == 'defence'){
+
+            if ( battleObj[i].player == 'playerOne'){
+
+                player = playerOne;
+            }
+            else { player = playerTwo;}
+
+            heal (player, battleObj[i].number);
         }
 
         // Call die function
@@ -712,12 +779,17 @@ function pickCharWeapon ( charName ){
 
 /**
  * Function moves the player to the middle of the screen and then plays the jump animation.
- * It also scales the winner message and displays it.
+ * It also scales the winner message and displays it. It displays the card the player won in battle.
  * @param sprite
  */
 function win ( sprite ) {
 
     canIdle = false;
+
+    HUD1.visible = false;
+    playerOneText.visible = false;
+    playerTwoText.visible = false;
+    actionText.visible = false;
 
     if ( sprite == playerOne){
 
@@ -736,6 +808,23 @@ function win ( sprite ) {
 
         sprite.animations.play('rollLeft', 5, true);
     }
+
+    card1 =  new card(game, 340, 560, 'Water', 'Mobility', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+    card2 =  new card(game, 640, 560, 'Fire', 'Attacl', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+    card3 =  new card(game, 940, 560, 'Earth', 'Defence', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+
+    game.add.existing(card1);
+    card1.scale.setTo(0.1, 0.1);
+
+    game.add.existing(card2);
+    card2.scale.setTo(0.1, 0.1);
+
+    game.add.existing(card3);
+    card3.scale.setTo(0.1, 0.1);
+
+    game.add.tween(card1.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
+    game.add.tween(card2.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
+    game.add.tween(card3.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
 
     game.add.tween(sprite).to({ x: 640}, 2000, Phaser.Easing.Linear.None, true);
     game.time.events.add( 2000, (function() { winnerText.visible = true; winTextVisible = true; sprite.animations.play('jumpLeft', 5, true);}), this );
