@@ -7,8 +7,8 @@
 var battleData = [
 
     {"action":"attack","player":"playerOne","number":"17"},
-   /* {"action":"movePlayer","player":"playerTwo","number":"3"},
-    {"action":"attack","player":"playerOne","number":"6"},
+   {"action":"movePlayer","player":"playerTwo","number":"3"},
+   /* {"action":"attack","player":"playerOne","number":"6"},
     {"action":"movePlayer","player":"playerTwo","number":"4"},
     {"action":"movePlayer","player":"playerOne","number":"2"},
     {"action":"movePlayer","player":"playerTwo","number":"3"},
