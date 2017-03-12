@@ -54,6 +54,9 @@ public class BattleSocketCtrl {
             {
                 battle_id: battle id received during matchmaking
                 username: username
+                att_attribute: player attack rng
+                def_attribute: player defense rng
+                mov_attribute: player mobility rng
                 user_cards: user cards selected for this battle
             }
             */
