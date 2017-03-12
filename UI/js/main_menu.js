@@ -135,6 +135,8 @@ var main_menu_state = {
 
         // var message = JSON.parse(response.data);
         var response = JSON.parse(message.data);
+        console.log("response from server:");
+        console.log(response);
 
         // Parse the message type
         if (response.type == "match_found") {
@@ -151,7 +153,10 @@ var main_menu_state = {
 
             return;
 
-        }else if (response.type == "error") {
+        }else if(response.type == "battle_id") {
+            // Store the battle_id for the match that was made
+            user.init_battle(response.message);
+        } else if (response.type == "error") {
             console.log(response.message);
         }else if(response.type == "success") {
             console.log(response.message);

@@ -10,13 +10,13 @@ card = function (game, x, y, element, type, text, num1, num2) {
 
     Phaser.Sprite.call(this, game, x, y, 'Card');
    // this.frame = frame;
-    if ( element == 'Fire'){
+    if ( element == 'fire'){
         this.frame = 1;
     }
-    else if (element == 'Water'){
+    else if (element == 'water'){
         this.frame = 3;
     }
-    else if (element == 'Earth'){
+    else if (element == 'earth'){
         this.frame = 0;
     }
     else{
@@ -26,10 +26,10 @@ card = function (game, x, y, element, type, text, num1, num2) {
 
     var Card_item = game.add.sprite(0, 0, 'Card_Item');
     Card_item.anchor.setTo(0.5, 0.5);
-    if ( type == 'Attack'){
+    if ( type == 'attack'){
         Card_item.frame = 2;
     }
-    else if (type == 'Defence'){
+    else if (type == 'defence'){
         Card_item.frame = 0;
     }
     else{
@@ -88,16 +88,16 @@ var gear_menu_state = {
         this.signin_btn = game.add.button(game.world.centerX+250, 600, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
         this.back_btn= game.add.button(game.world.centerX-530, 600, 'Home_button', this.back_btn_click, this, 2, 1, 0);
 
-        var card1 = new card(game, 800, 360, 'Water', 'Mobility', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+        var card1 = new card(game, 800, 360, 'water', 'mobility', 'Mobility card of Head-scratching Effectiveness', +10, +13);
         game.add.existing(card1);
 
-        var card2 = new card(game, 1100, 360, 'Fire', 'Attack', 'Attack card of Stupid Stuff', 10, 13);
+        var card2 = new card(game, 1100, 360, 'fire', 'attack', 'Attack card of Stupid Stuff', 10, 13);
         game.add.existing(card2);
 
-        var card3 = new card(game, 200, 360, 'Earth', 'Defence', 'Defence card of Total Strangeness', 10, 13);
+        var card3 = new card(game, 200, 360, 'earth', 'defence', 'Defence card of Total Strangeness', 10, 13);
         game.add.existing(card3);
 
-        var card4 = new card(game, 500, 360, '', 'Defence', 'Defence card of Boring Thing', 10, 13);
+        var card4 = new card(game, 500, 360, 'none', 'defence', 'Defence card of Boring Thing', 10, 13);
         game.add.existing(card4);
 
     },
