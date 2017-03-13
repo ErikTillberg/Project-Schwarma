@@ -71,10 +71,10 @@ card = function (game, x, y, element, cardtype, title, num1, num2) {
         xOffset = +10;
     }
 
-    var shadow = game.add.sprite(this.x + xOffset, this.y + 8, 'Card');
-    shadow.anchor.set(0.5);
-    shadow.tint = 0x000000;
-    shadow.alpha = 0.4;
+    this.shadow = game.add.sprite(this.x + xOffset, this.y + 8, 'Card');
+    this.shadow.anchor.set(0.5);
+    this.shadow.tint = 0x000000;
+    this.shadow.alpha = 0.4;
 };
 
 card.prototype = Object.create(Phaser.Sprite.prototype);
@@ -162,6 +162,8 @@ var gear_menu_state = {
 
     card_click: function (card){
 
+        card.shadow.destroy();
+        card.destroy();
         console.log("trigger_state: card_click " + card.cardtype);
 
     },

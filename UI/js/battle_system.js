@@ -7,8 +7,8 @@
 var battleData = [
 
     {"action":"attack","player":"playerOne","number":"17"},
-   {"action":"movePlayer","player":"playerTwo","number":"3"},
-   /* {"action":"attack","player":"playerOne","number":"6"},
+   /* {"action":"movePlayer","player":"playerTwo","number":"3"},
+    {"action":"attack","player":"playerOne","number":"6"},
     {"action":"movePlayer","player":"playerTwo","number":"4"},
     {"action":"movePlayer","player":"playerOne","number":"2"},
     {"action":"movePlayer","player":"playerTwo","number":"3"},
@@ -815,16 +815,23 @@ function win ( sprite ) {
 
     game.add.existing(card1);
     card1.scale.setTo(0.1, 0.1);
+    card1.shadow.scale.setTo(0.1, 0.1);
 
     game.add.existing(card2);
     card2.scale.setTo(0.1, 0.1);
+    card2.shadow.scale.setTo(0.1, 0.1);
 
     game.add.existing(card3);
     card3.scale.setTo(0.1, 0.1);
+    card3.shadow.scale.setTo(0.1, 0.1);
 
     game.add.tween(card1.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
     game.add.tween(card2.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
     game.add.tween(card3.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
+
+    game.add.tween(card1.shadow.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
+    game.add.tween(card2.shadow.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
+    game.add.tween(card3.shadow.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
 
     game.add.tween(sprite).to({ x: 640}, 2000, Phaser.Easing.Linear.None, true);
     game.time.events.add( 2000, (function() { winnerText.visible = true; winTextVisible = true; sprite.animations.play('jumpLeft', 5, true);}), this );
