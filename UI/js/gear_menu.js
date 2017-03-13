@@ -6,12 +6,14 @@ card = function (game, x, y, element, cardtype, title, num1, num2) {
 
     var textArray = title.split(" ");
     var space = " ";
+    var xOffset;
 
     this.element = element;
     this.cardtype = cardtype;
     this.title = title;
     this.num1 = num1;
     this.num2 = num2;
+
 
     Phaser.Sprite.call(this, game, x, y, 'Card');
    // this.frame = frame;
@@ -61,6 +63,18 @@ card = function (game, x, y, element, cardtype, title, num1, num2) {
         this.addChild(textNum2);
     }
 
+    if ( this.x > 640 ){
+
+        xOffset = -10;
+    }
+    else {
+        xOffset = +10;
+    }
+
+    var shadow = game.add.sprite(this.x + xOffset, this.y + 8, 'Card');
+    shadow.anchor.set(0.5);
+    shadow.tint = 0x000000;
+    shadow.alpha = 0.4;
 };
 
 card.prototype = Object.create(Phaser.Sprite.prototype);
@@ -104,7 +118,7 @@ var gear_menu_state = {
 
         cardMobility = new card(game, 1040, 160, 'Water', 'Mobility', 'Fast boots of Head-scratching Effectiveness', +2, +13);
         game.add.existing(cardMobility);
-        cardMobility.scale.setTo(0.8, 0.8);
+        //cardMobility.scale.setTo(0.8, 0.8);
         cardMobility.inputEnabled = true;
         cardMobility.events.onInputDown.add(this.card_click, {card: this.card});
 
@@ -113,9 +127,9 @@ var gear_menu_state = {
         mobilityText.align = 'center';
 
 
-        cardAttack = new card(game, 1040, 560, 'Fire', 'Attack', 'big sword of Stupid Stuff', +1, +13);
+        cardAttack = new card(game, 1040, 520, 'Fire', 'Attack', 'big sword of Stupid Stuff', +1, +13);
         game.add.existing(cardAttack);
-        cardAttack.scale.setTo(0.8, 0.8);
+        //cardAttack.scale.setTo(0.8, 0.8);
         cardAttack.inputEnabled = true;
         cardAttack.events.onInputDown.add(this.card_click, {card: this.card});
 
@@ -125,7 +139,7 @@ var gear_menu_state = {
 
         cardDefence = new card(game, 240, 360, 'Earth', 'Defence', 'small shield of Boring Thing', +1, +13);
         game.add.existing(cardDefence);
-        cardDefence.scale.setTo(0.8, 0.8);
+        //cardDefence.scale.setTo(0.8, 0.8);
         cardDefence.inputEnabled = true;
         cardDefence.events.onInputDown.add(this.card_click, {card: this.card});
 
@@ -133,11 +147,11 @@ var gear_menu_state = {
         defenceText.anchor.setTo(0.5, 0.5);
         defenceText.align = 'center';
 
-        var infoText = game.add.bitmapText(banner.x, banner.y - 50 ,'carrier_command_black','Click card to change gear',20);
+        var infoText = game.add.bitmapText(banner.x, banner.y - 50 ,'carrier_command_black','Click card to change gear',15);
         infoText.anchor.setTo(0.5, 0.5);
         infoText.align = 'center';
 
-        var statText = game.add.bitmapText(player.x, player.y + 170 ,'carrier_command','Attack: 3\n\nDefence: 2\n\nMobility: 1', 20);
+        var statText = game.add.bitmapText(player.x, player.y + 170 ,'carrier_command','Attack: 1\n\nDefence: 2\n\nMobility: 3', 20);
         statText.anchor.setTo(0.5, 0.5);
         statText.align = 'center';
 
@@ -148,7 +162,6 @@ var gear_menu_state = {
 
     card_click: function (card){
 
-        card.destroy();
         console.log("trigger_state: card_click " + card.cardtype);
 
     },
