@@ -47,7 +47,7 @@ public class MatchmakingCtrl {
 
     @OnWebSocketClose
     public void onClose(Session userSession, int statusCode, String reason){
-        System.out.println("Closing connection");
+        System.out.println("Closing matchmaking connection");
 
         User user = null;
         for (Map.Entry<User, Session> entry : userMatchmakingMap.entrySet()){
