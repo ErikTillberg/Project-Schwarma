@@ -54,6 +54,15 @@ namespace Schwarma
                 std::atoi(condition.rhs)
             );
         }
+        else if(condition.lhs == "enemyHP")
+        {
+            return Schwarma::evalConditionalExpression<int,int>
+            (
+                condition.op,
+                std::atoi(b.stats.health),
+                std::atoi(condition.rhs)
+            );
+        }
         return false;
     }
 }
