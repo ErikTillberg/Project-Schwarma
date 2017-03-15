@@ -90,6 +90,10 @@ var server = {
         server.port = server.production_mode === true ? "" : ":9000";
         console.log("Production: " + server.production_mode);
         console.log("Host name: " + server.host_name);
+    },
+    gear_endpoint: function() {
+        return "http://" + this.host_name + this.port
+                + "/setActiveEquipment";
     }
 };
 // Initialize the server

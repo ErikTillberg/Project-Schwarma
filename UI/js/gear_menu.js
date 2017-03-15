@@ -30,7 +30,7 @@ card = function (game, x, y, element, type, text, num1, num2) {
     if ( type == 'attack'){
         Card_item.frame = 2;
     }
-    else if (type == 'defence'){
+    else if (type == 'defense'){
         Card_item.frame = 0;
     }
     else{
@@ -107,6 +107,11 @@ var gear_menu_state = {
    submit_btn_click: function(){
 
        console.log("trigger_state: submit_btn_click");
+
+       $()
+
+
+
     },
 
     back_btn_click: function(){

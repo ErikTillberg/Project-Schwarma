@@ -28,6 +28,15 @@ var pre_battle_state = {
     current_slot: 0,
     current_type: "attack",
 
+    // Settings for roll percentages
+    roll_text_x: 100,
+    roll_text_y: 50,
+    roll_text_x_offset: 400,
+    roll_text_font: 'carrier_command_black',
+    roll_text_font_size: 20,
+    roll_button_y: 33,
+    roll_btn_scale: 0.5,
+
     // Determines the size of grid elements in the card selectors
     selector_x_offset: 200,
     selector_y_offset: 200,
@@ -99,7 +108,7 @@ var pre_battle_state = {
             }
         }
     ],
-    roll_percentages: [0.33, 0.33, 0.33],
+    roll_percentages: [7, 6, 7],
 
     preload: function() {
 
@@ -145,12 +154,25 @@ var pre_battle_state = {
 
         this.submit_button = game.add.button(1175, 600, 'Submit_button', pre_battle_state.battle_start, this, 2, 1, 0).scale.setTo(0.7, 0.7);
 
-
         // Put the category name and roll chance on the screen
+        this.attack_roll_text = game.add.bitmapText(this.roll_text_x, this.roll_text_y, this.roll_text_font, "ATTACK: " + this.roll_percentages[0], this.roll_text_font_size);
+        this.mobility_roll_text = game.add.bitmapText(this.roll_text_x + this.roll_text_x_offset, this.roll_text_y, this.roll_text_font, "MOBILITY: " + this.roll_percentages[1], this.roll_text_font_size);
+        this.defense_roll_text = game.add.bitmapText(this.roll_text_x + this.roll_text_x_offset*2, this.roll_text_y, this.roll_text_font, "DEFENSE: " + this.roll_percentages[2], this.roll_text_font_size);
 
+        this.attack_increase_roll = game.add.button(this.mobility_card_x - 124, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("attack")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.attack_decrease_roll = game.add.button(this.attack_card_x - 62, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("attack")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+
+        this.defense_increase_roll = game.add.button(this.defense_card_x + 270, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("defense")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.defense_decrease_roll = game.add.button(this.defense_card_x - 62, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("defense")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+
+        this.mobility_increase_roll = game.add.button(this.defense_card_x - 124, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("mobility")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.mobility_decrease_roll = game.add.button(this.mobility_card_x - 62, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("mobility")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
 
 
     },
+    /**
+     * The player is ready to start the fight (or time has expired), send their chosen load out to the server.
+     */
     battle_start: function() {
 
         var user_cards = [];
@@ -158,7 +180,8 @@ var pre_battle_state = {
 
         // Set the player's mobility cards
         for (var i = 0; i < 3; i++) {
-            user_cards[i] = user.cards[this.mobility_cards[i]];
+            user_cards[i] = {};
+            $.extend(true, user_cards[i], user.cards[this.mobility_cards[i]]);
             user_cards[i].trigger = this.triggers[this.mobility_triggers[i]].condition;
         }
 
@@ -174,13 +197,24 @@ var pre_battle_state = {
             user_cards[k].trigger = this.triggers[this.defense_triggers[k % 3]].condition;
         }
 
-        console.log("USER CARDS:");
-        console.log(user_cards);
+        var battle_object = {battle_id: user.battle_id,
+            username: user.username,
+            user_cards: JSON.stringify(user_cards),
+            att_attribute: (this.roll_percentages[0] * 0.05).toFixed(2),
+            mov_attribute: (this.roll_percentages[1] * 0.05).toFixed(2),
+            def_attribute: (this.roll_percentages[2] * 0.05).toFixed(2)};
+
+        console.log(battle_object);
 
         // Send a message to start the battle along the battle_socket
-        this.battle_socket.send(JSON.stringify({battle_id: user.battle_id, username: user.username, user_cards: user_cards}));
+        this.battle_socket.send(JSON.stringify(battle_object));
+    },
+
+    clone_card: function(card_data) {
+
 
     },
+
     battle_message: function(message) {
 
         var response = JSON.parse(message.data);
@@ -320,62 +354,143 @@ var pre_battle_state = {
     next_trigger: function(trigger_slot, card_type) {
         console.log("NEXT TRIGGER: " + trigger_slot + ":" + card_type);
 
-        var trigger_type_array = [];
+        var trigger_index;
         var trigger_text_array = [];
 
         if (card_type == "attack") {
-            trigger_type_array = this.attack_triggers;
+
             trigger_text_array = this.attack_trigger_text;
+
+            if (this.attack_triggers[trigger_slot] < this.triggers.length-1) {
+                this.attack_triggers[trigger_slot]++;
+
+            }else{
+                this.attack_triggers[trigger_slot] = 0;
+            }
+
+            trigger_index = this.attack_triggers[trigger_slot];
+
         }else if (card_type == "mobility") {
-            trigger_type_array = this.mobility_triggers;
+
             trigger_text_array = this.mobility_trigger_text;
+
+            if (this.mobility_triggers[trigger_slot] < this.triggers.length-1) {
+                this.mobility_triggers[trigger_slot]++;
+            }else{
+                this.mobility_triggers[trigger_slot] = 0;
+            }
+
+            trigger_index = this.mobility_triggers[trigger_slot];
+
         }else{
-            trigger_type_array = this.defense_triggers;
+
             trigger_text_array = this.defense_trigger_text;
+
+            if (this.defense_triggers[trigger_slot] < this.triggers.length-1) {
+                this.defense_triggers[trigger_slot]++;
+            }else{
+                this.defense_triggers[trigger_slot] = 0;
+            }
+
+            trigger_index = this.defense_triggers[trigger_slot];
         }
 
-        if (trigger_type_array[trigger_slot] < this.triggers.length-1) {
-            trigger_type_array[trigger_slot]++;
-        }else{
-            trigger_type_array[trigger_slot] = 0;
-        }
+        trigger_text_array[trigger_slot].text = this.triggers[trigger_index].name;
 
-        trigger_text_array[trigger_slot].text = this.triggers[trigger_type_array[trigger_slot]].name;
 
-        console.log(card_type + " trigger " + trigger_slot + ":" + this.triggers[trigger_type_array[trigger_slot]].name);
+        console.log(this.attack_triggers);
+        console.log(this.defense_triggers);
+        console.log(this.mobility_triggers);
 
-        // Update the card trigger text
-        this.trigger_wrapper(card_type, trigger_slot);
+        console.log(card_type + " trigger " + trigger_slot + ":" + this.triggers[trigger_index].name);
+
     },
     previous_trigger: function(trigger_slot, card_type) {
         console.log("PREVIOUS TRIGGER: " + trigger_slot + ":" + card_type);
 
-        var trigger_type_array = [];
         var trigger_text_array = [];
+        var trigger_index;
 
         if (card_type == "attack") {
-            trigger_type_array = this.attack_triggers;
+
             trigger_text_array = this.attack_trigger_text;
+
+            if (this.attack_triggers[trigger_slot] > 0) {
+                this.attack_triggers[trigger_slot]--;
+            }else{
+                this.attack_triggers[trigger_slot] = this.triggers.length;
+            }
+
+            trigger_index = this.attack_triggers[trigger_slot];
+
         }else if (card_type == "mobility") {
-            trigger_type_array = this.mobility_triggers;
+
             trigger_text_array = this.mobility_trigger_text;
+
+            if (this.mobility_triggers[trigger_slot] > 0) {
+                this.mobility_triggers[trigger_slot]--;
+            }else{
+                this.mobility_triggers[trigger_slot] = this.triggers.length;
+            }
+
+            trigger_index = this.mobility_triggers[trigger_slot];
+
         }else{
-            trigger_type_array = this.defense_triggers;
+
             trigger_text_array = this.defense_trigger_text;
+
+            if (this.defense_triggers[trigger_slot] > 0) {
+                this.defense_triggers[trigger_slot]--;
+            }else{
+                this.defense_triggers[trigger_slot] = this.triggers.length;
+            }
+
+            trigger_index = this.defense_triggers[trigger_slot];
         }
 
-        if (trigger_type_array[trigger_slot] > 0) {
-            trigger_type_array[trigger_slot]--;
+        trigger_text_array[trigger_slot].text = this.triggers[trigger_index].name;
+        console.log(this.triggers);
+
+        console.log(card_type + " trigger " + trigger_slot + ":" + this.triggers[trigger_index].name);
+
+    },
+    increase_roll: function(type) {
+
+        if (type == "attack") {
+
+            pre_battle_state.roll_percentages[0]++;
+            pre_battle_state.attack_roll_text.text = "ATTACK: " + pre_battle_state.roll_percentages[0];
+
+        }else if(type == "mobility") {
+
+            pre_battle_state.roll_percentages[1]++;
+            pre_battle_state.mobility_roll_text.text = "MOBILITY: " + pre_battle_state.roll_percentages[1];
+
         }else{
-            trigger_type_array[trigger_slot] = this.triggers.length-1;
+
+            pre_battle_state.roll_percentages[2]++;
+            pre_battle_state.defense_roll_text.text = "DEFENSE: " + pre_battle_state.roll_percentages[2];
+
         }
+    },
+    decrease_roll: function(type) {
 
-        trigger_text_array[trigger_slot].text = this.triggers[trigger_type_array[trigger_slot]].name;
+        if (type == "attack") {
 
-        console.log(card_type + " trigger " + trigger_slot + ":" + this.triggers[trigger_type_array[trigger_slot]].name);
+            pre_battle_state.roll_percentages[0]--;
+            pre_battle_state.attack_roll_text.text = "ATTACK: " + pre_battle_state.roll_percentages[0];
 
-        // Update the card trigger text
-        this.trigger_wrapper(card_type, trigger_slot);
+        }else if(type == "mobility") {
+
+            pre_battle_state.roll_percentages[1]--;
+            pre_battle_state.mobility_roll_text.text = "MOBILITY: " + pre_battle_state.roll_percentages[1];
+
+        }else{
+
+            pre_battle_state.roll_percentages[2]--;
+            pre_battle_state.defense_roll_text.text = "DEFENSE: " + pre_battle_state.roll_percentages[2];
+
+        }
     },
     /**
      * Takes a card slot and type and renders that card on screen.
@@ -400,11 +515,11 @@ var pre_battle_state = {
         var new_card = new card(game,
             card_x,
             card_y,
-            card_data.elementalStatBonusList[0].element,
+            card_data.elementalStatBonus.element,
             card_data.type,
             card_data.name,
-            card_data.elementalStatBonusList[0].bonus.toFixed(2),
-            card_data.statBonusList[0].bonus.toFixed(2));
+            card_data.elementalStatBonus.bonus.toFixed(2),
+            card_data.statBonus.bonus.toFixed(2));
 
         new_card.scale.setTo(0.7, 0.7);
         new_card.inputEnabled = true;
@@ -453,11 +568,11 @@ var pre_battle_state = {
         var new_card = new card(game,
             card_x,
             card_y,
-            card_data.elementalStatBonusList[0].element,
+            card_data.elementalStatBonus.element,
             card_data.type,
             card_data.name,
-            card_data.elementalStatBonusList[0].bonus.toFixed(2),
-            card_data.statBonusList[0].bonus.toFixed(2));
+            card_data.elementalStatBonus.bonus.toFixed(2),
+            card_data.statBonus.bonus.toFixed(2));
 
         // Append some custom data to the card to make assignments and look-ups easier in the click handler.
         new_card.list_index = card_list_index;
@@ -481,7 +596,7 @@ var pre_battle_state = {
         pre_battle_state.mobility_selector.visible = false;
         pre_battle_state.defense_selector.visible = false;
 
-        // Update the status of the chosen cards arrays
+        // Update the status of the chosen cards array
         if (this.current_type == "attack") {
             pre_battle_state.attack_cards[this.current_slot] = target.list_index;
         }else if (this.current_type == "mobility") {
@@ -490,15 +605,6 @@ var pre_battle_state = {
             pre_battle_state.defense_cards[this.current_slot] = target.list_index;
         }
         console.log(pre_battle_state.attack_cards);
-
-    },
-    /**
-     * Takes a card type and slot and renders the trigger text.
-     * Locations of the trigger text is determined by the type and slot.
-     * @param card_type
-     * @param slot
-     */
-    trigger_wrapper: function(card_type, slot) {
 
     }
 };

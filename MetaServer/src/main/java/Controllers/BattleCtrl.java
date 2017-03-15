@@ -48,13 +48,14 @@ public class BattleCtrl {
         final UpdateOperations<Battle> update_readiness;
         final UpdateOperations<Battle> update_cards;
         final UpdateOperations<Battle> update_battleplayer;
-        final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(battle_id);
+        final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(battle_id.toString());
 
         Battle battle = null;
         try{
             battle = battle_query.get();
         }catch (Exception e){
             System.out.println(e);
+            System.out.println("error1");
         }
 
         if (battle ==null){
@@ -83,6 +84,7 @@ public class BattleCtrl {
             datastore.update(battle_query, update_battleplayer);
         } catch (Exception e){
             e.printStackTrace();
+            System.out.println("error2");
             return new ResponseError("Something went wrong");
         }
 
