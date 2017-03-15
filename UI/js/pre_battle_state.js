@@ -44,7 +44,7 @@ var pre_battle_state = {
     selector_rows: 3,
 
     // Trigger button scale
-    trigger_btn_scale: 0.7,
+    trigger_btn_scale: 0.5,
 
     // Stores indexes into the user.cards array (same for other card types below)
     mobility_cards: [],
@@ -108,7 +108,7 @@ var pre_battle_state = {
             }
         }
     ],
-    roll_percentages: [7, 6, 7],
+    roll_percentages: [35, 30, 35],
 
     preload: function() {
 
@@ -155,19 +155,18 @@ var pre_battle_state = {
         this.submit_button = game.add.button(1175, 600, 'Submit_button', pre_battle_state.battle_start, this, 2, 1, 0).scale.setTo(0.7, 0.7);
 
         // Put the category name and roll chance on the screen
-        this.attack_roll_text = game.add.bitmapText(this.roll_text_x, this.roll_text_y, this.roll_text_font, "ATTACK: " + this.roll_percentages[0], this.roll_text_font_size);
-        this.mobility_roll_text = game.add.bitmapText(this.roll_text_x + this.roll_text_x_offset, this.roll_text_y, this.roll_text_font, "MOBILITY: " + this.roll_percentages[1], this.roll_text_font_size);
-        this.defense_roll_text = game.add.bitmapText(this.roll_text_x + this.roll_text_x_offset*2, this.roll_text_y, this.roll_text_font, "DEFENSE: " + this.roll_percentages[2], this.roll_text_font_size);
+        this.attack_roll_text = game.add.bitmapText(this.roll_text_x, this.roll_text_y, this.roll_text_font, "ATTACK " + this.roll_percentages[0] + "%", this.roll_text_font_size);
+        this.mobility_roll_text = game.add.bitmapText(this.roll_text_x + this.roll_text_x_offset, this.roll_text_y, this.roll_text_font, "MOBILITY " + this.roll_percentages[1] + "%", this.roll_text_font_size);
+        this.defense_roll_text = game.add.bitmapText(this.roll_text_x + this.roll_text_x_offset*2, this.roll_text_y, this.roll_text_font, "DEFENSE " + this.roll_percentages[2] + "%", this.roll_text_font_size);
 
         this.attack_increase_roll = game.add.button(this.mobility_card_x - 124, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("attack")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
         this.attack_decrease_roll = game.add.button(this.attack_card_x - 62, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("attack")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
 
-        this.defense_increase_roll = game.add.button(this.defense_card_x + 270, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("defense")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.defense_increase_roll = game.add.button(this.defense_card_x + 285, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("defense")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
         this.defense_decrease_roll = game.add.button(this.defense_card_x - 62, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("defense")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
 
-        this.mobility_increase_roll = game.add.button(this.defense_card_x - 124, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("mobility")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.mobility_increase_roll = game.add.button(this.defense_card_x - 114, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("mobility")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
         this.mobility_decrease_roll = game.add.button(this.mobility_card_x - 62, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("mobility")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
-
 
     },
     /**
@@ -200,9 +199,9 @@ var pre_battle_state = {
         var battle_object = {battle_id: user.battle_id,
             username: user.username,
             user_cards: JSON.stringify(user_cards),
-            att_attribute: (this.roll_percentages[0] * 0.05).toFixed(2),
-            mov_attribute: (this.roll_percentages[1] * 0.05).toFixed(2),
-            def_attribute: (this.roll_percentages[2] * 0.05).toFixed(2)};
+            att_attribute: (this.roll_percentages[0] /100).toFixed(2),
+            mov_attribute: (this.roll_percentages[1] /100).toFixed(2),
+            def_attribute: (this.roll_percentages[2] /100).toFixed(2)};
 
         console.log(battle_object);
 
@@ -458,18 +457,18 @@ var pre_battle_state = {
 
         if (type == "attack") {
 
-            pre_battle_state.roll_percentages[0]++;
-            pre_battle_state.attack_roll_text.text = "ATTACK: " + pre_battle_state.roll_percentages[0];
+            pre_battle_state.roll_percentages[0] += 5;
+            pre_battle_state.attack_roll_text.text = "ATTACK " + pre_battle_state.roll_percentages[0] + "%";
 
         }else if(type == "mobility") {
 
-            pre_battle_state.roll_percentages[1]++;
-            pre_battle_state.mobility_roll_text.text = "MOBILITY: " + pre_battle_state.roll_percentages[1];
+            pre_battle_state.roll_percentages[1] += 5;
+            pre_battle_state.mobility_roll_text.text = "MOBILITY " + pre_battle_state.roll_percentages[1] + "%";
 
         }else{
 
-            pre_battle_state.roll_percentages[2]++;
-            pre_battle_state.defense_roll_text.text = "DEFENSE: " + pre_battle_state.roll_percentages[2];
+            pre_battle_state.roll_percentages[2] += 5;
+            pre_battle_state.defense_roll_text.text = "DEFENSE " + pre_battle_state.roll_percentages[2] + "%";
 
         }
     },
@@ -477,18 +476,18 @@ var pre_battle_state = {
 
         if (type == "attack") {
 
-            pre_battle_state.roll_percentages[0]--;
-            pre_battle_state.attack_roll_text.text = "ATTACK: " + pre_battle_state.roll_percentages[0];
+            pre_battle_state.roll_percentages[0] -= 5;
+            pre_battle_state.attack_roll_text.text = "ATTACK " + pre_battle_state.roll_percentages[0] + "%";
 
         }else if(type == "mobility") {
 
-            pre_battle_state.roll_percentages[1]--;
-            pre_battle_state.mobility_roll_text.text = "MOBILITY: " + pre_battle_state.roll_percentages[1];
+            pre_battle_state.roll_percentages[1] -= 5;
+            pre_battle_state.mobility_roll_text.text = "MOBILITY " + pre_battle_state.roll_percentages[1] + "%";
 
         }else{
 
-            pre_battle_state.roll_percentages[2]--;
-            pre_battle_state.defense_roll_text.text = "DEFENSE: " + pre_battle_state.roll_percentages[2];
+            pre_battle_state.roll_percentages[2] -= 5;
+            pre_battle_state.defense_roll_text.text = "DEFENSE " + pre_battle_state.roll_percentages[2] + "%";
 
         }
     },
