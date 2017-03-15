@@ -1,5 +1,6 @@
 package Models;
 
+import Utilities.BattlePlayer;
 import com.google.gson.JsonObject;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
@@ -21,6 +22,10 @@ public class Battle {
     @Id
     private ObjectId id;
 
+    // Add battle percentage attributes,
+    // restructure Battle to just two player json objects
+
+
     //User IDs
     private String player1;
     private String player2;
@@ -32,6 +37,8 @@ public class Battle {
     private List<Card> player2_cards;
     private List<Equipment> player1_equipment;
     private List<Equipment> player2_equipment;
+    private BattlePlayer player1_battleplayer;
+    private BattlePlayer player2_battleplayer;
 
 
     public Battle(){}
@@ -71,10 +78,23 @@ public class Battle {
 
     public Date getDate() { return date; }
 
+    public BattlePlayer getPlayer1_battleplayer() {
+        return player1_battleplayer;
+    }
 
+    public void setPlayer1_battleplayer(BattlePlayer player1_battleplayer) {
+        this.player1_battleplayer = player1_battleplayer;
+    }
 
+    public BattlePlayer getPlayer2_battleplayer() {
+        return player2_battleplayer;
+    }
 
-    ///////////////////////
+    public void setPlayer2_battleplayer(BattlePlayer player2_battleplayer) {
+        this.player2_battleplayer = player2_battleplayer;
+    }
+
+///////////////////////
     ////////EQUALS ////////
     ///////////////////////
 
@@ -100,4 +120,16 @@ public class Battle {
         result = 31 * result + (battle_json != null ? battle_json.hashCode() : 0);
         return result;
     }
+
+
+    public static Battle createNewBattle(String player1, String player2, List<Equipment> player1_equipment, List<Equipment> player2_equipment){
+
+        Battle new_battle = new Battle(player1, player2, player1_equipment, player2_equipment);
+        new_battle.player1_battleplayer = new BattlePlayer(player1, player1_equipment);
+        new_battle.player2_battleplayer = new BattlePlayer(player2, player2_equipment);
+
+        return new_battle;
+    }
+
+
 }
