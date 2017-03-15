@@ -1,6 +1,7 @@
 package Controllers;
 
 import Models.Card;
+import Models.Equipment;
 import Models.User;
 import Utilities.ResponseError;
 import Utilities.ResponseSuccess;
@@ -60,6 +61,7 @@ public class AuthenticationCtrl {
             //Add some cards on sign up
 
             ArrayList<Card> cardArrayList = new ArrayList<>();
+            ArrayList<Equipment> equipmentArrayList = new ArrayList<>();
 
             cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.ATTACK));
             cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.ATTACK));
@@ -73,6 +75,12 @@ public class AuthenticationCtrl {
             cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.MOBILITY));
             cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.MOBILITY));
 
+            equipmentArrayList.add(Equipment.GenerateEquipment(new_user.getRating(), Equipment.BOOTS));
+            equipmentArrayList.add(Equipment.GenerateEquipment(new_user.getRating(), Equipment.WEAPON));
+            equipmentArrayList.add(Equipment.GenerateEquipment(new_user.getRating(), Equipment.SHIELD));
+
+
+            new_user.setEquipment(equipmentArrayList);
             new_user.setCards(cardArrayList);
 
             try {

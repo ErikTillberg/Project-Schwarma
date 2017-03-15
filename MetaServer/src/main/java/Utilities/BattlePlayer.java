@@ -42,7 +42,7 @@ public class BattlePlayer {
         String type, element;
 
         for (Equipment item : equipment){
-            type =item.getType();
+            type = item.getType();
             switch (type){
                 case("weapon"): this.attack_bonus += item.getStatBonus().getBonus();
                     break;
