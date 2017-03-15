@@ -63,6 +63,6 @@ namespace Schwarma
                 std::atoi(condition.rhs)
             );
         }
-        return false;
+        throw new std::runtime_error(std::string("Invalid rhs \"")+condition.rhs+std::string("\"")+" in condition \""+condition.lhs+condition.op+condition.rhs+"\"");
     }
 }
