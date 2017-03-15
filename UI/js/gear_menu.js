@@ -26,6 +26,7 @@ card = function (game, x, y, element, type, text, num1, num2) {
 
     var Card_item = game.add.sprite(0, 0, 'Card_Item');
     Card_item.anchor.setTo(0.5, 0.5);
+
     if ( type == 'attack'){
         Card_item.frame = 2;
     }
@@ -46,6 +47,7 @@ card = function (game, x, y, element, type, text, num1, num2) {
     var textNum1 = game.add.bitmapText(-20, 85, 'carrier_command_black', type + ':' + '+' + num1, 9);
     textNum1.anchor.setTo(0.5, 0.5);
     textNum1.align = 'left';
+
     this.addChild(textNum1);
 
     if ( element != '') {
