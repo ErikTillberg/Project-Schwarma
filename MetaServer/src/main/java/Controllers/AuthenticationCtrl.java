@@ -75,10 +75,17 @@ public class AuthenticationCtrl {
             cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.MOBILITY));
             cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.MOBILITY));
 
-            equipmentArrayList.add(Equipment.GenerateEquipment(new_user.getRating(), Equipment.BOOTS));
-            equipmentArrayList.add(Equipment.GenerateEquipment(new_user.getRating(), Equipment.WEAPON));
-            equipmentArrayList.add(Equipment.GenerateEquipment(new_user.getRating(), Equipment.SHIELD));
+            Equipment boots = Equipment.GenerateEquipment(new_user.getRating(), Equipment.BOOTS);
+            Equipment weapon = Equipment.GenerateEquipment(new_user.getRating(), Equipment.WEAPON);
+            Equipment shield = Equipment.GenerateEquipment(new_user.getRating(), Equipment.SHIELD);
 
+            equipmentArrayList.add(boots);
+            equipmentArrayList.add(weapon);
+            equipmentArrayList.add(shield);
+
+            new_user.setEquippedBoots(boots);
+            new_user.setEquippedChest(weapon);
+            new_user.setEquippedWeapon(shield);
 
             new_user.setEquipment(equipmentArrayList);
             new_user.setCards(cardArrayList);
