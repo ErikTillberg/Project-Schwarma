@@ -45,6 +45,15 @@ namespace Schwarma
                 Schwarma::Distance[condition.rhs]
             );    
         }
+        else if(condition.lhs == "playerHP")
+        {
+            return Schwarma::evalConditionalExpression<int,int>
+            (
+                condition.op,
+                std::atoi(a.stats.health),
+                std::atoi(condition.rhs)
+            );
+        }
         return false;
     }
 }
