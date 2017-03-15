@@ -216,6 +216,7 @@ public class MatchmakingCtrl {
         try {
             userSession.getRemote().sendString(toJson(new WebSocketMessage("battle_id", battle_id)));
             userSession.getRemote().sendString(toJson(responseToUser));
+            matchedUserSession.getRemote().sendString(toJson(new WebSocketMessage("battle_id", battle_id)));
             matchedUserSession.getRemote().sendString(toJson(responseToMatchedUser));
         } catch (Exception e){
             e.printStackTrace();

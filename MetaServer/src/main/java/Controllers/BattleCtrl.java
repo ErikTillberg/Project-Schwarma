@@ -41,14 +41,16 @@ public class BattleCtrl {
     }
 
 
-    public static Object updateReadiness(ObjectId battle_id, String user_id, String att_attribute,
+    public static Object updateReadiness(String battle_id, String user_id, String att_attribute,
                                          String def_attribute, String mov_attribute, List<Card> user_cards){
 
         String player_to_update;
         final UpdateOperations<Battle> update_readiness;
         final UpdateOperations<Battle> update_cards;
         final UpdateOperations<Battle> update_battleplayer;
-        final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(battle_id.toString());
+
+
+        final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(new ObjectId(battle_id));
 
         Battle battle = null;
         try{
@@ -59,7 +61,7 @@ public class BattleCtrl {
         }
 
         if (battle ==null){
-            System.out.println("Could not find battle %s" + battle_id.toString());
+            System.out.println("Could not find battle: " + battle_id.toString());
         }
 
         BattlePlayer battle_player;
@@ -110,10 +112,10 @@ public class BattleCtrl {
         return battle.getPlayer1_ready() && battle.getPlayer2_ready();
     }
 
-    public static String postToSimServer(ObjectId battle_id)
+    public static String postToSimServer(String battle_id)
             throws ClientProtocolException, IOException {
 
-        final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(battle_id);
+        final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(new ObjectId(battle_id));
 
         Battle battle = null;
         try{

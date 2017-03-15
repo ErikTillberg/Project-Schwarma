@@ -7,6 +7,7 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.query.Query;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,10 +22,6 @@ public class Battle {
 
     @Id
     private ObjectId id;
-
-    // Add battle percentage attributes,
-    // restructure Battle to just two player json objects
-
 
     //User IDs
     private String player1;
@@ -41,14 +38,15 @@ public class Battle {
     private BattlePlayer player2_battleplayer;
 
 
-    public Battle(){}
+    public Battle(){super ();}
 
     public Battle(String player1, String player2, List<Equipment> player1_equipment, List<Equipment> player2_equipment){
+        this.date = new Date();
         this.player1 = player1;
         this.player2 = player2;
         this.player1_equipment = player1_equipment;
         this.player2_equipment = player2_equipment;
-        this.date = new Date();
+
     }
 
 
@@ -127,6 +125,8 @@ public class Battle {
         Battle new_battle = new Battle(player1, player2, player1_equipment, player2_equipment);
         new_battle.player1_battleplayer = new BattlePlayer(player1, player1_equipment);
         new_battle.player2_battleplayer = new BattlePlayer(player2, player2_equipment);
+        new_battle.player1_cards = new ArrayList<Card>(9);
+        new_battle.player2_cards = new ArrayList<Card>(9);
 
         return new_battle;
     }
