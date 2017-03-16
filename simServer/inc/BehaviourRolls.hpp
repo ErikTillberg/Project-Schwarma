@@ -1,8 +1,7 @@
 #pragma once
 namespace Schwarma
 {
-    //class to hold percentage chance to roll each action
-    //default is equal chance of all actions
+    //! Class to hold percentage chance to roll each action. Default is equal chance of all actions
     class BehaviourRolls
     {
         public:

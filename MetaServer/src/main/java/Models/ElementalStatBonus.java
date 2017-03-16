@@ -13,6 +13,7 @@ public class ElementalStatBonus extends StatBonus {
     public static String WATER = "water";
     public static String EARTH = "earth";
     public static String FIRE = "fire";
+    public static String NONE = "none";
 
     //The type of element, either water fire or earth (probably, hard to say since everyone keeps calling water ice and I don't know what's going on anymore)
     private String element;
@@ -41,7 +42,7 @@ public class ElementalStatBonus extends StatBonus {
 
         ElementalStatBonus esb = new ElementalStatBonus();
 
-        double randomBonusNumber = ThreadLocalRandom.current().nextDouble(min, max);
+        double randomBonusNumber = (max>0)? ThreadLocalRandom.current().nextDouble(min, max):0;
         esb.setBonus(randomBonusNumber);
 
         if (ElementalStatBonus.isValidElement(element)){
@@ -63,16 +64,24 @@ public class ElementalStatBonus extends StatBonus {
     }
 
     public static ElementalStatBonus GenerateRandomElementalStatBonusWithRandomElement(double min, double max, String statType){
-        String element = getRandomElement();
-        return ElementalStatBonus.GenerateRandomElementalStatBonus(min, max, element, statType);
+        if (statType == "none")
+            return ElementalStatBonus.GenerateRandomElementalStatBonus(min, max, "none", statType);
+
+        else {
+            String element = getRandomElement();
+            return ElementalStatBonus.GenerateRandomElementalStatBonus(min, max, element, statType);
+        }
     }
 
     public static boolean isValidElementalStat(String statType) {
-        return statType == "attack" || statType == "defense";
+        return statType == "attack" || statType == "defense" || statType == "none";
     }
 
     public static boolean isValidElement(String element)        {
-        return element == ElementalStatBonus.WATER || element == ElementalStatBonus.EARTH || element == ElementalStatBonus.FIRE;
+        return  element == ElementalStatBonus.WATER ||
+                element == ElementalStatBonus.EARTH ||
+                element == ElementalStatBonus.FIRE ||
+                element == ElementalStatBonus.NONE;
     }
 
     public static String getRandomElement(){

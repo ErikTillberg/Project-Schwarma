@@ -3,6 +3,7 @@ package Models;
 
 import Resources.StringLists;
 import Utilities.RNGUtil;
+import com.google.gson.JsonObject;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Id;
 
@@ -16,9 +17,9 @@ import java.util.List;
  */
 public class Equipment {
 
-    public static String HEAD = "head";
+    public static String SHIELD = "shield";
     public static String WEAPON = "weapon";
-    public static String OFFHAND = "offhand";
+    public static String BOOTS = "boots";
     public static String ATTACK = "attack";
     public static String DEFENSE = "defense";
 
@@ -26,21 +27,21 @@ public class Equipment {
     private ObjectId id;
 
     private String name;
+    private Integer value;
 
     // Equipment can be either boots, weapons, or shield.
     private String type;
-    private List<StatBonus> statBonusList = new ArrayList<StatBonus>();
-    private List<ElementalStatBonus> elementalStatBonusList = new ArrayList<ElementalStatBonus>();
+    private StatBonus statBonus;
+    private ElementalStatBonus elementalStatBonus;
 
 
     public Equipment(){ super(); }
 
-    public Equipment(String name, String type, List<StatBonus> statBonusList,
-                     List<ElementalStatBonus> elementalStatBonusList){
+    public Equipment(String name, String type, StatBonus statBonus, ElementalStatBonus elementalStatBonus){
         this.name = name;
         this.type = type;
-        this.statBonusList = statBonusList;
-        this.elementalStatBonusList = elementalStatBonusList;
+        this.statBonus = statBonus;
+        this.elementalStatBonus = elementalStatBonus;
     }
 
 
@@ -58,19 +59,27 @@ public class Equipment {
 
     public void setType(String type) { this.type = type; }
 
-    public List<StatBonus> getStatBonusList() { return statBonusList; }
+    public StatBonus getStatBonus() { return statBonus; }
 
-    public void setStatBonusList(List<StatBonus> statBonusList) { this.statBonusList = statBonusList; }
+    public void setStatBonus(StatBonus statBonus) { this.statBonus= statBonus; }
 
-    public List<ElementalStatBonus> getElementalStatBonusList() { return elementalStatBonusList; }
+    public ElementalStatBonus getElementalStatBonus() { return elementalStatBonus; }
 
-    public void setElementalStatBonusList(List<ElementalStatBonus> elementalStatBonusList)
-    { this.elementalStatBonusList = elementalStatBonusList;}
+    public void setElementalStatBonus(ElementalStatBonus elementalStatBonus)
+    { this.elementalStatBonus = elementalStatBonus;}
 
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
 
     ///////////////////////
     ////////EQUALS ////////
     ///////////////////////
+
 
     @Override
     public boolean equals(Object o) {
@@ -79,24 +88,25 @@ public class Equipment {
 
         Equipment equipment = (Equipment) o;
 
+        if (id != null ? !id.equals(equipment.id) : equipment.id != null) return false;
         if (name != null ? !name.equals(equipment.name) : equipment.name != null) return false;
+        if (value != null ? !value.equals(equipment.value) : equipment.value != null) return false;
         if (type != null ? !type.equals(equipment.type) : equipment.type != null) return false;
-        if (statBonusList != null ? !statBonusList.equals(equipment.statBonusList) : equipment.statBonusList != null)
-            return false;
-        return !(elementalStatBonusList != null ? !elementalStatBonusList.equals(equipment.elementalStatBonusList) : equipment.elementalStatBonusList != null);
+        if (statBonus != null ? !statBonus.equals(equipment.statBonus) : equipment.statBonus != null) return false;
+        return !(elementalStatBonus != null ? !elementalStatBonus.equals(equipment.elementalStatBonus) : equipment.elementalStatBonus != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (statBonusList != null ? statBonusList.hashCode() : 0);
-        result = 31 * result + (elementalStatBonusList != null ? elementalStatBonusList.hashCode() : 0);
+        result = 31 * result + (statBonus != null ? statBonus.hashCode() : 0);
+        result = 31 * result + (elementalStatBonus != null ? elementalStatBonus.hashCode() : 0);
         return result;
     }
-
-
 
     /**
      * This method constructs and returns a random card based on the rating that is sent to it
@@ -144,18 +154,14 @@ public class Equipment {
             //FOR NOW LETS JUST ADD ONE ELEMENTAL STAT FOR FUN
             //IT WILL HAVE A RANDOM ELEMENT TYPE AND BE OF THE STAT TYPE OF THE CARD
             Double maxReward = 50.0;
-            Double min = RNGUtil.getSqrtValue(userRating-500, maxReward);
-            Double max = RNGUtil.getSqrtValue(userRating+500, maxReward);
+            Double min = RNGUtil.getSqrtValue(userRating - 500, maxReward);
+            Double max = RNGUtil.getSqrtValue(userRating + 500, maxReward);
 
-            ElementalStatBonus elementalStatBonus =
-                    ElementalStatBonus.GenerateRandomElementalStatBonusWithRandomElement(min, max, slot_bonus); //wowza
-
-            ArrayList<ElementalStatBonus> elementalStatBonusArrayList = new ArrayList<>();
-
-            elementalStatBonusArrayList.add(elementalStatBonus);
-
-            aGear.setElementalStatBonusList(elementalStatBonusArrayList);
-        } //else there is nothing, just don't add the stats
+            aGear.setElementalStatBonus(
+                    ElementalStatBonus.GenerateRandomElementalStatBonusWithRandomElement(min, max, slot_bonus));
+        } else{
+            aGear.setElementalStatBonus(ElementalStatBonus.GenerateRandomElementalStatBonusWithRandomElement(0, 0, slot_bonus)); //wowza
+        }
 
         //Every equipment piece should have some sort of bonus that is given to the equipment.
         //To start, let's start with a single bonus, to the stat of the type of equipment that is being created.
@@ -166,18 +172,19 @@ public class Equipment {
         StatBonus statBonus = StatBonus.GenerateRandomStatBonus(min, max, slot_bonus);
         if(statBonus == null){return null;}
 
-        ArrayList<StatBonus> statBonusList = new ArrayList<>();
-        statBonusList.add(statBonus);
+        //Add the stat bonus list to the equipment.
+        aGear.setStatBonus(statBonus);
 
-        //Add the stat bonus list to the card.
-        aGear.setStatBonusList(statBonusList);
-
-        //Last thing to do is add the name of the card. Let's do this by getting random strings from lists.
+        //Last thing to do is add the name of the equipment. Let's do this by getting random strings from lists.
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(slot_bonus).append(" card of ").append(StringLists.getRandomCardAdjective()).append(" ").append(StringLists.getRandomCardNoun());
 
         String name = stringBuilder.toString();
         aGear.setName(name);
+
+        //Set the value of the equipment:
+
+        aGear.setValue(Equipment.getEquipmentValue(aGear));
 
         //I think that's everything!!!
 
@@ -186,7 +193,7 @@ public class Equipment {
 
 
     public static boolean isValidEquipmentType(String type){
-        return type.equals(Equipment.HEAD) || type.equals(Equipment.WEAPON) || type.equals(Equipment.OFFHAND);
+        return type.equals(Equipment.SHIELD) || type.equals(Equipment.WEAPON) || type.equals(Equipment.BOOTS);
     }
 
 
@@ -197,11 +204,33 @@ public class Equipment {
         stringBuilder.append("[")
                 .append(this.name)
                 .append(", ")
-                .append(statBonusList)
+                .append(type)
                 .append(", ")
-                .append(elementalStatBonusList)
+                .append(statBonus)
+                .append(", ")
+                .append(elementalStatBonus)
                 .append("]");
 
         return stringBuilder.toString();
+    }
+
+    /**
+     * Presently identical to that in the card value generator.
+     * @param equipment
+     * @return
+     */
+    private static Integer getEquipmentValue(Equipment equipment){
+
+        //For now let's just look at the cards stats and tally their values:
+        int bonusTotal = 0;
+        bonusTotal += (int)equipment.getStatBonus().getBonus();
+        bonusTotal += (int)equipment.getElementalStatBonus().getBonus();
+
+
+        //(value/50)^4 is the value of the card, rounded to nearest integer.
+        //Subject to change.
+        double val = Math.pow((double)bonusTotal/50, 4);
+
+        return (int)Math.round(val);
     }
 }

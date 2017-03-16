@@ -18,23 +18,23 @@
 #include "../rapidjson/include/rapidjson/prettywriter.h"
 namespace Schwarma
 {
-    //class describing some actor in the game world
+    //! Class describing some actor in the game world
     class Entity
     {
         public:
-            //a label for the entity
+            //! A label for the entity
             std::string name = "";
-            //position in the (1 dimensional) world
+            //! Position in the (1 dimensional) world
             int position = 0;
-            //base statistics (static)
+            //! Base statistics (static)
             Schwarma::Stats baseStats;
-            //current statistics (dynamic)
+            //! Current statistics (dynamic)
             Schwarma::Stats stats;
-            //percentage chance to take an action
+            //! Percentage chance to take an action
             Schwarma::BehaviourRolls behaviours;
-
+            //! Collection of conditions and actions 
             std::vector<Schwarma::Trigger> triggers;
-
+            //! Collection of weapons wielded by the Entity
             std::vector<Schwarma::Weapon> weapons;
 
             virtual bool loadFromSource(std::string&) = 0;
@@ -42,7 +42,7 @@ namespace Schwarma
             virtual int defend(Schwarma::Entity*) = 0;
             virtual int move(Schwarma::Entity*) = 0;
 
-            //roll for action
+            //! Roll for action
             int doAction()
             {
                 //Algorithm based on answer by jephthah
@@ -60,7 +60,7 @@ namespace Schwarma
 
                 return Schwarma::NOOP;
             }
-            //Loads an entity from file specifed by string file
+            //! Loads an entity from file specifed by string file
             bool loadFromFile(std::string file)
             {
                 //Load json file specified by file
@@ -140,6 +140,7 @@ namespace Schwarma
                 this->stats = this->baseStats;
                 return true;
             }
+            //! Calculate distance between Entity this and b
             int distance(Entity&b)
             {
                 return std::abs(this->position - b.position);

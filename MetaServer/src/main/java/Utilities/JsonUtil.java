@@ -1,17 +1,32 @@
 package Utilities;
 
 import Annotations.Exclude;
+import Models.Card;
+import Models.Equipment;
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import javafx.beans.binding.ObjectExpression;
 import spark.ResponseTransformer;
 import org.bson.types.ObjectId;
 
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by Erik_Tillberg on 2/3/2017.
  */
 public class JsonUtil {
+
+    /**
+     *
+     * @param s Some string in appropriate JSON format
+     * @return Returns the above string as a JSON object.
+     */
+    public static JsonObject stringToJson(String s){
+        return new JsonParser().parse(s).getAsJsonObject();
+    }
+
     /**
      *
      * @param object Some object with member variables
@@ -78,6 +93,12 @@ public class JsonUtil {
 
     public static Map<String, String> parseToMap(String object){
         return new Gson().fromJson(object, Map.class);
+    }
+
+    public static Equipment parseToEquipment(String object) { return new Gson().fromJson(object, Equipment.class);}
+
+    public static List<Card> parseToListOfCards(String object) {
+        return new Gson().fromJson(object, new TypeToken<List<Card>>(){}.getType());
     }
 
 }

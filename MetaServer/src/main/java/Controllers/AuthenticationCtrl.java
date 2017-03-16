@@ -1,6 +1,7 @@
 package Controllers;
 
 import Models.Card;
+import Models.Equipment;
 import Models.User;
 import Utilities.ResponseError;
 import Utilities.ResponseSuccess;
@@ -54,12 +55,32 @@ public class AuthenticationCtrl {
 
             new_user = new User(email, username, hashedPass, salt);
             new_user.setCharacterType(characterType);
+
+            switch (characterType){
+                case("warrior"):
+                    new_user.setAttack_modifier(1);
+                    new_user.setDefence_modifier(1);
+                    new_user.setMobility_modifier(1);
+                    break;
+                case("mage"):
+                    new_user.setAttack_modifier(2);
+                    new_user.setDefence_modifier(2);
+                    new_user.setMobility_modifier(2);
+                    break;
+                case("thief"):
+                    new_user.setAttack_modifier(3);
+                    new_user.setDefence_modifier(3);
+                    new_user.setMobility_modifier(3);
+                    break;
+
+            }
             //I'm assuming signing up is an auto-login situation, so assign a token here too.
             new_user.setSessionToken(generateToken());
 
             //Add some cards on sign up
 
             ArrayList<Card> cardArrayList = new ArrayList<>();
+            ArrayList<Equipment> equipmentArrayList = new ArrayList<>();
 
             cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.ATTACK));
             cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.ATTACK));
@@ -73,6 +94,19 @@ public class AuthenticationCtrl {
             cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.MOBILITY));
             cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.MOBILITY));
 
+            Equipment boots = Equipment.GenerateEquipment(new_user.getRating(), Equipment.BOOTS);
+            Equipment weapon = Equipment.GenerateEquipment(new_user.getRating(), Equipment.WEAPON);
+            Equipment shield = Equipment.GenerateEquipment(new_user.getRating(), Equipment.SHIELD);
+
+            equipmentArrayList.add(boots);
+            equipmentArrayList.add(weapon);
+            equipmentArrayList.add(shield);
+
+            new_user.setEquippedBoots(boots);
+            new_user.setEquippedChest(weapon);
+            new_user.setEquippedWeapon(shield);
+
+            new_user.setEquipment(equipmentArrayList);
             new_user.setCards(cardArrayList);
 
             try {

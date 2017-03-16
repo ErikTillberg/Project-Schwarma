@@ -1,7 +1,7 @@
 {
     "baseStats" : 
     {
-        "health" : "100",
+        "health" : "50",
         "damage" : "2",
         "resistanceToDamage" : ".1",
         "movementSpeed" : "1",
@@ -60,7 +60,7 @@
                 "condition" : 
                 {
                     "lhs" : "distance",
-                    "operator" : "==",
+                    "operator" : ">=",
                     "rhs" : "touching"
                 },
                 "action" : 

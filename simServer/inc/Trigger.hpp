@@ -7,6 +7,7 @@
 #include "../rapidjson/include/rapidjson/prettywriter.h"
 namespace Schwarma
 {
+    //! Class describing the condition which must be true in order to take an action in a Trigger
     class Condition
     {
         public:
@@ -22,6 +23,7 @@ namespace Schwarma
             std::string op;
             std::string rhs;
     };
+    //! Class describing an action to take by a player when a Trigger is evaluated successfully
     class Action
     {
         public:
@@ -39,6 +41,7 @@ namespace Schwarma
             std::string item;
             std::string card;
     };
+    //! Class describing an action trigger
     class Trigger
     {
         public:
@@ -54,10 +57,11 @@ namespace Schwarma
             Condition condition;
             Action action;
 
-            //Parse the trigger out of the json object pointed to by obj
-            //Set its name to objName
-            //Will fill properties that don't exist with empty strings
-            //Returns Trigger full of empty strings on failure
+            //!Parse the trigger out of the json object pointed to by obj
+            /*!Set its name to objName
+                Will fill properties that don't exist with empty strings.
+                Returns Trigger full of empty strings on failure
+            */
             template<class T>
             static Schwarma::Trigger parseTrigger(T&obj,const char*objName)
             {

@@ -1,10 +1,15 @@
 package Controllers;
 
+import Models.Battle;
+import Models.Card;
+import Models.Equipment;
 import Models.User;
 import Utilities.JsonUtil;
 import Utilities.ResponseError;
 import Utilities.ResponseSuccess;
 import Utilities.WebSocketMessage;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.bson.types.ObjectId;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -14,6 +19,7 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.mongodb.morphia.query.Query;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,7 +48,7 @@ public class MatchmakingCtrl {
 
     @OnWebSocketClose
     public void onClose(Session userSession, int statusCode, String reason){
-        System.out.println("Closing connection");
+        System.out.println("Closing matchmaking connection");
 
         User user = null;
         for (Map.Entry<User, Session> entry : userMatchmakingMap.entrySet()){
@@ -116,10 +122,10 @@ public class MatchmakingCtrl {
             }
 
 //          System.out.println("PRINTING EVERYONE IN THE USER MAP");
-
-            for(Map.Entry<User, Session> entry: userMatchmakingMap.entrySet()){
-                System.out.println(entry.getKey().getUsername());
-            }
+//
+//            for(Map.Entry<User, Session> entry: userMatchmakingMap.entrySet()){
+//                System.out.println(entry.getKey().getUsername());
+//            }
 
             //Try find a match
             attemptToFindMatch(user, userSession);
@@ -190,9 +196,28 @@ public class MatchmakingCtrl {
 
         Session matchedUserSession = userMatchmakingMap.get(closestUser);
 
-        //Send the messages
+        //Build the battle object for the two users
+//
+//        List<Equipment> userEquip = new ArrayList<>();
+//
+//        userEquip.add(user.getEquippedBoots());
+//        userEquip.add(user.getEquippedChest());
+//        userEquip.add(user.getEquippedWeapon());
+//
+//        List<Equipment> matchedEquip = new ArrayList<>();
+//
+//        matchedEquip.add(closestUser.getEquippedBoots());
+//        matchedEquip.add(closestUser.getEquippedChest());
+//        matchedEquip.add(closestUser.getEquippedWeapon());
+
+        Battle battle = new Battle(user.getUsername(), closestUser.getUsername());
+        ObjectId battle_id = (ObjectId) BattleCtrl.addBattle(battle);
+
+        //Send the messages to confirm the matchmaking.
         try {
+            userSession.getRemote().sendString(toJson(new WebSocketMessage("battle_id", battle_id)));
             userSession.getRemote().sendString(toJson(responseToUser));
+            matchedUserSession.getRemote().sendString(toJson(new WebSocketMessage("battle_id", battle_id)));
             matchedUserSession.getRemote().sendString(toJson(responseToMatchedUser));
         } catch (Exception e){
             e.printStackTrace();
@@ -204,7 +229,6 @@ public class MatchmakingCtrl {
         userMatchmakingMap.remove(user);
 
         //all done, nice.
-
     }
 
 }

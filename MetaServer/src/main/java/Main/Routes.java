@@ -3,11 +3,13 @@ package Main; /**
  */
 
 import Controllers.AuthenticationCtrl;
+import Controllers.BattleSocketCtrl;
 import Controllers.InventoryCtrl;
 import Controllers.MatchmakingCtrl;
 import Models.Card;
 import Models.Equipment;
 import Models.User;
+import Utilities.JsonUtil;
 import Utilities.ResponseError;
 import com.google.gson.Gson;
 import com.mongodb.DB;
@@ -15,7 +17,10 @@ import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.query.Query;
 import spark.ResponseTransformer;
+
+import java.util.Map;
 
 import static Utilities.DBConn.datastore;
 import static Utilities.JsonUtil.regularJson;
@@ -27,6 +32,7 @@ public class Routes {
         port(getHerokuAssignedPort());
 
         webSocket("/matchmaking", MatchmakingCtrl.class);
+        webSocket("/battleSocket", BattleSocketCtrl.class);
 
         enableCORS("*", "*", "*");
 
@@ -73,7 +79,7 @@ public class Routes {
 
             String username = req.queryParams("username");
             String[] card_types = {"attack", "defense", "mobility"};
-            String[] equipment_types = {"head", "weapon", "offhand"};
+            String[] equipment_types = {"weapon", "shield", "boots"};
             int random_type;
             String type;
 
@@ -139,6 +145,30 @@ public class Routes {
 
         }, regularJson());
 
+        /**
+         *  {
+         *     username: 'some user',
+         *     equippedChest: 'some chest ID',
+         *     equippedBoots: 'some boots ID',
+         *     equippedWeapon: 'some weapon ID'
+         *  }
+         */
+        post("/setActiveEquipment", (req, res) -> {
+
+            res.type("application/json");
+
+            Map<String, String> messageBody = JsonUtil.parseToMap(req.body());
+
+            Object response = InventoryCtrl.setActiveEquipment(messageBody);
+
+            if (response instanceof ResponseError){
+                res.status(400);
+                return response;
+            }
+
+            return response;
+
+        }, regularJson());
 
         post("/deleteEquipment", (req, res) -> {
 
