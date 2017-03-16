@@ -2,10 +2,9 @@ package Controllers;
 
 import Models.Battle;
 import Models.Card;
-import Utilities.BattlePlayer;
+import Models.User;
 import Utilities.JsonUtil;
 import Utilities.ResponseError;
-import com.google.gson.JsonObject;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -44,69 +43,83 @@ public class BattleCtrl {
     public static Object updateReadiness(String battle_id, String user_id, String att_attribute,
                                          String def_attribute, String mov_attribute, List<Card> user_cards){
 
+
+
+        updatePlayerAttributesAndCards(user_id, att_attribute, def_attribute, mov_attribute, user_cards);
+        updatePlayerReadyStatus(battle_id, user_id);
+
+
+        if (readyToStart(battle_id)) {
+            try {
+                String simulation_results = postToSimServer(battle_id);
+            } catch (Exception e) {
+                return "Something went wrong with the simulation: " + e;
+            }
+        }
+        else
+            System.out.println("Waiting for opponent");
+
+        return true;
+    }
+
+
+    public static Object updatePlayerAttributesAndCards(String username, String att_attribute, String def_attribute,
+                                                        String mov_attribute, List<Card> user_cards){
+
+        final UpdateOperations<User> update_user;
+        final Query<User> user_query = datastore.createQuery(User.class).field("username").equal(username);
+
+
+        update_user = datastore.createUpdateOperations(User.class).set("equippedCards", user_cards)
+                                                                  .set("attack_percentage", Double.parseDouble(att_attribute))
+                                                                  .set("defense_percentage", Double.parseDouble(def_attribute))
+                                                                  .set("mobility_percentage", Double.parseDouble(mov_attribute));
+
+        try {
+            datastore.findAndModify(user_query, update_user);
+        } catch (Exception e){
+            return "Error updating user: " + e + "\n User id you were updating: " + username;
+        }
+
+        return true;
+    }
+
+
+    public static Object updatePlayerReadyStatus(String battle_id, String player){
+
         String player_to_update;
+
         final UpdateOperations<Battle> update_readiness;
-        final UpdateOperations<Battle> update_cards;
-        final UpdateOperations<Battle> update_battleplayer;
-
-        System.out.println(battle_id);
-
-        final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("_id").equal(new ObjectId(battle_id));
+        final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(new ObjectId(battle_id));
 
         Battle battle = null;
         try{
             battle = battle_query.get();
         }catch (Exception e){
-            System.out.println(e);
-            System.out.println("error1");
+            return "Error retrieving battle: " + e + "\n Battle id you were looking for: " + battle_id;
         }
 
-        if (battle ==null){
-            System.out.println("Could not find battle: " + battle_id.toString());
-        }
 
-        BattlePlayer battle_player;
-        if(battle.getPlayer1().equals(user_id)){
+        if(battle.getPlayer1_username().equals(player))
             player_to_update = "player1";
-            battle_player = battle.getPlayer1_battleplayer();
-        }
-        else {
+
+        else
             player_to_update = "player2";
-            battle_player = battle.getPlayer2_battleplayer();
-        }
 
-        battle_player.prepareForBattle(user_id,att_attribute, def_attribute, mov_attribute, user_cards);
 
-        update_readiness = datastore.createUpdateOperations(Battle.class).set(player_to_update+"_ready", true);
-        update_cards = datastore.createUpdateOperations(Battle.class).set(player_to_update+"_cards", user_cards);
-        update_battleplayer = datastore.createUpdateOperations(Battle.class).set(player_to_update+"_battleplayer", battle_player);
+        update_readiness = datastore.createUpdateOperations(Battle.class).set(player_to_update + "_ready", true);
 
         try {
             datastore.update(battle_query, update_readiness);
-            datastore.update(battle_query, update_cards);
-            datastore.update(battle_query, update_battleplayer);
         } catch (Exception e){
-            e.printStackTrace();
-            System.out.println("error2");
-            return new ResponseError("Something went wrong");
+            return "Error updating battle: " + e + "\n Battle id you were updating for: " + battle_id;
         }
 
-        return battle;
-    }
-    
-
-    public static boolean readyToStart(Battle battle){
-
-        if (battle ==null){
-            System.out.println("BATTLECTRL: readyToStart");
-            System.out.println("Could not find battle %s" + battle.toString());
-        }
-
-        return battle.getPlayer1_ready() && battle.getPlayer2_ready();
+        return true;
     }
 
-    public static String postToSimServer(String battle_id)
-            throws ClientProtocolException, IOException {
+
+    public static boolean readyToStart(String battle_id){
 
         final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(new ObjectId(battle_id));
 
@@ -117,10 +130,26 @@ public class BattleCtrl {
             System.out.println(e);
         }
 
+        if (battle ==null){
+            System.out.println("Could not find battle %s" + battle_id);
+        }
+
+        return battle.getPlayer1_ready() && battle.getPlayer2_ready();
+    }
+
+
+    public static String postToSimServer(String battle_id)
+            throws ClientProtocolException, IOException {
+
+        String battle_sim_format = Battle.prepareForSimulation(battle_id);
+        System.out.println("----BATTLE SIM FORMAT -----");
+        System.out.println(battle_sim_format);
+
+
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("http://localhost:3000");
 
-        String json = JsonUtil.toJson(battle);
+        String json = JsonUtil.toJson(battle_sim_format);
         StringEntity entity = new StringEntity(json);
         httpPost.setEntity(entity);
         httpPost.setHeader("Accept", "application/json");

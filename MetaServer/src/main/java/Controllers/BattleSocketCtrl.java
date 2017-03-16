@@ -68,12 +68,10 @@ public class BattleSocketCtrl {
             String mov_attribute = messageAsMap.get("mov_attribute");
             List<Card> user_cards = JsonUtil.parseToListOfCards(messageAsMap.get("user_cards"));
 
-            System.out.println(battle_id);
-            System.out.println(messageAsMap.get("battle_id"));
 
-            Object battle = BattleCtrl.updateReadiness(battle_id, username, att_attribute, def_attribute, mov_attribute, user_cards);
+            BattleCtrl.updateReadiness(battle_id, username, att_attribute, def_attribute, mov_attribute, user_cards);
 
-            if (checkReadiness(battle)){
+            if (checkReadiness(battle_id)){
                 System.out.println("Sending battle to sim server.");
                 String battle_results = BattleCtrl.postToSimServer(battle_id);
             }
@@ -86,8 +84,8 @@ public class BattleSocketCtrl {
         }
     }
 
-    public boolean checkReadiness(Object battle){
-        return BattleCtrl.readyToStart((Battle)battle);
+    public boolean checkReadiness(String battle_id){
+        return BattleCtrl.readyToStart(battle_id);
     }
 
 }

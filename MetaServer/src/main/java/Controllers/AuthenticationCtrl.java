@@ -55,6 +55,25 @@ public class AuthenticationCtrl {
 
             new_user = new User(email, username, hashedPass, salt);
             new_user.setCharacterType(characterType);
+
+            switch (characterType){
+                case("warrior"):
+                    new_user.setAttack_modifier(1);
+                    new_user.setDefence_modifier(1);
+                    new_user.setMobility_modifier(1);
+                    break;
+                case("mage"):
+                    new_user.setAttack_modifier(2);
+                    new_user.setDefence_modifier(2);
+                    new_user.setMobility_modifier(2);
+                    break;
+                case("thief"):
+                    new_user.setAttack_modifier(3);
+                    new_user.setDefence_modifier(3);
+                    new_user.setMobility_modifier(3);
+                    break;
+
+            }
             //I'm assuming signing up is an auto-login situation, so assign a token here too.
             new_user.setSessionToken(generateToken());
 
