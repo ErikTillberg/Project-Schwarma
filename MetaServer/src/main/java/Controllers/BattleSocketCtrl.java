@@ -62,7 +62,7 @@ public class BattleSocketCtrl {
             */
 
             String username = messageAsMap.get("username");
-            ObjectId battle_id = new ObjectId(messageAsMap.get("battle_id"));
+            String battle_id = messageAsMap.get("battle_id");
             String att_attribute = messageAsMap.get("att_attribute");
             String def_attribute = messageAsMap.get("def_attribute");
             String mov_attribute = messageAsMap.get("mov_attribute");
@@ -84,7 +84,7 @@ public class BattleSocketCtrl {
         }
     }
 
-    public boolean checkReadiness(ObjectId battle_id){
+    public boolean checkReadiness(String battle_id){
         return BattleCtrl.readyToStart(battle_id);
     }
 

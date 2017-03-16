@@ -127,7 +127,7 @@ var load_state = {
             window.localStorage['new_user'] = JSON.stringify(true);
             game.state.start('signup');
         }*/
-    },
+    }
 
 };
 

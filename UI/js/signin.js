@@ -137,8 +137,7 @@ var signin_state = {
         debug_console.message_log("Signed in as: " + user.username);
 
         // TODO change back to main menu state
-        user.init_battle(12345);
-        game.state.start("pre_battle");
+        game.state.start("main_menu");
     },
     /**
      * Handles an unsuccessful signin response from the server. Displays an error message to the user.

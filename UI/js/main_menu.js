@@ -149,10 +149,8 @@ var main_menu_state = {
             debug_console.message_log("Found match. Opponent is " + opponent.username);
             console.log(opponent);
             user.init_opponent(opponent);
-            game.state.start('battle_system');
 
-            return;
-
+            game.state.start('pre_battle');
         }else if(response.type == "battle_id") {
             // Store the battle_id for the match that was made
             user.init_battle(response.message);
