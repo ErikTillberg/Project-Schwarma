@@ -17,6 +17,7 @@ game.state.add('signin', signin_state);
 game.state.add('main_menu', main_menu_state);
 game.state.add('gear_menu', gear_menu_state);
 game.state.add('battle_system', battle_system_state);
+game.state.add('pre_battle', pre_battle_state);
 
 // Start the load state to import game assets
 game.state.start("load");

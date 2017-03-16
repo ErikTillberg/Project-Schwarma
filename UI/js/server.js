@@ -10,7 +10,7 @@
  */
 var server = {
 
-    production_mode: true, // switch to false to use local host
+    production_mode: false, // switch to false to use local host
     host_name: null,
     port: null,
 
@@ -65,6 +65,22 @@ var server = {
 
         return web_socket;
     },
+
+    battle_socket: function() {
+
+        var web_socket;
+        web_socket = new WebSocket("ws://" + this.host_name + this.port + "/battleSocket");
+        web_socket.onmessage = pre_battle_state.battle_message;
+        web_socket.onclose = pre_battle_state.battle_end;
+
+        web_socket.onopen = function() {
+            console.log("Connection with the battleSocket is open.");
+            console.log("Starting battle: " + user.battle_id + " with " + user.opponent.username);
+        };
+
+        return web_socket;
+    },
+
     /**
      * Initializes the proper host_name and port based on the production_mode flag.
      */
@@ -74,6 +90,10 @@ var server = {
         server.port = server.production_mode === true ? "" : ":9000";
         console.log("Production: " + server.production_mode);
         console.log("Host name: " + server.host_name);
+    },
+    gear_endpoint: function() {
+        return "http://" + this.host_name + this.port
+                + "/setActiveEquipment";
     }
 };
 // Initialize the server

@@ -38,5 +38,12 @@ var user = {
         username: "Player2", // Default which shows up inside the battle test, overwritten when match is found
         character_type: 'thief',
         rating: null
+    },
+    init_battle: function(battle_id) {
+        console.log("Player joined battle: " + battle_id);
+        this.battle_id = battle_id;
+    },
+    init_simulation: function(battle_simulation) {
+        this.simulation_data = battle_simulation;
     }
 };

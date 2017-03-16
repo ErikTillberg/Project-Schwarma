@@ -135,6 +135,8 @@ var signin_state = {
 
         // Navigate the user to the main menu state, save a boolean flag in localStorage to indicate this is no longer
         debug_console.message_log("Signed in as: " + user.username);
+
+        // TODO change back to main menu state
         game.state.start("main_menu");
     },
     /**
