@@ -107,7 +107,7 @@ var gear_menu_state = {
         this.signin_btn = game.add.button(1140, 600, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
         this.back_btn= game.add.button(40, 600, 'Home_button', this.back_btn_click, this, 2, 1, 0);
 
-        player = game.add.sprite(640, 420,  pickCharacter (  user.opponent.character_type));
+        player = game.add.sprite(640, 420,  pickCharacter (  user.character_type));
         player.anchor.setTo(0.5, 0.5);
         player.scale.setTo(1.5, 1.5);
         playerShadow = game.add.sprite(player.x, player.y + 60, 'Shadow');
