@@ -68,8 +68,6 @@ public class BattleSocketCtrl {
             String mov_attribute = messageAsMap.get("mov_attribute");
             List<Card> user_cards = JsonUtil.parseToListOfCards(messageAsMap.get("user_cards"));
 
-            System.out.println(battle_id);
-            System.out.println(messageAsMap.get("battle_id"));
 
             BattleCtrl.updateReadiness(battle_id, username, att_attribute, def_attribute, mov_attribute, user_cards);
 
@@ -87,7 +85,7 @@ public class BattleSocketCtrl {
     }
 
     public boolean checkReadiness(String battle_id){
-        return BattleCtrl.readyToStart(new ObjectId(battle_id));
+        return BattleCtrl.readyToStart(battle_id);
     }
 
 }
