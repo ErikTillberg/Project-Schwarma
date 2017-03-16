@@ -2,11 +2,18 @@
  * Created by Bryon on 2017-03-06.
  */
 
-card = function (game, x, y, element, type, text, num1, num2) {
+card = function (game, x, y, element, cardtype, title, num1, num2) {
 
-    var text1 = text;
-    var textArray = text1.split(" ");
+    var textArray = title.split(" ");
     var space = " ";
+    var xOffset;
+
+    this.element = element;
+    this.cardtype = cardtype;
+    this.title = title;
+    this.num1 = num1;
+    this.num2 = num2;
+
 
     Phaser.Sprite.call(this, game, x, y, 'Card');
    // this.frame = frame;
@@ -26,11 +33,10 @@ card = function (game, x, y, element, type, text, num1, num2) {
 
     var Card_item = game.add.sprite(0, 0, 'Card_Item');
     Card_item.anchor.setTo(0.5, 0.5);
-
-    if ( type == 'attack'){
+    if ( cardtype == 'attack'){
         Card_item.frame = 2;
     }
-    else if (type == 'defense'){
+    else if (cardtype == 'defence'){
         Card_item.frame = 0;
     }
     else{
@@ -44,10 +50,9 @@ card = function (game, x, y, element, type, text, num1, num2) {
     textdone.align = 'center';
     this.addChild(textdone);
 
-    var textNum1 = game.add.bitmapText(-20, 85, 'carrier_command_black', type + ':' + '+' + num1, 9);
+    var textNum1 = game.add.bitmapText(-20, 85, 'carrier_command_black', cardtype + ':' + '+' + num1, 9);
     textNum1.anchor.setTo(0.5, 0.5);
     textNum1.align = 'left';
-
     this.addChild(textNum1);
 
     if ( element != '') {
@@ -58,10 +63,26 @@ card = function (game, x, y, element, type, text, num1, num2) {
         this.addChild(textNum2);
     }
 
+    if ( this.x > 640 ){
+
+        xOffset = -10;
+    }
+    else {
+        xOffset = +10;
+    }
+
+    this.shadow = game.add.sprite(this.x + xOffset, this.y + 8, 'Card');
+    this.shadow.anchor.set(0.5);
+    this.shadow.tint = 0x000000;
+    this.shadow.alpha = 0.4;
 };
 
 card.prototype = Object.create(Phaser.Sprite.prototype);
 card.prototype.constructor = card;
+
+var cardDefence;
+var cardAttack;
+var cardMobility;
 
 var gear_menu_state = {
 
@@ -83,24 +104,67 @@ var gear_menu_state = {
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
+        this.signin_btn = game.add.button(1140, 600, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
+        this.back_btn= game.add.button(40, 600, 'Home_button', this.back_btn_click, this, 2, 1, 0);
+
+        player = game.add.sprite(640, 420,  pickCharacter (  user.opponent.character_type));
+        player.anchor.setTo(0.5, 0.5);
+        player.scale.setTo(1.5, 1.5);
+        playerShadow = game.add.sprite(player.x, player.y + 60, 'Shadow');
+        playerShadow.anchor.setTo(0.5, 0.5);
+        playerShadow.scale.setTo(1.5, 1.5);
+        var walk = player.animations.add('walk');
+        player.animations.play('walk', 3, true);
+
+        cardMobility = new card(game, 1040, 160, 'water', 'mobility', 'Fast boots of Head-scratching Effectiveness', +2, +13);
+        game.add.existing(cardMobility);
+        //cardMobility.scale.setTo(0.8, 0.8);
+        cardMobility.inputEnabled = true;
+        cardMobility.events.onInputDown.add(this.card_click, {card: this.card});
+
+        var mobilityText = game.add.bitmapText(cardMobility.x, cardMobility.y + 160, 'carrier_command','boots',20);
+        mobilityText.anchor.setTo(0.5, 0.5);
+        mobilityText.align = 'center';
+
+
+        cardAttack = new card(game, 1040, 520, 'fire', 'attack', 'big sword of Stupid Stuff', +1, +13);
+        game.add.existing(cardAttack);
+        //cardAttack.scale.setTo(0.8, 0.8);
+        cardAttack.inputEnabled = true;
+        cardAttack.events.onInputDown.add(this.card_click, {card: this.card});
+
+        var attackText = game.add.bitmapText(cardAttack.x, cardAttack.y - 160, 'carrier_command','weapon',20);
+        attackText.anchor.setTo(0.5, 0.5);
+        attackText.align = 'center';
+
+        cardDefence = new card(game, 240, 360, 'earth', 'defence', 'small shield of Boring Thing', +1, +13);
+        game.add.existing(cardDefence);
+        //cardDefence.scale.setTo(0.8, 0.8);
+        cardDefence.inputEnabled = true;
+        cardDefence.events.onInputDown.add(this.card_click, {card: this.card});
+
+        var defenceText = game.add.bitmapText(cardDefence.x, cardDefence.y + 160, 'carrier_command','armour',20);
+        defenceText.anchor.setTo(0.5, 0.5);
+        defenceText.align = 'center';
+
+        var infoText = game.add.bitmapText(banner.x, banner.y - 50 ,'carrier_command_black','Click card to change gear',15);
+        infoText.anchor.setTo(0.5, 0.5);
+        infoText.align = 'center';
+
+        var statText = game.add.bitmapText(player.x, player.y + 170 ,'carrier_command','Attack: 1\n\nDefence: 2\n\nMobility: 3', 20);
+        statText.anchor.setTo(0.5, 0.5);
+        statText.align = 'center';
+
         debug_console.init_log();
         debug_console.debug_log("You're on the gear menu screen. Signed in as: " + user.username);
 
+    },
 
-        this.signin_btn = game.add.button(game.world.centerX+250, 600, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
-        this.back_btn= game.add.button(game.world.centerX-530, 600, 'Home_button', this.back_btn_click, this, 2, 1, 0);
+    card_click: function (card){
 
-        var card1 = new card(game, 800, 360, 'water', 'mobility', 'Mobility card of Head-scratching Effectiveness', +10, +13);
-        game.add.existing(card1);
-
-        var card2 = new card(game, 1100, 360, 'fire', 'attack', 'Attack card of Stupid Stuff', 10, 13);
-        game.add.existing(card2);
-
-        var card3 = new card(game, 200, 360, 'earth', 'defence', 'Defence card of Total Strangeness', 10, 13);
-        game.add.existing(card3);
-
-        var card4 = new card(game, 500, 360, 'none', 'defence', 'Defence card of Boring Thing', 10, 13);
-        game.add.existing(card4);
+        card.shadow.destroy();
+        card.destroy();
+        console.log("trigger_state: card_click " + card.cardtype);
 
     },
 
@@ -119,6 +183,9 @@ var gear_menu_state = {
     }
 
 };
+
+
+
 
 
 
