@@ -108,8 +108,6 @@ var gear_menu_state = {
 
        console.log("trigger_state: submit_btn_click");
 
-       $()
-
 
 
     },
