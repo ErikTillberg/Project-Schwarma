@@ -49,8 +49,9 @@ public class BattleCtrl {
         final UpdateOperations<Battle> update_cards;
         final UpdateOperations<Battle> update_battleplayer;
 
+        System.out.println(battle_id);
 
-        final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(new ObjectId(battle_id));
+        final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("_id").equal(new ObjectId(battle_id));
 
         Battle battle = null;
         try{
@@ -90,23 +91,15 @@ public class BattleCtrl {
             return new ResponseError("Something went wrong");
         }
 
-        return true;
+        return battle;
     }
     
 
-    public static boolean readyToStart(ObjectId battle_id){
-
-        final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(battle_id);
-
-        Battle battle = null;
-        try{
-            battle = battle_query.get();
-        }catch (Exception e){
-            System.out.println(e);
-        }
+    public static boolean readyToStart(Battle battle){
 
         if (battle ==null){
-            System.out.println("Could not find battle %s" + battle_id.toString());
+            System.out.println("BATTLECTRL: readyToStart");
+            System.out.println("Could not find battle %s" + battle.toString());
         }
 
         return battle.getPlayer1_ready() && battle.getPlayer2_ready();
