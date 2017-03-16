@@ -556,6 +556,7 @@ var pre_battle_state = {
         new_card.slot = slot;
         new_card.type = card_data.type;
         new_card.events.onInputDown.add(this.slot_card_click);
+        new_card.shadow.scale.setTo(0.7, 0.7);
 
         return new_card;
     },
@@ -608,6 +609,7 @@ var pre_battle_state = {
         new_card.list_index = card_list_index;
         new_card.card_num = card_num;
         new_card.scale.setTo(0.7, 0.7);
+        new_card.shadow.scale.setTo(0.7, 0.7);
 
         new_card.inputEnabled = true;
         new_card.events.onInputDown.add(this.selector_card_click);
