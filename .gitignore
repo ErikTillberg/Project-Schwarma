@@ -12,3 +12,6 @@ simServer/latex/**
 *.iml
 MetaServer/target
 PhaserAnimationTest/Thumbs.db
+simServerNode/node_modules
+simServerNode/dist
+simServerNode/.tscache
