@@ -17,43 +17,31 @@ int main(int argc,char*argv[])
     Schwarma::Player player1;
     Schwarma::Player player2;
 
-    player1.name = "playerOne";
-    player2.name = "playerTwo";
-
-    bool res = player1.loadFromFile(argv[1]);
-    if(!res)
-    {
-        std::cout<<"Could not load "<<argv[1]<<std::endl;   
-        return 1;
-    }
-    res = player2.loadFromFile(argv[2]);
-    if(!res)
-    {
-        std::cout<<"Could not load "<<argv[2]<<std::endl;
-        return 1;
-    }
     player1.position = 1;
     player2.position = 6;
 
+    player1.name = "1";
+    player2.name = "2";
     Schwarma::Simulation sim(&player1,&player2);
+    sim.loadPlayerDataFromFile(argv[1]);
 
-    //If arg 3 is cout then pipe to stdout
-    if(argc >= 4 && (::strcmp(argv[3],"cout") == 0))
+    
+    if((::strcmp(argv[2],"cout") == 0))
     {
-        if(argc >= 5 && (::strcmp(argv[4],"json") == 0))
-            sim.run<decltype(std::cout)>(std::cout,"json");
-        else
-            sim.run<decltype(std::cout)>(std::cout);
+        sim.run<decltype(std::cout)>
+        (
+            std::cout,
+            (::strcmp(argv[3],"json") == 0) ? "json" : nullptr
+        );    
     }
-    //Otherwise interpret arg 3 as a file to pipe to
     else
     {
-        std::ofstream stream(argv[3],std::ios::out|std::ios::trunc);
-        if(argc >= 5 && (::strcmp(argv[4],"json") == 0))
-            sim.run<std::ofstream>(stream,"json");
-        else
-            sim.run<std::ofstream>(stream);
-    }
-    
+        std::ofstream stream(argv[2],std::ios::out|std::ios::trunc);
+        sim.run<std::ofstream>
+        (
+            stream,
+            (::strcmp(argv[3],"json") == 0) ? "json" : nullptr
+        );
+    }    
     return 0;
 }

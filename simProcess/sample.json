@@ -8,7 +8,7 @@
             "damage":0,
             "attack_bonus":19,
             "movement_speed":20,
-            "resistance_to_damage":21,
+            "resistance_to_damage":5,
             "resistance_to_fire":0,
             "resistance_to_ice":2,
             "resistance_to_earth":0
@@ -69,7 +69,7 @@
             },
             {  
                "name":"defense card of radical influence",
-               "value":19.949582153224497,
+               "value":1.949582153224497,
                "element":"water",
                "elemental_value":0.0
             }
@@ -189,7 +189,7 @@
             "damage":0,
             "attack_bonus":10,
             "movement_speed":4,
-            "resistance_to_damage":20,
+            "resistance_to_damage":5,
             "resistance_to_fire":0,
             "resistance_to_ice":0,
             "resistance_to_earth":0
@@ -238,13 +238,13 @@
             },
             {  
                "name":"defense card of valiant valor",
-               "value":9.163205489006739,
+               "value":1.163205489006739,
                "element":"earth",
                "elemental_value":0.0
             },
             {  
                "name":"defense card of illegitimate impotence",
-               "value":22.30529966261126,
+               "value":1.30529966261126,
                "element":"fire",
                "elemental_value":0.0
             },

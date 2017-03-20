@@ -8,7 +8,7 @@ if [ $? != 0 ]; then
     printf "Failed to compile Simulation Process\n"
     exit 1
 fi
-g++  -o simProcess main.o  -s  
+g++  -o simProcess main.o 
 if [ $? != 0 ]; then
     rm *.o
     printf "Failed to link Simulation Process"
