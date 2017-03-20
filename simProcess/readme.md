@@ -1,4 +1,4 @@
-# simServer.exe
+# simProcess.exe
 
 Simulation process used to simulate one round of a battle between two players.
 ## Building
@@ -15,7 +15,7 @@ $ bash build.bash
 ```
 ## Usage:
 ```
-simServer player1.json player2.json outPutFile outPutFormat
+simProcess player1.json player2.json outPutFile outPutFormat
 ```
 Where
 

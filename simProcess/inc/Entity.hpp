@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -8,7 +9,7 @@
 #include <cmath>
 
 #include "Trigger.hpp"
-#include "Weapon.hpp"
+#include "Card.hpp"
 #include "Stats.hpp"
 #include "BehaviourRolls.hpp"
 
@@ -34,12 +35,12 @@ namespace Schwarma
             Schwarma::BehaviourRolls behaviours;
             //! Collection of conditions and actions 
             std::vector<Schwarma::Trigger> triggers;
-            //! Collection of weapons wielded by the Entity
-            std::vector<Schwarma::Weapon> weapons;
+            //! Collection of cards wielded by the Entity
+            std::vector<Schwarma::Card> cards;
 
             virtual bool loadFromSource(std::string&) = 0;
-            virtual const Schwarma::Weapon*attack(Schwarma::Entity*) = 0;
-            virtual int defend(Schwarma::Entity*) = 0;
+            virtual const Schwarma::Card*attack(Schwarma::Entity*) = 0;
+            virtual const Schwarma::Card*defend(Schwarma::Entity*) = 0;
             virtual int move(Schwarma::Entity*) = 0;
 
             //! Roll for action
@@ -61,53 +62,41 @@ namespace Schwarma
                 return Schwarma::NOOP;
             }
             //! Loads an entity from file specifed by string file
-            bool loadFromFile(std::string file)
-            {
-                //Load json file specified by file
-                rapidjson::GenericDocument<rapidjson::UTF8<>> json;
-                std::ifstream fileStream(file.c_str(),std::ios::in);
-                rapidjson::IStreamWrapper jsonFileStream(fileStream);
-                json.ParseStream(jsonFileStream);
-                if(json.HasParseError())
+            bool load(rapidjson::GenericValue<rapidjson::UTF8<> >&json)
+            {     
+                if(!json.HasMember("base_stats"))
                     return false;
                 
-                if(!json.HasMember("baseStats"))
-                    return false;
-                
+
                 if(!json.HasMember("actionPercentages"))
                     return false;
 
-                if(!json.HasMember("weapons"))
-                    return false;
                 
                 //Get reference to actionPercentages object
                 auto&actionPercentages = json["actionPercentages"];
                 //Parse properties into class
-                this->behaviours.actions[Schwarma::ATTACK] = std::atof(actionPercentages["attack"].GetString());
-                this->behaviours.actions[Schwarma::DEFEND] = std::atof(actionPercentages["defence"].GetString());
-                this->behaviours.actions[Schwarma::MOVE] = std::atof(actionPercentages["move"].GetString());
-
-                auto&baseStats = json["baseStats"];
-                this->baseStats.health = std::atof(baseStats["health"].GetString());
-                this->baseStats.damage = std::atof(baseStats["damage"].GetString());
-                this->baseStats.resistanceToDamage = std::atof(baseStats["resistanceToDamage"].GetString());
-                this->baseStats.resistanceToFire = std::atof(baseStats["resistanceToFire"].GetString());
-                this->baseStats.resistanceToIce = std::atof(baseStats["resistanceToIce"].GetString());
-                this->baseStats.resistanceToEarth = std::atof(baseStats["resistanceToEarth"].GetString());
-                this->baseStats.movementSpeed = std::atoi(baseStats["movementSpeed"].GetString());
+                this->behaviours.actions[Schwarma::ATTACK] = actionPercentages["attack"].GetDouble();
+                this->behaviours.actions[Schwarma::DEFEND] = actionPercentages["defense"].GetDouble();
+                this->behaviours.actions[Schwarma::MOVE] = actionPercentages["move"].GetDouble();
 
 
-                auto&weapons = json["weapons"];
-                if(weapons.GetType() == rapidjson::Type::kArrayType)
+                auto&baseStats = json["base_stats"];
+                this->baseStats.health = baseStats["health"].GetDouble();
+                this->baseStats.damage = baseStats["damage"].GetDouble();
+                this->baseStats.resistanceToDamage = baseStats["resistance_to_damage"].GetDouble();
+                this->baseStats.resistanceToFire = baseStats["resistance_to_fire"].GetDouble();
+                this->baseStats.resistanceToIce = baseStats["resistance_to_ice"].GetDouble();
+                this->baseStats.resistanceToEarth = baseStats["resistance_to_earth"].GetDouble();
+                this->baseStats.movementSpeed = baseStats["movement_speed"].GetDouble();
+
+
+
+                auto&cards = json["cards"];
+                for(rapidjson::SizeType i = 0; i < cards.Size(); ++i)
                 {
-                    for(rapidjson::SizeType i = 0; i < weapons.Size(); ++i)
-                    {
-                        this->weapons.push_back(Schwarma::Weapon::parseWeapon<decltype(weapons[i])>(weapons[i]));
-                    }
+                    this->cards.push_back(Schwarma::Card::parseCard(cards[i]));
                 }
-                else 
-                    return false;
-                
+
 
                 //Get reference to triggers object
                 auto&triggers = json["triggers"];
@@ -137,6 +126,18 @@ namespace Schwarma
                         }
                     }
                 }
+                if(triggers.HasMember("defense"))
+                {
+                    if(triggers["defense"].GetType() == rapidjson::Type::kArrayType)
+                    {
+                        auto&defense = triggers["defense"];
+                        for(rapidjson::SizeType i = 0; i < defense.Size(); ++i)
+                        {
+                            this->triggers.push_back(Schwarma::Trigger::parseTrigger<decltype(defense[i])>(defense[i],"defense"));
+                        }
+                    }
+                }
+
                 this->stats = this->baseStats;
                 return true;
             }
