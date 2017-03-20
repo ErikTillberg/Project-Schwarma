@@ -1,7 +1,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
-#include "inc/simServer.hpp"
+#include "inc/simProcess.hpp"
 using namespace std;
 
 int main(int argc,char*argv[])
