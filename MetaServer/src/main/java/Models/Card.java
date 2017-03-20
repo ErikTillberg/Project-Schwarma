@@ -222,7 +222,13 @@ public class Card {
         Double min = RNGUtil.getSqrtValue(userRating-500, maxReward);
         Double max = RNGUtil.getSqrtValue(userRating+500, maxReward);
 
-        StatBonus statBonus = StatBonus.GenerateRandomStatBonus(min, max, type);
+
+        StatBonus statBonus;
+        if(type.equals(MOBILITY))
+            statBonus = StatBonus.GenerateRandomStatBonus(1, 5, type);
+        else
+            statBonus = StatBonus.GenerateRandomStatBonus(min, max, type);
+
         if(statBonus == null){return null;}
 
         //Add the stat bonus list to the card.
@@ -253,9 +259,9 @@ public class Card {
         JsonObject card_info = new JsonObject();
 
         card_info.addProperty("name", card.getName());
-        card_info.addProperty("base_damage", card.getStatBonus().getBonus());
+        card_info.addProperty("value", card.getStatBonus().getBonus());
         card_info.addProperty("element", card.getElementalStatBonus().getElement());
-        card_info.addProperty("elemental_damage", card.getElementalStatBonus().getBonus());
+        card_info.addProperty("elemental_value", card.getElementalStatBonus().getBonus());
 
         return card_info;
     }
