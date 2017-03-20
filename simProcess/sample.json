@@ -1,74 +1,367 @@
-{
-    "baseStats" : 
-    {
-        "health" : "50",
-        "damage" : "2",
-        "resistanceToDamage" : ".1",
-        "movementSpeed" : "1",
-        "resistanceToFire" : "0",
-        "resistanceToIce" : "0",
-        "resistanceToEarth" : "0"
-    },
-    "actionPercentages" : 
-    {
-        "attack" : ".33",
-        "defence" : ".33",
-        "move" : ".33"
-    },
-    "weapons" :
-    [
-        {
-            "name" : "sword",
-            "damage" : "5",
-            "element" : "steel"
-        }
-    ],
-    "triggers" :
-    {
-        "move" : 
-        [
-            {
-                "condition" : 
-                {
-                    "lhs" : "distance",
-                    "operator" : "==",
-                    "rhs" : "touching"
-                },
-                "action" :
-                {
-                    "actionType" : "move",
-                    "direction" : "away"
-                }
+{  
+   "battle_id":"58d0147f5ab3aa3834f27103",
+   "players":[  
+      {  
+         "player_name":"wizzy",
+         "base_stats":{  
+            "health":100,
+            "damage":0,
+            "attack_bonus":19,
+            "movement_speed":20,
+            "resistance_to_damage":21,
+            "resistance_to_fire":0,
+            "resistance_to_ice":2,
+            "resistance_to_earth":0
+         },
+         "actionPercentages":{  
+            "attack":0.35,
+            "defense":0.35,
+            "move":0.3
+         },
+         "cards":[  
+            {  
+               "name":"mobility card of illegitimate potentiality",
+               "value":4.536373654679249,
+               "element":"earth",
+               "elemental_value":0.0
             },
-            {
-                "condition":
-                {
-                    "lhs" : "distance",
-                    "operator" : ">=",
-                    "rhs" : "close"
-                },
-                "action":
-                {
-                    "actionType" : "move",
-                    "direction" : "towards"
-                }
+            {  
+               "name":"mobility card of spiritual clout",
+               "value":1.215189907393969,
+               "element":"water",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"mobility card of illegitimate performance",
+               "value":2.0287298432365795,
+               "element":"fire",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"attack card of spiritual valor",
+               "value":10.627345030462564,
+               "element":"water",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"attack card of illegitimate force",
+               "value":16.041967794023474,
+               "element":"fire",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"attack card of tremendous influence",
+               "value":15.398254683076189,
+               "element":"earth",
+               "elemental_value":3.319376180040596
+            },
+            {  
+               "name":"defense card of discretionary potentiality",
+               "value":3.3799542741302604,
+               "element":"fire",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"defense card of remarkable endowment",
+               "value":19.491067573536622,
+               "element":"fire",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"defense card of radical influence",
+               "value":19.949582153224497,
+               "element":"water",
+               "elemental_value":0.0
             }
-        ],
-        "attack" : 
-        [
-            {
-                "condition" : 
-                {
-                    "lhs" : "distance",
-                    "operator" : ">=",
-                    "rhs" : "touching"
-                },
-                "action" : 
-                {
-                    "actionType" : "attack",
-                    "item" : "sword"
-                } 
+         ],
+         "triggers":{  
+            "attack":[  
+               {  
+                  "condition":{  
+                     "lhs":"playerHP",
+                     "operator":"<=",
+                     "rhs":"50"
+                  },
+                  "action":{  
+                     "action_type":"attack",
+                     "item":"attack card of spiritual valor"
+                  }
+               },
+               {  
+                  "condition":{  
+                     "lhs":"playerHP",
+                     "operator":">",
+                     "rhs":"50"
+                  },
+                  "action":{  
+                     "action_type":"attack",
+                     "item":"attack card of illegitimate force"
+                  }
+               },
+               {  
+                  "condition":{  
+                     "lhs":"distance",
+                     "operator":"==",
+                     "rhs":"touching"
+                  },
+                  "action":{  
+                     "action_type":"attack",
+                     "item":"attack card of tremendous influence"
+                  }
+               }
+            ],
+            "defense":[  
+               {  
+                  "condition":{  
+                     "lhs":"playerHP",
+                     "operator":"<=",
+                     "rhs":"50"
+                  },
+                  "action":{  
+                     "action_type":"defense",
+                     "item":"defense card of discretionary potentiality"
+                  }
+               },
+               {  
+                  "condition":{  
+                     "lhs":"playerHP",
+                     "operator":">",
+                     "rhs":"50"
+                  },
+                  "action":{  
+                     "action_type":"defense",
+                     "item":"defense card of remarkable endowment"
+                  }
+               },
+               {  
+                  "condition":{  
+                     "lhs":"distance",
+                     "operator":"==",
+                     "rhs":"touching"
+                  },
+                  "action":{  
+                     "action_type":"defense",
+                     "item":"defense card of radical influence"
+                  }
+               }
+            ],
+            "move":[  
+               {  
+                  "condition":{  
+                     "lhs":"playerHP",
+                     "operator":"<=",
+                     "rhs":"50"
+                  },
+                  "action":{  
+                     "action_type":"mobility",
+                     "item":"mobility card of illegitimate potentiality"
+                  }
+               },
+               {  
+                  "condition":{  
+                     "lhs":"playerHP",
+                     "operator":">",
+                     "rhs":"50"
+                  },
+                  "action":{  
+                     "action_type":"mobility",
+                     "item":"mobility card of spiritual clout"
+                  }
+               },
+               {  
+                  "condition":{  
+                     "lhs":"distance",
+                     "operator":"==",
+                     "rhs":"touching"
+                  },
+                  "action":{  
+                     "action_type":"mobility",
+                     "item":"mobility card of illegitimate performance"
+                  }
+               }
+            ]
+         }
+      },
+      {  
+         "player_name":"wiz",
+         "base_stats":{  
+            "health":100,
+            "damage":0,
+            "attack_bonus":10,
+            "movement_speed":4,
+            "resistance_to_damage":20,
+            "resistance_to_fire":0,
+            "resistance_to_ice":0,
+            "resistance_to_earth":0
+         },
+         "actionPercentages":{  
+            "attack":0.35,
+            "defense":0.35,
+            "move":0.3
+         },
+         "cards":[  
+            {  
+               "name":"mobility card of cromulent efficaciousness",
+               "value":3.857072344547067,
+               "element":"fire",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"mobility card of limited impotence",
+               "value":9.126542073351054,
+               "element":"earth",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"mobility card of great foreordination",
+               "value":10.961357471719527,
+               "element":"earth",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"attack card of cromulent legacy",
+               "value":5.34576364580184,
+               "element":"earth",
+               "elemental_value":0.5952291120638015
+            },
+            {  
+               "name":"attack card of immense effect",
+               "value":3.120550456010783,
+               "element":"water",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"attack card of limited force",
+               "value":10.25482554052375,
+               "element":"earth",
+               "elemental_value":12.617234642312125
+            },
+            {  
+               "name":"defense card of valiant valor",
+               "value":9.163205489006739,
+               "element":"earth",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"defense card of illegitimate impotence",
+               "value":22.30529966261126,
+               "element":"fire",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"defense card of enormous foreordination",
+               "value":1.701626426299902,
+               "element":"earth",
+               "elemental_value":0.0
             }
-        ]
-    }
+         ],
+         "triggers":{  
+            "attack":[  
+               {  
+                  "condition":{  
+                     "lhs":"playerHP",
+                     "operator":"<=",
+                     "rhs":"50"
+                  },
+                  "action":{  
+                     "action_type":"attack",
+                     "item":"attack card of cromulent legacy"
+                  }
+               },
+               {  
+                  "condition":{  
+                     "lhs":"playerHP",
+                     "operator":">",
+                     "rhs":"50"
+                  },
+                  "action":{  
+                     "action_type":"attack",
+                     "item":"attack card of immense effect"
+                  }
+               },
+               {  
+                  "condition":{  
+                     "lhs":"distance",
+                     "operator":"==",
+                     "rhs":"touching"
+                  },
+                  "action":{  
+                     "action_type":"attack",
+                     "item":"attack card of limited force"
+                  }
+               }
+            ],
+            "defense":[  
+               {  
+                  "condition":{  
+                     "lhs":"playerHP",
+                     "operator":"<=",
+                     "rhs":"50"
+                  },
+                  "action":{  
+                     "action_type":"defense",
+                     "item":"defense card of valiant valor"
+                  }
+               },
+               {  
+                  "condition":{  
+                     "lhs":"playerHP",
+                     "operator":">",
+                     "rhs":"50"
+                  },
+                  "action":{  
+                     "action_type":"defense",
+                     "item":"defense card of illegitimate impotence"
+                  }
+               },
+               {  
+                  "condition":{  
+                     "lhs":"distance",
+                     "operator":"==",
+                     "rhs":"touching"
+                  },
+                  "action":{  
+                     "action_type":"defense",
+                     "item":"defense card of enormous foreordination"
+                  }
+               }
+            ],
+            "move":[  
+               {  
+                  "condition":{  
+                     "lhs":"playerHP",
+                     "operator":"<=",
+                     "rhs":"50"
+                  },
+                  "action":{  
+                     "action_type":"mobility",
+                     "item":"mobility card of cromulent efficaciousness"
+                  }
+               },
+               {  
+                  "condition":{  
+                     "lhs":"playerHP",
+                     "operator":">",
+                     "rhs":"50"
+                  },
+                  "action":{  
+                     "action_type":"mobility",
+                     "item":"mobility card of limited impotence"
+                  }
+               },
+               {  
+                  "condition":{  
+                     "lhs":"distance",
+                     "operator":"==",
+                     "rhs":"touching"
+                  },
+                  "action":{  
+                     "action_type":"mobility",
+                     "item":"mobility card of great foreordination"
+                  }
+               }
+            ]
+         }
+      }
+   ]
 }
