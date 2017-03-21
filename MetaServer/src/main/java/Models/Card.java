@@ -36,6 +36,7 @@ public class Card {
 
     //the type of the card, can be either 'attack', 'defense', 'mobility'
     private String type;
+    private String direction = "none";
     private StatBonus statBonus;
     private ElementalStatBonus elementalStatBonus;
 
@@ -108,6 +109,14 @@ public class Card {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
     public StatBonus getStatBonus() {
@@ -224,8 +233,13 @@ public class Card {
 
 
         StatBonus statBonus;
-        if(type.equals(MOBILITY))
+        if(type.equals(MOBILITY)) {
             statBonus = StatBonus.GenerateRandomStatBonus(1, 5, type);
+            if (Math.random() > 0.5)
+                card.setDirection("away");
+            else
+                card.setDirection("toward");
+        }
         else
             statBonus = StatBonus.GenerateRandomStatBonus(min, max, type);
 
@@ -259,6 +273,7 @@ public class Card {
         JsonObject card_info = new JsonObject();
 
         card_info.addProperty("name", card.getName());
+        card_info.addProperty("direction", card.getDirection());
         card_info.addProperty("value", card.getStatBonus().getBonus());
         card_info.addProperty("element", card.getElementalStatBonus().getElement());
         card_info.addProperty("elemental_value", card.getElementalStatBonus().getBonus());
