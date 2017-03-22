@@ -33,9 +33,9 @@ var pre_battle_state = {
     roll_text_y: 50,
     roll_text_x_offset: 400,
     roll_text_font: 'carrier_command_black',
-    roll_text_font_size: 20,
+    roll_text_font_size: 16,
     roll_button_y: 33,
-    roll_btn_scale: 0.5,
+    roll_btn_scale: 0.4,
 
     // Determines the size of grid elements in the card selectors
     selector_x_offset: 200,
@@ -56,6 +56,8 @@ var pre_battle_state = {
 
     defense_cards: [],
     defense_triggers: [],
+
+    countdown_time_remaining: 30,
 
     // List of triggers, name is displayed to the user, condition object is sent to the sim server
     triggers: [
@@ -152,7 +154,7 @@ var pre_battle_state = {
         this.defense_2_previous_trigger = game.add.button(this.defense_card_x + this.trigger_prev_btn_x_offset, 440, 'ArrowLeft', function() {pre_battle_state.previous_trigger(1, "defense")}).scale.setTo(this.trigger_btn_scale, this.trigger_btn_scale);
         this.defense_3_previous_trigger = game.add.button(this.defense_card_x + this.trigger_prev_btn_x_offset, 640, 'ArrowLeft', function() {pre_battle_state.previous_trigger(2, "defense")}).scale.setTo(this.trigger_btn_scale, this.trigger_btn_scale);
 
-        this.submit_button = game.add.button(1175, 600, 'Submit_button', pre_battle_state.battle_start, this, 2, 1, 0).scale.setTo(0.7, 0.7);
+        this.submit_button = game.add.button(1175, 640, 'Submit_button', pre_battle_state.battle_start, this, 2, 1, 0).scale.setTo(0.5, 0.5);
 
         // Put the category name and roll chance on the screen
         this.attack_roll_text = game.add.bitmapText(this.roll_text_x, this.roll_text_y, this.roll_text_font, "ATTACK " + this.roll_percentages[0] + "%", this.roll_text_font_size);
@@ -160,13 +162,18 @@ var pre_battle_state = {
         this.defense_roll_text = game.add.bitmapText(this.roll_text_x + this.roll_text_x_offset*2, this.roll_text_y, this.roll_text_font, "DEFENSE " + this.roll_percentages[2] + "%", this.roll_text_font_size);
 
         this.attack_increase_roll = game.add.button(this.mobility_card_x - 124, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("attack")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
-        this.attack_decrease_roll = game.add.button(this.attack_card_x - 62, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("attack")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.attack_decrease_roll = game.add.button(this.attack_card_x - 80, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("attack")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
 
-        this.defense_increase_roll = game.add.button(this.defense_card_x + 285, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("defense")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
-        this.defense_decrease_roll = game.add.button(this.defense_card_x - 62, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("defense")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.defense_increase_roll = game.add.button(this.defense_card_x + 260, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("defense")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.defense_decrease_roll = game.add.button(this.defense_card_x - 80, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("defense")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
 
         this.mobility_increase_roll = game.add.button(this.defense_card_x - 114, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("mobility")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
-        this.mobility_decrease_roll = game.add.button(this.mobility_card_x - 62, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("mobility")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.mobility_decrease_roll = game.add.button(this.mobility_card_x - 80, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("mobility")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+
+        this.total_roll = game.add.bitmapText(1200, 50, this.roll_text_font, this.roll_percentages[0] + this.roll_percentages[1] + this.roll_percentages[2] + "%", this.roll_text_font_size);
+        this.countdown_timer_text = game.add.bitmapText(1200, 600, this.roll_text_font, this.countdown_time_remaining, this.roll_text_font_size);
+
+        this.countdown_timer = setInterval(this.update_timer, 1000);
 
     },
     /**
@@ -174,8 +181,17 @@ var pre_battle_state = {
      */
     battle_start: function() {
 
+        clearInterval(this.countdown_timer);
+
         var user_cards = [];
         console.log(this.defense_triggers);
+
+        var categories = ["attack", "mobility", "defense"];
+
+        // Increase roll percentages at random until they are at 100.
+        while(pre_battle_state.roll_percentages[0] + pre_battle_state.roll_percentages[1] + pre_battle_state.roll_percentages[2] < 100) {
+            pre_battle_state.increase_roll(categories[Math.floor((Math.random() * 3))]);
+        }
 
         // Set the player's mobility cards
         for (var i = 0; i < 3; i++) {
@@ -209,11 +225,6 @@ var pre_battle_state = {
         this.battle_socket.send(JSON.stringify(battle_object));
     },
 
-    clone_card: function(card_data) {
-
-
-    },
-
     battle_message: function(message) {
 
         var response = JSON.parse(message.data);
@@ -222,6 +233,22 @@ var pre_battle_state = {
     },
     battle_end: function() {
 
+    },
+    /**
+     * Update the timer on screen, send the user's equipment as-is when the timer reaches 0.
+     */
+    update_timer: function() {
+
+        console.log("update_timer");
+        console.log(pre_battle_state.countdown_time_remaining);
+
+        if (pre_battle_state.countdown_time_remaining > 0) {
+            pre_battle_state.countdown_time_remaining--;
+            pre_battle_state.countdown_timer_text.text = pre_battle_state.countdown_time_remaining;
+        } else {
+            clearInterval(pre_battle_state.countdown_timer);
+            pre_battle_state.battle_start();
+        }
     },
     /**
      * Put the first 3 cards of each type into the slots
@@ -255,18 +282,6 @@ var pre_battle_state = {
                 game.add.existing(this.slot_card_wrapper(user.cards[i], defense_slot));
                 defense_slot++;
             }
-        }
-
-        // TODO Make the empty slots do something. They will remain empty for the battle since there are not enough cards
-        // But we can render a null card or something.
-        if (attack_slot != 2) {
-
-        }
-        if (defense_slot != 2) {
-
-        }
-        if (mobility_slot != 2) {
-
         }
     },
 
@@ -455,41 +470,57 @@ var pre_battle_state = {
     },
     increase_roll: function(type) {
 
+        var roll_index = 0;
+
         if (type == "attack") {
-
-            pre_battle_state.roll_percentages[0] += 5;
-            pre_battle_state.attack_roll_text.text = "ATTACK " + pre_battle_state.roll_percentages[0] + "%";
-
+            roll_index = 0;
         }else if(type == "mobility") {
-
-            pre_battle_state.roll_percentages[1] += 5;
-            pre_battle_state.mobility_roll_text.text = "MOBILITY " + pre_battle_state.roll_percentages[1] + "%";
-
+            roll_index = 1;
         }else{
-
-            pre_battle_state.roll_percentages[2] += 5;
-            pre_battle_state.defense_roll_text.text = "DEFENSE " + pre_battle_state.roll_percentages[2] + "%";
-
+            roll_index = 2;
         }
+
+        if((this.roll_percentages[0] + this.roll_percentages[1] + this.roll_percentages[2]) < 100 && pre_battle_state.roll_percentages[roll_index] < 100) {
+            pre_battle_state.roll_percentages[roll_index] += 5;
+
+            if (type == "attack") {
+                pre_battle_state.attack_roll_text.text = "ATTACK " + pre_battle_state.roll_percentages[0] + "%";
+            }else if(type == "mobility") {
+                pre_battle_state.mobility_roll_text.text = "MOBILITY " + pre_battle_state.roll_percentages[1] + "%";
+            }else{
+                pre_battle_state.defense_roll_text.text = "DEFENSE " + pre_battle_state.roll_percentages[2] + "%";
+            }
+        }
+
+        pre_battle_state.total_roll.text =  this.roll_percentages[0] + this.roll_percentages[1] + this.roll_percentages[2] + "%";
+
     },
     decrease_roll: function(type) {
 
+        var roll_index = 0;
+
         if (type == "attack") {
-
-            pre_battle_state.roll_percentages[0] -= 5;
-            pre_battle_state.attack_roll_text.text = "ATTACK " + pre_battle_state.roll_percentages[0] + "%";
-
+            roll_index = 0;
         }else if(type == "mobility") {
-
-            pre_battle_state.roll_percentages[1] -= 5;
-            pre_battle_state.mobility_roll_text.text = "MOBILITY " + pre_battle_state.roll_percentages[1] + "%";
-
+            roll_index = 1;
         }else{
-
-            pre_battle_state.roll_percentages[2] -= 5;
-            pre_battle_state.defense_roll_text.text = "DEFENSE " + pre_battle_state.roll_percentages[2] + "%";
-
+            roll_index = 2;
         }
+
+        if((this.roll_percentages[0] + this.roll_percentages[1] + this.roll_percentages[2]) > 0 && pre_battle_state.roll_percentages[roll_index] > 0) {
+            pre_battle_state.roll_percentages[roll_index] -= 5;
+
+            if (type == "attack") {
+                pre_battle_state.attack_roll_text.text = "ATTACK " + pre_battle_state.roll_percentages[0] + "%";
+            }else if(type == "mobility") {
+                pre_battle_state.mobility_roll_text.text = "MOBILITY " + pre_battle_state.roll_percentages[1] + "%";
+            }else{
+                pre_battle_state.defense_roll_text.text = "DEFENSE " + pre_battle_state.roll_percentages[2] + "%";
+            }
+        }
+
+        pre_battle_state.total_roll.text =  this.roll_percentages[0] + this.roll_percentages[1] + this.roll_percentages[2] + "%";
+
     },
     /**
      * Takes a card slot and type and renders that card on screen.
@@ -525,6 +556,7 @@ var pre_battle_state = {
         new_card.slot = slot;
         new_card.type = card_data.type;
         new_card.events.onInputDown.add(this.slot_card_click);
+        new_card.shadow.scale.setTo(0.7, 0.7);
 
         return new_card;
     },
@@ -577,6 +609,7 @@ var pre_battle_state = {
         new_card.list_index = card_list_index;
         new_card.card_num = card_num;
         new_card.scale.setTo(0.7, 0.7);
+        new_card.shadow.scale.setTo(0.7, 0.7);
 
         new_card.inputEnabled = true;
         new_card.events.onInputDown.add(this.selector_card_click);

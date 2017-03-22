@@ -81,7 +81,7 @@ namespace Schwarma
                         ),
                         Schwarma::Action
                         (
-                            action.HasMember("actionType") ? action["actionType"].GetString() : "",
+                            action.HasMember("action_type") ? action["action_type"].GetString() : "",
                             action.HasMember("direction") ? action["direction"].GetString() : "",
                             action.HasMember("item") ? action["item"].GetString() : "",
                             action.HasMember("card") ? action["card"].GetString() : ""

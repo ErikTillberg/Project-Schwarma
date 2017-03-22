@@ -52,8 +52,8 @@ namespace Schwarma
             return Schwarma::evalConditionalExpression<int,int>
             (
                 condition.op,
-                std::atoi(a.stats.health),
-                std::atoi(condition.rhs)
+                a.stats.health,
+                std::atoi(condition.rhs.c_str())
             );
         }
         else if(condition.lhs == "enemyHP")
@@ -61,8 +61,8 @@ namespace Schwarma
             return Schwarma::evalConditionalExpression<int,int>
             (
                 condition.op,
-                std::atoi(b.stats.health),
-                std::atoi(condition.rhs)
+                b.stats.health,
+                std::atoi(condition.rhs.c_str())
             );
         }
         throw new std::runtime_error(std::string("Invalid rhs \"")+condition.rhs+std::string("\"")+" in condition \""+condition.lhs+condition.op+condition.rhs+"\"");
