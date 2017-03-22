@@ -30,30 +30,6 @@ namespace Schwarma
             template<class T>
             static Schwarma::Card parseCard(T&obj)
             {
-                /*if(obj.HasMember("name") &&
-                obj.HasMember("value") &&
-                obj.HasMember("element") &&
-                obj.HasMember("elementl_value"))
-                {
-                    return Schwarma::Card
-                    (
-                        obj["name"].GetString(),
-                        obj["value"].GetDouble(),
-                        obj["element"].GetString(),
-                        obj["elemental_value"].GetDouble()
-                    );
-                }
-                else
-                {
-                    return Schwarma::Card
-                    (
-                        "",
-                        0,
-                        "",
-                        0
-                    );
-                }*/
-
                 return Schwarma::Card
                 (
                     obj.HasMember("name") ? obj["name"].GetString() : "",
