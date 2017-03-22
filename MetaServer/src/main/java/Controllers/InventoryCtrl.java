@@ -145,6 +145,7 @@ public class InventoryCtrl {
      * @return
      */
     public static Object setActiveEquipment(Map<String, String> messageBody){
+
         String username = messageBody.get("username");
         Equipment equippedChest = JsonUtil.parseToEquipment(messageBody.get("equippedChest"));
         Equipment equippedBoots = JsonUtil.parseToEquipment(messageBody.get("equippedBoots"));
