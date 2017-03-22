@@ -50,7 +50,7 @@
             {  
                "name":"attack card of abnormal bulge",
                "direction":"none",
-               "value":4.643074532121989,
+               "value":14.643074532121989,
                "element":"earth",
                "elemental_value":0.0
             },
@@ -71,14 +71,14 @@
             {  
                "name":"defense card of kind-of-okay skill",
                "direction":"none",
-               "value":17.478997067434197,
+               "value":7.478997067434197,
                "element":"earth",
                "elemental_value":0.0
             },
             {  
                "name":"defense card of kind-of-okay skill",
                "direction":"none",
-               "value":17.478997067434197,
+               "value":1.478997067434197,
                "element":"earth",
                "elemental_value":0.0
             }
@@ -254,14 +254,14 @@
             {  
                "name":"defense card of remarkable renown",
                "direction":"none",
-               "value":7.555497239141251,
+               "value":1.555497239141251,
                "element":"earth",
                "elemental_value":0.0
             },
             {  
                "name":"defense card of head-scratching efficaciousness",
                "direction":"none",
-               "value":15.302191114512636,
+               "value":5.302191114512636,
                "element":"fire",
                "elemental_value":21.379483678039335
             },
