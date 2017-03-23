@@ -32,7 +32,7 @@ namespace Schwarma
                         {
                             if(Schwarma::evalCondition(it->condition,*this,*enemy))
                             {
-                                if(it->action.actionType == "move")
+                                if(it->action.actionType == "mobility")
                                 {
                                     if(it->action.direction == "away")
                                     {
@@ -47,7 +47,7 @@ namespace Schwarma
                                             this->position += this->baseStats.movementSpeed;
                                         }
                                     }
-                                    else if(it->action.direction == "towards")
+                                    else if(it->action.direction == "toward")
                                     {
                                         if(enemy->position > this->position &&
                                         this->position != Schwarma::BOUND_LEFT)
