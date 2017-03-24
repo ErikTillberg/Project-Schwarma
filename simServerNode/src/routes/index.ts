@@ -49,41 +49,36 @@ export class IndexRoute extends BaseRoute {
   public index(req: Request, res: Response, next: NextFunction) {
     var spawn = require('child_process').spawnSync;
     //TODO add authentification
-    console.log('POST: ',JSON.stringify(req.body));
      
-    //TODO validate JSON
     var body = req.body;
+    var fileNameData = "battleData" + body.battle_id + ".json";
+    var fileNameSim = "simulation" + body.battle_id + ".json";
+
     try {
-      var player1 = body.players[0];
-      var player2 = body.players[1];
-      fs.writeFileSync("player1.json", JSON.stringify(player1), 'utf8');
-      fs.writeFileSync("player2.json", JSON.stringify(player2), 'utf8');
+      fs.writeFileSync(fileNameData, JSON.stringify(body), 'utf8');
     }
     catch (err) {
-      console.log("Error writing playerX.json to disk");
-      res.status(500);
-      res.send("Internal Error")
+      console.log("Error writing battleData json to disk");
+      res.status(500).send("Internal Error");
     };
     
     try {
       var opts = {stdio: 'inherit'};
-      spawn('simServer.exe', ["player1.json", "player2.json", "simulation.json"], opts);
+      spawn('simServer.exe', [fileNameData, fileNameSim, "json"], opts);
     }
     catch (err) {
       console.log("Error spawning child process for simulation");
-      res.status(500);
-      res.send("Internal Error")
+      res.status(500).send("Internal Error");
     }
 
     try {
-      var sim = JSON.stringify(fs.readFileSync("simulation.json"));
+      var sim = fs.readFileSync(fileNameSim);
     }
     catch (err) {
-      console.log("Error reading simulation.json from disk");
-      res.status(500);
-      res.send("Internal Error")
+      console.log("Error reading simulation json from disk");
+      res.status(500).send("Internal Error");
     }
 
-    res.send(JSON.stringify(sim));
+    res.send(sim);
   }
 }
