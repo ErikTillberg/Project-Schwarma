@@ -1,6 +1,13 @@
 #pragma once
+#include <fstream>
+#include <string>
 #include "Entity.hpp"
 #include "Player.hpp"
+
+#include "../rapidjson/include/rapidjson/document.h"
+#include "../rapidjson/include/rapidjson/istreamwrapper.h"
+#include "../rapidjson/include/rapidjson/ostreamwrapper.h"
+#include "../rapidjson/include/rapidjson/prettywriter.h"
 namespace Schwarma
 {
     //! Singleton class used to generate a simulation between two Player
@@ -13,6 +20,21 @@ namespace Schwarma
             {
                 this->players[0] = player1;
                 this->players[1] = player2;
+            }
+            bool loadPlayerDataFromFile(const char*path)
+            {
+                rapidjson::GenericDocument<rapidjson::UTF8<>> json;
+                std::ifstream fileStream(path,std::ios::in);
+                rapidjson::IStreamWrapper jsonFileStream(fileStream);
+                json.ParseStream(jsonFileStream);
+
+                auto&players = json["players"];
+                bool res = false;
+                res = this->players[0]->load(players[0]);
+                if(res == false)
+                    return res;
+                res = this->players[1]->load(players[1]);
+                return res;
             }
             //! Run a simulation, outputting results to stream
             template<class T>
@@ -51,38 +73,12 @@ namespace Schwarma
 
                     //get action of player    
                     action = p1->doAction();
-
-                    //if player has decided to attack
-                    if(action == Schwarma::ATTACK)
-                    {
-                        //give player 2 a chance to roll for defence
-                        int defend = p2->doAction();
-                        //player 2 successfully rolled defence
-                        //keep turn at the same value. Player 2 loses their turn for defending
-                        if(defend == Schwarma::DEFEND)
-                        {
-                            p2->defend(p1);
-                        }
-                        //otherwise player 2 did not decide to defend
-                        else
-                        {
-                            //simulate turn
-                            tickEntityAgainst<decltype(stream)>(p1,p2,action,stream,formatType);
-                            //next turn
-                            if(turn == 0) turn++;
-                            else if (turn == 1) turn--;
-                            continue;
-                        }
-                    }
-                    //simulate the turn
-                    else if(action == Schwarma::MOVE)
-                    {
-                        tickEntityAgainst<decltype(stream)>(p1,p2,action,stream,formatType);
-                        //next turn
-                        if(turn == 0) turn++;
-                        else if (turn == 1) turn--;
-                        continue;
-                    }
+                    //simulate turn
+                    tickEntityAgainst<decltype(stream)>(p1,p2,action,stream,formatType);
+                    //next turn
+                    if(turn == 0) turn++;
+                    else if (turn == 1) turn--;
+                    continue;
                 }
                 if(formatType && (::strcmp(formatType,"json")) == 0)
                 {
@@ -105,7 +101,7 @@ namespace Schwarma
                     int pos = entity1->move(entity2);
                     /*if(pos == -1)
                         stream<<entity1->name<<" did not move\n";*/
-                    if(pos)
+                    if(pos != -1)
                     {
                         if(!formatType)
                             stream<<entity1->name<<" Moved to position "<<pos<<"\n";
@@ -117,19 +113,50 @@ namespace Schwarma
                 }
                 if(action == Schwarma::ATTACK)
                 {
-                    const Schwarma::Weapon&wep = *entity1->attack(entity2);
+                    const Schwarma::Card&wep = *entity1->attack(entity2);
                     if(&wep != nullptr)
                     {
-                        entity2->stats.health -= wep.damage;
+                        //entity2->stats.health -= wep.value;
+                        double damageToInflict = 0;
+                        double baseDamage = (wep.value - entity2->stats.resistanceToDamage);
+                        if(baseDamage < 0)
+                            baseDamage = 0;
+                        double fireDamage = 0;
+                        double earthDamage = 0;
+                        double iceDamage = 0;
+                        if(wep.element == "fire")
+                            fireDamage = (wep.elemental_value - entity2->stats.resistanceToFire);
+                        if(wep.element == "water")
+                            iceDamage = (wep.elemental_value - entity2->stats.resistanceToIce);
+                        if(wep.element == "earth")
+                            earthDamage = (wep.elemental_value - entity2->stats.resistanceToEarth);
+                        
+                        damageToInflict = baseDamage + fireDamage + earthDamage + iceDamage;
+
+                        entity2->stats.health -= damageToInflict;
                         if(!formatType)
-                            stream<<entity1->name<<" attacked with "<<wep.name<<std::endl;
+                            stream<<entity1->name<<" attacked with "<<wep.name<<" for "<<damageToInflict<<" damage "<<std::endl;
                         else if(formatType && (::strcmp(formatType,"json") == 0))
                         {
-                            stream<<"{\"action\":\"attack\",\"player\":\""<<entity1->name<<"\",\"number\":\""<<wep.damage<<"\"},"<<std::endl;
+                            stream<<"{\"action\":\"attack\",\"player\":\""<<entity1->name<<"\",\"number\":\""<<damageToInflict<<"\"},"<<std::endl;
                         }
                     }
                     /*else
                         stream<<entity1->name<<" attack nooped"<<std::endl;*/
+                }
+                if(action == Schwarma::DEFEND)
+                {
+                    const Schwarma::Card&card = *entity1->defend(entity2);
+                    if(&card != nullptr)
+                    {
+                        entity1->stats.health += card.value;
+                        if(!formatType)
+                            stream<<entity1->name<<" healed with "<<card.name<<" for "<<card.value<<std::endl;
+                        else if(formatType && (::strcmp(formatType,"json") == 0))
+                        {
+                            stream<<"{\"action\":\"defense\",\"player\":\""<<entity1->name<<"\",\"number\":\""<<card.value<<"\"},"<<std::endl;
+                        }
+                    }
                 }
             }
 

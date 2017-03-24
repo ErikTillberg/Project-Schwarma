@@ -32,7 +32,7 @@ namespace Schwarma
                         {
                             if(Schwarma::evalCondition(it->condition,*this,*enemy))
                             {
-                                if(it->action.actionType == "move")
+                                if(it->action.actionType == "mobility")
                                 {
                                     if(it->action.direction == "away")
                                     {
@@ -47,7 +47,7 @@ namespace Schwarma
                                             this->position += this->baseStats.movementSpeed;
                                         }
                                     }
-                                    else if(it->action.direction == "towards")
+                                    else if(it->action.direction == "toward")
                                     {
                                         if(enemy->position > this->position &&
                                         this->position != Schwarma::BOUND_LEFT)
@@ -80,9 +80,9 @@ namespace Schwarma
             }
             //! Attempt to evaluate an attack trigger against enemy
             /*!
-                \return weapon used to attack if successful, nullptr on failure
+                \return card used to attack if successful, nullptr on failure
             */
-            const Schwarma::Weapon*attack(Schwarma::Entity*enemy)
+            const Schwarma::Card*attack(Schwarma::Entity*enemy)
             {
                 auto end = this->triggers.end();
                 for(auto it = this->triggers.begin(); it != end; ++it)
@@ -95,8 +95,8 @@ namespace Schwarma
                             {
                                 if(it->action.actionType == "attack")
                                 {
-                                   for(auto wit = this->weapons.begin(); wit != this->weapons.end(); ++wit)
-                                   {
+                                   for(auto wit = this->cards.begin(); wit != this->cards.end(); ++wit)
+                                   {    
                                        if(wit->name == it->action.item)
                                        {
                                            return &(*wit);
@@ -116,11 +116,39 @@ namespace Schwarma
                 return nullptr;
             }
 
-            //this needs to be thought out more
-            //currently just prints result of enemy attack
-            int defend(Schwarma::Entity*enemy)
+
+            const Schwarma::Card*defend(Schwarma::Entity*enemy)
             {
-                return 0;
+                auto end = this->triggers.end();
+                for(auto it = this->triggers.begin(); it != end; ++it)
+                {
+                    if(it->name == "defense")
+                    {
+                        try
+                        {
+                            if(Schwarma::evalCondition(it->condition,*this,*enemy))
+                            {
+                                if(it->action.actionType == "defense")
+                                {
+                                   for(auto card = this->cards.begin(); card != this->cards.end(); ++card)
+                                   {    
+                                       if(card->name == it->action.item)
+                                       {
+                                           return &(*card);
+                                       }
+                                   } 
+                                }
+                                throw new std::runtime_error("Defemse trigger "+(it-this->triggers.begin())+std::string(" evaluated true but could not execute"));
+                            }
+                        }
+                        catch(std::runtime_error*e)
+                        {
+                            std::cerr<<e->what()<<std::endl;
+                            std::cerr<<"In defense trigger "<<(it-this->triggers.begin())<<" for "<<this->name<<std::endl;
+                        }
+                    }
+                }
+                return nullptr;
             }
     };
 }
