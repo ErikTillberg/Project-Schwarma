@@ -64,12 +64,12 @@ public class AuthenticationCtrl {
                     break;
                 case("mage"):
                     new_user.setAttack_modifier(10);
-                    new_user.setDefence_modifier(2);
+                    new_user.setDefence_modifier(1);
                     new_user.setMobility_modifier(2);
                     break;
                 case("thief"):
                     new_user.setAttack_modifier(10);
-                    new_user.setDefence_modifier(3);
+                    new_user.setDefence_modifier(1);
                     new_user.setMobility_modifier(3);
                     break;
 
