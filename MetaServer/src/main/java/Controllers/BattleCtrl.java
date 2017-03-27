@@ -143,6 +143,7 @@ public class BattleCtrl {
 
         String battle_sim_format = Battle.prepareForSimulation(battle_id);
         System.out.println("----BATTLE SIM FORMAT -----");
+        System.out.println("----BATTLE SIM FORMAT -----");
         System.out.println(battle_sim_format);
 
 
@@ -150,6 +151,8 @@ public class BattleCtrl {
         HttpPost httpPost = new HttpPost("http://54.244.199.216:8080");
 
         String json = JsonUtil.toJson(battle_sim_format);
+        System.out.println("----BATTLE SIM FORMAT IN JSON -----");
+        System.out.println(json);
         StringEntity entity = new StringEntity(json);
         httpPost.setEntity(entity);
         httpPost.setHeader("Accept", "application/json");
