@@ -3,6 +3,8 @@ var characterPick = ["Knight", "Wizard", "Thief"];
 var i = 0;
 var sword;
 var playerCharcter;
+var playerCharcter2;
+var playerCharcter3;
 var playerCharacterShadow;
 
 /**
@@ -19,7 +21,6 @@ var pick_state = {
 
     create: function() {
 
-        setCharacter (i);
 
         // Set the background color of the canvas.
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
@@ -30,42 +31,59 @@ var pick_state = {
         banner.frame = randomInt(0, 4);
         banner.anchor.setTo(0.5, 0.5);
 
-        var num = randomInt(0, 4);
-        
-        // Add the sword/sheild art to the screen, picking randomly from sword_ss sprite sheet
-        sword = game.add.sprite( 640, 460,'Sword');
-        sword.frame = num;
-        sword.anchor.setTo(0.5, 0.5);
-        sword.scale.setTo(1.2, 1.2);
-
-        // Add the character sprite and add animations
-        playerCharcter = game.add.sprite(640, sword.y + 20, characterPick[i]); 
+        // Add the character sprites and add animations
+        playerCharcter = game.add.sprite(640, 400, characterPick[0]);
         playerCharcter.anchor.setTo(0.5, 0.5);
         playerCharacterShadow = game.add.sprite(playerCharcter.x, playerCharcter.y + 42, 'Shadow');
         playerCharacterShadow.anchor.setTo(0.5, 0.5);
         var walk = playerCharcter.animations.add('walk');
-        playerCharcter.animations.play('walk', 3, true);
+        playerCharcter.inputEnabled = true;
+        playerCharcter.events.onInputDown.add(pickCharW, this);
 
-        // Add right arrow to screen, when clicked call pickRight functiom
-        var arrowRight = game.add.sprite( game.world.centerX+270, playerCharcter.y+80, 'ArroeRight');
-        arrowRight.inputEnabled = true;
-        arrowRight.events.onInputDown.add(pickRight, this);
-            
-        // Add right arrow to screen, when clicked call pickLeft functiom   
-        var arrowLeft = game.add.sprite( game.world.centerX-380, playerCharcter.y+80, 'ArrowLeft');
-        arrowLeft.inputEnabled = true;
-        arrowLeft.events.onInputDown.add(pickLeft, this);
+        var warriorStatText = game.add.bitmapText(playerCharcter.x, playerCharcter.y + 140, 'carrier_command_black','ATTACK: 3\n\nMOBILITY: 1\n\nDEFENCE: 2',20);
+        warriorStatText.anchor.setTo(0.5, 0.5);
+        warriorStatText.align = 'center';
+
+
+        playerCharcter2 = game.add.sprite(260, 400, characterPick[1]);
+        playerCharcter2.anchor.setTo(0.5, 0.5);
+        playerCharacterShadow = game.add.sprite(playerCharcter2.x, playerCharcter2.y + 42, 'Shadow');
+        playerCharacterShadow.anchor.setTo(0.5, 0.5);
+        var walk = playerCharcter2.animations.add('walk');
+        playerCharcter2.inputEnabled = true;
+        playerCharcter2.events.onInputDown.add(pickCharM, this);
+
+        var mageStatText = game.add.bitmapText(playerCharcter2.x, playerCharcter2.y + 140, 'carrier_command_black','ATTACK: 1\n\nMOBILITY: 2\n\nDEFENCE: 3',20);
+        mageStatText.anchor.setTo(0.5, 0.5);
+        mageStatText.align = 'center';
+
+        playerCharcter3 = game.add.sprite(1020, 400, characterPick[2]);
+        playerCharcter3.anchor.setTo(0.5, 0.5);
+        playerCharacterShadow = game.add.sprite(playerCharcter3.x, playerCharcter3.y + 42, 'Shadow');
+        playerCharacterShadow.anchor.setTo(0.5, 0.5);
+        var walk = playerCharcter3.animations.add('walk');
+        playerCharcter3.inputEnabled = true;
+        playerCharcter3.events.onInputDown.add(pickCharT, this);
+
+        var theifStatText = game.add.bitmapText(playerCharcter3.x, playerCharcter3.y + 140, 'carrier_command_black','ATTACK: 2\n\nMOBILITY: 3\n\nDEFENCE: 1',20);
+        theifStatText.anchor.setTo(0.5, 0.5);
+        theifStatText.align = 'center';
+
         
         // Add the title text to the screen                
         var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','PICK A CHARACTER',40);
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
+        var titleText = game.add.bitmapText(banner.x, banner.y - 50, 'carrier_command_black','CLICK TO SELECT YOUR CHARACTER',20);
+        titleText.anchor.setTo(0.5, 0.5);
+        titleText.align = 'center';
+
         // Add a submit button to the screen, and when clicked launch submit_button_click function
-        this.submit_btn = game.add.button(game.world.centerX+250, 450,  'Submit_button', this.submit_btn_click, this, 2, 1, 0);
+        this.submit_btn = game.add.button(submitX, submitY,  'Submit_button', this.submit_btn_click, this, 2, 1, 0);
 
         // Add a home button to the screen, and when clicked launch back_btn_clickfunction
-        this.back_btn= game.add.button(game.world.centerX-530, 450,  'Home_button', this.back_btn_click, this, 2, 1, 0);
+        this.back_btn= game.add.button(homeX, homeY,  'Home_button', this.back_btn_click, this, 2, 1, 0);
     },
 
     // Handles back button click. Transitions the game to the load state.
@@ -87,44 +105,55 @@ var pick_state = {
 /**
  * Function changes the sprite., and sets the character with setCharacter function..
  */
-function pickRight () {
+function pickCharW (){
 
-    i++;
-   
-    if (i > 2 ){
-
-        i = 0;
-    }
-
-    playerCharcter.destroy();
-    playerCharcter = game.add.sprite(640, sword.y + 20, characterPick[i]); 
-    playerCharcter.anchor.setTo(0.5, 0.5);
-    walk = playerCharcter.animations.add('walk');
+    playerCharcter.scale.setTo(1.9,1.9);
     playerCharcter.animations.play('walk', 3, true);
 
-    setCharacter ( i );
+    playerCharcter2.scale.setTo(1,1);
+    playerCharcter2.animations.stop(null);
+
+    playerCharcter3.scale.setTo(1,1);
+    playerCharcter3.animations.stop(null);
+
+    character = 'warrior';
+    console.log("charcter: " + character);
+
 }
 
-/**
- * Function changes the sprite., and sets the character with setCharacter function.
- */
-function pickLeft () {
+function pickCharM (){
 
-    i--;
+    playerCharcter2.scale.setTo(1.9,1.9);
+    playerCharcter2.animations.play('walk', 3, true);
 
-    if (i < 0 ){
+    playerCharcter.scale.setTo(1,1);
+    playerCharcter.animations.stop(null);
 
-        i = 2;
-    }
+    playerCharcter3.scale.setTo(1,1);
+    playerCharcter3.animations.stop(null);
 
-    playerCharcter.destroy();
-    playerCharcter = game.add.sprite(640, sword.y+20, characterPick[i]); 
-    playerCharcter.anchor.setTo(0.5, 0.5);
-    walk = playerCharcter.animations.add('walk');
-    playerCharcter.animations.play('walk', 3, true);
+    character = 'mage';
+    console.log("charcter: " + character);
 
-    setCharacter (i);
 }
+
+function pickCharT (){
+
+    playerCharcter3.scale.setTo(1.9,1.9);
+    playerCharcter3.animations.play('walk', 3, true);
+
+    playerCharcter2.scale.setTo(1,1);
+    playerCharcter2.animations.stop(null);
+
+    playerCharcter.scale.setTo(1,1);
+    playerCharcter.animations.stop(null);
+
+    character = 'theif';
+    console.log("charcter: " + character);
+
+}
+
+
 
 /**
 * Function creates a random integer between min and max and returns it.
@@ -139,25 +168,4 @@ function pickLeft () {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-/**
- * Function sets the varable character based on what number it is sent.
- * @param num
- */
-function setCharacter (num){
-
-    if (num == 0){
-        
-        character = 'warrior';
-    }
-
-    else if (num == 1){
-
-        character = 'mage';
-    }
-
-    else{
-
-        character = 'thief';
-    }
-}
 

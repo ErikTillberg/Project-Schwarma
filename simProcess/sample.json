@@ -1,17 +1,17 @@
 {  
-   "battle_id":"58d0147f5ab3aa3834f27103",
+   "battle_id":"58d2b201874c4c0004d7a793",
    "players":[  
       {  
-         "player_name":"wizzy",
+         "player_name":"remote_40",
          "base_stats":{  
             "health":100,
             "damage":0,
-            "attack_bonus":19,
-            "movement_speed":20,
-            "resistance_to_damage":5,
+            "attack_bonus":15,
+            "movement_speed":14,
+            "resistance_to_damage":10,
             "resistance_to_fire":0,
-            "resistance_to_ice":2,
-            "resistance_to_earth":0
+            "resistance_to_ice":0,
+            "resistance_to_earth":5
          },
          "actionPercentages":{  
             "attack":0.35,
@@ -20,57 +20,66 @@
          },
          "cards":[  
             {  
-               "name":"mobility card of illegitimate potentiality",
-               "value":4.536373654679249,
+               "name":"mobility card of anomalous stick in mud",
+               "direction":"toward",
+               "value":2.019537836502037,
+               "element":"fire",
+               "elemental_value":13.095994834104266
+            },
+            {  
+               "name":"mobility card of bifurcating endowment",
+               "direction":"toward",
+               "value":2.428915960267464,
                "element":"earth",
                "elemental_value":0.0
             },
             {  
-               "name":"mobility card of spiritual clout",
-               "value":1.215189907393969,
-               "element":"water",
-               "elemental_value":0.0
-            },
-            {  
-               "name":"mobility card of illegitimate performance",
-               "value":2.0287298432365795,
-               "element":"fire",
-               "elemental_value":0.0
-            },
-            {  
-               "name":"attack card of spiritual valor",
-               "value":10.627345030462564,
-               "element":"water",
-               "elemental_value":0.0
-            },
-            {  
-               "name":"attack card of illegitimate force",
-               "value":16.041967794023474,
-               "element":"fire",
-               "elemental_value":0.0
-            },
-            {  
-               "name":"attack card of tremendous influence",
-               "value":15.398254683076189,
+               "name":"mobility card of bifurcating endowment",
+               "direction":"toward",
+               "value":2.428915960267464,
                "element":"earth",
-               "elemental_value":3.319376180040596
-            },
-            {  
-               "name":"defense card of discretionary potentiality",
-               "value":3.3799542741302604,
-               "element":"fire",
                "elemental_value":0.0
             },
             {  
-               "name":"defense card of remarkable endowment",
-               "value":19.491067573536622,
-               "element":"fire",
-               "elemental_value":0.0
-            },
-            {  
-               "name":"defense card of radical influence",
-               "value":1.949582153224497,
+               "name":"attack card of infinite effect",
+               "direction":"none",
+               "value":20.09183045697294,
                "element":"water",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"attack card of abnormal bulge",
+               "direction":"none",
+               "value":14.643074532121989,
+               "element":"earth",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"attack card of dubious disaster",
+               "direction":"none",
+               "value":14.334134929512445,
+               "element":"water",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"defense card of hilarious legacy",
+               "direction":"none",
+               "value":5.835734289754541,
+               "element":"earth",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"defense card of kind-of-okay skill",
+               "direction":"none",
+               "value":7.478997067434197,
+               "element":"earth",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"defense card of kind-of-okay skill",
+               "direction":"none",
+               "value":1.478997067434197,
+               "element":"earth",
                "elemental_value":0.0
             }
          ],
@@ -84,7 +93,7 @@
                   },
                   "action":{  
                      "action_type":"attack",
-                     "item":"attack card of spiritual valor"
+                     "item":"attack card of infinite effect"
                   }
                },
                {  
@@ -95,7 +104,7 @@
                   },
                   "action":{  
                      "action_type":"attack",
-                     "item":"attack card of illegitimate force"
+                     "item":"attack card of abnormal bulge"
                   }
                },
                {  
@@ -106,7 +115,7 @@
                   },
                   "action":{  
                      "action_type":"attack",
-                     "item":"attack card of tremendous influence"
+                     "item":"attack card of dubious disaster"
                   }
                }
             ],
@@ -114,23 +123,12 @@
                {  
                   "condition":{  
                      "lhs":"playerHP",
-                     "operator":"<=",
-                     "rhs":"50"
-                  },
-                  "action":{  
-                     "action_type":"defense",
-                     "item":"defense card of discretionary potentiality"
-                  }
-               },
-               {  
-                  "condition":{  
-                     "lhs":"playerHP",
                      "operator":">",
                      "rhs":"50"
                   },
                   "action":{  
                      "action_type":"defense",
-                     "item":"defense card of remarkable endowment"
+                     "item":"defense card of hilarious legacy"
                   }
                },
                {  
@@ -141,7 +139,18 @@
                   },
                   "action":{  
                      "action_type":"defense",
-                     "item":"defense card of radical influence"
+                     "item":"defense card of kind-of-okay skill"
+                  }
+               },
+               {  
+                  "condition":{  
+                     "lhs":"distance",
+                     "operator":"==",
+                     "rhs":"touching"
+                  },
+                  "action":{  
+                     "action_type":"defense",
+                     "item":"defense card of kind-of-okay skill"
                   }
                }
             ],
@@ -154,7 +163,7 @@
                   },
                   "action":{  
                      "action_type":"mobility",
-                     "item":"mobility card of illegitimate potentiality"
+                     "item":"mobility card of anomalous stick in mud"
                   }
                },
                {  
@@ -165,7 +174,7 @@
                   },
                   "action":{  
                      "action_type":"mobility",
-                     "item":"mobility card of spiritual clout"
+                     "item":"mobility card of bifurcating endowment"
                   }
                },
                {  
@@ -176,20 +185,20 @@
                   },
                   "action":{  
                      "action_type":"mobility",
-                     "item":"mobility card of illegitimate performance"
+                     "item":"mobility card of bifurcating endowment"
                   }
                }
             ]
          }
       },
       {  
-         "player_name":"wiz",
+         "player_name":"local_41",
          "base_stats":{  
             "health":100,
             "damage":0,
-            "attack_bonus":10,
-            "movement_speed":4,
-            "resistance_to_damage":5,
+            "attack_bonus":8,
+            "movement_speed":17,
+            "resistance_to_damage":0,
             "resistance_to_fire":0,
             "resistance_to_ice":0,
             "resistance_to_earth":0
@@ -201,57 +210,66 @@
          },
          "cards":[  
             {  
-               "name":"mobility card of cromulent efficaciousness",
-               "value":3.857072344547067,
+               "name":"mobility card of greater aptitude",
+               "direction":"away",
+               "value":2.149897540254843,
                "element":"fire",
                "elemental_value":0.0
             },
             {  
-               "name":"mobility card of limited impotence",
-               "value":9.126542073351054,
+               "name":"mobility card of limited skill",
+               "direction":"toward",
+               "value":3.7049120197560566,
+               "element":"fire",
+               "elemental_value":6.532768964142781
+            },
+            {  
+               "name":"mobility card of varying disaster",
+               "direction":"away",
+               "value":3.2629377872633984,
+               "element":"fire",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"attack card of embiggening sufficiency",
+               "direction":"none",
+               "value":18.834741990924172,
+               "element":"fire",
+               "elemental_value":19.246589805964753
+            },
+            {  
+               "name":"attack card of valiant doom",
+               "direction":"none",
+               "value":11.035097280917599,
+               "element":"fire",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"attack card of limited virtue",
+               "direction":"none",
+               "value":18.098743270198124,
+               "element":"fire",
+               "elemental_value":0.0
+            },
+            {  
+               "name":"defense card of remarkable renown",
+               "direction":"none",
+               "value":1.555497239141251,
                "element":"earth",
                "elemental_value":0.0
             },
             {  
-               "name":"mobility card of great foreordination",
-               "value":10.961357471719527,
-               "element":"earth",
-               "elemental_value":0.0
+               "name":"defense card of head-scratching efficaciousness",
+               "direction":"none",
+               "value":5.302191114512636,
+               "element":"fire",
+               "elemental_value":21.379483678039335
             },
             {  
-               "name":"attack card of cromulent legacy",
-               "value":5.34576364580184,
-               "element":"earth",
-               "elemental_value":0.5952291120638015
-            },
-            {  
-               "name":"attack card of immense effect",
-               "value":3.120550456010783,
+               "name":"defense card of unprecedented efficacy",
+               "direction":"none",
+               "value":0.18908829243798447,
                "element":"water",
-               "elemental_value":0.0
-            },
-            {  
-               "name":"attack card of limited force",
-               "value":10.25482554052375,
-               "element":"earth",
-               "elemental_value":12.617234642312125
-            },
-            {  
-               "name":"defense card of valiant valor",
-               "value":1.163205489006739,
-               "element":"earth",
-               "elemental_value":0.0
-            },
-            {  
-               "name":"defense card of illegitimate impotence",
-               "value":1.30529966261126,
-               "element":"fire",
-               "elemental_value":0.0
-            },
-            {  
-               "name":"defense card of enormous foreordination",
-               "value":1.701626426299902,
-               "element":"earth",
                "elemental_value":0.0
             }
          ],
@@ -265,7 +283,7 @@
                   },
                   "action":{  
                      "action_type":"attack",
-                     "item":"attack card of cromulent legacy"
+                     "item":"attack card of embiggening sufficiency"
                   }
                },
                {  
@@ -276,7 +294,7 @@
                   },
                   "action":{  
                      "action_type":"attack",
-                     "item":"attack card of immense effect"
+                     "item":"attack card of valiant doom"
                   }
                },
                {  
@@ -287,7 +305,7 @@
                   },
                   "action":{  
                      "action_type":"attack",
-                     "item":"attack card of limited force"
+                     "item":"attack card of limited virtue"
                   }
                }
             ],
@@ -300,7 +318,7 @@
                   },
                   "action":{  
                      "action_type":"defense",
-                     "item":"defense card of valiant valor"
+                     "item":"defense card of remarkable renown"
                   }
                },
                {  
@@ -311,7 +329,7 @@
                   },
                   "action":{  
                      "action_type":"defense",
-                     "item":"defense card of illegitimate impotence"
+                     "item":"defense card of head-scratching efficaciousness"
                   }
                },
                {  
@@ -322,7 +340,7 @@
                   },
                   "action":{  
                      "action_type":"defense",
-                     "item":"defense card of enormous foreordination"
+                     "item":"defense card of unprecedented efficacy"
                   }
                }
             ],
@@ -335,7 +353,7 @@
                   },
                   "action":{  
                      "action_type":"mobility",
-                     "item":"mobility card of cromulent efficaciousness"
+                     "item":"mobility card of greater aptitude"
                   }
                },
                {  
@@ -346,7 +364,7 @@
                   },
                   "action":{  
                      "action_type":"mobility",
-                     "item":"mobility card of limited impotence"
+                     "item":"mobility card of limited skill"
                   }
                },
                {  
@@ -357,7 +375,7 @@
                   },
                   "action":{  
                      "action_type":"mobility",
-                     "item":"mobility card of great foreordination"
+                     "item":"mobility card of varying disaster"
                   }
                }
             ]

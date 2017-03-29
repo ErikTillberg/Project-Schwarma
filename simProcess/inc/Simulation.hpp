@@ -121,7 +121,17 @@ namespace Schwarma
                         double baseDamage = (wep.value - entity2->stats.resistanceToDamage);
                         if(baseDamage < 0)
                             baseDamage = 0;
-                        damageToInflict = baseDamage;
+                        double fireDamage = 0;
+                        double earthDamage = 0;
+                        double iceDamage = 0;
+                        if(wep.element == "fire")
+                            fireDamage = (wep.elemental_value - entity2->stats.resistanceToFire);
+                        if(wep.element == "water")
+                            iceDamage = (wep.elemental_value - entity2->stats.resistanceToIce);
+                        if(wep.element == "earth")
+                            earthDamage = (wep.elemental_value - entity2->stats.resistanceToEarth);
+                        
+                        damageToInflict = baseDamage + fireDamage + earthDamage + iceDamage;
 
                         entity2->stats.health -= damageToInflict;
                         if(!formatType)

@@ -104,8 +104,8 @@ var gear_menu_state = {
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
-        this.signin_btn = game.add.button(1140, 600, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
-        this.back_btn= game.add.button(40, 600, 'Home_button', this.back_btn_click, this, 2, 1, 0);
+        this.signin_btn = game.add.button(submitX, submitY, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
+        this.back_btn= game.add.button(homeX, homeY, 'Home_button', this.back_btn_click, this, 2, 1, 0);
 
         player = game.add.sprite(640, 420,  pickCharacter (  user.character_type));
         player.anchor.setTo(0.5, 0.5);

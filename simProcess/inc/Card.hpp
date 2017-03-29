@@ -18,7 +18,8 @@ namespace Schwarma
                 std::string name,
                 double value,
                 std::string element,
-                double elemental_value
+                double elemental_value,
+                std::string direction
             ) : 
             name(name),value(value),element(element),elemental_value(elemental_value){}
             ~Card() = default;
@@ -30,36 +31,13 @@ namespace Schwarma
             template<class T>
             static Schwarma::Card parseCard(T&obj)
             {
-                /*if(obj.HasMember("name") &&
-                obj.HasMember("value") &&
-                obj.HasMember("element") &&
-                obj.HasMember("elementl_value"))
-                {
-                    return Schwarma::Card
-                    (
-                        obj["name"].GetString(),
-                        obj["value"].GetDouble(),
-                        obj["element"].GetString(),
-                        obj["elemental_value"].GetDouble()
-                    );
-                }
-                else
-                {
-                    return Schwarma::Card
-                    (
-                        "",
-                        0,
-                        "",
-                        0
-                    );
-                }*/
-
                 return Schwarma::Card
                 (
                     obj.HasMember("name") ? obj["name"].GetString() : "",
                     obj.HasMember("value") ? obj["value"].GetDouble() : 0,
                     obj.HasMember("element") ? obj["element"].GetString() : "",
-                    obj.HasMember("element_value") ? obj["element_value"].GetDouble() : 0
+                    obj.HasMember("element_value") ? obj["element_value"].GetDouble() : 0,
+                    obj.HasMember("direction") ? obj["direction"].GetString() : ""
                 );
             }
     };

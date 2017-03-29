@@ -151,9 +151,10 @@ public class BattleCtrl {
         HttpPost httpPost = new HttpPost("http://54.244.199.216:8080");
 
         String json = JsonUtil.toJson(battle_sim_format);
-        System.out.println("----BATTLE SIM FORMAT IN JSON -----");
-        System.out.println(json);
-        StringEntity entity = new StringEntity(json);
+
+        StringEntity entity = new StringEntity(json, "UTF-8");
+        entity.setContentType("application/json");
+        System.out.println(entity);
         httpPost.setEntity(entity);
         httpPost.setHeader("Accept", "application/json");
         httpPost.setHeader("Content-type", "application/json");

@@ -329,6 +329,7 @@ var pre_battle_state = {
         this.attack_selector.visible = false;
         this.mobility_selector.visible = false;
         this.defense_selector.visible = false;
+
     },
 
     /**
