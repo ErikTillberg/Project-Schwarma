@@ -223,7 +223,7 @@ var main_menu_state = {
      */
     battle_btn_click: function() {
         console.log("main_menu: battle_btn_click");
-        game.state.start("battle_system");
+        game.state.start("battle_match_up");
     },
     /**
      * Function creates a random integer between min and max and returns it.

@@ -31,10 +31,10 @@ var match_up_state = {
         banner.anchor.setTo(0.5, 0.5);
 
         // Add the character sprite and add animations
-        playerCharcter = game.add.sprite(1020, 400,  pickCharacter ( user.opponent.character_type));
+        playerCharcter = game.add.sprite(950, 400,  pickCharacter ( user.opponent.character_type));
         playerCharcter.anchor.setTo(0.5, 0.5);
         playerCharcter.scale.setTo(1.5,1.5);
-        playerCharacterShadow = game.add.sprite(playerCharcter.x, playerCharcter.y + 42, 'Shadow');
+        playerCharacterShadow = game.add.sprite(playerCharcter.x, playerCharcter.y + 62, 'Shadow');
         playerCharacterShadow.anchor.setTo(0.5, 0.5);
         playerCharacterShadow.scale.setTo(1.5,1.5);
         var walk = playerCharcter.animations.add('walk');
@@ -46,10 +46,10 @@ var match_up_state = {
         char1StatText.align = 'center';
 
 
-        playerCharcter2 = game.add.sprite(260, 400, pickCharacter ( user.character_type));
+        playerCharcter2 = game.add.sprite(330, 400, pickCharacter ( user.character_type));
         playerCharcter2.anchor.setTo(0.5, 0.5);
         playerCharcter2.scale.setTo(1.5,1.5);
-        playerCharacterShadow2 = game.add.sprite(playerCharcter2.x, playerCharcter2.y + 42, 'Shadow');
+        playerCharacterShadow2 = game.add.sprite(playerCharcter2.x, playerCharcter2.y + 62, 'Shadow');
         playerCharacterShadow2.anchor.setTo(0.5, 0.5);
         playerCharacterShadow2.scale.setTo(1.5,1.5);
         var walk = playerCharcter2.animations.add('walk');
