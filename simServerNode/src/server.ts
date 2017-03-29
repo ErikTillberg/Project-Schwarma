@@ -57,7 +57,19 @@ export class Server {
     this.app.use(logger("dev"));
 
     //use json form parser middleware
-    this.app.use(bodyParser.json());
+    //this.app.use(bodyParser.json());
+
+    this.app.use(function(req, res, next) {
+    var data = '';
+    req.setEncoding('utf8');
+    req.on('data', function(chunk) { 
+        data += chunk;
+    });
+    req.on('end', function() {
+        req.body = JSON.parse(data);
+        next();
+    });
+});
 
     //use override middleware
     this.app.use(methodOverride());

@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { BaseRoute } from "./route";
-import fs = require('fs'); 
+import * as fs from "fs";
+
+import * as cp from "child_process";
     
 
 /**
@@ -47,8 +49,6 @@ export class IndexRoute extends BaseRoute {
    * @next {NextFunction} Execute the next method.
    */
   public index(req: Request, res: Response, next: NextFunction) {
-    var spawn = require('child_process').spawnSync;
-    //TODO add authentification
      
     var body = req.body;
     var fileNameData = "battleData" + body.battle_id + ".json";
@@ -63,11 +63,14 @@ export class IndexRoute extends BaseRoute {
     };
     
     try {
-      var opts = {stdio: 'inherit'};
-      spawn('simServer.exe', [fileNameData, fileNameSim, "json"], opts);
+      fs.writeFileSync(fileNameSim,"");
+      let status = cp.spawnSync("./simProcess",[fileNameData,fileNameSim,"json"]);
+      console.log("simProcess error "+status.error);
+      console.log("simProcess stdou "+status.stdout.toString());
+      console.log("simProcess stderr "+status.stderr.toString());
     }
     catch (err) {
-      console.log("Error spawning child process for simulation");
+      console.log("Error spawning child process for simulation. "+err);
       res.status(500).send("Internal Error");
     }
 
