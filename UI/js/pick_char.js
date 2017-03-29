@@ -111,10 +111,10 @@ function pickCharW (){
     playerCharcter.animations.play('walk', 3, true);
 
     playerCharcter2.scale.setTo(1,1);
-    playerCharcter2.animations.stop(null, true);
+    playerCharcter2.animations.stop(null);
 
     playerCharcter3.scale.setTo(1,1);
-    playerCharcter3.animations.stop(null, true);
+    playerCharcter3.animations.stop(null);
 
     character = 'warrior';
     console.log("charcter: " + character);
@@ -127,10 +127,10 @@ function pickCharM (){
     playerCharcter2.animations.play('walk', 3, true);
 
     playerCharcter.scale.setTo(1,1);
-    playerCharcter.animations.stop(null, true);
+    playerCharcter.animations.stop(null);
 
     playerCharcter3.scale.setTo(1,1);
-    playerCharcter3.animations.stop(null, true);
+    playerCharcter3.animations.stop(null);
 
     character = 'mage';
     console.log("charcter: " + character);
@@ -143,10 +143,10 @@ function pickCharT (){
     playerCharcter3.animations.play('walk', 3, true);
 
     playerCharcter2.scale.setTo(1,1);
-    playerCharcter2.animations.stop(null, true);
+    playerCharcter2.animations.stop(null);
 
     playerCharcter.scale.setTo(1,1);
-    playerCharcter.animations.stop(null, true);
+    playerCharcter.animations.stop(null);
 
     character = 'theif';
     console.log("charcter: " + character);
