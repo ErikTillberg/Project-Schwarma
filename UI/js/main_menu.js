@@ -82,7 +82,7 @@ var main_menu_state = {
         this.matchmaking_cancel_btn_text.events.onInputDown.add(this.cancel_matchmaking, this);
         this.matchmaking_cancel_btn_text.visible = false;
 
-        this.back_btn= game.add.button(game.world.centerX-530, 450, 'Home_button', this.back_btn_click, this, 2, 1, 0);
+        this.back_btn= game.add.button(homeX, homeY, 'Home_button', this.back_btn_click, this, 2, 1, 0);
     },
 
     /**

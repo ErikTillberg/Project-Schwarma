@@ -71,10 +71,10 @@ var signin_state = {
         });
 
         // Add a signin button to the screen, and when clicked launch submit_button function
-        this.signin_btn = game.add.button(game.world.centerX+250, 450, 'Submit_button', this.signin_btn_click, this, 2, 1, 0);
+        this.signin_btn = game.add.button(submitX, submitY, 'Submit_button', this.signin_btn_click, this, 2, 1, 0);
       
         // Add a signup button to the screen, and when clicked launch Home_button function
-        this.back_btn= game.add.button(game.world.centerX-530, 450, 'Home_button', this.back_btn_click, this, 2, 1, 0);
+        this.back_btn= game.add.button(homeX, homeY, 'Home_button', this.back_btn_click, this, 2, 1, 0);
     },
     /**
      * Handles signin button click. Sends an ajax request to the server after extracting user data from input fields.

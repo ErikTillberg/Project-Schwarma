@@ -88,11 +88,11 @@ var signup_state = {
         });
 
         // Add a signup button to the screen
-         this.signin_btn = game.add.button(game.world.centerX+250, 450, 'Submit_button', this.signup_btn_click, this, 2, 1, 0);
+         this.signin_btn = game.add.button(submitX, submitY, 'Submit_button', this.signup_btn_click, this, 2, 1, 0);
         //this.signin_btn_text = game.add.bitmapText(this.signin_btn.x + this.signin_btn.width/4, this.signin_btn.y + this.signin_btn.height/3, 'carrier_command','SUBMIT',20);
 
         // Add a signup button to the screen
-        this.back_btn= game.add.button(game.world.centerX-530, 450, 'Home_button', this.back_btn_click, this, 2, 1, 0);
+        this.back_btn= game.add.button(homeX, homeY, 'Home_button', this.back_btn_click, this, 2, 1, 0);
        //this.back_btn_text = game.add.bitmapText(this.back_btn.x + this.back_btn.width/4, this.back_btn.y + this.back_btn.height/3, 'carrier_command','BACK',20);
     },
 

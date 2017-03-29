@@ -80,10 +80,10 @@ var pick_state = {
         titleText.align = 'center';
 
         // Add a submit button to the screen, and when clicked launch submit_button_click function
-        this.submit_btn = game.add.button(1120, 600,  'Submit_button', this.submit_btn_click, this, 2, 1, 0);
+        this.submit_btn = game.add.button(submitX, submitY,  'Submit_button', this.submit_btn_click, this, 2, 1, 0);
 
         // Add a home button to the screen, and when clicked launch back_btn_clickfunction
-        this.back_btn= game.add.button(50, 600,  'Home_button', this.back_btn_click, this, 2, 1, 0);
+        this.back_btn= game.add.button(homeX, homeY,  'Home_button', this.back_btn_click, this, 2, 1, 0);
     },
 
     // Handles back button click. Transitions the game to the load state.
