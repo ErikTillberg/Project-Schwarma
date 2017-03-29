@@ -6,6 +6,9 @@ import errorHandler = require("errorhandler");
 import methodOverride = require("method-override");
 import {IndexRoute} from "./routes/index";
 
+import * as fs from "fs";
+import * as cp from "child_process";
+
 /**
  * The server.
  *
@@ -66,8 +69,55 @@ export class Server {
         data += chunk;
     });
     req.on('end', function() {
-        req.body = JSON.parse(data);
-        next();
+
+      /*  req.body = JSON.parse(data);
+        var fileNameData = "battleData" + req.body.battle_id + ".json";
+        fs.writeFileSync(fileNameData, JSON.stringify(data), 'utf8');
+        next();*/
+
+
+
+
+    var body = JSON.parse(data.toString());
+    var fileNameData = "battleData" + body.battle_id + ".json";
+    var fileNameSim = "simulation" + body.battle_id + ".json";
+
+    try {
+      fs.writeFileSync(fileNameData, JSON.stringify(body), 'utf8');
+    }
+    catch (err) {
+      console.log("Error writing battleData json to disk");
+      res.status(500).send("Internal Error");
+    };
+    
+    try {
+      fs.writeFileSync(fileNameSim,"");
+      let status = cp.spawnSync("./simProcess",[fileNameData,fileNameSim,"json"]);
+      console.log("simProcess error "+status.error);
+      console.log("simProcess stdou "+status.stdout.toString());
+      console.log("simProcess stderr "+status.stderr.toString());
+    }
+    catch (err) {
+      console.log("Error spawning child process for simulation. "+err);
+      res.status(500).send("Internal Error");
+    }
+
+    try {
+      var sim = fs.readFileSync(fileNameSim);
+    }
+    catch (err) {
+      console.log("Error reading simulation json from disk");
+      res.status(500).send("Internal Error");
+    }
+
+    res.send(sim);
+
+
+
+
+
+
+
     });
 });
 
@@ -82,7 +132,7 @@ export class Server {
 
     //error handling
     this.app.use(errorHandler());
- }   
+ }  
 
   /**
   * Create router.

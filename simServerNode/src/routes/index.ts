@@ -55,7 +55,7 @@ export class IndexRoute extends BaseRoute {
     var fileNameSim = "simulation" + body.battle_id + ".json";
 
     try {
-      fs.writeFileSync(fileNameData, JSON.stringify(body), 'utf8');
+      //fs.writeFileSync(fileNameData, JSON.stringify(body), 'utf8');
     }
     catch (err) {
       console.log("Error writing battleData json to disk");
