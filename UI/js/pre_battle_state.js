@@ -230,11 +230,22 @@ var pre_battle_state = {
     battle_message: function(message) {
 
         var response = JSON.parse(message.data);
-        console.log(response);
 
+        // Check to see if these are the simulation results
+        // TODO test this when the server actually returns something
+        if (reponse.type == "Success") {
+            console.log("====BATTLE START====");
+            user.init_battle(response.message);
+            game.state.start("battle_system");
+        }else{
+            console.log("====MESSAGE FROM META-SERVER====");
+            console.log("type: " + response.type);
+            console.log(response.message);
+        }
     },
     battle_end: function() {
-
+        console.log("battle end");
+        game.start.start("main_menu");
     },
     /**
      * Update the timer on screen, send the user's equipment as-is when the timer reaches 0.
