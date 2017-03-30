@@ -160,9 +160,10 @@ public class BattleCtrl {
         CloseableHttpResponse response = client.execute(httpPost);
         System.out.println(response.getStatusLine().getStatusCode());
         System.out.println("----------- RESPONSE -----------");
-        System.out.println(EntityUtils.toString(response.getEntity()));
-
         String results = EntityUtils.toString(response.getEntity());
+
+        System.out.println(results);
+
 
         client.close();
 
