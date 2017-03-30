@@ -122,6 +122,7 @@ var pre_battle_state = {
         console.log("pre_battle_state: create");
 
         var background = game.add.sprite(0,0, 'menu_background');
+        this.countdown_time_remaining = 30;
 
         // Open the battleSocket
         this.battle_socket = server.battle_socket();
@@ -230,11 +231,35 @@ var pre_battle_state = {
     battle_message: function(message) {
 
         var response = JSON.parse(message.data);
-        console.log(response);
 
+        // Check to see if this is a standard message or one that means we can start the battle
+        if (response.type === "Success") {
+
+            // If the battle data is not defined, just return to the main menu.
+            if (response.message === undefined) {
+                console.log("====BATTLE UNDEFINED====");
+                console.log("Battle could not start. Simulation data was undefined.");
+                console.log(response.message);
+                game.state.start("main_menu");
+            }else{
+                console.log("====BATTLE START====");
+                user.init_simulation(response.message);
+                console.log(response.message);
+                game.state.start("battle_system");
+            }
+
+        }else{
+            console.log("====MESSAGE FROM META-SERVER====");
+            console.log("type: " + response.type);
+            console.log(response.message);
+        }
     },
     battle_end: function() {
+        console.log("battle end");
 
+        console.log("Battle did not complete.");
+
+        game.state.start("main_menu");
     },
     /**
      * Update the timer on screen, send the user's equipment as-is when the timer reaches 0.
@@ -613,6 +638,8 @@ var pre_battle_state = {
         new_card.card_num = card_num;
         new_card.scale.setTo(0.7, 0.7);
         new_card.shadow.scale.setTo(0.7, 0.7);
+        new_card.shadow.x = new_card.x;
+        new_card.shadow.y = new_card.y;
 
         new_card.inputEnabled = true;
         new_card.events.onInputDown.add(this.selector_card_click);

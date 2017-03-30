@@ -124,6 +124,12 @@ var battle_system_state = {
     create: function() {
         console.log("battle_system_state: create");
 
+        // See if we have real battle data, otherwise use the card coded values
+        if (user.simulation_data !== undefined) {
+            console.log("Loading battle data from the meta-server's response.");
+            battleData = user.simulation_data;
+        }
+
         // Add the menu background to screen
         background = game.add.sprite(0,0, 'Background');
 
