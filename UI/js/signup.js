@@ -145,6 +145,7 @@ var signup_state = {
     back_btn_click: function(){
 
         menuclick.play();
+        menumusic.stop();
         console.log("signup_state: back_btn_click");
         game.state.start("load");
 
