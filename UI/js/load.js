@@ -21,7 +21,6 @@ var load_state = {
         // TODO load game assets here when they exist
         game.plugins.add(PhaserInput.Plugin);
         game.load.image('red_button_img','assets/buttons/big-buttons/01-red-normal.png');
-        game.load.image('green_field', 'assets/sizetest.png');
         game.load.image('Background', 'assets/Art/BackGround1.png');
         game.load.image('HUD', 'assets/Art/HUD1.png');
         game.load.image('Shadow', 'assets/Art/shadow.png');
@@ -48,7 +47,7 @@ var load_state = {
         game.load.image('menu_background', 'assets/Art/menu_background.png');
 
         game.load.bitmapFont('carrier_command', 'assets/fonts/carrier_command.png', 'assets/fonts/carrier_command.xml');
-        game.load.bitmapFont('carrier_command_black', 'assets/Fonts/carrier_command_black.png', 'assets/Fonts/carrier_command.xml');
+        game.load.bitmapFont('carrier_command_black', 'assets/fonts/carrier_command_black.png', 'assets/fonts/carrier_command.xml');
     },
 
     /**

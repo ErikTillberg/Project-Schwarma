@@ -121,6 +121,8 @@ var pre_battle_state = {
 
         console.log("pre_battle_state: create");
 
+        var background = game.add.sprite(0,0, 'menu_background');
+
         // Open the battleSocket
         this.battle_socket = server.battle_socket();
 
@@ -549,8 +551,8 @@ var pre_battle_state = {
             card_data.elementalStatBonus.element,
             card_data.type,
             card_data.name,
-            card_data.elementalStatBonus.bonus.toFixed(2),
-            card_data.statBonus.bonus.toFixed(2));
+            card_data.statBonus.bonus.toFixed(2),
+            card_data.elementalStatBonus.bonus.toFixed(2));
 
         new_card.scale.setTo(0.7, 0.7);
         new_card.inputEnabled = true;
@@ -603,8 +605,8 @@ var pre_battle_state = {
             card_data.elementalStatBonus.element,
             card_data.type,
             card_data.name,
-            card_data.elementalStatBonus.bonus.toFixed(2),
-            card_data.statBonus.bonus.toFixed(2));
+            card_data.statBonus.bonus.toFixed(2),
+            card_data.elementalStatBonus.bonus.toFixed(2));
 
         // Append some custom data to the card to make assignments and look-ups easier in the click handler.
         new_card.list_index = card_list_index;
