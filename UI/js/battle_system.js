@@ -4,58 +4,7 @@
 
 
 // Sample output provided by the sim server
-var battleData = [
-
-    {"action":"attack","player":"playerOne","number":"17"},
-   /* {"action":"movePlayer","player":"playerTwo","number":"3"},
-    {"action":"attack","player":"playerOne","number":"6"},
-    {"action":"movePlayer","player":"playerTwo","number":"4"},
-    {"action":"movePlayer","player":"playerOne","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"3"},
-    {"action":"movePlayer","player":"playerOne","number":"1"},
-    {"action":"attack","player":"playerTwo","number":"8"},
-    {"action":"movePlayer","player":"playerOne","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"4"},
-    {"action":"attack","player":"playerOne","number":"23"},
-    {"action":"movePlayer","player":"playerTwo","number":"3"},
-    {"action":"movePlayer","player":"playerOne","number":"1"},
-    {"action":"attack","player":"playerTwo","number":"5"},
-    {"action":"attack","player":"playerOne","number":"11"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"19"},
-    {"action":"attack","player":"playerOne","number":"11"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"attack","player":"playerOne","number":"15"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"7"},
-    {"action":"attack","player":"playerOne","number":"10"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"12"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"attack","player":"playerOne","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"11"},
-    {"action":"attack","player":"playerTwo","number":"3"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"attack","player":"playerOne","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"7"},*/
-    {"action":"defence","player":"playerTwo","number":"1"},
-    {"action":"attack","player":"playerOne","number":"3"},
-    {"action":"die","player":"playerTwo","number":"20"}
-
-    ]
+var battleData = user.simulation_data;
 
 var playerOne;
 var playerTwo;
@@ -123,6 +72,8 @@ var battle_system_state = {
      */
     create: function() {
         console.log("battle_system_state: create");
+
+        console.log(battleData);
 
         // See if we have real battle data, otherwise use the card coded values
         if (user.simulation_data !== undefined) {
@@ -674,7 +625,7 @@ function battleLoop ( battleObj ) {
         // Call movePlayer function
         if (battleObj[i].action == 'movePlayer') {
 
-            if (battleObj[i].player == 'playerOne'){
+            if (battleObj[i].player == '1'){
 
                 player = playerOne;
             }
@@ -686,7 +637,7 @@ function battleLoop ( battleObj ) {
         // Call attack function
         else if (battleObj[i].action == 'attack') {
 
-            if (battleObj[i].player == 'playerOne') {
+            if (battleObj[i].player == '1') {
 
                 player = playerOne;
             }
@@ -700,7 +651,7 @@ function battleLoop ( battleObj ) {
         // Call block function.
         else if (battleObj[i].action == 'block'){
 
-            if ( battleObj[i].player == 'playerOne'){
+            if ( battleObj[i].player == '1'){
 
                 player = playerOne;
             }
@@ -710,9 +661,9 @@ function battleLoop ( battleObj ) {
         }
 
         // Call the heal function
-        else if (battleObj[i].action == 'defence'){
+        else if (battleObj[i].action == 'defense'){
 
-            if ( battleObj[i].player == 'playerOne'){
+            if ( battleObj[i].player == '1'){
 
                 player = playerOne;
             }
@@ -724,7 +675,7 @@ function battleLoop ( battleObj ) {
         // Call die function
         else {
 
-            if ( battleObj[i].player== 'playerOne'){
+            if ( battleObj[i].player== '1'){
 
                 player = playerOne;
             }

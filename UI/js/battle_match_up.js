@@ -75,7 +75,7 @@ var match_up_state = {
         vsText.anchor.setTo(0.5, 0.5);
         vsText.align = 'center';
 
-        var user2Text = game.add.bitmapText(playerCharcter2.x -100, playerCharcter2.y - 200, 'carrier_command_black',user.username,20);
+        var user2Text = game.add.bitmapText(playerCharcter2.x -100, playerCharcter2.y - 200, 'carrier_command_black',user.username,25);
         vsText.anchor.setTo(0.5, 0.5);
         vsText.align = 'center';
 
