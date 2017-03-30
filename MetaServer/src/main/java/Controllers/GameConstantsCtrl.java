@@ -16,6 +16,6 @@ public class GameConstantsCtrl {
             Constants.int_constants.put(entry.getKey(), Integer.parseInt(entry.getValue()));
 
 
-        return true;
+        return Constants.int_constants;
     }
 }
