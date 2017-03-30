@@ -109,6 +109,9 @@ var gear_menu_state = {
         menuclick = game.add.audio('menuclick');
         menuclick.volume = 0.2;
 
+        cardclick = game.add.audio('cardclick');
+        cardclick.volume = 0.2;
+
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
         var background = game.add.sprite(0,0, 'menu_background');
 
@@ -317,7 +320,7 @@ var gear_menu_state = {
 
         // target.shadow.destroy();
         // target.destroy();
-        menuclick.play();
+        cardclick.play();
         console.log(target);
         console.log("trigger_state: card_click " + target.cardtype);
 
@@ -340,7 +343,7 @@ var gear_menu_state = {
     selector_card_click: function(target) {
 
         console.log(target.cardtype + " card chosen.");
-        menuclick.play();
+        cardclick.play();
 
         // Change the card rendered in the given slot
         game.add.existing(gear_menu_state.card_wrapper(user.gear[target.list_index]));

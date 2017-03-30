@@ -9,6 +9,7 @@ var menumusic;
 var menuclick;
 var buttonMuteOn;
 var buttonMuteOff;
+var cardclick;
 
 /**
  * Loads all game assets into Phaser. Launches the landing page for the user to decide where they wish to go next.
@@ -67,6 +68,7 @@ var load_state = {
         game.load.audio('walk', 'assets/sounds/walk.wav');
         game.load.audio('pickchar', 'assets/sounds/charpick.wav');
         game.load.audio('attackclose2', 'assets/sounds/attackclose2.wav');
+        game.load.audio('cardclick', 'assets/sounds/cardpick.wav');
     },
 
     /**
