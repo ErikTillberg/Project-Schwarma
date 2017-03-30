@@ -76,10 +76,11 @@ public class BattleSocketCtrl {
                 battle_results = BattleCtrl.postToSimServer(battle_id);
                 System.out.println("------------- BATTLE RESULTS -------------");
                 System.out.println(battle_results);
+                user.getRemote().sendString(toJson(new WebSocketMessage("Battle Data", battle_results)));
             }
 
             // Send battle results back to UI
-            user.getRemote().sendString(toJson(new WebSocketMessage("Success", battle_results)));
+            user.getRemote().sendString(toJson(new WebSocketMessage("Battle info: ", "Battle data received")));
 
         }catch(Exception e){
             e.printStackTrace();
