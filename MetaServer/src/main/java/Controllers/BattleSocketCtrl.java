@@ -70,14 +70,14 @@ public class BattleSocketCtrl {
 
 
             BattleCtrl.updateReadiness(battle_id, username, att_attribute, def_attribute, mov_attribute, user_cards);
-
+            String battle_results = null;
             if (checkReadiness(battle_id)){
                 System.out.println("Sending battle to sim server.");
-                String battle_results = BattleCtrl.postToSimServer(battle_id);
+                battle_results = BattleCtrl.postToSimServer(battle_id);
             }
 
             // Send battle results back to UI
-
+            user.getRemote().sendString(toJson(new WebSocketMessage("Success", battle_results)));
 
         }catch(Exception e){
             System.out.println(e);
