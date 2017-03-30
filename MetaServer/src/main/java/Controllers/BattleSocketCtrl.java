@@ -42,6 +42,23 @@ public class BattleSocketCtrl {
 
     @OnWebSocketClose
     public void onClose(Session user, int statusCode, String reason){
+
+        String username = null;
+        for (Map.Entry<String, Session> entry : activeUsers.entrySet()){
+            if (entry.getValue().equals(user)){
+                username = entry.getKey();
+                break;
+            }
+        }
+
+        //Couldn't find the user.
+        if (username == null){
+            return;
+        } else {
+            //Remove the user from the list
+            activeUsers.remove(username);
+        }
+        
         System.out.println("Connection closed.");
     }
 
