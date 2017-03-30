@@ -82,7 +82,7 @@ public class BattleSocketCtrl {
             user.getRemote().sendString(toJson(new WebSocketMessage("Success", battle_results)));
 
         }catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 

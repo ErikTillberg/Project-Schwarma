@@ -143,7 +143,6 @@ public class BattleCtrl {
 
         String battle_sim_format = Battle.prepareForSimulation(battle_id);
         System.out.println("----BATTLE SIM FORMAT -----");
-        System.out.println("----BATTLE SIM FORMAT -----");
         System.out.println(battle_sim_format);
 
 
@@ -154,14 +153,14 @@ public class BattleCtrl {
 
         StringEntity entity = new StringEntity(json, "UTF-8");
         entity.setContentType("application/json");
-        System.out.println(entity);
         httpPost.setEntity(entity);
         httpPost.setHeader("Accept", "application/json");
         httpPost.setHeader("Content-type", "application/json");
-        System.out.println(entity);
 
         CloseableHttpResponse response = client.execute(httpPost);
         System.out.println(response.getStatusLine().getStatusCode());
+        System.out.println("----------- RESPONSE -----------");
+        System.out.println(EntityUtils.toString(response.getEntity()));
         client.close();
 
         return EntityUtils.toString(response.getEntity());
