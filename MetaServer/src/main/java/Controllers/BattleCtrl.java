@@ -27,6 +27,25 @@ import static Utilities.DBConn.datastore;
  */
 public class BattleCtrl {
 
+    public static String getOtherUser(String battle_id, String username){
+
+        //Get the battle object
+        final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(new ObjectId(battle_id));
+
+        Battle battle = null;
+        try{
+            battle = battle_query.get();
+        }catch (Exception e){
+            return "Error retrieving battle: " + e + "\n Battle id you were looking for: " + battle_id;
+        }
+
+        String user1 = battle.getPlayer1_username();
+        String user2 = battle.getPlayer2_username();
+
+        return user1.equals(username)? user2 : user1;
+
+    }
+
     public static Object addBattle(Battle battle){
 
         try {

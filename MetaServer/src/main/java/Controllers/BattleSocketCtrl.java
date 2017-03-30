@@ -18,6 +18,7 @@ import org.mongodb.morphia.query.Query;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static Utilities.DBConn.datastore;
 import static Utilities.JsonUtil.toJson;
@@ -27,6 +28,8 @@ import static Utilities.JsonUtil.toJson;
  */
 @WebSocket
 public class BattleSocketCtrl {
+
+    public static Map<String, Session> activeUsers = new ConcurrentHashMap<>();
 
     @OnWebSocketConnect
     public void onConnect(Session user) throws Exception {
@@ -68,6 +71,7 @@ public class BattleSocketCtrl {
             String mov_attribute = messageAsMap.get("mov_attribute");
             List<Card> user_cards = JsonUtil.parseToListOfCards(messageAsMap.get("user_cards"));
 
+            activeUsers.put(username, user);
 
             BattleCtrl.updateReadiness(battle_id, username, att_attribute, def_attribute, mov_attribute, user_cards);
             String battle_results = null;
@@ -76,11 +80,24 @@ public class BattleSocketCtrl {
                 battle_results = BattleCtrl.postToSimServer(battle_id);
                 System.out.println("------------- BATTLE RESULTS -------------");
                 System.out.println(battle_results);
+
+                //Send the data to both 'user' (the one who sent this message)
+                // and the other person they matched with
+
+                String otherUser = BattleCtrl.getOtherUser(battle_id, username);
+
+                Session otherSession = activeUsers.get(otherUser);
+
+                otherSession.getRemote().sendString(toJson(new WebSocketMessage("Battle Data", battle_results)));
                 user.getRemote().sendString(toJson(new WebSocketMessage("Battle Data", battle_results)));
+
+                activeUsers.remove(otherUser);
+                activeUsers.remove(username);
+
             }
 
             // Send battle results back to UI
-            user.getRemote().sendString(toJson(new WebSocketMessage("Battle info: ", "Battle data received")));
+            user.getRemote().sendString(toJson(new WebSocketMessage("Battle info: ", "Battle data received. Please don't click the button again, or this all breaks.")));
 
         }catch(Exception e){
             e.printStackTrace();
