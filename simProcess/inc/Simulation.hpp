@@ -45,9 +45,12 @@ namespace Schwarma
                 //0 for player1, 1 for player 2
                 int turn = 0;
 
+                int numTurns = 1;
                 //run until someone has been defeated
                 while(this->players[0]->stats.health > 0 && this->players[1]->stats.health > 0)
                 {
+                    if(numTurns >= 40)
+                        break;
                     //pause until user hits enter (For debug purposes)
                     //std::cin.get();
 
@@ -75,6 +78,7 @@ namespace Schwarma
                     action = p1->doAction();
                     //simulate turn
                     tickEntityAgainst<decltype(stream)>(p1,p2,action,stream,formatType);
+                    numTurns++;
                     //next turn
                     if(turn == 0) turn++;
                     else if (turn == 1) turn--;

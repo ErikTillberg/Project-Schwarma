@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { BaseRoute } from "./route";
+
+import sleep from "./../sleep";
+
 import * as fs from "fs";
 
 import * as cp from "child_process";
@@ -55,13 +58,13 @@ export class IndexRoute extends BaseRoute {
     var fileNameSim = "simulation" + body.battle_id + ".json";
 
     try {
-      fs.writeFileSync(fileNameData, (<any>req).rawBody, 'utf8');
+      fs.writeFileSync(fileNameData, (<any>req).rawBody);
     }
     catch (err) {
       console.log("Error writing battleData json to disk");
       res.status(500).send("Internal Error");
     };
-    
+    sleep(1);
     try {
       fs.writeFileSync(fileNameSim,"");
       let status = cp.spawnSync("./simProcess",[fileNameData,fileNameSim,"json"]);
@@ -73,6 +76,7 @@ export class IndexRoute extends BaseRoute {
       console.log("Error spawning child process for simulation. "+err);
       res.status(500).send("Internal Error");
     }
+    sleep(1);
 
     try {
       var sim = fs.readFileSync(fileNameSim);
