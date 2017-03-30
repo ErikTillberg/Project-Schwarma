@@ -148,18 +148,18 @@ public class Routes {
         /**
          *  {
          *     username: 'some user',
-         *     equippedChest: 'some chest ID',
-         *     equippedBoots: 'some boots ID',
-         *     equippedWeapon: 'some weapon ID'
+         *     equippedChest: 'some chest, whole object',
+         *     equippedBoots: 'some boots, whole object',
+         *     equippedWeapon: 'some weapon, whole object'
          *  }
          */
         post("/setActiveEquipment", (req, res) -> {
 
             System.out.println("setting active equipment");
-            System.out.println(req.body());
+            //System.out.println(req.body());
 
             res.type("application/json");
-
+            System.out.println(req.body());
             Map<String, String> messageBody = JsonUtil.parseToMap(req.body());
 
             Object response = InventoryCtrl.setActiveEquipment(messageBody);
