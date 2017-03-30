@@ -238,7 +238,7 @@ var pre_battle_state = {
         console.log(message);
 
         // Check to see if this is a standard message or one that means we can start the battle
-        if (response.type === "Success") {
+        if (response.type === "Battle Data") {
 
             // If the battle data is not defined, just return to the main menu.
             if (response.message === undefined) {
@@ -248,7 +248,7 @@ var pre_battle_state = {
                 game.state.start("main_menu");
             }else{
                 console.log("====BATTLE START====");
-                user.init_simulation(response.message);
+                user.init_simulation(JSON.parse(response.message));
                 console.log(response.message);
                 game.state.start("battle_system");
             }
