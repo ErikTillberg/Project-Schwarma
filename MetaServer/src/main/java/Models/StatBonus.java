@@ -84,10 +84,13 @@ public class StatBonus {
                 break;
             case 2:
                 randomType = StatBonus.MOBILITY;
+                randomBonusNumber = randomBonusNumber > 5? 5:Math.ceil(randomBonusNumber);
+
                 break;
             default:
                 return null;
         }
+
 
         randomBonus.setBonus(randomBonusNumber);
         randomBonus.setStat(randomType);

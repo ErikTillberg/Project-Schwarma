@@ -196,20 +196,6 @@ public class MatchmakingCtrl {
 
         Session matchedUserSession = userMatchmakingMap.get(closestUser);
 
-        //Build the battle object for the two users
-//
-//        List<Equipment> userEquip = new ArrayList<>();
-//
-//        userEquip.add(user.getEquippedBoots());
-//        userEquip.add(user.getEquippedChest());
-//        userEquip.add(user.getEquippedWeapon());
-//
-//        List<Equipment> matchedEquip = new ArrayList<>();
-//
-//        matchedEquip.add(closestUser.getEquippedBoots());
-//        matchedEquip.add(closestUser.getEquippedChest());
-//        matchedEquip.add(closestUser.getEquippedWeapon());
-
         Battle battle = new Battle(user.getUsername(), closestUser.getUsername());
         ObjectId battle_id = (ObjectId) BattleCtrl.addBattle(battle);
 
