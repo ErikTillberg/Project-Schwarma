@@ -5,6 +5,8 @@
 
 
 var nouns = ["ninja", "pancake", "statue", "unicorn", "rainbows", "laser", "bunny", "captain", "nibblets", "cupcake", "carrot", "gnomes", "glitter", "potato", "salad", "toejam", "beets", "toilet", "eggs",  "dragons", "jellybeans", "snakes", "dolls", "bushes", "cookies", "apples", "ice cream", "ukulele", "kazoo", "banjo", "circus", "trampoline", "schwarma"];
+var menumusic;
+var menuclick;
 
 /**
  * Loads all game assets into Phaser. Launches the landing page for the user to decide where they wish to go next.
@@ -48,12 +50,30 @@ var load_state = {
 
         game.load.bitmapFont('carrier_command', 'assets/fonts/carrier_command.png', 'assets/fonts/carrier_command.xml');
         game.load.bitmapFont('carrier_command_black', 'assets/fonts/carrier_command_black.png', 'assets/fonts/carrier_command.xml');
+
+        game.load.audio('menumusic', 'assets/sounds/menumusic.wav');
+        game.load.audio('attackclose', 'assets/sounds/attackclose.wav');
+        game.load.audio('attackfar', 'assets/sounds/attackfar.wav');
+        game.load.audio('block', 'assets/sounds/block.wav');
+        game.load.audio('jump', 'assets/sounds/jump.wav');
+        game.load.audio('menuclick', 'assets/sounds/menuclick.wav');
+        game.load.audio('winmusic', 'assets/sounds/winmusic.wav');
+        game.load.audio('roll', 'assets/sounds/roll.wav');
+        game.load.audio('walk', 'assets/sounds/walk.wav');
+        game.load.audio('pickchar', 'assets/sounds/charpick.wav');
+        game.load.audio('attackclose2', 'assets/sounds/attackclose2.wav');
     },
 
     /**
      * Initialize the landing page. Overrides Phaser state create method.
      */
     create: function() {
+
+        menumusic = game.add.audio('menumusic');
+        menumusic.loopFull(0.15);
+
+        menuclick = game.add.audio('menuclick');
+        menuclick.volume = 0.2;
 
         // Set the background color of the canvas.
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
@@ -159,6 +179,7 @@ function randomInt (min, max) {
  */
 function signin_btn_click (){
 
+    menuclick.play();
     console.log("signin_state: signin_btn_click");
     game.state.start("signin");
 }
@@ -168,6 +189,7 @@ function signin_btn_click (){
  */
 function signup_btn_click(){
 
-        console.log("signin_state: signup_btn_click");
-        game.state.start("pick_char");
+    menuclick.play();
+    console.log("signin_state: signup_btn_click");
+    game.state.start("pick_char");
 }

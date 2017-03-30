@@ -23,6 +23,9 @@ var signup_state = {
     create: function(){
         console.log("signup_state: create");
 
+        menuclick = game.add.audio('menuclick');
+        menuclick.volume = 0.2;
+
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
         var background = game.add.sprite(0,0, 'menu_background');
       
@@ -103,6 +106,7 @@ var signup_state = {
 
         console.log("signup_state: signup_btn_click");
         debug_console.message_log("Signing up...");
+        menuclick.play();
         var username = this.username_input.value;
         var email = this.email_input.value;
         var password = this.password_input.value;
@@ -140,6 +144,7 @@ var signup_state = {
      */
     back_btn_click: function(){
 
+        menuclick.play();
         console.log("signup_state: back_btn_click");
         game.state.start("load");
 
