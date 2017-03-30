@@ -1,5 +1,6 @@
 package Models;
 
+import Main.Constants;
 import Resources.StringLists;
 import Utilities.RNGUtil;
 import com.google.gson.JsonObject;
@@ -196,6 +197,7 @@ public class Card {
      */
     public  static Card GenerateCard(int userRating, String type){
         Card card = new Card();
+        int rating_range = Constants.int_constants.get("rating_range");
 
         if (Card.isValidCardType(type)){
             card.setType(type);
@@ -215,8 +217,9 @@ public class Card {
             //FOR NOW LETS JUST ADD ONE ELEMENTAL STAT FOR FUN
             //IT WILL HAVE A RANDOM ELEMENT TYPE AND BE OF THE STAT TYPE OF THE CARD
             Double maxReward = 50.0;
-            Double min = RNGUtil.getSqrtValue(userRating - 500, maxReward);
-            Double max = RNGUtil.getSqrtValue(userRating+500, maxReward);
+
+            Double min = RNGUtil.getSqrtValue(userRating - rating_range, maxReward);
+            Double max = RNGUtil.getSqrtValue(userRating + rating_range, maxReward);
 
             card.setElementalStatBonus(ElementalStatBonus.GenerateRandomElementalStatBonusWithRandomElement(min, max, type)); //wowza
 
@@ -228,8 +231,8 @@ public class Card {
         //Every card should have some sort of bonus that is given to the card.
         //To start, let's start with a single bonus, to the stat of the type of card that is being created.
         Double maxReward = 50.0; //I guess just +50% for now is fine I dunno
-        Double min = RNGUtil.getSqrtValue(userRating-500, maxReward);
-        Double max = RNGUtil.getSqrtValue(userRating+500, maxReward);
+        Double min = RNGUtil.getSqrtValue(userRating - rating_range, maxReward);
+        Double max = RNGUtil.getSqrtValue(userRating + rating_range, maxReward);
 
 
         StatBonus statBonus;

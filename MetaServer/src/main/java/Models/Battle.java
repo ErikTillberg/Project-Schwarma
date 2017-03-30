@@ -1,5 +1,6 @@
 package Models;
 
+import Main.Constants;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.bson.types.ObjectId;
@@ -121,7 +122,7 @@ public class Battle {
 
 
         base_stats = new JsonObject();
-        base_stats.addProperty("health", 100);
+        base_stats.addProperty("health", Constants.int_constants.get("max_player_health"));
         base_stats.addProperty("damage", 0);
 
         /**

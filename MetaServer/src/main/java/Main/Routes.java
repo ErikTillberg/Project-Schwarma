@@ -2,10 +2,7 @@ package Main; /**
  * Created by Erik Tillberg on 1/26/2017.
  */
 
-import Controllers.AuthenticationCtrl;
-import Controllers.BattleSocketCtrl;
-import Controllers.InventoryCtrl;
-import Controllers.MatchmakingCtrl;
+import Controllers.*;
 import Models.Card;
 import Models.Equipment;
 import Models.User;
@@ -30,6 +27,7 @@ public class Routes {
 
     public static void main(String[] args) {
         port(getHerokuAssignedPort());
+        Constants game_consts = new Constants();
 
         webSocket("/matchmaking", MatchmakingCtrl.class);
         webSocket("/battleSocket", BattleSocketCtrl.class);
@@ -187,6 +185,24 @@ public class Routes {
             return response;
 
         }, regularJson());
+
+
+        post("/changeConstants", (req, res) -> {
+
+            res.type("application/json"); //set the response type (i think this is just good practice)
+
+            Map<String, String> messageBody = JsonUtil.parseToMap(req.body());
+
+            Object response = GameConstantsCtrl.updateConstants(messageBody);
+            if (response instanceof ResponseError){
+                res.status(400); //we have to explicitly set the response as failure, this is the way I thought to do it, there is likely a better way.
+                return response;
+            }
+
+            return response;
+
+        }, regularJson());
+
 
         before((request, response) -> {
 
