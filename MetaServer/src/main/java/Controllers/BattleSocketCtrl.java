@@ -74,6 +74,7 @@ public class BattleSocketCtrl {
             if (checkReadiness(battle_id)){
                 System.out.println("Sending battle to sim server.");
                 battle_results = BattleCtrl.postToSimServer(battle_id);
+                System.out.println("------------- BATTLE RESULTS -------------");
                 System.out.println(battle_results);
             }
 
