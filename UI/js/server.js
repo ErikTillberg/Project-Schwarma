@@ -13,6 +13,8 @@ var server = {
     production_mode: true, // switch to false to use local host
     host_name: null,
     port: null,
+    ssl_mode: true,
+    protocol: null,
 
     matchmaking_timer_interval: 1000, // controls how often the timer on screen updates with elapsed time
 
@@ -26,7 +28,7 @@ var server = {
      */
     signup_endpoint: function (username, email, password, character_class) {
 
-        return "http://" + this.host_name + this.port
+        return server.protocol + this.host_name + this.port
             + "/signup"
             + "?username=" + username
             + "&email=" + email
@@ -42,7 +44,7 @@ var server = {
      */
     signin_endpoint: function (username, password) {
 
-        return "http://" + this.host_name + this.port
+        return server.protocol + this.host_name + this.port
             + "/login"
             + "?username=" + username
             + "&password=" + password;
@@ -88,18 +90,19 @@ var server = {
         console.log("Server init.");
         server.host_name = server.production_mode === true ? "schwarma-meta-server.herokuapp.com": "localhost";
         server.port = server.production_mode === true ? "" : ":9000";
+        server.protocol = server.ssl_mode === true ? "https://" : "http://";
         console.log("Production: " + server.production_mode);
         console.log("Host name: " + server.host_name);
     },
     gear_endpoint: function() {
-        return "http://" + this.host_name + this.port
+        return server.protocol + this.host_name + this.port
                 + "/setActiveEquipment";
     },
     delete_card_endpoint: function() {
-        return "http://" + this.host_name + ":" + this.port + "/deleteCard" + "?username=" + user.username
+        return server.protocol + this.host_name + ":" + this.port + "/deleteCard" + "?username=" + user.username
     },
     delete_equipment_endpoint: function() {
-        return "http://" + this.host_name + ":" + this.port + "/deleteEquipment" + "?username" + user.username
+        return server.protocol + this.host_name + ":" + this.port + "/deleteEquipment" + "?username" + user.username
     }
 };
 // Initialize the server
