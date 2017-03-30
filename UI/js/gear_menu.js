@@ -289,8 +289,8 @@ var gear_menu_state = {
             gear_data.elementalStatBonus.element,
             gear_data.type,
             gear_data.name,
-            gear_data.elementalStatBonus.bonus.toFixed(2),
-            gear_data.statBonus.bonus.toFixed(2));
+            gear_data.statBonus.bonus.toFixed(2),
+            gear_data.elementalStatBonus.bonus.toFixed(2));
 
         // Append some custom data to the card to make assignments and look-ups easier in the click handler.
         new_card.list_index = gear_list_index;
@@ -354,6 +354,12 @@ var gear_menu_state = {
 
        console.log("trigger_state: submit_btn_click");
 
+
+       console.log("Username: " + user.username);
+       console.log(user.gear[gear_menu_state.shield_card].id);
+       console.log(user.gear[gear_menu_state.weapon_card]);
+       console.log(user.gear[gear_menu_state.boot_card]);
+
        // Make a call to the server to submit the current gear selection
        $.ajax({
            type: "POST",
@@ -361,10 +367,10 @@ var gear_menu_state = {
            dataType: 'application/json',
            url: server.gear_endpoint(),
            data: JSON.stringify({
-               "username": user.username,
-               "equippedChest": user.gear[this.shield_card],
-               "equippedWeapon": user.gear[this.weapon_card],
-               "equippedBoots": user.gear[this.boot_card]
+               username: user.username,
+               equippedChest: user.gear[gear_menu_state.shield_card],
+               equippedWeapon: user.gear[gear_menu_state.weapon_card],
+               equippedBoots: user.gear[gear_menu_state.boot_card]
            }),
            success: this.set_equipment_success,
            error: this.set_equipment_failure
@@ -372,9 +378,9 @@ var gear_menu_state = {
     },
 
     set_equipment_success: function(data, textStatus, jqXHR) {
-            user.equippedChest = user.gear[this.shield_card];
-            user.equippedWeapon = user.gear[this.weapon_card];
-            user.equippedBoots = user.gear[this.boot_card];
+            user.equippedChest = user.gear[gear_menu_state.shield_card];
+            user.equippedWeapon = user.gear[gear_menu_state.weapon_card];
+            user.equippedBoots = user.gear[gear_menu_state.boot_card];
 
             console.log(user);
             game.state.start("main_menu");

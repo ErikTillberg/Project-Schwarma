@@ -98,6 +98,7 @@ var pick_state = {
 
         console.log("signup_state: signin_btn_click");
         console.log("charcter: " + character);
+        user.character_type = character;
         game.state.start("signup");
     },
 };
@@ -148,7 +149,7 @@ function pickCharT (){
     playerCharcter.scale.setTo(1,1);
     playerCharcter.animations.stop(null);
 
-    character = 'theif';
+    character = 'thief';
     console.log("charcter: " + character);
 
 }

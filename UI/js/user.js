@@ -33,8 +33,8 @@ var user = {
         this.mobility_percentage = user_data.mobility_percentage;
         this.attack_modifier = user_data.attack_modifier;
         this.attack_percentage = user_data.attack_percentage;
-        this.defense_modifier = user_data.defence_modifier;
-        this.defense_percentage = user_data.defense_percentage;
+        this.defense_modifier = user_data.defence_modifier; // not a typo
+        this.defense_percentage = user_data.defense_percentage; // not a typo
         this.coins = user_data.coins;
 
         console.log(this);

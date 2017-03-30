@@ -108,7 +108,7 @@ var signup_state = {
         var password = this.password_input.value;
         var confirm_password = this.confirm_password_input.value;
 
-         console.log("Character: " + character);
+        character = user.character_type;
 
         // Perform some simple validation on the inputs
         if (password !== confirm_password) {
