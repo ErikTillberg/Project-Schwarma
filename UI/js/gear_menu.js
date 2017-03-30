@@ -106,6 +106,9 @@ var gear_menu_state = {
     create: function(){
         console.log("gear_menu_state: create");
 
+        menuclick = game.add.audio('menuclick');
+        menuclick.volume = 0.2;
+
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
         var background = game.add.sprite(0,0, 'menu_background');
 
@@ -309,6 +312,7 @@ var gear_menu_state = {
 
         // target.shadow.destroy();
         // target.destroy();
+        menuclick.play();
         console.log(target);
         console.log("trigger_state: card_click " + target.cardtype);
 
@@ -331,6 +335,7 @@ var gear_menu_state = {
     selector_card_click: function(target) {
 
         console.log(target.cardtype + " card chosen.");
+        menuclick.play();
 
         // Change the card rendered in the given slot
         game.add.existing(gear_menu_state.card_wrapper(user.gear[target.list_index]));
@@ -353,7 +358,7 @@ var gear_menu_state = {
    submit_btn_click: function(){
 
        console.log("trigger_state: submit_btn_click");
-
+       menuclick.play();
 
        console.log("Username: " + user.username);
        console.log(user.gear[gear_menu_state.shield_card].id);
@@ -395,6 +400,7 @@ var gear_menu_state = {
 
     back_btn_click: function(){
 
+        menuclick.play();
         console.log("main_menu_state: back_btn_click");
         game.state.start("main_menu");
     }

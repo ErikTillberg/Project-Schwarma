@@ -26,6 +26,9 @@ var main_menu_state = {
     create: function(){
         console.log("main_menu_state: create");
 
+        menuclick = game.add.audio('menuclick');
+        menuclick.volume = 0.2;
+
         // Set the background color of the canvas.
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
 
@@ -91,6 +94,7 @@ var main_menu_state = {
     gear_btn_click: function() {
 
         console.log("main_menu: gear_btn_click");
+        menuclick.play();
 
         if (!this.matchmaking_active) {
             game.state.start("gear_menu");
@@ -105,6 +109,7 @@ var main_menu_state = {
     matchmaking_btn_click: function() {
 
         console.log("main_menu: matchmaking_btn_click");
+        menuclick.play();
 
         // Send an initial matchmaking request to the server, then poll for the match to be ready
         this.matchmaking_active = true;
@@ -214,6 +219,7 @@ var main_menu_state = {
      */
     back_btn_click: function(){
 
+        menuclick.play();
         console.log("signin_state: signup_btn_click");
         game.state.start("load");
     },
@@ -222,6 +228,8 @@ var main_menu_state = {
      * Handles back button click. Loads the battle_system state.
      */
     battle_btn_click: function() {
+
+        menuclick.play();
         console.log("main_menu: battle_btn_click");
         game.state.start("battle_match_up");
     },

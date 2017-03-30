@@ -6,6 +6,7 @@ var playerCharcter;
 var playerCharcter2;
 var playerCharcter3;
 var playerCharacterShadow;
+var pickcharSFX;
 
 /**
  * Handles the player's character selection during the signup process.
@@ -21,6 +22,11 @@ var pick_state = {
 
     create: function() {
 
+        menuclick = game.add.audio('menuclick');
+        menuclick.volume = 0.2;
+
+        pickcharSFX = game.add.audio('pickchar');
+        pickcharSFX.volume = 0.25;
 
         // Set the background color of the canvas.
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
@@ -89,6 +95,7 @@ var pick_state = {
     // Handles back button click. Transitions the game to the load state.
     back_btn_click: function(){
 
+        menuclick.play();
         console.log("signup_state: signin_btn_click");
         game.state.start("load");
     },
@@ -96,6 +103,7 @@ var pick_state = {
     // Handles submit button click. Transitions the game to the signup state.
     submit_btn_click: function(){
 
+        menuclick.play();
         console.log("signup_state: signin_btn_click");
         console.log("charcter: " + character);
         user.character_type = character;
@@ -104,10 +112,11 @@ var pick_state = {
 };
 
 /**
- * Function changes the sprite., and sets the character with setCharacter function..
+ * Function scales the sprite., and sets the character with setCharacter function..
  */
 function pickCharW (){
 
+    pickcharSFX.play();
     playerCharcter.scale.setTo(1.9,1.9);
     playerCharcter.animations.play('walk', 3, true);
 
@@ -124,6 +133,7 @@ function pickCharW (){
 
 function pickCharM (){
 
+    pickcharSFX.play();
     playerCharcter2.scale.setTo(1.9,1.9);
     playerCharcter2.animations.play('walk', 3, true);
 
@@ -140,6 +150,7 @@ function pickCharM (){
 
 function pickCharT (){
 
+    pickcharSFX.play();
     playerCharcter3.scale.setTo(1.9,1.9);
     playerCharcter3.animations.play('walk', 3, true);
 
@@ -153,7 +164,6 @@ function pickCharT (){
     console.log("charcter: " + character);
 
 }
-
 
 
 /**
