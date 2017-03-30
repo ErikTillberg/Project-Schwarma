@@ -381,9 +381,9 @@ var gear_menu_state = {
            url: server.gear_endpoint(),
            data: JSON.stringify({
                username: user.username,
-               equippedChest: user.gear[gear_menu_state.shield_card],
-               equippedWeapon: user.gear[gear_menu_state.weapon_card],
-               equippedBoots: user.gear[gear_menu_state.boot_card]
+               equippedChest: "\"" + JSON.stringify(user.gear[gear_menu_state.shield_card]) + "\"",
+               equippedWeapon: "\"" + JSON.stringify(user.gear[gear_menu_state.weapon_card]) + "\"",
+               equippedBoots: "\"" +  JSON.stringify(user.gear[gear_menu_state.boot_card]) + "\""
            }),
            success: this.set_equipment_success,
            error: this.set_equipment_failure
