@@ -94,6 +94,12 @@ var server = {
     gear_endpoint: function() {
         return "http://" + this.host_name + this.port
                 + "/setActiveEquipment";
+    },
+    delete_card_endpoint: function() {
+        return "http://" + this.host_name + ":" + this.port + "/deleteCard" + "?username=" + user.username
+    },
+    delete_equipment_endpoint: function() {
+        return "http://" + this.host_name + ":" + this.port + "/deleteEquipment" + "?username" + user.username
     }
 };
 // Initialize the server

@@ -210,14 +210,18 @@ var gear_menu_state = {
         this.chest_selector = game.add.group();
         this.boot_selector = game.add.group();
 
+        this.weapon_selector.add(game.add.sprite(-100,-100, 'menu_background'));
+        this.chest_selector.add(game.add.sprite(-100,-100, 'menu_background'));
+        this.boot_selector.add(game.add.sprite(-100,-100, 'menu_background'));
+
         this.boot_selector.x = 100;
-        this.boot_selector.y = 200;
+        this.boot_selector.y = 100;
 
         this.chest_selector.x = 100;
-        this.chest_selector.y = 200;
+        this.chest_selector.y = 100;
 
         this.weapon_selector.x = 100;
-        this.weapon_selector.y = 200;
+        this.weapon_selector.y = 100;
 
         for (var i = 0; i < user.gear.length; i++) {
 
@@ -300,6 +304,7 @@ var gear_menu_state = {
         new_card.card_num = gear_num;
         new_card.scale.setTo(0.7, 0.7);
         new_card.shadow.scale.setTo(0.7, 0.7);
+        new_card.shadow.visible = false;
 
         new_card.inputEnabled = true;
         new_card.events.onInputDown.add(this.selector_card_click);

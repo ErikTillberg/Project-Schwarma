@@ -842,3 +842,57 @@ function win ( sprite ) {
     game.add.tween(sprite).to({ x: 640}, 2000, Phaser.Easing.Linear.None, true);
     game.time.events.add( 2000, (function() { winnerText.visible = true; winTextVisible = true; sprite.animations.play('jumpLeft', 5, true);}), this );
 }
+
+/**
+ * Sends the card to the meta-server to remove it from the player's inventory
+ * @param card JSON card object
+ */
+function delete_card(card) {
+
+    console.log("Deleting card from player's inventory.");
+
+    $.ajax({
+
+        url: server.delete_card_endpoint(),
+        type: "POST",
+        data: card,
+        success: card_delete_success,
+        error: card_delete_error
+    });
+}
+
+/**
+ * Sends the equipment to the meta-server to remove it from the player's inventory
+ * @param equipment JSON equipment object
+ */
+function delete_equipment(equipment) {
+
+    console.log("Deleting equipment from player's inventory.");
+
+    $.ajax({
+
+        url: server.delete_equipment_endpoint(),
+        type: "POST",
+        data: equipment,
+        success: equipment_delete_success,
+        error: equipment_delete_error
+    });
+}
+
+function card_delete_success() {
+    console.log("Card properly deleted.")
+
+    // TODO add logic to remove the card from user object
+}
+
+function card_delete_error() {
+    console.log("Card was not properly deleted.")
+}
+
+function equipment_delete_success() {
+    console.log("Equipment properly deleted.");
+}
+
+function equipment_delete_error() {
+    console.log("Equipment was not properly deleted.");
+}
