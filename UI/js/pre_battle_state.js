@@ -235,7 +235,7 @@ var pre_battle_state = {
         // TODO test this when the server actually returns something
         if (reponse.type == "Success") {
             console.log("====BATTLE START====");
-            user.init_battle(response.message);
+            user.init_simulation(response.message);
             game.state.start("battle_system");
         }else{
             console.log("====MESSAGE FROM META-SERVER====");

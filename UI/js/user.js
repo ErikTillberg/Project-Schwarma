@@ -74,10 +74,18 @@ var user = {
         character_type: 'thief',
         rating: null
     },
+    /**
+     * Save the battle_id of the current battle.
+     * @param battle_id
+     */
     init_battle: function(battle_id) {
         console.log("Player joined battle: " + battle_id);
         this.battle_id = battle_id;
     },
+    /**
+     * Save the simulation data of the completed battle. Accessed from the battle_system to animate the battle.
+     * @param battle_simulation - JSON data from meta-server used to animate the battle results.
+     */
     init_simulation: function(battle_simulation) {
         this.simulation_data = battle_simulation;
     }
