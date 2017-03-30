@@ -155,6 +155,9 @@ public class Routes {
          */
         post("/setActiveEquipment", (req, res) -> {
 
+            System.out.println("setting active equipment");
+            System.out.println(req.body());
+
             res.type("application/json");
 
             Map<String, String> messageBody = JsonUtil.parseToMap(req.body());

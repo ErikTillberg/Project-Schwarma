@@ -33,10 +33,10 @@ card = function (game, x, y, element, cardtype, title, num1, num2) {
 
     var Card_item = game.add.sprite(0, 0, 'Card_Item');
     Card_item.anchor.setTo(0.5, 0.5);
-    if ( cardtype == 'attack'){
+    if ( cardtype == 'attack' || cardtype == 'weapon'){
         Card_item.frame = 2;
     }
-    else if (cardtype == 'defence'){
+    else if (cardtype == 'defence' || cardtype == 'shield'){
         Card_item.frame = 0;
     }
     else{
@@ -86,6 +86,19 @@ var cardMobility;
 
 var gear_menu_state = {
 
+    // Determines the size of grid elements in the card selectors
+    selector_x_offset: 200,
+    selector_y_offset: 200,
+    selector_columns: 6,
+    selector_rows: 3,
+
+    shield_card: 0,
+    weapon_card: 0,
+    boot_card: 0,
+
+    current_type: 0,
+    current_slot: 0,
+
     preload: function(){
         console.log("gear_menu_state: preload");
     },
@@ -116,18 +129,32 @@ var gear_menu_state = {
         var walk = player.animations.add('walk');
         player.animations.play('walk', 3, true);
 
-        cardMobility = new card(game, 1040, 160, 'water', 'mobility', 'Fast boots of Head-scratching Effectiveness', +2, +13);
+        cardMobility = new card(game, 1040, 160,
+            user.equipped_gear.equipped_boots.elementalStatBonus.element,
+            'boots', user.equipped_gear.equipped_boots.name,
+            user.equipped_gear.equipped_boots.statBonus.bonus.toFixed(1),
+            user.equipped_gear.equipped_boots.elementalStatBonus.bonus.toFixed(1));
+
         game.add.existing(cardMobility);
         //cardMobility.scale.setTo(0.8, 0.8);
         cardMobility.inputEnabled = true;
         cardMobility.events.onInputDown.add(this.card_click, {card: this.card});
 
         var mobilityText = game.add.bitmapText(cardMobility.x, cardMobility.y + 160, 'carrier_command','boots',20);
+
         mobilityText.anchor.setTo(0.5, 0.5);
         mobilityText.align = 'center';
 
 
-        cardAttack = new card(game, 1040, 520, 'fire', 'attack', 'big sword of Stupid Stuff', +1, +13);
+        // cardAttack = new card(game, 1040, 520, 'fire', 'attack', 'big sword of Stupid Stuff', +1, +13);
+
+        cardAttack = new card(game, 1040, 520,
+            user.equipped_gear.equipped_weapon.elementalStatBonus.element,
+            'weapon',
+            user.equipped_gear.equipped_weapon.name,
+            user.equipped_gear.equipped_weapon.statBonus.bonus.toFixed(1),
+            user.equipped_gear.equipped_weapon.elementalStatBonus.bonus.toFixed(1));
+
         game.add.existing(cardAttack);
         //cardAttack.scale.setTo(0.8, 0.8);
         cardAttack.inputEnabled = true;
@@ -137,7 +164,14 @@ var gear_menu_state = {
         attackText.anchor.setTo(0.5, 0.5);
         attackText.align = 'center';
 
-        cardDefence = new card(game, 240, 360, 'earth', 'defence', 'small shield of Boring Thing', +1, +13);
+        // cardDefence = new card(game, 240, 360, 'earth', 'defence', 'small shield of Boring Thing', +1, +13);
+
+        cardDefence = new card(game, 240, 360,
+            user.equipped_gear.equipped_chest.elementalStatBonus.element,
+            'shield', user.equipped_gear.equipped_chest.name,
+            user.equipped_gear.equipped_chest.statBonus.bonus.toFixed(1),
+            user.equipped_gear.equipped_chest.elementalStatBonus.bonus.toFixed(1));
+
         game.add.existing(cardDefence);
         //cardDefence.scale.setTo(0.8, 0.8);
         cardDefence.inputEnabled = true;
@@ -158,21 +192,198 @@ var gear_menu_state = {
         debug_console.init_log();
         debug_console.debug_log("You're on the gear menu screen. Signed in as: " + user.username);
 
+        this.init_card_selectors();
+
     },
 
-    card_click: function (card){
+    // Builds groups for cards in each category we can pull up when the user needs to select a car
+    init_card_selectors: function() {
 
-        card.shadow.destroy();
-        card.destroy();
-        console.log("trigger_state: card_click " + card.cardtype);
+        var num_weapon_cards = 0;
+        var num_chest_cards = 0;
+        var num_boot_cards = 0;
 
+        this.weapon_selector = game.add.group();
+        this.chest_selector = game.add.group();
+        this.boot_selector = game.add.group();
+
+        this.boot_selector.x = 100;
+        this.boot_selector.y = 200;
+
+        this.chest_selector.x = 100;
+        this.chest_selector.y = 200;
+
+        this.weapon_selector.x = 100;
+        this.weapon_selector.y = 200;
+
+        for (var i = 0; i < user.gear.length; i++) {
+
+            if (user.gear[i].type == "weapon") {
+                console.log("Adding weapon card: " + num_weapon_cards);
+                this.weapon_selector.add(this.selector_card_wrapper(user.gear[i], num_weapon_cards, i));
+                num_weapon_cards++;
+
+            }else if (user.gear[i].type == "boots") {
+                console.log("Adding boot card: " + num_boot_cards);
+                this.boot_selector.add(this.selector_card_wrapper(user.gear[i], num_boot_cards, i));
+                num_boot_cards++;
+
+            }else if (user.gear[i].type == "shield") {
+                console.log("Adding chest card: " + num_chest_cards);
+                this.chest_selector.add(this.selector_card_wrapper(user.gear[i], num_chest_cards, i));
+                num_chest_cards++;
+            }
+        }
+
+        this.weapon_selector.visible = false;
+        this.boot_selector.visible = false;
+        this.chest_selector.visible = false;
+
+    },
+
+    card_wrapper: function(gear_data) {
+
+        var card_x;
+        var card_y;
+
+        if (gear_data.type == "weapon") {
+            card_x = 1040;
+            card_y = 520;
+        }else if(gear_data.type == "boots") {
+            card_x = 1040;
+            card_y = 160;
+        }else {
+            card_x = 240;
+            card_y = 360;
+        }
+
+        new_card = new card(game,
+            card_x,
+            card_y,
+            gear_data.elementalStatBonus.element,
+            gear_data.type,
+            gear_data.name,
+            gear_data.statBonus.bonus.toFixed(1),
+            gear_data.elementalStatBonus.bonus.toFixed(1));
+
+        //cardMobility.scale.setTo(0.8, 0.8);
+        new_card.inputEnabled = true;
+        new_card.events.onInputDown.add(gear_menu_state.card_click, {card: this.card});
+
+        new_card.type = gear_data.type;
+
+        return new_card;
+
+    },
+
+    selector_card_wrapper: function(gear_data, gear_num, gear_list_index) {
+
+        console.log("selector_card_wrapper");
+
+        var card_x = (gear_num % this.selector_columns) * this.selector_x_offset;
+        var card_y = Math.floor(gear_num / this.selector_rows) * this.selector_y_offset;
+
+        var new_card = new card(game,
+            card_x,
+            card_y,
+            gear_data.elementalStatBonus.element,
+            gear_data.type,
+            gear_data.name,
+            gear_data.elementalStatBonus.bonus.toFixed(2),
+            gear_data.statBonus.bonus.toFixed(2));
+
+        // Append some custom data to the card to make assignments and look-ups easier in the click handler.
+        new_card.list_index = gear_list_index;
+        new_card.card_num = gear_num;
+        new_card.scale.setTo(0.7, 0.7);
+        new_card.shadow.scale.setTo(0.7, 0.7);
+
+        new_card.inputEnabled = true;
+        new_card.events.onInputDown.add(this.selector_card_click);
+
+        return new_card;
+
+    },
+
+    card_click: function (target){
+
+        // target.shadow.destroy();
+        // target.destroy();
+        console.log(target);
+        console.log("trigger_state: card_click " + target.cardtype);
+
+        console.log(target.cardtype + " card clicked.");
+
+        this.current_type = target.cardtype;
+
+        if (this.current_type == "weapon") {
+            gear_menu_state.weapon_selector.visible = true;
+            game.world.bringToTop(gear_menu_state.weapon_selector);
+        }else if (this.current_type == "shield"){
+            gear_menu_state.chest_selector.visible = true;
+            game.world.bringToTop(gear_menu_state.chest_selector);
+        }else if (this.current_type == "boots") {
+            gear_menu_state.boot_selector.visible = true;
+            game.world.bringToTop(gear_menu_state.boot_selector);
+        }
+    },
+
+    selector_card_click: function(target) {
+
+        console.log(target.cardtype + " card chosen.");
+
+        // Change the card rendered in the given slot
+        game.add.existing(gear_menu_state.card_wrapper(user.gear[target.list_index]));
+
+        // Hide the card selectors
+        gear_menu_state.weapon_selector.visible = false;
+        gear_menu_state.boot_selector.visible = false;
+        gear_menu_state.chest_selector.visible = false;
+
+        // Update the status of the chosen cards array
+        if (target.cardtype == "weapon") {
+            gear_menu_state.weapon_card = target.list_index;
+        }else if (target.cardtype == "boots") {
+            gear_menu_state.boot_card = target.list_index;
+        }else{
+            gear_menu_state.shield_card = target.list_index;
+        }
     },
 
    submit_btn_click: function(){
 
        console.log("trigger_state: submit_btn_click");
 
+       // Make a call to the server to submit the current gear selection
+       $.ajax({
+           type: "POST",
+           crossDomain: true,
+           dataType: 'application/json',
+           url: server.gear_endpoint(),
+           data: JSON.stringify({
+               "username": user.username,
+               "equippedChest": user.gear[this.shield_card],
+               "equippedWeapon": user.gear[this.weapon_card],
+               "equippedBoots": user.gear[this.boot_card]
+           }),
+           success: this.set_equipment_success,
+           error: this.set_equipment_failure
+       });
+    },
 
+    set_equipment_success: function(data, textStatus, jqXHR) {
+            user.equippedChest = user.gear[this.shield_card];
+            user.equippedWeapon = user.gear[this.weapon_card];
+            user.equippedBoots = user.gear[this.boot_card];
+
+            console.log(user);
+            game.state.start("main_menu");
+    },
+
+    set_equipment_failure: function(jqXHR, textStatus, error) {
+
+       console.log(error);
+       console.log(jqXHR);
 
     },
 
@@ -181,7 +392,6 @@ var gear_menu_state = {
         console.log("main_menu_state: back_btn_click");
         game.state.start("main_menu");
     }
-
 };
 
 

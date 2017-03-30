@@ -21,6 +21,23 @@ var user = {
         this.cards = user_data.cards;
         this.character_type = user_data.characterType;
         this.rating = user_data.rating;
+        this.gear = user_data.equipment;
+
+        this.equipped_gear = {
+            equipped_boots: user_data.equippedBoots,
+            equipped_chest: user_data.equippedChest,
+            equipped_weapon: user_data.equippedWeapon
+        };
+
+        this.mobility_modifier = user_data.mobility_modifier;
+        this.mobility_percentage = user_data.mobility_percentage;
+        this.attack_modifier = user_data.attack_modifier;
+        this.attack_percentage = user_data.attack_percentage;
+        this.defense_modifier = user_data.defence_modifier;
+        this.defense_percentage = user_data.defense_percentage;
+        this.coins = user_data.coins;
+
+        console.log(this);
     },
     /**
      * Initializes data of the current opponent.
@@ -30,6 +47,24 @@ var user = {
         this.opponent.username = opponent_data.username;
         this.opponent.character_type = opponent_data.characterType;
         this.opponent.rating = opponent_data.rating;
+
+        this.opponent.rating = opponent_data.rating;
+        this.opponent.gear = opponent_data.equipment;
+        this.opponent.equipped_gear = {
+            equipped_boots: opponent_data.equippedBoots,
+            equipped_chest: opponent_data.equippedChest,
+            equipped_weapon: opponent_data.equippedWeapon
+        };
+
+        this.opponent.mobility_modifier = opponent_data.mobility_modifier;
+        this.opponent.mobility_percentage = opponent_data.mobility_percentage;
+        this.opponent.attack_modifier = opponent_data.attack_modifier;
+        this.opponent.attack_percentage = opponent_data.attack_percentage;
+        this.opponent.defense_modifier = opponent_data.defence_modifier;
+        this.opponent.defense_percentage = opponent_data.defense_percentage;
+        this.opponent.coins = opponent_data.coins;
+
+        console.log(this.opponent);
     },
     /**
      * Holds data of the current opponent.
