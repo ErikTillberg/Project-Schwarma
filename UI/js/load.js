@@ -60,7 +60,7 @@ var load_state = {
         game.load.audio('winmusic', 'assets/sounds/winmusic.wav');
         game.load.audio('roll', 'assets/sounds/roll.wav');
         game.load.audio('walk', 'assets/sounds/walk.wav');
-        game.load.audio('charpick', 'assets/sounds/charpick.wav');
+        game.load.audio('pickchar', 'assets/sounds/charpick.wav');
         game.load.audio('attackclose2', 'assets/sounds/attackclose2.wav');
     },
 
