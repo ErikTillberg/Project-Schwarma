@@ -332,37 +332,57 @@ var pre_battle_state = {
         var num_defense_cards = 0;
         var num_mobility_cards = 0;
 
-        var banner_x = 275;
-        var banner_y = -275;
+        var banner_x = 540;
+        var banner_y = -220;
+        var banner_font_size = 25;
 
         this.attack_selector = game.add.group();
         this.defense_selector = game.add.group();
         this.mobility_selector = game.add.group();
 
-        this.attack_selector.add(game.add.sprite(-100,-300, 'menu_background'));
-        this.defense_selector.add(game.add.sprite(-100,-300, 'menu_background'));
-        this.mobility_selector.add(game.add.sprite(-100,-300, 'menu_background'));
+        this.attack_selector.add(game.add.sprite(-120,-300, 'menu_background'));
+        this.defense_selector.add(game.add.sprite(-120,-300, 'menu_background'));
+        this.mobility_selector.add(game.add.sprite(-120,-300, 'menu_background'));
 
         var attack_banner = game.add.sprite(banner_x, banner_y, 'Banner');
+        attack_banner.frame = 2;
         attack_banner.scale.setTo(0.5, 0.5);
+        attack_banner.anchor.setTo(0.5, 0.2);
+
+        var attack_text = game.add.bitmapText(attack_banner.x, attack_banner.y, 'carrier_command_black', "ATTACK", banner_font_size);
+        attack_text.anchor.setTo(0.5, 0);
 
         var defense_banner = game.add.sprite(banner_x, banner_y, 'Banner');
+        defense_banner.frame = 1;
         defense_banner.scale.setTo(0.5, 0.5);
+        defense_banner.anchor.setTo(0.5, 0.2);
+
+        var defense_text = game.add.bitmapText(attack_banner.x, attack_banner.y, 'carrier_command_black', "DEFENSE", banner_font_size);
+        defense_text.anchor.setTo(0.5, 0);
 
         var mobility_banner = game.add.sprite(banner_x, banner_y, 'Banner');
+        mobility_banner.frame = 3;
         mobility_banner.scale.setTo(0.5, 0.5);
+        mobility_banner.anchor.setTo(0.5, 0.2);
+
+        var mobility_text = game.add.bitmapText(attack_banner.x, attack_banner.y, 'carrier_command_black', "MOBILITY", banner_font_size);
+        mobility_text.anchor.setTo(0.5, 0);
 
         this.attack_selector.add(attack_banner);
         this.defense_selector.add(defense_banner);
         this.mobility_selector.add(mobility_banner);
 
-        this.mobility_selector.x = 100;
+        this.attack_selector.add(attack_text);
+        this.defense_selector.add(defense_text);
+        this.mobility_selector.add(mobility_text);
+
+        this.mobility_selector.x = 120;
         this.mobility_selector.y = 300;
 
-        this.defense_selector.x = 100;
+        this.defense_selector.x = 120;
         this.defense_selector.y = 300;
 
-        this.attack_selector.x = 100;
+        this.attack_selector.x = 120;
         this.attack_selector.y = 300;
 
         for (var i = 0; i < user.cards.length; i++) {
