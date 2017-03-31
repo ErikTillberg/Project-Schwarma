@@ -6,11 +6,6 @@ using namespace std;
 
 int main(int argc,char*argv[])
 {
-    if(argc < 4)
-    {
-        std::cout<<"Invalid number of arguments!\n";
-        return 1;
-    }
     //seed random number generator for weighted decision making
     ::srand(::time(NULL));
 

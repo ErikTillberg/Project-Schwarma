@@ -21,6 +21,9 @@ var signin_state = {
      */
     create: function(){
         console.log("signin_state: create");
+
+        menuclick = game.add.audio('menuclick');
+        menuclick.volume = 0.2;
         // Set the background color of the canvas.
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
 
@@ -83,6 +86,7 @@ var signin_state = {
 
         console.log("signin_state: signin_btn_click");
         debug_console.message_log("Signing in...");
+        menuclick.play();
         var username = this.username_input.value;
         var password = this.password_input.value;
 
@@ -109,6 +113,8 @@ var signin_state = {
      */
     back_btn_click: function(){
 
+        menuclick.play();
+        menumusic.stop();
         console.log("signin_state: back_btn_click");
         game.state.start("load");
 

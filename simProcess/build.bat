@@ -9,7 +9,7 @@ IF %ERRORLEVEL% NEQ 0 (
     echo "Failed to compile Simulation Process"
     goto :EOF
 )
-g++  -o simProcess main.o  -s
+g++ -static -static-libgcc -static-libstdc++  -o simProcess main.o  -s
 
 IF %ERRORLEVEL% NEQ 0 (
     del main.o

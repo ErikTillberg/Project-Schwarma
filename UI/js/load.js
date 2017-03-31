@@ -5,6 +5,11 @@
 
 
 var nouns = ["ninja", "pancake", "statue", "unicorn", "rainbows", "laser", "bunny", "captain", "nibblets", "cupcake", "carrot", "gnomes", "glitter", "potato", "salad", "toejam", "beets", "toilet", "eggs",  "dragons", "jellybeans", "snakes", "dolls", "bushes", "cookies", "apples", "ice cream", "ukulele", "kazoo", "banjo", "circus", "trampoline", "schwarma"];
+var menumusic;
+var menuclick;
+var buttonMuteOn;
+var buttonMuteOff;
+var cardclick;
 
 /**
  * Loads all game assets into Phaser. Launches the landing page for the user to decide where they wish to go next.
@@ -21,7 +26,6 @@ var load_state = {
         // TODO load game assets here when they exist
         game.plugins.add(PhaserInput.Plugin);
         game.load.image('red_button_img','assets/buttons/big-buttons/01-red-normal.png');
-        game.load.image('green_field', 'assets/sizetest.png');
         game.load.image('Background', 'assets/Art/BackGround1.png');
         game.load.image('HUD', 'assets/Art/HUD1.png');
         game.load.image('Shadow', 'assets/Art/shadow.png');
@@ -30,6 +34,9 @@ var load_state = {
         game.load.image('Submit_button', 'assets/Art/submit_button.png');
         game.load.image('ArroeRight', 'assets/Art/arrowRight.png');
         game.load.image('ArrowLeft', 'assets/Art/arrowLeft.png');
+        game.load.image('muteon', 'assets/Art/muteon.png');
+        game.load.image('muteoff', 'assets/Art/muteoff.png');
+
 
         game.load.spritesheet('Knight', 'assets/Art/KnightSpriteSheet.png', 384, 384);
         game.load.spritesheet('Thief', 'assets/Art/ThiefSpriteSheet.png', 384, 384);
@@ -48,13 +55,34 @@ var load_state = {
         game.load.image('menu_background', 'assets/Art/menu_background.png');
 
         game.load.bitmapFont('carrier_command', 'assets/fonts/carrier_command.png', 'assets/fonts/carrier_command.xml');
-        game.load.bitmapFont('carrier_command_black', 'assets/Fonts/carrier_command_black.png', 'assets/Fonts/carrier_command.xml');
+        game.load.bitmapFont('carrier_command_black', 'assets/fonts/carrier_command_black.png', 'assets/fonts/carrier_command.xml');
+
+        game.load.audio('menumusic', 'assets/sounds/menumusic.wav');
+        game.load.audio('attackclose', 'assets/sounds/attackclose.wav');
+        game.load.audio('attackfar', 'assets/sounds/attackfar.wav');
+        game.load.audio('block', 'assets/sounds/block.wav');
+        game.load.audio('jump', 'assets/sounds/jump.wav');
+        game.load.audio('menuclick', 'assets/sounds/menuclick.wav');
+        game.load.audio('winmusic', 'assets/sounds/winmusic.wav');
+        game.load.audio('roll', 'assets/sounds/roll.wav');
+        game.load.audio('walk', 'assets/sounds/walk.wav');
+        game.load.audio('pickchar', 'assets/sounds/charpick.wav');
+        game.load.audio('attackclose2', 'assets/sounds/attackclose2.wav');
+        game.load.audio('cardclick', 'assets/sounds/cardpick.wav');
+        game.load.audio('battlewmusic', 'assets/sounds/battlemusic.wav');
+        game.load.audio('heal', 'assets/sounds/heal.wav');
     },
 
     /**
      * Initialize the landing page. Overrides Phaser state create method.
      */
     create: function() {
+
+        menumusic = game.add.audio('menumusic');
+        menumusic.loopFull(0.15);
+
+        menuclick = game.add.audio('menuclick');
+        menuclick.volume = 0.2;
 
         // Set the background color of the canvas.
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
@@ -76,17 +104,16 @@ var load_state = {
         sword.anchor.setTo(0.5, 0.5);
         sword.scale.setTo(1.2, 1.2);
 
-        /*var button1 = game.add.sprite(banner.x,415 ,'Button_back',signin_btn_click);
-        button1.frame = num;
-        button1.anchor.setTo(0.5, 0.5);
-        button1.inputEnabled = true;
-        button1.events.onInputDown.add(signin_btn_click, this);
+        buttonMuteOn = game.add.sprite(submitX,submitY ,'muteon');
+        buttonMuteOn.anchor.setTo(0.5, 0.5);
+        buttonMuteOn.inputEnabled = true;
+        buttonMuteOn.events.onInputDown.add(muteon_btn_click, this);
 
-	    var button2= game.add.sprite(banner.x,475,'Button_back');
-	    button2.frame = num;
-	    button2.anchor.setTo(0.5, 0.5);
-	    button2.inputEnabled = true;
-	    button2.events.onInputDown.add(signup_btn_click, this);*/
+	    buttonMuteOff= game.add.sprite(submitX,submitY,'muteoff');
+        buttonMuteOff.anchor.setTo(0.5, 0.5);
+        buttonMuteOff.inputEnabled = true;
+        buttonMuteOff.events.onInputDown.add(muteoff_btn_click, this);
+        buttonMuteOff.visible = false;
 
         // Add the title text to the screen
         var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','PROJECT ' + name,40);
@@ -107,26 +134,7 @@ var load_state = {
         signUpText.inputEnabled = true;
         signUpText.events.onInputDown.add(signup_btn_click, this);
 
-        
-        // Launch into either the signin or signup state, depending on whether the user
-        // Already has an account or not. Determined by flag inside localStorage.
-
-       /*if (window.localStorage['new_user']) {
-            if(JSON.parse(window.localStorage['new_user']) === false){
-                console.log("Returning user found, loading signin screen.");
-                game.state.start('signin');
-            }else{
-                // Set the flag so its checked if the user does not sign up before coming back to this point.
-                console.log("New user found, loading signup screen.");
-                window.localStorage['new_user'] = JSON.stringify(true);
-                game.state.start('signup');
-            }
-        }else{
-            // Set the flag so its checked if the user does not sign up before coming back to this point.
-            console.log("New user found, loading signup screen.");
-            window.localStorage['new_user'] = JSON.stringify(true);
-            game.state.start('signup');
-        }*/
+           
     }
 
 };
@@ -160,6 +168,7 @@ function randomInt (min, max) {
  */
 function signin_btn_click (){
 
+    menuclick.play();
     console.log("signin_state: signin_btn_click");
     game.state.start("signin");
 }
@@ -169,6 +178,26 @@ function signin_btn_click (){
  */
 function signup_btn_click(){
 
-        console.log("signin_state: signup_btn_click");
-        game.state.start("pick_char");
+    menuclick.play();
+    console.log("signin_state: signup_btn_click");
+    game.state.start("pick_char");
+}
+
+function muteon_btn_click(){
+
+    menuclick.play();
+    console.log("signin_state: muteon_btn_click");
+    menumusic.volume = 0;
+    buttonMuteOn.visible = false;
+    buttonMuteOff.visible = true;
+
+}
+
+function muteoff_btn_click(){
+
+    menuclick.play();
+    console.log("signin_state: muteoff_btn_click");
+    menumusic.volume = 0.2;
+    buttonMuteOn.visible = true;
+    buttonMuteOff.visible = false;
 }

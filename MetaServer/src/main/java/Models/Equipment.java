@@ -179,7 +179,7 @@ public class Equipment {
 
         //Last thing to do is add the name of the equipment. Let's do this by getting random strings from lists.
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(slot_bonus).append(" card of ").append(StringLists.getRandomCardAdjective()).append(" ").append(StringLists.getRandomCardNoun());
+        stringBuilder.append(slot).append(" card of ").append(StringLists.getRandomCardAdjective()).append(" ").append(StringLists.getRandomCardNoun());
 
         String name = stringBuilder.toString();
         aGear.setName(name);

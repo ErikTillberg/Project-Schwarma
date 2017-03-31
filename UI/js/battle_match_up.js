@@ -20,6 +20,8 @@ var match_up_state = {
 
     create: function() {
 
+        menuclick = game.add.audio('menuclick');
+        menuclick.volume = 0.2;
 
         // Set the background color of the canvas.
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
@@ -73,7 +75,7 @@ var match_up_state = {
         vsText.anchor.setTo(0.5, 0.5);
         vsText.align = 'center';
 
-        var user2Text = game.add.bitmapText(playerCharcter2.x -100, playerCharcter2.y - 200, 'carrier_command_black',user.username,20);
+        var user2Text = game.add.bitmapText(playerCharcter2.x -100, playerCharcter2.y - 200, 'carrier_command_black',user.username,25);
         vsText.anchor.setTo(0.5, 0.5);
         vsText.align = 'center';
 
@@ -88,6 +90,7 @@ var match_up_state = {
     // Handles back button click. Transitions the game to the load state.
     back_btn_click: function(){
 
+        menuclick.play();
         console.log("signup_state: signin_btn_click");
         game.state.start("load");
     },
@@ -95,7 +98,8 @@ var match_up_state = {
     // Handles submit button click. Transitions the game to the signup state.
     submit_btn_click: function(){
 
-         game.state.start("pre_battle");
+        menuclick.play();
+        game.state.start("pre_battle");
     },
 };
 
