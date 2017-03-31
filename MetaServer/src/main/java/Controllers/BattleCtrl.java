@@ -46,6 +46,20 @@ public class BattleCtrl {
 
     }
 
+    public static Battle getBattle(String battleId){
+        final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(new ObjectId(battleId));
+
+        Battle battle = null;
+        try{
+            battle = battle_query.get();
+        }catch (Exception e){
+            return null;
+        }
+
+        return battle;
+
+    }
+
     public static Object addBattle(Battle battle){
 
         try {

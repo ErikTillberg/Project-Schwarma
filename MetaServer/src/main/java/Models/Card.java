@@ -267,6 +267,21 @@ public class Card {
         return card;
     }
 
+    public static String getRandomCardType(){
+        double rand = Math.random();
+
+        if (rand < 0.33){
+            return Card.ATTACK;
+        }
+        if (rand >= 0.33 && rand < 0.66){
+            return Card.DEFENSE;
+        }
+        if (rand >= 0.66){
+            return Card.MOBILITY;
+        }
+        return Card.DEFENSE; //Default, should never get here.
+    }
+
     public static boolean isValidCardType(String type){
         return type.equals(Card.ATTACK) || type.equals(Card.DEFENSE) || type.equals(Card.MOBILITY);
     }

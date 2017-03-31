@@ -2,6 +2,7 @@ package Controllers;
 
 import Models.Battle;
 import Models.Card;
+import Models.Equipment;
 import Models.User;
 import Utilities.JsonUtil;
 import Utilities.WebSocketMessage;
@@ -105,8 +106,67 @@ public class BattleSocketCtrl {
 
                 Session otherSession = activeUsers.get(otherUser);
 
-                otherSession.getRemote().sendString(toJson(new WebSocketMessage("Battle Data", battle_results)));
-                user.getRemote().sendString(toJson(new WebSocketMessage("Battle Data", battle_results)));
+                String strToSearch = "{\"winner\":\"";
+
+                String winner = battle_results.substring(battle_results.indexOf(strToSearch)+strToSearch.length(),
+                        battle_results.lastIndexOf("\"}"));
+
+                // Get the battle object for this battle:
+                Battle battle =  BattleCtrl.getBattle(battle_id);
+
+                String player1Username = battle.getPlayer1_username();
+
+                BattleResponse userResponse = new BattleResponse(battle_results, winner, null);
+
+                BattleResponse otherUserResponse = new BattleResponse(battle_results, winner, null);
+
+                User otherUserObject = User.getUserByUsername(otherUser);
+                User thisUserObject = User.getUserByUsername(username);
+
+                if (winner.equals(username)) {
+                    // Then this user is the winner
+
+
+                    thisUserObject.setRating(thisUserObject.getRating() + 30);
+                    otherUserObject.setRating(otherUserObject.getRating() - 30);
+
+                    // Set the reward for this user
+                    if (Math.random() < 0.2) {
+                        // 20% chance to add equipment on a win
+                        Equipment generatedEquipment = Equipment.GenerateEquipment(thisUserObject.getRating(), Equipment.getRandomEquipmentType());
+                        InventoryCtrl.addEquipment(otherUser, generatedEquipment);
+                        userResponse.setReward(generatedEquipment);
+                    } else {
+                        // 80% chance to add a card on a win
+                        Card generatedCard = Card.GenerateCard(thisUserObject.getRating(), Card.getRandomCardType());
+                        InventoryCtrl.addCard(otherUser, generatedCard);
+                        userResponse.setReward(generatedCard);
+                    }
+
+                } else if (winner.equals(otherUser)){
+
+                    // Then the other person won
+
+                    otherUserObject.setRating(otherUserObject.getRating() + 30);
+                    thisUserObject.setRating(thisUserObject.getRating() - 30);
+
+                    // Set the reward to the other guy
+                    if (Math.random() < 0.2) {
+                        // 20% chance to add equipment on a win
+                        Equipment generatedEquipment = Equipment.GenerateEquipment(otherUserObject.getRating(), Equipment.getRandomEquipmentType());
+                        InventoryCtrl.addEquipment(otherUser, generatedEquipment);
+                        otherUserResponse.setReward(generatedEquipment);
+                    } else {
+                        // 80% chance to add a card on a win
+                        Card generatedCard = Card.GenerateCard(otherUserObject.getRating(), Card.getRandomCardType());
+                        InventoryCtrl.addCard(otherUser, generatedCard);
+                        otherUserResponse.setReward(generatedCard);
+                    }
+
+                }
+
+                otherSession.getRemote().sendString(toJson(new WebSocketMessage("Battle Data", otherUserResponse)));
+                user.getRemote().sendString(toJson(new WebSocketMessage("Battle Data", userResponse)));
 
                 activeUsers.remove(otherUser);
                 activeUsers.remove(username);
@@ -124,5 +184,24 @@ public class BattleSocketCtrl {
     public boolean checkReadiness(String battle_id){
         return BattleCtrl.readyToStart(battle_id);
     }
+
+    private class BattleResponse{
+        String battle_response;
+        String winner;
+        Object reward;
+
+        public BattleResponse(String res, String winner, Object reward){
+            this.battle_response = res;
+            this.winner = winner;
+            this.reward = reward;
+        }
+
+        public void setReward(Object reward){
+            this.reward = reward;
+        }
+
+    }
+
+
 
 }

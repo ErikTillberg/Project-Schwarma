@@ -198,6 +198,20 @@ public class Equipment {
         return type.equals(Equipment.SHIELD) || type.equals(Equipment.WEAPON) || type.equals(Equipment.BOOTS);
     }
 
+    public static String getRandomEquipmentType(){
+        double rand = Math.random();
+
+        if (rand < 0.33){
+            return Equipment.BOOTS;
+        }
+        if (rand >= 0.33 && rand < 0.66){
+            return Equipment.WEAPON;
+        }
+        if (rand >= 0.66){
+            return Equipment.SHIELD;
+        }
+        return Equipment.BOOTS; //Default, should never get here.
+    }
 
     @Override
     public String toString() {
