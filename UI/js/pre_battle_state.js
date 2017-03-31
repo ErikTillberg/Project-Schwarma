@@ -121,6 +121,12 @@ var pre_battle_state = {
 
         console.log("pre_battle_state: create");
 
+        menuclick = game.add.audio('menuclick');
+        menuclick.volume = 0.2;
+
+        cardclick = game.add.audio('cardclick');
+        cardclick.volume = 0.2;
+
         var background = game.add.sprite(0,0, 'menu_background');
         this.countdown_time_remaining = 60;
 
@@ -429,6 +435,7 @@ var pre_battle_state = {
 
         var trigger_index;
         var trigger_text_array = [];
+        menuclick.play();
 
         // Determine what type of card we need to update, increment the trigger index
         if (card_type === "attack") {
@@ -488,6 +495,7 @@ var pre_battle_state = {
 
         var trigger_text_array = [];
         var trigger_index;
+        menuclick.play();
 
         if (card_type === "attack") {
 
@@ -538,6 +546,7 @@ var pre_battle_state = {
      */
     increase_roll: function(type) {
 
+        menuclick.play();
         var roll_index = 0;
 
         if (type === "attack") {
@@ -569,6 +578,7 @@ var pre_battle_state = {
      */
     decrease_roll: function(type) {
 
+        menuclick.play();
         var roll_index = 0;
 
         if (type === "attack") {
@@ -640,6 +650,7 @@ var pre_battle_state = {
     slot_card_click: function(target) {
 
         console.log(target.type + " card " + target.slot + " clicked.");
+        cardclick.play();
 
         this.current_slot = target.slot;
         this.current_type = target.type;
@@ -702,6 +713,7 @@ var pre_battle_state = {
     selector_card_click: function(target) {
 
         console.log(this.current_type + " card chosen for slot " + this.current_slot + ".");
+        cardclick.play();
 
         // Change the card rendered in the given slot
         game.add.existing(pre_battle_state.slot_card_wrapper(user.cards[target.list_index], this.current_slot));
