@@ -30,6 +30,8 @@ public class Constants {
         int_constants.put("initial_player_rating", 100);
 
         int_constants.put("rating_range", 500);
+
+        int_constants.put("initial_inventory_size", 9);
     }
 
 

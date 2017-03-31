@@ -80,32 +80,17 @@ public class AuthenticationCtrl {
 
             //Add some cards on sign up
 
-            ArrayList<Card> cardArrayList = new ArrayList<>();
-            ArrayList<Equipment> equipmentArrayList = new ArrayList<>();
 
-            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.ATTACK));
-            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.ATTACK));
-            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.ATTACK));
+            ArrayList<Card> cardArrayList = InventoryCtrl.generateInitialCardInventory(new_user.getRating(),
+                                                        Constants.int_constants.get("initial_inventory_size"));
 
-            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.DEFENSE));
-            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.DEFENSE));
-            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.DEFENSE));
+            ArrayList<Equipment> equipmentArrayList = InventoryCtrl.generateInitialEquipmentInventory(new_user.getRating(),
+                                                                    Constants.int_constants.get("initial_inventory_size"));
 
-            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.MOBILITY));
-            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.MOBILITY));
-            cardArrayList.add(Card.GenerateCard(new_user.getRating(), Card.MOBILITY));
 
-            Equipment boots = Equipment.GenerateEquipment(new_user.getRating(), Equipment.BOOTS);
-            Equipment weapon = Equipment.GenerateEquipment(new_user.getRating(), Equipment.WEAPON);
-            Equipment shield = Equipment.GenerateEquipment(new_user.getRating(), Equipment.SHIELD);
-
-            equipmentArrayList.add(boots);
-            equipmentArrayList.add(weapon);
-            equipmentArrayList.add(shield);
-
-            new_user.setEquippedBoots(boots);
-            new_user.setEquippedChest(shield);
-            new_user.setEquippedWeapon(weapon);
+            new_user.setEquippedChest(equipmentArrayList.get(0));
+            new_user.setEquippedBoots(equipmentArrayList.get(3));
+            new_user.setEquippedWeapon(equipmentArrayList.get(6));
 
             new_user.setEquipment(equipmentArrayList);
             new_user.setCards(cardArrayList);

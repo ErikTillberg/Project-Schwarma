@@ -10,6 +10,7 @@ import Utilities.ResponseSuccess;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -171,37 +172,7 @@ public class InventoryCtrl {
             return new ResponseError("Invalid username", "Could not find user " + username);
         }
 
-        //COMMENT OUT ALL THIS CODE THAT DOESNT WORK AND ISNT THAT NECESSARY
 
-//        //Validate that the user has the equipment that was sent to us.
-//        boolean hasChest = false;
-//        boolean hasBoots = false;
-//        boolean hasWeapon = false;
-//        //Nice.
-//
-//        for (Equipment equipment : user.getEquipment()){
-//            System.out.println(equipment);
-//            System.out.println(equippedChest);
-//            if (equipment.equals(equippedChest)){
-//                hasChest = true;
-//            }
-//
-//            if (equipment.equals(equippedBoots)){
-//                hasBoots = true;
-//            }
-//
-//            if (equipment.equals(equippedWeapon)){
-//                hasWeapon = true;
-//            }
-//        }
-//        System.out.println(hasChest);
-//        System.out.println(hasWeapon);
-//        System.out.println(hasBoots);
-//        //If they don't have one of the things they say they have, they should be punished.
-//        if (!(hasBoots && hasChest && hasWeapon)){
-//            System.out.println("Does not have equipment as specified");
-//            return new ResponseError("Error in equipment", "User doesn't have specified equipment");
-//        }
 
         // Otherwise we are good to store the equipped items in the user database.
         user.setEquippedBoots(equippedBoots);
@@ -211,6 +182,34 @@ public class InventoryCtrl {
 
         return user;
 
+    }
+
+    public static ArrayList<Card> generateInitialCardInventory(int user_rating, int inventory_ize){
+
+        ArrayList<Card> cardArrayList = new ArrayList<>();
+
+        String [] card_types = {Card.ATTACK, Card.DEFENSE, Card.MOBILITY};
+
+        for (int i = 0; i < card_types.length; i++) {
+            for (int j = 0; j < inventory_ize; j++)
+                cardArrayList.add(Card.GenerateCard(user_rating, card_types[i]));
+        }
+
+        return cardArrayList;
+    }
+
+    public static ArrayList<Equipment> generateInitialEquipmentInventory(int user_rating, int inventory_ize){
+
+        ArrayList<Equipment> equipmentArrayList = new ArrayList<>();
+
+        String [] equipment_types = {Equipment.SHIELD, Equipment.BOOTS, Equipment.WEAPON};
+
+        for (int i = 0; i < equipment_types.length; i++) {
+            for (int j = 0; j < inventory_ize; j++)
+                equipmentArrayList.add(Equipment.GenerateEquipment(user_rating, equipment_types[i]));
+        }
+
+        return equipmentArrayList;
     }
 
 }
