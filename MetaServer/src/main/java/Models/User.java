@@ -1,6 +1,7 @@
 package Models;
 
 import Annotations.Exclude;
+import Main.Constants;
 import Utilities.ResponseError;
 import jdk.nashorn.internal.ir.annotations.Reference;
 import org.bson.types.ObjectId;
@@ -69,7 +70,7 @@ public class User {
         this.username = username;
         this.password = password; //this will already be hashed.
         this.salt = salt;
-        this.rating = 100;
+        this.rating = Constants.int_constants.get("initial_player_rating");
         this.coins = 0;
     }
 

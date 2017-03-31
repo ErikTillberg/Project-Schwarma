@@ -1,6 +1,7 @@
 package Models;
 
 
+import Main.Constants;
 import Resources.StringLists;
 import Utilities.RNGUtil;
 import com.google.gson.JsonObject;
@@ -117,6 +118,7 @@ public class Equipment {
     public static Equipment GenerateEquipment(int userRating, String slot){
         String slot_bonus;
         Equipment aGear = new Equipment();
+        int rating_range = Constants.int_constants.get("rating_range");
 
         if (Equipment.isValidEquipmentType(slot)){
             aGear.setType(slot);
@@ -154,8 +156,8 @@ public class Equipment {
             //FOR NOW LETS JUST ADD ONE ELEMENTAL STAT FOR FUN
             //IT WILL HAVE A RANDOM ELEMENT TYPE AND BE OF THE STAT TYPE OF THE CARD
             Double maxReward = 50.0;
-            Double min = RNGUtil.getSqrtValue(userRating - 500, maxReward);
-            Double max = RNGUtil.getSqrtValue(userRating + 500, maxReward);
+            Double min = RNGUtil.getSqrtValue(userRating - rating_range, maxReward);
+            Double max = RNGUtil.getSqrtValue(userRating + rating_range, maxReward);
 
             aGear.setElementalStatBonus(
                     ElementalStatBonus.GenerateRandomElementalStatBonusWithRandomElement(min, max, slot_bonus));
@@ -166,8 +168,8 @@ public class Equipment {
         //Every equipment piece should have some sort of bonus that is given to the equipment.
         //To start, let's start with a single bonus, to the stat of the type of equipment that is being created.
         Double maxReward = 50.0; //I guess just +50% for now is fine I dunno
-        Double min = RNGUtil.getSqrtValue(userRating-500, maxReward);
-        Double max = RNGUtil.getSqrtValue(userRating+500, maxReward);
+        Double min = RNGUtil.getSqrtValue(userRating - rating_range, maxReward);
+        Double max = RNGUtil.getSqrtValue(userRating + rating_range, maxReward);
 
         StatBonus statBonus = StatBonus.GenerateRandomStatBonus(min, max, slot_bonus);
         if(statBonus == null){return null;}

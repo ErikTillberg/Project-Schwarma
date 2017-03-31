@@ -1,5 +1,6 @@
 package Controllers;
 
+import Main.Constants;
 import Models.Card;
 import Models.Equipment;
 import Models.User;
@@ -58,19 +59,19 @@ public class AuthenticationCtrl {
 
             switch (characterType){
                 case("warrior"):
-                    new_user.setAttack_modifier(10);
-                    new_user.setDefence_modifier(1);
-                    new_user.setMobility_modifier(1);
+                    new_user.setAttack_modifier(Constants.int_constants.get("warrior_defence_multiplier"));
+                    new_user.setDefence_modifier(Constants.int_constants.get("warrior_defence_multiplier"));
+                    new_user.setMobility_modifier(Constants.int_constants.get("warrior_mobility_multiplier"));
                     break;
                 case("mage"):
-                    new_user.setAttack_modifier(10);
-                    new_user.setDefence_modifier(1);
-                    new_user.setMobility_modifier(2);
+                    new_user.setAttack_modifier(Constants.int_constants.get("mage_attack_multiplier"));
+                    new_user.setDefence_modifier(Constants.int_constants.get("mage_defence_multiplier"));
+                    new_user.setMobility_modifier(Constants.int_constants.get("mage_mobility_multiplier"));
                     break;
                 case("thief"):
-                    new_user.setAttack_modifier(10);
-                    new_user.setDefence_modifier(1);
-                    new_user.setMobility_modifier(3);
+                    new_user.setAttack_modifier(Constants.int_constants.get("thief_attack_multiplier"));
+                    new_user.setDefence_modifier(Constants.int_constants.get("thief_defence_multiplier"));
+                    new_user.setMobility_modifier(Constants.int_constants.get("thief_mobility_multiplier"));
                     break;
 
             }

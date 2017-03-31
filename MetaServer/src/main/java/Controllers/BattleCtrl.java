@@ -166,7 +166,7 @@ public class BattleCtrl {
 
 
         CloseableHttpClient client = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost("http://ec2-54-244-199-216.us-west-2.compute.amazonaws.com:8080");
+        HttpPost httpPost = new HttpPost("http://54.149.48.108:8080");
 
         String json = JsonUtil.toJson(battle_sim_format);
 
