@@ -10,7 +10,7 @@
  */
 var server = {
 
-    production_mode: true, // switch to false to use local host
+    production_mode: false, // switch to false to use local host
     host_name: null,
     port: null,
 
@@ -94,6 +94,12 @@ var server = {
     gear_endpoint: function() {
         return "http://" + this.host_name + this.port
                 + "/setActiveEquipment";
+    },
+    delete_card_endpoint: function() {
+        return "http://" + this.host_name + ":" + this.port + "/deleteCard" + "?username=" + user.username
+    },
+    delete_equipment_endpoint: function() {
+        return "http://" + this.host_name + ":" + this.port + "/deleteEquipment" + "?username" + user.username
     }
 };
 // Initialize the server

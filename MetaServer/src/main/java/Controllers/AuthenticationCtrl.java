@@ -103,8 +103,8 @@ public class AuthenticationCtrl {
             equipmentArrayList.add(shield);
 
             new_user.setEquippedBoots(boots);
-            new_user.setEquippedChest(weapon);
-            new_user.setEquippedWeapon(shield);
+            new_user.setEquippedChest(shield);
+            new_user.setEquippedWeapon(weapon);
 
             new_user.setEquipment(equipmentArrayList);
             new_user.setCards(cardArrayList);

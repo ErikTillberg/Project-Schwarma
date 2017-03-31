@@ -4,58 +4,7 @@
 
 
 // Sample output provided by the sim server
-var battleData = [
-
-    {"action":"attack","player":"playerOne","number":"17"},
-   /* {"action":"movePlayer","player":"playerTwo","number":"3"},
-    {"action":"attack","player":"playerOne","number":"6"},
-    {"action":"movePlayer","player":"playerTwo","number":"4"},
-    {"action":"movePlayer","player":"playerOne","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"3"},
-    {"action":"movePlayer","player":"playerOne","number":"1"},
-    {"action":"attack","player":"playerTwo","number":"8"},
-    {"action":"movePlayer","player":"playerOne","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"4"},
-    {"action":"attack","player":"playerOne","number":"23"},
-    {"action":"movePlayer","player":"playerTwo","number":"3"},
-    {"action":"movePlayer","player":"playerOne","number":"1"},
-    {"action":"attack","player":"playerTwo","number":"5"},
-    {"action":"attack","player":"playerOne","number":"11"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"19"},
-    {"action":"attack","player":"playerOne","number":"11"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"attack","player":"playerOne","number":"15"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"7"},
-    {"action":"attack","player":"playerOne","number":"10"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"12"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"attack","player":"playerOne","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"11"},
-    {"action":"attack","player":"playerTwo","number":"3"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"attack","player":"playerOne","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"7"},*/
-    {"action":"defence","player":"playerTwo","number":"1"},
-    {"action":"attack","player":"playerOne","number":"3"},
-    {"action":"die","player":"playerTwo","number":"20"}
-
-    ]
+var battleData = user.simulation_data;
 
 var playerOne;
 var playerTwo;
@@ -123,6 +72,14 @@ var battle_system_state = {
      */
     create: function() {
         console.log("battle_system_state: create");
+
+        console.log(battleData);
+
+        // See if we have real battle data, otherwise use the card coded values
+        if (user.simulation_data !== undefined) {
+            console.log("Loading battle data from the meta-server's response.");
+            battleData = user.simulation_data;
+        }
 
         // Add the menu background to screen
         background = game.add.sprite(0,0, 'Background');
@@ -668,7 +625,7 @@ function battleLoop ( battleObj ) {
         // Call movePlayer function
         if (battleObj[i].action == 'movePlayer') {
 
-            if (battleObj[i].player == 'playerOne'){
+            if (battleObj[i].player == '1'){
 
                 player = playerOne;
             }
@@ -680,7 +637,7 @@ function battleLoop ( battleObj ) {
         // Call attack function
         else if (battleObj[i].action == 'attack') {
 
-            if (battleObj[i].player == 'playerOne') {
+            if (battleObj[i].player == '1') {
 
                 player = playerOne;
             }
@@ -694,7 +651,7 @@ function battleLoop ( battleObj ) {
         // Call block function.
         else if (battleObj[i].action == 'block'){
 
-            if ( battleObj[i].player == 'playerOne'){
+            if ( battleObj[i].player == '1'){
 
                 player = playerOne;
             }
@@ -704,9 +661,9 @@ function battleLoop ( battleObj ) {
         }
 
         // Call the heal function
-        else if (battleObj[i].action == 'defence'){
+        else if (battleObj[i].action == 'defense'){
 
-            if ( battleObj[i].player == 'playerOne'){
+            if ( battleObj[i].player == '1'){
 
                 player = playerOne;
             }
@@ -718,7 +675,7 @@ function battleLoop ( battleObj ) {
         // Call die function
         else {
 
-            if ( battleObj[i].player== 'playerOne'){
+            if ( battleObj[i].player== '1'){
 
                 player = playerOne;
             }
@@ -835,4 +792,58 @@ function win ( sprite ) {
 
     game.add.tween(sprite).to({ x: 640}, 2000, Phaser.Easing.Linear.None, true);
     game.time.events.add( 2000, (function() { winnerText.visible = true; winTextVisible = true; sprite.animations.play('jumpLeft', 5, true);}), this );
+}
+
+/**
+ * Sends the card to the meta-server to remove it from the player's inventory
+ * @param card JSON card object
+ */
+function delete_card(card) {
+
+    console.log("Deleting card from player's inventory.");
+
+    $.ajax({
+
+        url: server.delete_card_endpoint(),
+        type: "POST",
+        data: card,
+        success: card_delete_success,
+        error: card_delete_error
+    });
+}
+
+/**
+ * Sends the equipment to the meta-server to remove it from the player's inventory
+ * @param equipment JSON equipment object
+ */
+function delete_equipment(equipment) {
+
+    console.log("Deleting equipment from player's inventory.");
+
+    $.ajax({
+
+        url: server.delete_equipment_endpoint(),
+        type: "POST",
+        data: equipment,
+        success: equipment_delete_success,
+        error: equipment_delete_error
+    });
+}
+
+function card_delete_success() {
+    console.log("Card properly deleted.")
+
+    // TODO add logic to remove the card from user object
+}
+
+function card_delete_error() {
+    console.log("Card was not properly deleted.")
+}
+
+function equipment_delete_success() {
+    console.log("Equipment properly deleted.");
+}
+
+function equipment_delete_error() {
+    console.log("Equipment was not properly deleted.");
 }
