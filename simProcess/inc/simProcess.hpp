@@ -14,9 +14,9 @@ namespace Schwarma
     int MOVE = 2;
 
     //! The left most bound of the world
-    int BOUND_LEFT = 0;
+    int BOUND_LEFT = 1;
     //! The right most bound of the world
-    int BOUND_RIGHT = 7;
+    int BOUND_RIGHT = 5;
 
     //! Distance constants between two players`for use in triggers
     std::map<std::string,int> Distance
