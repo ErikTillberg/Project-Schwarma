@@ -202,7 +202,7 @@ public class Battle {
                 case("shield"): resistance_to_damage += item.getStatBonus().getBonus();
                     break;
 
-                case("boots"): movement_speed += item.getStatBonus().getBonus();
+                case("boots"): movement_speed = 1;
                     break;
             }
 
