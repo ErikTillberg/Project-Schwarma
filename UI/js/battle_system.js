@@ -52,6 +52,16 @@ var card1;
 var card2;
 var card3;
 
+var attackCloseSound;
+var attackFarSound;
+var blockSound;
+var jumpSound;
+var rollSound;
+var walkSound;
+var winMusic;
+var battleMusic;
+var healSound;
+
 
 /**
 * Manages game assets and rendering of all battle animations.
@@ -74,6 +84,33 @@ var battle_system_state = {
         console.log("battle_system_state: create");
 
         console.log(battleData);
+
+        battleMusic = game.add.audio('battlewmusic');
+        battleMusic.loopFull(0.05);
+
+        attackCloseSound = game.add.audio('attackclose');
+        attackCloseSound.volume = 0.25;
+
+        attackFarSound = game.add.audio('attackfar');
+        attackFarSound.volume = 0.25;
+
+        blockSound = game.add.audio('block');
+        blockSound.volume = 0.25;
+
+        jumpSound = game.add.audio('jump');
+        jumpSound.volume = 0.15;
+
+        rollSound = game.add.audio('roll');
+        rollSound.volume = 0.15;
+
+        walkSound = game.add.audio('walk');
+        walkSound.volume = 0.15;
+
+        winMusic = game.add.audio('winmusic');
+        winMusic.volume = 0.15;
+
+        healSound = game.add.audio('heal');
+        healSound.volume = 0.25;
 
         // See if we have real battle data, otherwise use the card coded values
         if (user.simulation_data !== undefined) {
@@ -276,38 +313,44 @@ function movePlayer ( sprite, moveNum ){
     if ( animationCheck > 0 && animationTimer <= 2){
 
         sprite.animations.play('walkRight', 5, true);
+        walkSound.loopFull(0.15);
     }
 
     else if (  animationCheck > 0 && animationTimer < 4 && animationTimer >= 3) {
 
         sprite.animations.play('rollRight', 5, true);
+        rollSound.loopFull(0.15);
     }
 
     else if (  animationCheck > 0 && animationTimer >= 4 ) {
 
         sprite.animations.play('jumpRight', 5, true);
+        jumpSound.loopFull(0.15);
     }
 
     else if(  animationCheck < 0 && animationTimer < 4 && animationTimer >= 3) {
 
         sprite.animations.play('rollLeft', 5, true);
+        rollSound.loopFull(0.15);
     }
 
     else if (  animationCheck < 0 && animationTimer >= 4 ) {
 
         sprite.animations.play('jumpLeft', 5, true);
+        jumpSound.loopFull(0.15);
     }
 
     else {
 
         sprite.animations.play('walkLeft', 5, true);
+        walkSound.loopFull(0.15);
     }
 
     // Update action text.
     actionText.setText(playerNum + "\n\nMOVES TO\n\nSPOT " + moveNum );
 
     // set the player location after the sprite moves to the right location
-    game.time.events.add( (1000 * animationTimer), (function() { setPlayerLoc( sprite, moveNum); canIdle = true;  console.log(sprite.x);}), this );
+    game.time.events.add( (1000 * animationTimer), (function() { setPlayerLoc( sprite, moveNum); canIdle = true; jumpSound.stop(); rollSound.stop(); walkSound.stop(); console.log(sprite.x);}), this );
 }
 
 /**
@@ -363,8 +406,9 @@ function attack( sprite, damageNum ){
  * @param sprite
  * @param damageNum
  */
-function attackClose( sprite, damageNum ){ 
+function attackClose( sprite, damageNum ){
 
+    attackCloseSound.play();
     canIdle = false;
 
     // Pick sprite and animation to play, when animation is done call the block function.
@@ -403,6 +447,7 @@ function attackClose( sprite, damageNum ){
  */
 function attackFar( sprite, damageNum){
 
+    attackFarSound.play();
     canIdle = false;
     canShoot = true;
             
@@ -501,7 +546,8 @@ function die( sprite, dieTimer ){
  */
 function block( sprite, damageNum){
 
-    canIdle = false;
+     canIdle = false;
+     blockSound.play();
 
     setPlayerNumber ( sprite );
 
@@ -570,6 +616,7 @@ function setPlayerNumber( sprite ){
 function heal( sprite, healNum){
 
     canIdle = false;
+    healSound.play();
 
     setPlayerNumber ( sprite );
 
@@ -742,6 +789,8 @@ function pickCharWeapon ( charName ){
 function win ( sprite ) {
 
     canIdle = false;
+    battleMusic.stop();
+    winMusic.loopFull(0.05);
 
     HUD1.visible = false;
     playerOneText.visible = false;
@@ -767,7 +816,7 @@ function win ( sprite ) {
     }
 
     card1 =  new card(game, 340, 560, 'Water', 'Mobility', 'Mobility card of Head-scratching Effectiveness', +10, +13);
-    card2 =  new card(game, 640, 560, 'Fire', 'Attacl', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+    card2 =  new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
     card3 =  new card(game, 940, 560, 'Earth', 'Defence', 'Mobility card of Head-scratching Effectiveness', +10, +13);
 
     game.add.existing(card1);
