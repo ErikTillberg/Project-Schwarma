@@ -39,9 +39,9 @@ var pre_battle_state = {
 
     // Determines the size of grid elements in the card selectors
     selector_x_offset: 200,
-    selector_y_offset: 200,
+    selector_y_offset: 300,
     selector_columns: 6,
-    selector_rows: 3,
+    selector_rows: 2,
 
     // Trigger button scale
     trigger_btn_scale: 0.5,
@@ -57,7 +57,7 @@ var pre_battle_state = {
     defense_cards: [],
     defense_triggers: [],
 
-    countdown_time_remaining: 30,
+    countdown_time_remaining: 60,
 
     // List of triggers, name is displayed to the user, condition object is sent to the sim server
     triggers: [
@@ -122,7 +122,7 @@ var pre_battle_state = {
         console.log("pre_battle_state: create");
 
         var background = game.add.sprite(0,0, 'menu_background');
-        this.countdown_time_remaining = 30;
+        this.countdown_time_remaining = 60;
 
         // Open the battleSocket
         this.battle_socket = server.battle_socket();
@@ -326,23 +326,38 @@ var pre_battle_state = {
         var num_defense_cards = 0;
         var num_mobility_cards = 0;
 
+        var banner_x = 275;
+        var banner_y = -275;
+
         this.attack_selector = game.add.group();
         this.defense_selector = game.add.group();
         this.mobility_selector = game.add.group();
 
-        this.attack_selector.add(game.add.sprite(-100,-100, 'menu_background'));
-        this.defense_selector.add(game.add.sprite(-100,-100, 'menu_background'));
-        this.mobility_selector.add(game.add.sprite(-100,-100, 'menu_background'));
+        this.attack_selector.add(game.add.sprite(-100,-300, 'menu_background'));
+        this.defense_selector.add(game.add.sprite(-100,-300, 'menu_background'));
+        this.mobility_selector.add(game.add.sprite(-100,-300, 'menu_background'));
 
+        var attack_banner = game.add.sprite(banner_x, banner_y, 'Banner');
+        attack_banner.scale.setTo(0.5, 0.5);
 
-        this.mobility_selector.x = 90;
-        this.mobility_selector.y = 200;
+        var defense_banner = game.add.sprite(banner_x, banner_y, 'Banner');
+        defense_banner.scale.setTo(0.5, 0.5);
 
-        this.defense_selector.x = 90;
-        this.defense_selector.y = 200;
+        var mobility_banner = game.add.sprite(banner_x, banner_y, 'Banner');
+        mobility_banner.scale.setTo(0.5, 0.5);
 
-        this.attack_selector.x = 90;
-        this.attack_selector.y = 200;
+        this.attack_selector.add(attack_banner);
+        this.defense_selector.add(defense_banner);
+        this.mobility_selector.add(mobility_banner);
+
+        this.mobility_selector.x = 100;
+        this.mobility_selector.y = 300;
+
+        this.defense_selector.x = 100;
+        this.defense_selector.y = 300;
+
+        this.attack_selector.x = 100;
+        this.attack_selector.y = 300;
 
         for (var i = 0; i < user.cards.length; i++) {
 
@@ -654,7 +669,7 @@ var pre_battle_state = {
 
         // Determine where to render the card within the selector, based on its card_num and constants
         var card_x = (card_num % this.selector_columns) * this.selector_x_offset;
-        var card_y = Math.floor(card_num / this.selector_rows) * this.selector_y_offset;
+        var card_y = Math.floor(card_num / this.selector_columns) * this.selector_y_offset;
 
         // Create a new card object
         var new_card = new card(game,
