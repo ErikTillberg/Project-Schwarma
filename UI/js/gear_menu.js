@@ -50,12 +50,15 @@ card = function (game, x, y, element, cardtype, title, num1, num2) {
     textdone.align = 'center';
     this.addChild(textdone);
 
-    var textNum1 = game.add.bitmapText(-20, 85, 'carrier_command_black', cardtype + ':' + '+' + num1, 9);
-    textNum1.anchor.setTo(0.5, 0.5);
-    textNum1.align = 'left';
-    this.addChild(textNum1);
+    if (parseInt(num1) > 0) {
 
-    if ( element != '') {
+        var textNum1 = game.add.bitmapText(-20, 85, 'carrier_command_black', cardtype + ':' + '+' + num1, 9);
+        textNum1.anchor.setTo(0.5, 0.5);
+        textNum1.align = 'left';
+        this.addChild(textNum1);
+    }
+
+    if ( element != '' && parseInt(num2) > 0) {
 
         var textNum2 = game.add.bitmapText(-20, 105, 'carrier_command_black', element + ':' + '+' + num2, 9);
         textNum2.anchor.setTo(0.5, 0.5);
@@ -135,7 +138,7 @@ var gear_menu_state = {
         var walk = player.animations.add('walk');
         player.animations.play('walk', 3, true);
 
-        cardMobility = new card(game, 1040, 160,
+        cardMobility = new card(game, 1020, 160,
             user.equipped_gear.equipped_boots.elementalStatBonus.element,
             'boots', user.equipped_gear.equipped_boots.name,
             user.equipped_gear.equipped_boots.statBonus.bonus.toFixed(1),
@@ -154,7 +157,7 @@ var gear_menu_state = {
 
         // cardAttack = new card(game, 1040, 520, 'fire', 'attack', 'big sword of Stupid Stuff', +1, +13);
 
-        cardAttack = new card(game, 1040, 520,
+        cardAttack = new card(game, 1020, 520,
             user.equipped_gear.equipped_weapon.elementalStatBonus.element,
             'weapon',
             user.equipped_gear.equipped_weapon.name,
@@ -172,7 +175,7 @@ var gear_menu_state = {
 
         // cardDefence = new card(game, 240, 360, 'earth', 'defence', 'small shield of Boring Thing', +1, +13);
 
-        cardDefence = new card(game, 240, 360,
+        cardDefence = new card(game, 260, 360,
             user.equipped_gear.equipped_chest.elementalStatBonus.element,
             'shield', user.equipped_gear.equipped_chest.name,
             user.equipped_gear.equipped_chest.statBonus.bonus.toFixed(1),
@@ -388,6 +391,8 @@ var gear_menu_state = {
            success: this.set_equipment_success,
            error: this.set_equipment_failure
        });
+       game.state.start("main_menu");
+
     },
 
     set_equipment_success: function(data, textStatus, jqXHR) {

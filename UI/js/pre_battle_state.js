@@ -39,9 +39,9 @@ var pre_battle_state = {
 
     // Determines the size of grid elements in the card selectors
     selector_x_offset: 200,
-    selector_y_offset: 200,
+    selector_y_offset: 300,
     selector_columns: 6,
-    selector_rows: 3,
+    selector_rows: 2,
 
     // Trigger button scale
     trigger_btn_scale: 0.5,
@@ -57,7 +57,7 @@ var pre_battle_state = {
     defense_cards: [],
     defense_triggers: [],
 
-    countdown_time_remaining: 30,
+    countdown_time_remaining: 60,
 
     // List of triggers, name is displayed to the user, condition object is sent to the sim server
     triggers: [
@@ -128,7 +128,7 @@ var pre_battle_state = {
         cardclick.volume = 0.2;
 
         var background = game.add.sprite(0,0, 'menu_background');
-        this.countdown_time_remaining = 30;
+        this.countdown_time_remaining = 60;
 
         // Open the battleSocket
         this.battle_socket = server.battle_socket();
@@ -332,23 +332,58 @@ var pre_battle_state = {
         var num_defense_cards = 0;
         var num_mobility_cards = 0;
 
+        var banner_x = 540;
+        var banner_y = -220;
+        var banner_font_size = 25;
+
         this.attack_selector = game.add.group();
         this.defense_selector = game.add.group();
         this.mobility_selector = game.add.group();
 
-        this.attack_selector.add(game.add.sprite(-100,-100, 'menu_background'));
-        this.defense_selector.add(game.add.sprite(-100,-100, 'menu_background'));
-        this.mobility_selector.add(game.add.sprite(-100,-100, 'menu_background'));
+        this.attack_selector.add(game.add.sprite(-120,-300, 'menu_background'));
+        this.defense_selector.add(game.add.sprite(-120,-300, 'menu_background'));
+        this.mobility_selector.add(game.add.sprite(-120,-300, 'menu_background'));
 
+        var attack_banner = game.add.sprite(banner_x, banner_y, 'Banner');
+        attack_banner.frame = 2;
+        attack_banner.scale.setTo(0.5, 0.5);
+        attack_banner.anchor.setTo(0.5, 0.2);
 
-        this.mobility_selector.x = 90;
-        this.mobility_selector.y = 200;
+        var attack_text = game.add.bitmapText(attack_banner.x, attack_banner.y, 'carrier_command_black', "ATTACK", banner_font_size);
+        attack_text.anchor.setTo(0.5, 0);
 
-        this.defense_selector.x = 90;
-        this.defense_selector.y = 200;
+        var defense_banner = game.add.sprite(banner_x, banner_y, 'Banner');
+        defense_banner.frame = 1;
+        defense_banner.scale.setTo(0.5, 0.5);
+        defense_banner.anchor.setTo(0.5, 0.2);
 
-        this.attack_selector.x = 90;
-        this.attack_selector.y = 200;
+        var defense_text = game.add.bitmapText(attack_banner.x, attack_banner.y, 'carrier_command_black', "DEFENSE", banner_font_size);
+        defense_text.anchor.setTo(0.5, 0);
+
+        var mobility_banner = game.add.sprite(banner_x, banner_y, 'Banner');
+        mobility_banner.frame = 3;
+        mobility_banner.scale.setTo(0.5, 0.5);
+        mobility_banner.anchor.setTo(0.5, 0.2);
+
+        var mobility_text = game.add.bitmapText(attack_banner.x, attack_banner.y, 'carrier_command_black', "MOBILITY", banner_font_size);
+        mobility_text.anchor.setTo(0.5, 0);
+
+        this.attack_selector.add(attack_banner);
+        this.defense_selector.add(defense_banner);
+        this.mobility_selector.add(mobility_banner);
+
+        this.attack_selector.add(attack_text);
+        this.defense_selector.add(defense_text);
+        this.mobility_selector.add(mobility_text);
+
+        this.mobility_selector.x = 120;
+        this.mobility_selector.y = 300;
+
+        this.defense_selector.x = 120;
+        this.defense_selector.y = 300;
+
+        this.attack_selector.x = 120;
+        this.attack_selector.y = 300;
 
         for (var i = 0; i < user.cards.length; i++) {
 
@@ -665,7 +700,7 @@ var pre_battle_state = {
 
         // Determine where to render the card within the selector, based on its card_num and constants
         var card_x = (card_num % this.selector_columns) * this.selector_x_offset;
-        var card_y = Math.floor(card_num / this.selector_rows) * this.selector_y_offset;
+        var card_y = Math.floor(card_num / this.selector_columns) * this.selector_y_offset;
 
         // Create a new card object
         var new_card = new card(game,

@@ -21,12 +21,13 @@ namespace Schwarma
                 double elemental_value,
                 std::string direction
             ) : 
-            name(name),value(value),element(element),elemental_value(elemental_value){}
+            name(name),value(value),element(element),elemental_value(elemental_value),direction(direction){}
             ~Card() = default;
             std::string name;
             double value;
             std::string element;
             double elemental_value;
+            std::string direction;
 
             template<class T>
             static Schwarma::Card parseCard(T&obj)
