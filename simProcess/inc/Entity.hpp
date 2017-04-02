@@ -23,6 +23,7 @@ namespace Schwarma
     class Entity
     {
         public:
+            std::string player_name;
             //! A label for the entity
             std::string name = "";
             //! Position in the (1 dimensional) world
@@ -71,7 +72,7 @@ namespace Schwarma
                 if(!json.HasMember("actionPercentages"))
                     return false;
 
-                
+                this->player_name = json["player_name"].GetString();
                 //Get reference to actionPercentages object
                 auto&actionPercentages = json["actionPercentages"];
                 //Parse properties into class
