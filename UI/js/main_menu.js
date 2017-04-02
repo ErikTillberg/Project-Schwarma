@@ -117,13 +117,8 @@ var main_menu_state = {
         // Socket is now open
         this.matchmaking_socket = server.matchmaking_socket();
 
-        // Send a request to start matchmaking to the server
-        // TODO insert the message when a JSON spec is agreed upon
-        // this.matchmaking_socket.send("Hello server.");
-
         this.matchmaking_timer_id = setInterval(this.matchmaking_timer, server.matchmaking_timer_interval);
 
-        // TODO test if this actually changes the event handler
         this.matchmaking_cancel_btn_text.visible = true;
         this.matchmaking_btn_text.visible = false;
 
@@ -144,7 +139,7 @@ var main_menu_state = {
         console.log(response);
 
         // Parse the message type
-        if (response.type == "match_found") {
+        if (response.type === "match_found") {
             console.log(response);
 
             // Close the websocket now that we have the opponents data
@@ -155,13 +150,13 @@ var main_menu_state = {
             console.log(opponent);
             user.init_opponent(opponent);
 
-            game.state.start('pre_battle');
-        }else if(response.type == "battle_id") {
+            game.state.start('battle_match_up');
+        }else if(response.type === "battle_id") {
             // Store the battle_id for the match that was made
             user.init_battle(response.message);
-        } else if (response.type == "error") {
+        } else if (response.type === "error") {
             console.log(response.message);
-        }else if(response.type == "success") {
+        }else if(response.type === "success") {
             console.log(response.message);
         }else{
             console.log("Malformed or unrecognized message type from server.");

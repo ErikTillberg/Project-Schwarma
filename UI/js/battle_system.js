@@ -4,58 +4,7 @@
 
 
 // Sample output provided by the sim server
-var battleData = [
-
-    {"action":"attack","player":"playerOne","number":"17"},
-   /* {"action":"movePlayer","player":"playerTwo","number":"3"},
-    {"action":"attack","player":"playerOne","number":"6"},
-    {"action":"movePlayer","player":"playerTwo","number":"4"},
-    {"action":"movePlayer","player":"playerOne","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"3"},
-    {"action":"movePlayer","player":"playerOne","number":"1"},
-    {"action":"attack","player":"playerTwo","number":"8"},
-    {"action":"movePlayer","player":"playerOne","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"4"},
-    {"action":"attack","player":"playerOne","number":"23"},
-    {"action":"movePlayer","player":"playerTwo","number":"3"},
-    {"action":"movePlayer","player":"playerOne","number":"1"},
-    {"action":"attack","player":"playerTwo","number":"5"},
-    {"action":"attack","player":"playerOne","number":"11"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"19"},
-    {"action":"attack","player":"playerOne","number":"11"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"attack","player":"playerOne","number":"15"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"7"},
-    {"action":"attack","player":"playerOne","number":"10"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"12"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"attack","player":"playerOne","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"11"},
-    {"action":"attack","player":"playerTwo","number":"3"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"attack","player":"playerOne","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"movePlayer","player":"playerTwo","number":"1"},
-    {"action":"movePlayer","player":"playerTwo","number":"2"},
-    {"action":"attack","player":"playerTwo","number":"7"},*/
-    {"action":"defence","player":"playerTwo","number":"1"},
-    {"action":"attack","player":"playerOne","number":"3"},
-    {"action":"die","player":"playerTwo","number":"20"}
-
-    ]
+var battleData = user.simulation_data;
 
 var playerOne;
 var playerTwo;
@@ -103,6 +52,16 @@ var card1;
 var card2;
 var card3;
 
+var attackCloseSound;
+var attackFarSound;
+var blockSound;
+var jumpSound;
+var rollSound;
+var walkSound;
+var winMusic;
+var battleMusic;
+var healSound;
+
 
 /**
 * Manages game assets and rendering of all battle animations.
@@ -123,6 +82,35 @@ var battle_system_state = {
      */
     create: function() {
         console.log("battle_system_state: create");
+
+        console.log(battleData);
+
+        battleMusic = game.add.audio('battlewmusic');
+        battleMusic.loopFull(0.05);
+
+        attackCloseSound = game.add.audio('attackclose');
+        attackCloseSound.volume = 0.25;
+
+        attackFarSound = game.add.audio('attackfar');
+        attackFarSound.volume = 0.25;
+
+        blockSound = game.add.audio('block');
+        blockSound.volume = 0.25;
+
+        jumpSound = game.add.audio('jump');
+        jumpSound.volume = 0.15;
+
+        rollSound = game.add.audio('roll');
+        rollSound.volume = 0.15;
+
+        walkSound = game.add.audio('walk');
+        walkSound.volume = 0.15;
+
+        winMusic = game.add.audio('winmusic');
+        winMusic.volume = 0.15;
+
+        healSound = game.add.audio('heal');
+        healSound.volume = 0.25;
 
         // See if we have real battle data, otherwise use the card coded values
         if (user.simulation_data !== undefined) {
@@ -325,38 +313,44 @@ function movePlayer ( sprite, moveNum ){
     if ( animationCheck > 0 && animationTimer <= 2){
 
         sprite.animations.play('walkRight', 5, true);
+        walkSound.loopFull(0.15);
     }
 
     else if (  animationCheck > 0 && animationTimer < 4 && animationTimer >= 3) {
 
         sprite.animations.play('rollRight', 5, true);
+        rollSound.loopFull(0.15);
     }
 
     else if (  animationCheck > 0 && animationTimer >= 4 ) {
 
         sprite.animations.play('jumpRight', 5, true);
+        jumpSound.loopFull(0.15);
     }
 
     else if(  animationCheck < 0 && animationTimer < 4 && animationTimer >= 3) {
 
         sprite.animations.play('rollLeft', 5, true);
+        rollSound.loopFull(0.15);
     }
 
     else if (  animationCheck < 0 && animationTimer >= 4 ) {
 
         sprite.animations.play('jumpLeft', 5, true);
+        jumpSound.loopFull(0.15);
     }
 
     else {
 
         sprite.animations.play('walkLeft', 5, true);
+        walkSound.loopFull(0.15);
     }
 
     // Update action text.
     actionText.setText(playerNum + "\n\nMOVES TO\n\nSPOT " + moveNum );
 
     // set the player location after the sprite moves to the right location
-    game.time.events.add( (1000 * animationTimer), (function() { setPlayerLoc( sprite, moveNum); canIdle = true;  console.log(sprite.x);}), this );
+    game.time.events.add( (1000 * animationTimer), (function() { setPlayerLoc( sprite, moveNum); canIdle = true; jumpSound.stop(); rollSound.stop(); walkSound.stop(); console.log(sprite.x);}), this );
 }
 
 /**
@@ -412,8 +406,9 @@ function attack( sprite, damageNum ){
  * @param sprite
  * @param damageNum
  */
-function attackClose( sprite, damageNum ){ 
+function attackClose( sprite, damageNum ){
 
+    attackCloseSound.play();
     canIdle = false;
 
     // Pick sprite and animation to play, when animation is done call the block function.
@@ -452,6 +447,7 @@ function attackClose( sprite, damageNum ){
  */
 function attackFar( sprite, damageNum){
 
+    attackFarSound.play();
     canIdle = false;
     canShoot = true;
             
@@ -550,7 +546,8 @@ function die( sprite, dieTimer ){
  */
 function block( sprite, damageNum){
 
-    canIdle = false;
+     canIdle = false;
+     blockSound.play();
 
     setPlayerNumber ( sprite );
 
@@ -619,6 +616,7 @@ function setPlayerNumber( sprite ){
 function heal( sprite, healNum){
 
     canIdle = false;
+    healSound.play();
 
     setPlayerNumber ( sprite );
 
@@ -674,7 +672,7 @@ function battleLoop ( battleObj ) {
         // Call movePlayer function
         if (battleObj[i].action == 'movePlayer') {
 
-            if (battleObj[i].player == 'playerOne'){
+            if (battleObj[i].player == '1'){
 
                 player = playerOne;
             }
@@ -686,7 +684,7 @@ function battleLoop ( battleObj ) {
         // Call attack function
         else if (battleObj[i].action == 'attack') {
 
-            if (battleObj[i].player == 'playerOne') {
+            if (battleObj[i].player == '1') {
 
                 player = playerOne;
             }
@@ -700,7 +698,7 @@ function battleLoop ( battleObj ) {
         // Call block function.
         else if (battleObj[i].action == 'block'){
 
-            if ( battleObj[i].player == 'playerOne'){
+            if ( battleObj[i].player == '1'){
 
                 player = playerOne;
             }
@@ -710,9 +708,9 @@ function battleLoop ( battleObj ) {
         }
 
         // Call the heal function
-        else if (battleObj[i].action == 'defence'){
+        else if (battleObj[i].action == 'defense'){
 
-            if ( battleObj[i].player == 'playerOne'){
+            if ( battleObj[i].player == '1'){
 
                 player = playerOne;
             }
@@ -724,7 +722,7 @@ function battleLoop ( battleObj ) {
         // Call die function
         else {
 
-            if ( battleObj[i].player== 'playerOne'){
+            if ( battleObj[i].player== '1'){
 
                 player = playerOne;
             }
@@ -791,6 +789,8 @@ function pickCharWeapon ( charName ){
 function win ( sprite ) {
 
     canIdle = false;
+    battleMusic.stop();
+    winMusic.loopFull(0.05);
 
     HUD1.visible = false;
     playerOneText.visible = false;
@@ -816,7 +816,7 @@ function win ( sprite ) {
     }
 
     card1 =  new card(game, 340, 560, 'Water', 'Mobility', 'Mobility card of Head-scratching Effectiveness', +10, +13);
-    card2 =  new card(game, 640, 560, 'Fire', 'Attacl', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+    card2 =  new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
     card3 =  new card(game, 940, 560, 'Earth', 'Defence', 'Mobility card of Head-scratching Effectiveness', +10, +13);
 
     game.add.existing(card1);
@@ -841,4 +841,58 @@ function win ( sprite ) {
 
     game.add.tween(sprite).to({ x: 640}, 2000, Phaser.Easing.Linear.None, true);
     game.time.events.add( 2000, (function() { winnerText.visible = true; winTextVisible = true; sprite.animations.play('jumpLeft', 5, true);}), this );
+}
+
+/**
+ * Sends the card to the meta-server to remove it from the player's inventory
+ * @param card JSON card object
+ */
+function delete_card(card) {
+
+    console.log("Deleting card from player's inventory.");
+
+    $.ajax({
+
+        url: server.delete_card_endpoint(),
+        type: "POST",
+        data: card,
+        success: card_delete_success,
+        error: card_delete_error
+    });
+}
+
+/**
+ * Sends the equipment to the meta-server to remove it from the player's inventory
+ * @param equipment JSON equipment object
+ */
+function delete_equipment(equipment) {
+
+    console.log("Deleting equipment from player's inventory.");
+
+    $.ajax({
+
+        url: server.delete_equipment_endpoint(),
+        type: "POST",
+        data: equipment,
+        success: equipment_delete_success,
+        error: equipment_delete_error
+    });
+}
+
+function card_delete_success() {
+    console.log("Card properly deleted.")
+
+    // TODO add logic to remove the card from user object
+}
+
+function card_delete_error() {
+    console.log("Card was not properly deleted.")
+}
+
+function equipment_delete_success() {
+    console.log("Equipment properly deleted.");
+}
+
+function equipment_delete_error() {
+    console.log("Equipment was not properly deleted.");
 }

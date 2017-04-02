@@ -13,6 +13,9 @@ var server = {
     production_mode: true, // switch to false to use local host
     host_name: null,
     port: null,
+    ssl_mode: true,
+    protocol: null,
+    websocket_protocol: null,
 
     matchmaking_timer_interval: 1000, // controls how often the timer on screen updates with elapsed time
 
@@ -26,7 +29,7 @@ var server = {
      */
     signup_endpoint: function (username, email, password, character_class) {
 
-        return "http://" + this.host_name + this.port
+        return server.protocol + this.host_name + this.port
             + "/signup"
             + "?username=" + username
             + "&email=" + email
@@ -42,7 +45,7 @@ var server = {
      */
     signin_endpoint: function (username, password) {
 
-        return "http://" + this.host_name + this.port
+        return server.protocol + this.host_name + this.port
             + "/login"
             + "?username=" + username
             + "&password=" + password;
@@ -55,7 +58,7 @@ var server = {
     matchmaking_socket: function () {
 
         var web_socket;
-        web_socket = new WebSocket("ws://" + this.host_name + this.port + "/matchmaking");
+        web_socket = new WebSocket(server.websocket_protocol + this.host_name + this.port + "/matchmaking");
         web_socket.onmessage = main_menu_state.matchmaking_message;
         web_socket.onclose = main_menu_state.matchmaking_end;
 
@@ -69,7 +72,7 @@ var server = {
     battle_socket: function() {
 
         var web_socket;
-        web_socket = new WebSocket("ws://" + this.host_name + this.port + "/battleSocket");
+        web_socket = new WebSocket(server.websocket_protocol + this.host_name + this.port + "/battleSocket");
         web_socket.onmessage = pre_battle_state.battle_message;
         web_socket.onclose = pre_battle_state.battle_end;
 
@@ -88,12 +91,21 @@ var server = {
         console.log("Server init.");
         server.host_name = server.production_mode === true ? "schwarma-meta-server.herokuapp.com": "localhost";
         server.port = server.production_mode === true ? "" : ":9000";
+        server.protocol = server.ssl_mode === true ? "https://" : "http://";
+        server.websocket_protocol = server.ssl_mode === true ? "wss://" : "ws://";
         console.log("Production: " + server.production_mode);
         console.log("Host name: " + server.host_name);
+        console.log("SSL Enabled: " + server.ssl_mode);
     },
     gear_endpoint: function() {
-        return "http://" + this.host_name + this.port
+        return server.protocol + this.host_name + this.port
                 + "/setActiveEquipment";
+    },
+    delete_card_endpoint: function() {
+        return server.protocol + this.host_name + ":" + this.port + "/deleteCard" + "?username=" + user.username
+    },
+    delete_equipment_endpoint: function() {
+        return server.protocol + this.host_name + ":" + this.port + "/deleteEquipment" + "?username" + user.username
     }
 };
 // Initialize the server
