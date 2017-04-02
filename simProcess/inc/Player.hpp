@@ -34,30 +34,39 @@ namespace Schwarma
                             {
                                 if(it->action.actionType == "mobility")
                                 {
-                                    if(it->action.direction == "away")
+                                    for(auto cit = this->cards.begin(); cit != this->cards.end(); ++cit)
                                     {
-                                        if(enemy->position > this->position &&
-                                        this->position != Schwarma::BOUND_LEFT)
+                                        if(cit->name == it->action.item)
                                         {
-                                            this->position -= this->baseStats.movementSpeed;
-                                        }
-                                        else if(enemy->position < this->position &&
-                                        this->position != Schwarma::BOUND_RIGHT)
-                                        {
-                                            this->position += this->baseStats.movementSpeed;
-                                        }
-                                    }
-                                    else if(it->action.direction == "toward")
-                                    {
-                                        if(enemy->position > this->position &&
-                                        this->position != Schwarma::BOUND_LEFT)
-                                        {
-                                            this->position += this->baseStats.movementSpeed;
-                                        }
-                                        else if(enemy->position < this->position &&
-                                        this->position != Schwarma::BOUND_RIGHT)
-                                        {
-                                            this->position -= this->baseStats.movementSpeed;
+                                    
+                                            if(cit->direction == "away")
+                                            {
+                                                //std::cerr<<"away\n";
+                                                if(enemy->position > this->position /*&&
+                                                this->position != Schwarma::BOUND_LEFT*/)
+                                                {
+                                                    this->position -= this->baseStats.movementSpeed;
+                                                }
+                                                else if(enemy->position < this->position /*&&
+                                                this->position != Schwarma::BOUND_RIGHT*/)
+                                                {
+                                                    this->position += this->baseStats.movementSpeed;
+                                                }
+                                            }
+                                            else if(cit->direction == "toward")
+                                            {
+                                                //std::cerr<<"toward\n";
+                                                if(enemy->position > this->position/* &&
+                                                this->position != Schwarma::BOUND_LEFT*/)
+                                                {
+                                                    this->position += this->baseStats.movementSpeed;
+                                                }
+                                                else if(enemy->position < this->position /*&&
+                                                this->position != Schwarma::BOUND_RIGHT*/)
+                                                {
+                                                    this->position -= this->baseStats.movementSpeed;
+                                                }
+                                            }
                                         }
                                     }
 
