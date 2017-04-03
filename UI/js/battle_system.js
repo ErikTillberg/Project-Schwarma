@@ -3,7 +3,7 @@
 */
 
 
-// Sample output provided by the sim server
+// output provided by the sim server
 var battleData = user.simulation_data;
 
 var playerOne;
@@ -861,7 +861,7 @@ function battleLoop ( battleObj ) {
             heal (player, battleObj[i].number);
         }
 
-        / Find out who won, and call die function on other players sprite, or if it's a tie display tie text.
+        // Find out who won, and call die function on other players sprite, or if it's a tie display tie text.
         else {
 
             if ( battleData[i].winner == 'none'){
@@ -1008,6 +1008,11 @@ function win ( sprite ) {
     game.time.events.add( 7000, (function() { MatchOver();}), this );
 }
 
+/**
+ * set up the match over stuff, adds the sword/sheild image and input so the user
+ * can decide to log out or play another match
+ * @constructor
+ */
 function MatchOver (){
 
     card2.visible = false;
@@ -1020,13 +1025,14 @@ function MatchOver (){
     sword.anchor.setTo(0.5, 0.5);
     sword.scale.setTo(0.8, 0.8);
 
+    // Add the match again text to screen, and when clicked launch rematch_btn_click function
     var matchAgainText = game.add.bitmapText(sword.x, sword.y - 35, 'carrier_command_black','PLAY AGAIN',15);
     matchAgainText.anchor.setTo(0.5, 0.5);
     matchAgainText.align = 'center';
     matchAgainText.inputEnabled = true;
     matchAgainText.events.onInputDown.add(rematch_btn_click, this);
 
-    // Add the sign up text to screen, and when clicked launch sighup_btn_click function
+    // Add the log out text to screen, and when clicked launch logout_btn_click function
     var logOutText = game.add.bitmapText(sword.x, sword.y + 15, 'carrier_command_black','LOG OUT',17);
     logOutText.anchor.setTo(0.5, 0.5);
     logOutText.align = 'center';
@@ -1034,18 +1040,25 @@ function MatchOver (){
     logOutText.events.onInputDown.add(logout_btn_click, this);
 }
 
+/**
+ * Stops win misic and takes the user back to the main menu state
+ */
 function rematch_btn_click(){
 
     menuclick.play();
-    winMusic.pause();
+    winMusic.stop();
+    menumusic.resume();
     console.log("battle_state: rematch_btn_click");
     game.state.start("main_menu");
 }
 
+/**
+ * Stops win music and reloads the game
+ */
 function logout_btn_click(){
 
     menuclick.play();
-    winMusic.pause();
+    winMusic.stop();
     console.log("battle_state: logout_btn_click");
     location.reload();
 }
