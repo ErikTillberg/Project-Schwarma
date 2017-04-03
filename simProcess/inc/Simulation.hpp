@@ -141,6 +141,8 @@ namespace Schwarma
                             earthDamage = (wep.elemental_value - entity2->stats.resistanceToEarth);
                         
                         damageToInflict = baseDamage + fireDamage + earthDamage + iceDamage;
+                        if(damageToInflict <= 0)
+                            damageToInflict = 0;
 
                         entity2->stats.health -= damageToInflict;
                         if(!formatType)
@@ -158,13 +160,14 @@ namespace Schwarma
                     const Schwarma::Card&card = *entity1->defend(entity2);
                     if(&card != nullptr)
                     {
-                        entity1->stats.health += card.value;
+                        if(entity->stats.health <= 100){
+                            entity1->stats.health += card.value;
                         if(!formatType)
                             stream<<entity1->name<<" healed with "<<card.name<<" for "<<card.value<<std::endl;
                         else if(formatType && (::strcmp(formatType,"json") == 0))
                         {
                             stream<<"{\"action\":\"defense\",\"player\":\""<<entity1->name<<"\",\"number\":\""<<card.value<<"\"},"<<std::endl;
-                        }
+                        }}
                     }
                 }
             }
