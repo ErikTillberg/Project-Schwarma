@@ -244,25 +244,48 @@ var pre_battle_state = {
         console.log(message);
 
         // Check to see if this is a standard message or one that means we can start the battle
-        if (response.type === "Battle Data") {
+        if (response.type === "Battle Data1") {
 
             // If the battle data is not defined, just return to the main menu.
             if (response.message === undefined) {
-                console.log("====BATTLE UNDEFINED====");
+
+                console.log("====BATTLE DATA UNDEFINED====");
                 console.log("Battle could not start. Simulation data was undefined.");
                 console.log(response.message);
                 game.state.start("main_menu");
+
             }else{
-                console.log("====BATTLE START====");
+
                 user.init_simulation(JSON.parse(response.message));
                 console.log(response.message);
+
+            }
+
+        }else if (response.type === "Battle Data2") {
+
+            // If the battle data is not defined, just return to the main menu.
+            if (response.message === undefined) {
+                console.log("====BATTLE METADATA UNDEFINED====");
+                console.log("Battle could not start. Simulation data was undefined.");
+                console.log(response.message);
+                game.state.start("main_menu");
+
+            }else{
+
+                console.log("====BATTLE START====");
+                console.log(response.message);
+                user.init_battle_metadata(response.message);
+                console.log(response.message);
                 game.state.start("battle_system");
+
             }
 
         }else{
+
             console.log("====MESSAGE FROM META-SERVER====");
             console.log("type: " + response.type);
             console.log(response.message);
+
         }
     },
     /**
@@ -645,14 +668,29 @@ var pre_battle_state = {
 
         var card_y = this.card_y + (this.card_y_offset * slot);
 
-        var new_card = new card(game,
-            card_x,
-            card_y,
-            card_data.elementalStatBonus.element,
-            card_data.type,
-            card_data.name,
-            card_data.statBonus.bonus.toFixed(2),
-            card_data.elementalStatBonus.bonus.toFixed(2));
+        if (card_data.type == "mobility") {
+
+            var new_card = new card(game,
+                card_x,
+                card_y,
+                card_data.elementalStatBonus.element,
+                card_data.type,
+                card_data.name,
+                card_data.statBonus.bonus.toFixed(2),
+                card_data.direction);
+
+        }else{
+
+            var new_card = new card(game,
+                card_x,
+                card_y,
+                card_data.elementalStatBonus.element,
+                card_data.type,
+                card_data.name,
+                card_data.statBonus.bonus.toFixed(2),
+                card_data.elementalStatBonus.bonus.toFixed(2));
+
+        }
 
         new_card.scale.setTo(0.7, 0.7);
         new_card.inputEnabled = true;
@@ -703,14 +741,29 @@ var pre_battle_state = {
         var card_y = Math.floor(card_num / this.selector_columns) * this.selector_y_offset;
 
         // Create a new card object
-        var new_card = new card(game,
-            card_x,
-            card_y,
-            card_data.elementalStatBonus.element,
-            card_data.type,
-            card_data.name,
-            card_data.statBonus.bonus.toFixed(2),
-            card_data.elementalStatBonus.bonus.toFixed(2));
+        if(card_data.type == "mobility") {
+
+            var new_card = new card(game,
+                card_x,
+                card_y,
+                card_data.elementalStatBonus.element,
+                card_data.type,
+                card_data.name,
+                card_data.statBonus.bonus.toFixed(2),
+                card_data.direction);
+
+        }else{
+
+            var new_card = new card(game,
+                card_x,
+                card_y,
+                card_data.elementalStatBonus.element,
+                card_data.type,
+                card_data.name,
+                card_data.statBonus.bonus.toFixed(2),
+                card_data.elementalStatBonus.bonus.toFixed(2));
+
+        }
 
         // Append some custom data to the card to make assignments and look-ups easier in the click handler.
         new_card.list_index = card_list_index;

@@ -41,6 +41,8 @@ card = function (game, x, y, element, cardtype, title, num1, num2) {
     }
     else{
         Card_item.frame = 1;
+
+
     }
 
     this.addChild(Card_item);
@@ -58,12 +60,20 @@ card = function (game, x, y, element, cardtype, title, num1, num2) {
         this.addChild(textNum1);
     }
 
-    if ( element != '' && parseInt(num2) > 0) {
+    if ( element != '' && parseInt(num2) > 0 || cardtype == 'mobility') {
 
-        var textNum2 = game.add.bitmapText(-20, 105, 'carrier_command_black', element + ':' + '+' + num2, 9);
-        textNum2.anchor.setTo(0.5, 0.5);
-        textNum2.align = 'left';
-        this.addChild(textNum2);
+        if (cardtype == 'mobility') {
+            var textNum2 = game.add.bitmapText(-20, 105, 'carrier_command_black', "Dir" + ': ' + num2, 9);
+            textNum2.anchor.setTo(0.5, 0.5);
+            textNum2.align = 'left';
+            this.addChild(textNum2);
+        }else{
+            var textNum2 = game.add.bitmapText(-20, 105, 'carrier_command_black', element + ':' + '+' + num2, 9);
+            textNum2.anchor.setTo(0.5, 0.5);
+            textNum2.align = 'left';
+            this.addChild(textNum2);
+        }
+
     }
 
     if ( this.x > 640 ){
