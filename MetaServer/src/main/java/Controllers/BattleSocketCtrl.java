@@ -93,7 +93,8 @@ public class BattleSocketCtrl {
             activeUsers.put(username, user);
 
             BattleCtrl.updateReadiness(battle_id, username, att_attribute, def_attribute, mov_attribute, user_cards);
-            String battle_results = null;
+            String battle_results;
+
             if (checkReadiness(battle_id)){
                 System.out.println("Sending battle to sim server.");
                 battle_results = BattleCtrl.postToSimServer(battle_id);
@@ -117,9 +118,9 @@ public class BattleSocketCtrl {
 
                 String player1Username = battle.getPlayer1_username();
 
-                BattleResponse userResponse = new BattleResponse(battle.getPlayer1_username(), battle.getPlayer2_username(), battle_results, winner, "none");
+                BattleResponse userResponse = new BattleResponse(battle.getPlayer1_username(), battle.getPlayer2_username(), winner, "none");
 
-                BattleResponse otherUserResponse = new BattleResponse(battle.getPlayer1_username(), battle.getPlayer2_username(), battle_results, winner, "none");
+                BattleResponse otherUserResponse = new BattleResponse(battle.getPlayer1_username(), battle.getPlayer2_username(), winner, "none");
 
                 User otherUserObject = User.getUserByUsername(otherUser);
                 User thisUserObject = User.getUserByUsername(username);
@@ -165,8 +166,11 @@ public class BattleSocketCtrl {
 
                 }
 
-                otherSession.getRemote().sendString(toJsonNoEscapes(new WebSocketMessage("Battle Data", otherUserResponse)));
-                user.getRemote().sendString(JsonUtil.toJsonNoEscapes(new WebSocketMessage("Battle Data", userResponse)));
+                otherSession.getRemote().sendString(toJson(new WebSocketMessage("Battle Data1", battle_results)));
+                user.getRemote().sendString(toJson(new WebSocketMessage("Battle Data1", battle_results)));
+
+                otherSession.getRemote().sendString(toJsonNoEscapes(new WebSocketMessage("Battle Data2", otherUserResponse)));
+                user.getRemote().sendString(JsonUtil.toJsonNoEscapes(new WebSocketMessage("Battle Data2", userResponse)));
 
                 activeUsers.remove(otherUser);
                 activeUsers.remove(username);
@@ -186,16 +190,16 @@ public class BattleSocketCtrl {
     }
 
     private class BattleResponse{
-        String battle_response;
+        //String battle_response;
         String winner;
         Object reward;
         String player1;
         String player2;
 
-        public BattleResponse(String username1, String username2, String res, String winner, Object reward){
+        public BattleResponse(String username1, String username2, String winner, Object reward){
             this.player1 = username1;
             this.player2 = username2;
-            this.battle_response = res;
+            //this.battle_response = res;
             this.winner = winner;
             this.reward = reward;
         }
