@@ -36,6 +36,10 @@ public class JsonUtil {
         return getGson().toJson(object);
     }
 
+    public static String toJsonNoEscapes(Object object) {return getGsonNoEscapes().toJson(object);}
+
+    public static Gson getGsonNoEscapes() { return gsonBuilder.disableHtmlEscaping().create(); }
+
     public static Gson getGson(){
         return gsonBuilder.create();
     }

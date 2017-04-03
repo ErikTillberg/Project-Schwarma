@@ -23,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static Utilities.DBConn.datastore;
 import static Utilities.JsonUtil.toJson;
+import static Utilities.JsonUtil.toJsonNoEscapes;
 
 /**
  * Created by Erik Tillberg on 3/8/2017.
@@ -116,16 +117,15 @@ public class BattleSocketCtrl {
 
                 String player1Username = battle.getPlayer1_username();
 
-                BattleResponse userResponse = new BattleResponse(battle_results, winner, null);
+                BattleResponse userResponse = new BattleResponse(battle.getPlayer1_username(), battle.getPlayer2_username(), battle_results, winner, "none");
 
-                BattleResponse otherUserResponse = new BattleResponse(battle_results, winner, null);
+                BattleResponse otherUserResponse = new BattleResponse(battle.getPlayer1_username(), battle.getPlayer2_username(), battle_results, winner, "none");
 
                 User otherUserObject = User.getUserByUsername(otherUser);
                 User thisUserObject = User.getUserByUsername(username);
 
                 if (winner.equals(username)) {
                     // Then this user is the winner
-
 
                     thisUserObject.setRating(thisUserObject.getRating() + 30);
                     otherUserObject.setRating(otherUserObject.getRating() - 30);
@@ -165,8 +165,8 @@ public class BattleSocketCtrl {
 
                 }
 
-                otherSession.getRemote().sendString(toJson(new WebSocketMessage("Battle Data", otherUserResponse)));
-                user.getRemote().sendString(toJson(new WebSocketMessage("Battle Data", userResponse)));
+                otherSession.getRemote().sendString(toJsonNoEscapes(new WebSocketMessage("Battle Data", otherUserResponse)));
+                user.getRemote().sendString(JsonUtil.toJsonNoEscapes(new WebSocketMessage("Battle Data", userResponse)));
 
                 activeUsers.remove(otherUser);
                 activeUsers.remove(username);
@@ -189,8 +189,12 @@ public class BattleSocketCtrl {
         String battle_response;
         String winner;
         Object reward;
+        String player1;
+        String player2;
 
-        public BattleResponse(String res, String winner, Object reward){
+        public BattleResponse(String username1, String username2, String res, String winner, Object reward){
+            this.player1 = username1;
+            this.player2 = username2;
             this.battle_response = res;
             this.winner = winner;
             this.reward = reward;
