@@ -86,6 +86,10 @@ card.prototype.constructor = card;
 var cardDefence;
 var cardAttack;
 var cardMobility;
+var attackTxt;
+var mobilityTxt;
+var defenceTxt;
+var statText;
 
 var gear_menu_state = {
 
@@ -137,6 +141,27 @@ var gear_menu_state = {
         playerShadow.scale.setTo(1.5, 1.5);
         var walk = player.animations.add('walk');
         player.animations.play('walk', 3, true);
+
+        if (user.character_type == 'warrior'){
+
+            attackTxt = 3;
+            mobilityTxt = 1;
+            defenceTxt = 2;
+        }
+
+        else if (user.character_type == 'thief' ){
+
+            attackTxt = 2;
+            mobilityTxt = 3;
+            defenceTxt = 1;
+        }
+
+        else{
+
+            attackTxt = 1;
+            mobilityTxt = 3;
+            defenceTxt = 2;
+        }
 
         cardMobility = new card(game, 1020, 160,
             user.equipped_gear.equipped_boots.elementalStatBonus.element,
@@ -194,7 +219,7 @@ var gear_menu_state = {
         infoText.anchor.setTo(0.5, 0.5);
         infoText.align = 'center';
 
-        var statText = game.add.bitmapText(player.x, player.y + 170 ,'carrier_command','Attack: 1\n\nDefence: 2\n\nMobility: 3', 20);
+        statText = game.add.bitmapText(player.x, player.y + 170 ,'carrier_command','Attack:' + attackTxt+ '\n\nDefence: ' + defenceTxt + '\n\nMobility: ' + mobilityTxt, 20);
         statText.anchor.setTo(0.5, 0.5);
         statText.align = 'center';
 
@@ -203,6 +228,11 @@ var gear_menu_state = {
 
         this.init_card_selectors();
 
+    },
+
+    update: function() {
+
+        statText.setText('Attack:' + attackTxt + '\n\nDefence: ' + defenceTxt + '\n\nMobility: ' + mobilityTxt);
     },
 
     // Builds groups for cards in each category we can pull up when the user needs to select a car
