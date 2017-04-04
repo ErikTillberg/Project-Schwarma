@@ -202,12 +202,15 @@ public class Battle {
 
 
         for (Equipment item : equipment){
+            System.out.println("Tallying piece of equipment:");
+            System.out.println(equipment);
             type = item.getType();
             switch (type){
                 case("weapon"): attack_bonus += item.getStatBonus().getBonus();
                     break;
 
                 case("shield"): resistance_to_damage += item.getStatBonus().getBonus();
+                    System.out.println("Adding to resistane_to_damage" + item.getStatBonus().getBonus());
                     break;
 
                 case("boots"): movement_speed = 1;

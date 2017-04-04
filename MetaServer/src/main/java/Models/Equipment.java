@@ -167,7 +167,7 @@ public class Equipment {
 
         //Every equipment piece should have some sort of bonus that is given to the equipment.
         //To start, let's start with a single bonus, to the stat of the type of equipment that is being created.
-        Double maxReward = 50.0; //I guess just +50% for now is fine I dunno
+        Double maxReward = 10.0; //I guess just +50% for now is fine I dunno
         Double min = RNGUtil.getSqrtValue(userRating - rating_range, maxReward);
         Double max = RNGUtil.getSqrtValue(userRating + rating_range, maxReward);
 
