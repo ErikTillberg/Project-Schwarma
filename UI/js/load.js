@@ -134,6 +134,11 @@ var load_state = {
         signUpText.inputEnabled = true;
         signUpText.events.onInputDown.add(signup_btn_click, this);
 
+        var creditText = game.add.bitmapText(150, 650, 'carrier_command_black','CREDITS',20);
+        creditText.anchor.setTo(0.5, 0.5);
+        creditText.align = 'center';
+        creditText.inputEnabled = true;
+        creditText.events.onInputDown.add(credit_btn_click, this);
            
     }
 
@@ -200,4 +205,10 @@ function muteoff_btn_click(){
     menumusic.volume = 0.2;
     buttonMuteOn.visible = true;
     buttonMuteOff.visible = false;
+}
+
+function credit_btn_click(){
+
+    console.log("signin_state: signup_btn_click");
+    game.state.start("credit");
 }
