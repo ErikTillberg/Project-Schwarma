@@ -114,12 +114,13 @@ var battle_system_state = {
     create: function() {
         console.log("battle_system_state: create");
 
-        console.log(battleData);
+        console.log(battleData)
 
-        playerFirst = battle_metadata.player1;
-        playerSecond = battle_metadata.player2;
-        winner = battle_metadata.winner;
-        reward = battle_metadata.reward;
+
+        playerFirst = user.battle_metadata.player1;
+        playerSecond = user.battle_metadata.player2;
+        winner = user.battle_metadata.winner;
+        reward = user.battle_metadata.reward;
 
         console.log('First player: ' + playerFirst);
         console.log('Second player: ' + playerSecond)
