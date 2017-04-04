@@ -244,7 +244,7 @@ var pre_battle_state = {
         console.log(message);
 
         // Check to see if this is a standard message or one that means we can start the battle
-        if (response.type === "Battle Data1") {
+        if (response.type == "Battle Data1") {
 
             // If the battle data is not defined, just return to the main menu.
             if (response.message === undefined) {
@@ -261,7 +261,7 @@ var pre_battle_state = {
 
             }
 
-        }else if (response.type === "Battle Data2") {
+        }else if (response.type == "Battle Data2") {
 
             // If the battle data is not defined, just return to the main menu.
             if (response.message === undefined) {
