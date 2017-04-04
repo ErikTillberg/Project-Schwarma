@@ -767,10 +767,10 @@ function block( sprite, damageNum){
     }
 
     // Update actionText.
-    actionText.setText(playerNum +"\n\nBLOCKS");
+   // actionText.setText(playerNum +"\n\nBLOCKS");
 
     // Set HPText to invisible after animation plays.
-   // game.time.events.add( 1000, (function() { canIdle = true; playerOneHPText.visible = false; playerTwoHPText.visible = false}), this );
+   game.time.events.add( 1000, (function() { canIdle = true; playerOneHPText.visible = false; playerTwoHPText.visible = false}), this );
 }
 
 /**
@@ -1010,33 +1010,56 @@ function win ( sprite ) {
     playerTwoText.visible = false;
     actionText.visible = false;
 
-    winnerText.setText (winner + ' Is The Winner' );
+    if (winner == user.username) {
 
-    if (sprite.x <= 640) {
+        winnerText.setText(winner + ' Is The Winner');
 
-        sprite.animations.play('rollRight', 5, true);
-    }
-    else {
+        if (sprite.x <= 640) {
 
-        sprite.animations.play('rollLeft', 5, true);
-    }
+            sprite.animations.play('rollRight', 5, true);
+        }
+        else {
 
-    cardWin = new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
-    game.add.existing(cardWin);
-    cardWin.scale.setTo(0.1, 0.1);
-    cardWin.shadow.scale.setTo(0.1, 0.1);
+            sprite.animations.play('rollLeft', 5, true);
+        }
 
-    game.add.tween(cardWin.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
-    game.add.tween(cardWin.shadow.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
-    game.add.tween(sprite).to({x: 640}, 2000, Phaser.Easing.Linear.None, true);
-    game.time.events.add(2000, (function () {
+        cardWin = new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+        game.add.existing(cardWin);
+        cardWin.scale.setTo(0.1, 0.1);
+        cardWin.shadow.scale.setTo(0.1, 0.1);
+
+        game.add.tween(cardWin.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
+        game.add.tween(cardWin.shadow.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
+        game.add.tween(sprite).to({x: 640}, 2000, Phaser.Easing.Linear.None, true);
+        game.time.events.add(2000, (function () {
             winnerText.visible = true;
             winTextVisible = true;
             sprite.animations.play('jumpLeft', 5, true);
         }), this);
-    game.time.events.add(7000, (function () {
-            MatchOver();
+        game.time.events.add(7000, (function () {MatchOver();}), this);
+    }
+
+    else{
+
+        winnerText.setText('You Lost, loser');
+
+        if (sprite.x <= 640) {
+
+            sprite.animations.play('rollRight', 5, true);
+        }
+        else {
+
+            sprite.animations.play('rollLeft', 5, true);
+        }
+
+        game.add.tween(sprite).to({x: 640}, 2000, Phaser.Easing.Linear.None, true);
+        game.time.events.add(2000, (function () {
+            winnerText.visible = true;
+            winTextVisible = true;
+            sprite.animations.play('jumpLeft', 5, true);
         }), this);
+        game.time.events.add(7000, (function () {MatchOver();}), this);
+    }
 }
 
 /**
@@ -1046,7 +1069,7 @@ function win ( sprite ) {
  */
 function MatchOver (){
 
-    if(winner != 'none'){
+    if( winner == user.username){
         cardWin.visible = false;
     }
 
