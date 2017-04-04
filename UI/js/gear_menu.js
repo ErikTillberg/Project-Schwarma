@@ -41,6 +41,8 @@ card = function (game, x, y, element, cardtype, title, num1, num2) {
     }
     else{
         Card_item.frame = 1;
+
+
     }
 
     this.addChild(Card_item);
@@ -58,12 +60,20 @@ card = function (game, x, y, element, cardtype, title, num1, num2) {
         this.addChild(textNum1);
     }
 
-    if ( element != '' && parseInt(num2) > 0) {
+    if ( element != '' && parseInt(num2) > 0 || cardtype == 'mobility') {
 
-        var textNum2 = game.add.bitmapText(-20, 105, 'carrier_command_black', element + ':' + '+' + num2, 9);
-        textNum2.anchor.setTo(0.5, 0.5);
-        textNum2.align = 'left';
-        this.addChild(textNum2);
+        if (cardtype == 'mobility') {
+            var textNum2 = game.add.bitmapText(-20, 105, 'carrier_command_black', "Dir" + ': ' + num2, 9);
+            textNum2.anchor.setTo(0.5, 0.5);
+            textNum2.align = 'left';
+            this.addChild(textNum2);
+        }else{
+            var textNum2 = game.add.bitmapText(-20, 105, 'carrier_command_black', element + ':' + '+' + num2, 9);
+            textNum2.anchor.setTo(0.5, 0.5);
+            textNum2.align = 'left';
+            this.addChild(textNum2);
+        }
+
     }
 
     if ( this.x > 640 ){
@@ -86,6 +96,10 @@ card.prototype.constructor = card;
 var cardDefence;
 var cardAttack;
 var cardMobility;
+var attackTxt;
+var mobilityTxt;
+var defenceTxt;
+var statText;
 
 var gear_menu_state = {
 
@@ -126,9 +140,6 @@ var gear_menu_state = {
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
-        this.signin_btn = game.add.button(submitX, submitY, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
-        this.back_btn= game.add.button(homeX, homeY, 'Home_button', this.back_btn_click, this, 2, 1, 0);
-
         player = game.add.sprite(640, 420,  pickCharacter (  user.character_type));
         player.anchor.setTo(0.5, 0.5);
         player.scale.setTo(1.5, 1.5);
@@ -138,7 +149,28 @@ var gear_menu_state = {
         var walk = player.animations.add('walk');
         player.animations.play('walk', 3, true);
 
-        cardMobility = new card(game, 1020, 160,
+        if (user.character_type == 'warrior'){
+
+            attackTxt = 3;
+            mobilityTxt = 1;
+            defenceTxt = 2;
+        }
+
+        else if (user.character_type == 'thief' ){
+
+            attackTxt = 2;
+            mobilityTxt = 3;
+            defenceTxt = 1;
+        }
+
+        else{
+
+            attackTxt = 1;
+            mobilityTxt = 3;
+            defenceTxt = 2;
+        }
+
+        cardMobility = new card(game, 1040, 160,
             user.equipped_gear.equipped_boots.elementalStatBonus.element,
             'boots', user.equipped_gear.equipped_boots.name,
             user.equipped_gear.equipped_boots.statBonus.bonus.toFixed(1),
@@ -149,7 +181,7 @@ var gear_menu_state = {
         cardMobility.inputEnabled = true;
         cardMobility.events.onInputDown.add(this.card_click, {card: this.card});
 
-        var mobilityText = game.add.bitmapText(cardMobility.x, cardMobility.y + 160, 'carrier_command','boots',20);
+        var mobilityText = game.add.bitmapText(cardMobility.x, cardMobility.y + 160, 'carrier_command_black','boots',20);
 
         mobilityText.anchor.setTo(0.5, 0.5);
         mobilityText.align = 'center';
@@ -157,7 +189,7 @@ var gear_menu_state = {
 
         // cardAttack = new card(game, 1040, 520, 'fire', 'attack', 'big sword of Stupid Stuff', +1, +13);
 
-        cardAttack = new card(game, 1020, 520,
+        cardAttack = new card(game, 1040, 520,
             user.equipped_gear.equipped_weapon.elementalStatBonus.element,
             'weapon',
             user.equipped_gear.equipped_weapon.name,
@@ -169,13 +201,13 @@ var gear_menu_state = {
         cardAttack.inputEnabled = true;
         cardAttack.events.onInputDown.add(this.card_click, {card: this.card});
 
-        var attackText = game.add.bitmapText(cardAttack.x, cardAttack.y - 160, 'carrier_command','weapon',20);
+        var attackText = game.add.bitmapText(cardAttack.x, cardAttack.y - 160, 'carrier_command_black','weapon',20);
         attackText.anchor.setTo(0.5, 0.5);
         attackText.align = 'center';
 
         // cardDefence = new card(game, 240, 360, 'earth', 'defence', 'small shield of Boring Thing', +1, +13);
 
-        cardDefence = new card(game, 260, 360,
+        cardDefence = new card(game, 240, 360,
             user.equipped_gear.equipped_chest.elementalStatBonus.element,
             'shield', user.equipped_gear.equipped_chest.name,
             user.equipped_gear.equipped_chest.statBonus.bonus.toFixed(1),
@@ -186,7 +218,7 @@ var gear_menu_state = {
         cardDefence.inputEnabled = true;
         cardDefence.events.onInputDown.add(this.card_click, {card: this.card});
 
-        var defenceText = game.add.bitmapText(cardDefence.x, cardDefence.y + 160, 'carrier_command','armour',20);
+        var defenceText = game.add.bitmapText(cardDefence.x, cardDefence.y + 160, 'carrier_command_black','armour',20);
         defenceText.anchor.setTo(0.5, 0.5);
         defenceText.align = 'center';
 
@@ -194,15 +226,23 @@ var gear_menu_state = {
         infoText.anchor.setTo(0.5, 0.5);
         infoText.align = 'center';
 
-        var statText = game.add.bitmapText(player.x, player.y + 170 ,'carrier_command','Attack: 1\n\nDefence: 2\n\nMobility: 3', 20);
+        statText = game.add.bitmapText(player.x, player.y + 170 ,'carrier_command_black','Attack:' + attackTxt+ '\n\nDefence: ' + defenceTxt + '\n\nMobility: ' + mobilityTxt, 20);
         statText.anchor.setTo(0.5, 0.5);
         statText.align = 'center';
+
+        this.signin_btn = game.add.button(submitX, submitY, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
+        this.back_btn= game.add.button(homeX, homeY, 'Home_button', this.back_btn_click, this, 2, 1, 0);
 
         debug_console.init_log();
         debug_console.debug_log("You're on the gear menu screen. Signed in as: " + user.username);
 
         this.init_card_selectors();
 
+    },
+
+    update: function() {
+
+        statText.setText('Attack:' + attackTxt + '\n\nDefence: ' + defenceTxt + '\n\nMobility: ' + mobilityTxt);
     },
 
     // Builds groups for cards in each category we can pull up when the user needs to select a car
