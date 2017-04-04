@@ -2,9 +2,36 @@
 * Created by Bryon on 2017-02-03.
 */
 
-
-// Sample output provided by the sim server
+// output provided by the sim server
 var battleData = user.simulation_data;
+var storedData =[
+    {"action":"defense","player":"1","number":"21.5981"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"defense","player":"2","number":"3.55549"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"attack","player":"1","number":"0"},
+    {}
+]
 
 var playerOne;
 var playerTwo;
@@ -48,9 +75,7 @@ var playerNum;
 var i = 0; 
 var delayTimer = 4000;
 
-var card1;
-var card2;
-var card3;
+var cardWin;
 
 var attackCloseSound;
 var attackFarSound;
@@ -61,6 +86,12 @@ var walkSound;
 var winMusic;
 var battleMusic;
 var healSound;
+
+var playerFirst;
+var playerSecond;
+var winner;
+var reward;
+
 
 
 /**
@@ -84,6 +115,19 @@ var battle_system_state = {
         console.log("battle_system_state: create");
 
         console.log(battleData);
+
+        playerFirst = user.opponent.username;
+        playerSecond = user.username
+        winner = 'none';
+        reward = 'none';
+
+        console.log('First player: ' + playerFirst);
+        console.log('Second player: ' + playerSecond)
+        console.log('Winner: ' + winner);
+        console.log('Reward: ' + reward);
+
+        // add music to state
+        menumusic.pause();
 
         battleMusic = game.add.audio('battlewmusic');
         battleMusic.loopFull(0.05);
@@ -117,9 +161,140 @@ var battle_system_state = {
             console.log("Loading battle data from the meta-server's response.");
             battleData = user.simulation_data;
         }
+        else{
+            battleData = storedData;
+        }
 
-        // Add the menu background to screen
+        // Add the menu background and HUD to screen
         background = game.add.sprite(0,0, 'Background');
+        HUD1 = game.add.sprite(645, 580, 'HUD');
+        HUD1.anchor.setTo(0.5, 0.5);
+
+        // get who is first player and set sprites/text accordingly
+        if (playerFirst == user.opponent.username){
+            console.log('first player: ' + playerFirst);
+            console.log(user.opponent.character_type);
+
+            // Add the players projectiles to the screen and set them invisible, add the animation.
+            playerOneProj = game.add.sprite(140 - playerSpacing, 360, pickCharWeapon(user.opponent.character_type));
+            playerOneProj.anchor.setTo(0.5, 0.5);
+            playerOneProj.visible = false;
+            playerOneProj.animations.add('shootRight', [0, 1, 2, 3]);
+            playerOneProj.animations.add('shootLeft', [7, 6, 5, 4]);
+
+            playerTwoProj = game.add.sprite(1140 + playerSpacing, 360, pickCharWeapon(user.character_type));
+            playerTwoProj.anchor.setTo(0.5, 0.5);
+            playerTwoProj.visible = false;
+            playerTwoProj.animations.add('shootRight', [0, 1, 2, 3]);
+            playerTwoProj.animations.add('shootLeft', [7, 6, 5, 4]);
+
+            // Add the players to the screen, and att the animations
+            playerTwo = game.add.sprite(1140 + playerSpacing, 360, pickCharacter(user.character_type));
+            playerTwo.anchor.setTo(0.5, 0.5);
+            playerTwo.animations.add('attackRight', [0, 1, 2, 3, 4]);
+            playerTwo.animations.add('attackLeft', [41, 40, 39, 38, 37]);
+            playerTwo.animations.add('idleRight', [8, 9, 10, 11]);
+            playerTwo.animations.add('idleLeft', [33, 32, 31, 30]);
+            playerTwo.animations.add('walkRight', [18, 19, 20]);
+            playerTwo.animations.add('walkLeft', [23, 22, 21]);
+            playerTwo.animations.add('jumpRight', [12, 13, 14]);
+            playerTwo.animations.add('jumpLeft', [29, 28, 27]);
+            playerTwo.animations.add('dieRight', [6, 7]);
+            playerTwo.animations.add('dieLeft', [35, 34]);
+            playerTwo.animations.add('rollRight', [15, 16, 17]);
+            playerTwo.animations.add('rollLeft', [26, 25, 24]);
+            playerTwo.animations.add('blockRight', [5]);
+            playerTwo.animations.add('blockLeft', [36]);
+
+            playerOne = game.add.sprite(140 - playerSpacing, 360, pickCharacter(user.opponent.character_type));
+            playerOne.anchor.setTo(0.5, 0.5);
+            playerOne.animations.add('attackRight', [0, 1, 2, 3, 4]);
+            playerOne.animations.add('attackLeft', [41, 40, 39, 38, 37]);
+            playerOne.animations.add('idleRight', [8, 9, 10, 11]);
+            playerOne.animations.add('idleLeft', [33, 32, 31, 30]);
+            playerOne.animations.add('walkRight', [18, 19, 20]);
+            playerOne.animations.add('walkLeft', [23, 22, 21]);
+            playerOne.animations.add('jumpRight', [12, 13, 14]);
+            playerOne.animations.add('jumpLeft', [29, 28, 27]);
+            playerOne.animations.add('dieRight', [6, 7]);
+            playerOne.animations.add('dieLeft', [35, 34]);
+            playerOne.animations.add('rollRight', [15, 16, 17]);
+            playerOne.animations.add('rollLeft', [26, 25, 24]);
+            playerOne.animations.add('blockRight', [5]);
+            playerOne.animations.add('blockLeft', [36]);
+
+            // Add the players text to the screen.
+            playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.opponent.username + '\n\nHP: ' + playerOneHP, 20);
+            playerOneText.anchor.setTo(0.5, 0.5);
+            playerOneText.align = 'left';
+
+            playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.username + '\n\nHP: ' + playerTwoHP, 20);
+            playerTwoText.anchor.setTo(0.5, 0.5);
+            playerTwoText.align = 'right';
+        }
+
+        else {
+
+            console.log('First player: ' + playerFirst);
+            console.log(user.character_type);
+
+            // Add the players projectiles to the screen and set them invisible, add the animation.
+            playerOneProj = game.add.sprite(140 - playerSpacing, 360, pickCharWeapon(user.character_type));
+            playerOneProj.anchor.setTo(0.5, 0.5);
+            playerOneProj.visible = false;
+            playerOneProj.animations.add('shootRight', [0, 1, 2, 3]);
+            playerOneProj.animations.add('shootLeft', [7, 6, 5, 4]);
+
+            playerTwoProj = game.add.sprite(1140 + playerSpacing, 360, pickCharWeapon(user.opponent.character_type));
+            playerTwoProj.anchor.setTo(0.5, 0.5);
+            playerTwoProj.visible = false;
+            playerTwoProj.animations.add('shootRight', [0, 1, 2, 3]);
+            playerTwoProj.animations.add('shootLeft', [7, 6, 5, 4]);
+
+            // Add the players to the screen, and att the animations
+            playerTwo = game.add.sprite(1140 + playerSpacing, 360, pickCharacter(user.opponent.character_type));
+            playerTwo.anchor.setTo(0.5, 0.5);
+            playerTwo.animations.add('attackRight', [0, 1, 2, 3, 4]);
+            playerTwo.animations.add('attackLeft', [41, 40, 39, 38, 37]);
+            playerTwo.animations.add('idleRight', [8, 9, 10, 11]);
+            playerTwo.animations.add('idleLeft', [33, 32, 31, 30]);
+            playerTwo.animations.add('walkRight', [18, 19, 20]);
+            playerTwo.animations.add('walkLeft', [23, 22, 21]);
+            playerTwo.animations.add('jumpRight', [12, 13, 14]);
+            playerTwo.animations.add('jumpLeft', [29, 28, 27]);
+            playerTwo.animations.add('dieRight', [6, 7]);
+            playerTwo.animations.add('dieLeft', [35, 34]);
+            playerTwo.animations.add('rollRight', [15, 16, 17]);
+            playerTwo.animations.add('rollLeft', [26, 25, 24]);
+            playerTwo.animations.add('blockRight', [5]);
+            playerTwo.animations.add('blockLeft', [36]);
+
+            playerOne = game.add.sprite(140 - playerSpacing, 360, pickCharacter(user.character_type));
+            playerOne.anchor.setTo(0.5, 0.5);
+            playerOne.animations.add('attackRight', [0, 1, 2, 3, 4]);
+            playerOne.animations.add('attackLeft', [41, 40, 39, 38, 37]);
+            playerOne.animations.add('idleRight', [8, 9, 10, 11]);
+            playerOne.animations.add('idleLeft', [33, 32, 31, 30]);
+            playerOne.animations.add('walkRight', [18, 19, 20]);
+            playerOne.animations.add('walkLeft', [23, 22, 21]);
+            playerOne.animations.add('jumpRight', [12, 13, 14]);
+            playerOne.animations.add('jumpLeft', [29, 28, 27]);
+            playerOne.animations.add('dieRight', [6, 7]);
+            playerOne.animations.add('dieLeft', [35, 34]);
+            playerOne.animations.add('rollRight', [15, 16, 17]);
+            playerOne.animations.add('rollLeft', [26, 25, 24]);
+            playerOne.animations.add('blockRight', [5]);
+            playerOne.animations.add('blockLeft', [36]);
+
+            // Add the players text to the screen.
+            playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.username + '\n\nHP: ' + playerOneHP, 20);
+            playerOneText.anchor.setTo(0.5, 0.5);
+            playerOneText.align = 'left';
+
+            playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.opponent.username + '\n\nHP: ' + playerTwoHP, 20);
+            playerTwoText.anchor.setTo(0.5, 0.5);
+            playerTwoText.align = 'right';
+        }
 
         // Add the players shasows to the screen.
         playerOneShadow = game.add.sprite(140 - playerSpacing, 405, 'Shadow');
@@ -127,7 +302,7 @@ var battle_system_state = {
         playerOneShadow.anchor.setTo(0.5, 0.5);
         playerTwoShadow.anchor.setTo(0.5, 0.5);
 
-        // Add the players projectiles to the screen and set them invisible, add the animation.
+       /* // Add the players projectiles to the screen and set them invisible, add the animation.
         playerOneProj = game.add.sprite(140 - playerSpacing, 360, pickCharWeapon ( user.character_type));
         playerOneProj.anchor.setTo(0.5, 0.5);
         playerOneProj.visible = false;
@@ -173,25 +348,22 @@ var battle_system_state = {
         playerOne.animations.add('rollRight', [15, 16, 17]);
         playerOne.animations.add('rollLeft', [26, 25, 24]);
         playerOne.animations.add('blockRight', [5]);
-        playerOne.animations.add('blockLeft', [36]);
+        playerOne.animations.add('blockLeft', [36]);*/
 
-        // Add the HUD to the screen
-        HUD1 = game.add.sprite(645, 580, 'HUD');
-        HUD1.anchor.setTo(0.5, 0.5);
-        
+
         // Add the actionText to the screen
         actionText = game.add.bitmapText(645, 580, 'carrier_command', 'Simulating Battle', 20);
         actionText.anchor.setTo(0.5, 0.5);
         actionText.align = 'center';
 
         // Add the players text to the screen.
-        playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.username + '\n\nHP: ' + playerOneHP, 10);
+       /* playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.username + '\n\nHP: ' + playerOneHP, 10);
         playerOneText.anchor.setTo(0.5, 0.5);
         playerOneText.align = 'left';
 
         playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.opponent.username + '\n\nHP: ' + playerTwoHP, 10);
         playerTwoText.anchor.setTo(0.5, 0.5);
-        playerTwoText.align = 'right';
+        playerTwoText.align = 'right';*/
 
         // Add the player HPText (the numbers above the head when they get hit) to the screen, set to invisible.
         playerOneHPText = game.add.bitmapText((140 - playerSpacing), 200, 'carrier_command', ' ' , 20);
@@ -237,8 +409,17 @@ var battle_system_state = {
         playerTwoHPText.x = playerTwo.x;
 
         // Update the playersText
-        playerOneText.setText (user.username + '\n\nHP: ' + playerOneHP );
-        playerTwoText.setText (user.opponent.username + '\n\nHP: ' + playerTwoHP );
+        if (playerFirst == user.opponent.username) {
+
+            playerOneText.setText(user.opponent.username + '\n\nHP: ' + playerOneHP);
+            playerTwoText.setText(user.username + '\n\nHP: ' + playerTwoHP);
+        }
+
+        else{
+
+            playerOneText.setText(user.username + '\n\nHP: ' + playerOneHP);
+            playerTwoText.setText(user.opponent.username + '\n\nHP: ' + playerTwoHP);
+        }
 
 
         // If canIdle is ture play the idle animation the way the player is facing
@@ -347,7 +528,7 @@ function movePlayer ( sprite, moveNum ){
     }
 
     // Update action text.
-    actionText.setText(playerNum + "\n\nMOVES TO\n\nSPOT " + moveNum );
+    actionText.setText(playerNum + "\n\nMOVES TO\n\nSPOT " + (moveNum + 1) );
 
     // set the player location after the sprite moves to the right location
     game.time.events.add( (1000 * animationTimer), (function() { setPlayerLoc( sprite, moveNum); canIdle = true; jumpSound.stop(); rollSound.stop(); walkSound.stop(); console.log(sprite.x);}), this );
@@ -509,28 +690,28 @@ function die( sprite, dieTimer ){
 
         sprite.animations.play('dieRight', 5, false);
         win (playerTwo);
-        actionText.setText(user.opponent.username + '\n\nWINS THE BATTLE');
+        actionText.setText(winner + '\n\nWINS THE BATTLE');
     }
 
     else if ( playerTwoFacing == 'right' && sprite == playerTwo ){
 
         sprite.animations.play('dieRight', 5, false);
         win (playerOne);
-        actionText.setText(user.username + '\n\nWINS THE BATTLE');
+        actionText.setText(winner + '\n\nWINS THE BATTLE');
     }
 
     else if ( playerOneFacing == 'left' && sprite == playerOne ){
 
         sprite.animations.play('dieLeft', 5, false);
         win (playerTwo);
-        actionText.setText(user.opponent.username + '\n\nWINS THE BATTLE');
+        actionText.setText(winner + '\n\nWINS THE BATTLE');
     }
 
     else{
 
         sprite.animations.play('dieLeft', 5, false);
         win (playerOne);
-        actionText.setText(user.username + '\n\nWINS THE BATTLE');
+        actionText.setText(winner + '\n\nWINS THE BATTLE');
     }
 
     //actionText.setText("PLAYER " + playerNum + " DEAD");
@@ -555,7 +736,7 @@ function block( sprite, damageNum){
     if ( playerOneFacing == 'right' && sprite == playerOne){
 
         sprite.animations.play('blockRight', 5, true);
-        playerOneHPText.setText('-' + damageNum);
+        playerOneHPText.setText('-' + parseInt(damageNum));
         playerOneHP -= parseInt(damageNum);
         playerOneHPText.visible = true;
     }
@@ -563,7 +744,7 @@ function block( sprite, damageNum){
     else if ( playerTwoFacing == 'right' && sprite == playerTwo){
 
         sprite.animations.play('blockRight', 5, true);
-        playerTwoHPText.setText('-' + damageNum);
+        playerTwoHPText.setText('-' + parseInt(damageNum));
         playerTwoHP -= parseInt(damageNum);
         playerTwoHPText.visible = true;
     }
@@ -571,7 +752,7 @@ function block( sprite, damageNum){
      else if ( playerOneFacing == 'left' && sprite == playerOne){
 
         sprite.animations.play('blockLeft', 5, true);
-        playerOneHPText.setText('-'+damageNum);
+        playerOneHPText.setText('-'+ parseInt(damageNum));
         playerOneHP -= parseInt(damageNum);
         playerOneHPText.visible = true;
     }
@@ -579,7 +760,7 @@ function block( sprite, damageNum){
     else {
 
         sprite.animations.play('blockLeft', 5, true);
-        playerTwoHPText.setText('-' + damageNum);
+        playerTwoHPText.setText('-' + parseInt(damageNum));
         playerTwoHP -= parseInt(damageNum);
         playerTwoHPText.visible = true;              
     }
@@ -597,14 +778,14 @@ function block( sprite, damageNum){
  */
 function setPlayerNumber( sprite ){
 
-    if ( sprite == playerOne){
+    if ( sprite == playerOne ){
 
-        playerNum =  user.username;
+        playerNum =  playerFirst;
     }
 
     else{
 
-        playerNum = user.opponent.username;
+        playerNum = playerSecond;
     }
 }
 
@@ -624,7 +805,7 @@ function heal( sprite, healNum){
     if ( playerOneFacing == 'right' && sprite == playerOne){
 
         sprite.animations.play('blockRight', 5, true);
-        playerOneHPText.setText('+' + healNum);
+        playerOneHPText.setText('+' +parseInt(healNum));
         playerOneHP += parseInt(healNum);
         playerOneHPText.visible = true;
     }
@@ -632,7 +813,7 @@ function heal( sprite, healNum){
     else if ( playerTwoFacing == 'right' && sprite == playerTwo){
 
         sprite.animations.play('blockRight', 5, true);
-        playerTwoHPText.setText('+' + healNum);
+        playerTwoHPText.setText('+' + parseInt(healNum));
         playerTwoHP += parseInt(healNum);
         playerTwoHPText.visible = true;
     }
@@ -640,7 +821,7 @@ function heal( sprite, healNum){
     else if ( playerOneFacing == 'left' && sprite == playerOne){
 
         sprite.animations.play('blockLeft', 5, true);
-        playerOneHPText.setText('+'+ healNum);
+        playerOneHPText.setText('+'+ parseInt(healNum));
         playerOneHP += parseInt(healNum);
         playerOneHPText.visible = true;
     }
@@ -648,7 +829,7 @@ function heal( sprite, healNum){
     else {
 
         sprite.animations.play('blockLeft', 5, true);
-        playerTwoHPText.setText('+' + healNum);
+        playerTwoHPText.setText('+' + parseInt(healNum));
         playerTwoHP += parseInt(healNum);
         playerTwoHPText.visible = true;
     }
@@ -665,7 +846,9 @@ function heal( sprite, healNum){
  * what is in thr obj. It delayes 4 sec after each loop to let the animations plat out.
  * @param battleObj
  */
-function battleLoop ( battleObj ) {  
+function battleLoop ( battleObj ) {
+
+    console.log('Battle Loop Started');
 
     setTimeout(function () { 
 
@@ -719,18 +902,47 @@ function battleLoop ( battleObj ) {
             heal (player, battleObj[i].number);
         }
 
-        // Call die function
+        // Find out who won, and call die function on other players sprite, or if it's a tie display tie text.
         else {
 
-            if ( battleObj[i].player== '1'){
+            if ( winner == 'none'){
+
+                console.log(winner);
+                battleMusic.stop();
+                winMusic.loopFull(0.05);
+
+                HUD1.visible = false;
+                playerOneText.visible = false;
+                playerTwoText.visible = false;
+                actionText.visible = false;
+
+                winnerText.setText ('IT WAS A DRAW\nBOTH PLAYERS\nLIVE TO\nDIE ANOTHER\nDAY.....' );
+                game.time.events.add( 1000, (function() { winnerText.visible = true; winTextVisible = true; }), this );
+                game.time.events.add( 10000, (function() { MatchOver(); }), this );
+
+            }
+
+            else if (winner == user.opponent.username && playerFirst == user.username){
 
                 player = playerOne;
+                console.log(winner);
+                die (player, 2000);
             }
-            else { player = playerTwo;}
 
-            die (player, battleObj[i].number);
-        }   
-  
+            else if (winner == user.username && playerFirst == user.username){
+
+                player = playerTwo;
+                console.log(winner);
+                die (player, 2000);
+            }
+
+            else {
+                player = playerTwo;
+                console.log(winner);
+                die (player, 2000);
+            }
+        }
+
         i++;
 
         // Loop for the length of battleObj
@@ -797,14 +1009,7 @@ function win ( sprite ) {
     playerTwoText.visible = false;
     actionText.visible = false;
 
-    if ( sprite == playerOne){
-
-        winnerText.setText (user.username + ' Is The Winner' );
-    }
-    else{
-
-        winnerText.setText (user.opponent.username + ' Is The Winner' );
-    }
+    winnerText.setText (winner + ' Is The Winner' );
 
     if (sprite.x <= 640) {
 
@@ -815,33 +1020,81 @@ function win ( sprite ) {
         sprite.animations.play('rollLeft', 5, true);
     }
 
-    card1 =  new card(game, 340, 560, 'Water', 'Mobility', 'Mobility card of Head-scratching Effectiveness', +10, +13);
-    card2 =  new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
-    card3 =  new card(game, 940, 560, 'Earth', 'Defence', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+    cardWin = new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+    game.add.existing(cardWin);
+    cardWin.scale.setTo(0.1, 0.1);
+    cardWin.shadow.scale.setTo(0.1, 0.1);
 
-    game.add.existing(card1);
-    card1.scale.setTo(0.1, 0.1);
-    card1.shadow.scale.setTo(0.1, 0.1);
-
-    game.add.existing(card2);
-    card2.scale.setTo(0.1, 0.1);
-    card2.shadow.scale.setTo(0.1, 0.1);
-
-    game.add.existing(card3);
-    card3.scale.setTo(0.1, 0.1);
-    card3.shadow.scale.setTo(0.1, 0.1);
-
-    game.add.tween(card1.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-    game.add.tween(card2.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-    game.add.tween(card3.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-
-    game.add.tween(card1.shadow.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-    game.add.tween(card2.shadow.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-    game.add.tween(card3.shadow.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-
-    game.add.tween(sprite).to({ x: 640}, 2000, Phaser.Easing.Linear.None, true);
-    game.time.events.add( 2000, (function() { winnerText.visible = true; winTextVisible = true; sprite.animations.play('jumpLeft', 5, true);}), this );
+    game.add.tween(cardWin.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
+    game.add.tween(cardWin.shadow.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
+    game.add.tween(sprite).to({x: 640}, 2000, Phaser.Easing.Linear.None, true);
+    game.time.events.add(2000, (function () {
+            winnerText.visible = true;
+            winTextVisible = true;
+            sprite.animations.play('jumpLeft', 5, true);
+        }), this);
+    game.time.events.add(7000, (function () {
+            MatchOver();
+        }), this);
 }
+
+/**
+ * set up the match over stuff, adds the sword/sheild image and input so the user
+ * can decide to log out or play another match
+ * @constructor
+ */
+function MatchOver (){
+
+    if(winner != 'none'){
+        cardWin.visible = false;
+    }
+
+    var num = randomInt(0, 4);
+
+    // Add the sword/sheild art to the screen, picking randomly from sword_ss sprite sheet
+    var sword = game.add.sprite( 640, 560,'Sword');
+    sword.frame = num;
+    sword.anchor.setTo(0.5, 0.5);
+    sword.scale.setTo(0.8, 0.8);
+
+    // Add the match again text to screen, and when clicked launch rematch_btn_click function
+    var matchAgainText = game.add.bitmapText(sword.x, sword.y - 35, 'carrier_command_black','PLAY AGAIN',15);
+    matchAgainText.anchor.setTo(0.5, 0.5);
+    matchAgainText.align = 'center';
+    matchAgainText.inputEnabled = true;
+    matchAgainText.events.onInputDown.add(rematch_btn_click, this);
+
+    // Add the log out text to screen, and when clicked launch logout_btn_click function
+    var logOutText = game.add.bitmapText(sword.x, sword.y + 15, 'carrier_command_black','LOG OUT',17);
+    logOutText.anchor.setTo(0.5, 0.5);
+    logOutText.align = 'center';
+    logOutText.inputEnabled = true;
+    logOutText.events.onInputDown.add(logout_btn_click, this);
+}
+
+/**
+ * Stops win misic and takes the user back to the main menu state
+ */
+function rematch_btn_click(){
+
+    menuclick.play();
+    winMusic.stop();
+    menumusic.resume();
+    console.log("battle_state: rematch_btn_click");
+    game.state.start("main_menu");
+}
+
+/**
+ * Stops win music and reloads the game
+ */
+function logout_btn_click(){
+
+    menuclick.play();
+    winMusic.stop();
+    console.log("battle_state: logout_btn_click");
+    location.reload();
+}
+
 
 /**
  * Sends the card to the meta-server to remove it from the player's inventory

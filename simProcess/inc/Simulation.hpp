@@ -86,7 +86,12 @@ namespace Schwarma
                 }
                 if(formatType && (::strcmp(formatType,"json")) == 0)
                 {
-                    stream<<"{}"<<std::endl;
+                    if(this->players[0]->stats.health <= 0)
+                        stream<<"{\"winner\":"<<"\""<<this->players[1]->player_name<<"\"}"<<std::endl;
+                    else if(this->players[1]->stats.health <= 0)
+                        stream<<"{\"winner\":"<<"\""<<this->players[0]->player_name<<"\"}"<<std::endl;
+                    else
+                        stream<<"{\"winner\":\"none\"}"<<std::endl;
                     stream<<"]";
                 }
                 return 0;
