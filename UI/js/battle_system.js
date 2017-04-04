@@ -409,6 +409,14 @@ var battle_system_state = {
         playerOneHPText.x = playerOne.x;
         playerTwoHPText.x = playerTwo.x;
 
+        if ( playerOneHP > 100){
+            playerOneHP = 100;
+        }
+
+        if ( playerTwoHP > 100){
+            playerTwoHP = 100;
+        }
+
         // Update the playersText
         if (playerFirst == user.opponent.username) {
 
@@ -926,20 +934,31 @@ function battleLoop ( battleObj ) {
             else if (winner == user.opponent.username && playerFirst == user.username){
 
                 player = playerOne;
-                console.log(winner);
+                console.log('winner' + winner);
+                console.log('Die1: ' + user.username);
                 die (player, 2000);
             }
 
             else if (winner == user.username && playerFirst == user.username){
 
                 player = playerTwo;
-                console.log(winner);
+                console.log('Winner:' + winner);
+                console.log('Die2:' + user.opponent.username);
+                die (player, 2000);
+            }
+
+            else if (winner == user.username && playerFirst == user.opponent.username){
+
+                player = playerOne;
+                console.log('Winner:' + winner);
+                console.log('Die3:' + user.opponent.username);
                 die (player, 2000);
             }
 
             else {
                 player = playerTwo;
-                console.log(winner);
+                console.log('Winner:' + winner);
+                console.log('Die4:' + user.username);
                 die (player, 2000);
             }
         }
@@ -1012,7 +1031,7 @@ function win ( sprite ) {
 
     if (winner == user.username) {
 
-        winnerText.setText(winner + ' Is The Winner');
+        winnerText.setText(winner + ' you won!');
 
         if (sprite.x <= 640) {
 
@@ -1023,7 +1042,15 @@ function win ( sprite ) {
             sprite.animations.play('rollLeft', 5, true);
         }
 
-        cardWin = new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+        //cardWin = new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+
+        cardWin = new card(game, 640, 560,
+            user.battle_metadata.reward.elementalStatBonus.element,
+            user.battle_metadata.reward.type,
+            user.battle_metadata.reward.name,
+            user.battle_metadata.reward.statBonus.bonus.toFixed(1),
+            user.battle_metadata.reward.elementalStatBonus.bonus.toFixed(1));
+
         game.add.existing(cardWin);
         cardWin.scale.setTo(0.1, 0.1);
         cardWin.shadow.scale.setTo(0.1, 0.1);
@@ -1041,7 +1068,7 @@ function win ( sprite ) {
 
     else{
 
-        winnerText.setText('You Lost, loser');
+        winnerText.setText(user.username +' Lost,you loser');
 
         if (sprite.x <= 640) {
 
