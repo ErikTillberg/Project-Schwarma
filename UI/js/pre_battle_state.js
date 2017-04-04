@@ -280,6 +280,9 @@ var pre_battle_state = {
                 console.log("===BATTLE_DATA_2===");
                 console.log("====BATTLE START====");
                 console.log(response.message);
+
+                console.log("DATA TYPE:" + typeof response.message)
+
                 user.init_battle_metadata(response.message);
                 console.log(response.message);
                 game.state.start("battle_system");
