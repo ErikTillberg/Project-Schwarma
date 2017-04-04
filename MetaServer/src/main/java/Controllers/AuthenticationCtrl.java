@@ -87,10 +87,18 @@ public class AuthenticationCtrl {
             ArrayList<Equipment> equipmentArrayList = InventoryCtrl.generateInitialEquipmentInventory(new_user.getRating(),
                                                                     Constants.int_constants.get("initial_inventory_size"));
 
-
-            new_user.setEquippedChest(equipmentArrayList.get(0));
-            new_user.setEquippedBoots(equipmentArrayList.get(3));
-            new_user.setEquippedWeapon(equipmentArrayList.get(6));
+            //God don't look at this.
+            for (Equipment e : equipmentArrayList){
+                if (e.getType().equals(Equipment.BOOTS)){
+                    new_user.setEquippedBoots(e);
+                }
+                if (e.getType().equals(Equipment.SHIELD)){
+                    new_user.setEquippedChest(e);
+                }
+                if (e.getType().equals(Equipment.WEAPON)){
+                    new_user.setEquippedWeapon(e);
+                }
+            }
 
             new_user.setEquipment(equipmentArrayList);
             new_user.setCards(cardArrayList);
