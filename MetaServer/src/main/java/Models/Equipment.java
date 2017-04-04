@@ -155,7 +155,7 @@ public class Equipment {
 
             //FOR NOW LETS JUST ADD ONE ELEMENTAL STAT FOR FUN
             //IT WILL HAVE A RANDOM ELEMENT TYPE AND BE OF THE STAT TYPE OF THE CARD
-            Double maxReward = 10.0;
+            Double maxReward = 5.0;
             Double min = RNGUtil.getSqrtValue(userRating - rating_range, maxReward);
             Double max = RNGUtil.getSqrtValue(userRating + rating_range, maxReward);
 

@@ -8,6 +8,7 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.query.Query;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -130,7 +131,14 @@ public class Battle {
          *  {attack_bonus, movement_speed, resistance_to_damage,
          *  resistance_to_fire, resistance_to_ice, resistance_to_earth}
          */
-        int [] player_stats = Battle.processPlayerEquipment(player.getEquipment());
+
+        ArrayList<Equipment> equippedEquipment = new ArrayList<>();
+
+        equippedEquipment.add(player.getEquippedBoots());
+        equippedEquipment.add(player.getEquippedWeapon());
+        equippedEquipment.add(player.getEquippedChest());
+
+        int [] player_stats = Battle.processPlayerEquipment(equippedEquipment);
         base_stats.addProperty("attack_bonus", player_stats[0]);
         base_stats.addProperty("movement_speed", player_stats[1]);
         base_stats.addProperty("resistance_to_damage", player_stats[2]);
