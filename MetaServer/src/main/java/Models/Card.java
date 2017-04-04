@@ -216,7 +216,7 @@ public class Card {
 
             //FOR NOW LETS JUST ADD ONE ELEMENTAL STAT FOR FUN
             //IT WILL HAVE A RANDOM ELEMENT TYPE AND BE OF THE STAT TYPE OF THE CARD
-            Double maxReward = 50.0;
+            Double maxReward = 5.0;
 
             Double min = RNGUtil.getSqrtValue(userRating - rating_range, maxReward);
             Double max = RNGUtil.getSqrtValue(userRating + rating_range, maxReward);
@@ -231,9 +231,11 @@ public class Card {
         //Every card should have some sort of bonus that is given to the card.
         //To start, let's start with a single bonus, to the stat of the type of card that is being created.
         Double maxReward = 50.0; //I guess just +50% for now is fine I dunno
+        if (type == Card.ATTACK){maxReward = 40.0;}
+        if (type == Card.MOBILITY) {maxReward = 2.0;}
+        if (type == Card.DEFENSE){maxReward = 10.0;}
         Double min = RNGUtil.getSqrtValue(userRating - rating_range, maxReward);
         Double max = RNGUtil.getSqrtValue(userRating + rating_range, maxReward);
-
 
         StatBonus statBonus;
         if(type.equals(MOBILITY)) {
