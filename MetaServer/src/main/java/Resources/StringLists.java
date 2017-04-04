@@ -50,7 +50,25 @@ public class StringLists {
             "embiggening",
             "cromulent",
             "illegitimate",
-            "varying"
+            "varying",
+            "bigly",
+            "tubular",
+            "titular",
+            "cool",
+            "super-hot",
+            "deadly",
+            "neat",
+            "lit",
+            "super-duper",
+            "formal",
+            "unprofessional",
+            "dicked",
+            "tinkered",
+            "professional",
+            "Gary-Busey-Like",
+            "noobish",
+            "lily-livered",
+            "well-cooked"
     };
 
     public static String[] CARD_NOUNS = {
@@ -96,7 +114,12 @@ public class StringLists {
             "lethargy",
             "impotence",
             "clumsiness",
-            "tuck"
+            "tuck",
+            "havoc",
+            "neatness",
+            "credit",
+            "tubes",
+            "porkchops"
         //I could go on forever.
     };
 
