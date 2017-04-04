@@ -4,6 +4,34 @@
 
 // output provided by the sim server
 var battleData = user.simulation_data;
+var storedData =[
+    {"action":"defense","player":"1","number":"21.5981"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"defense","player":"2","number":"3.55549"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"attack","player":"1","number":"0"},
+    {}
+]
 
 var playerOne;
 var playerTwo;
