@@ -2,7 +2,6 @@
 * Created by Bryon on 2017-02-03.
 */
 
-
 // output provided by the sim server
 var battleData = user.simulation_data;
 
@@ -48,9 +47,7 @@ var playerNum;
 var i = 0; 
 var delayTimer = 4000;
 
-var card1;
-var card2;
-var card3;
+var cardWin;
 
 var attackCloseSound;
 var attackFarSound;
@@ -63,6 +60,8 @@ var battleMusic;
 var healSound;
 
 var playerFirst;
+var winner;
+var reward;
 
 /**
 * Manages game assets and rendering of all battle animations.
@@ -87,8 +86,12 @@ var battle_system_state = {
         console.log(battleData);
 
         playerFirst = user.opponent.username;
+        winner = 'none';
+        reward = 'none';
 
-        console.log(playerFirst);
+        console.log('First player: ' + playerFirst);
+        console.log('Winner: ' + winner);
+        console.log('Reward: ' + reward);
 
         // add music to state
         menumusic.pause();
@@ -807,7 +810,9 @@ function heal( sprite, healNum){
  * what is in thr obj. It delayes 4 sec after each loop to let the animations plat out.
  * @param battleObj
  */
-function battleLoop ( battleObj ) {  
+function battleLoop ( battleObj ) {
+
+    console.log('Battle Loop Started');
 
     setTimeout(function () { 
 
@@ -864,9 +869,9 @@ function battleLoop ( battleObj ) {
         // Find out who won, and call die function on other players sprite, or if it's a tie display tie text.
         else {
 
-            if ( battleData[i].winner == 'none'){
+            if ( winner == 'none'){
 
-                console.log(battleData[i].winner);
+                console.log(winner);
                 battleMusic.stop();
                 winMusic.loopFull(0.05);
 
@@ -881,16 +886,23 @@ function battleLoop ( battleObj ) {
 
             }
 
-            else if (battleData[i].winner == user.opponent.username){
+            else if (winner == user.opponent.username && playerFirst == user.username){
 
                 player = playerOne;
-                console.log(battleData[i].winner);
+                console.log(winner);
+                die (player, 2000);
+            }
+
+            else if (winner == user.username && playerFirst == user.username){
+
+                player = playerTwo;
+                console.log(winner);
                 die (player, 2000);
             }
 
             else {
                 player = playerTwo;
-                console.log(battleData[i].winner);
+                console.log(winner);
                 die (player, 2000);
             }
         }
@@ -979,33 +991,28 @@ function win ( sprite ) {
         sprite.animations.play('rollLeft', 5, true);
     }
 
-    //card1 =  new card(game, 340, 560, 'Water', 'Mobility', 'Mobility card of Head-scratching Effectiveness', +10, +13);
-    card2 =  new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
-    //card3 =  new card(game, 940, 560, 'Earth', 'Defence', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+    if (reward != 'none') {
 
-   /* game.add.existing(card1);
-    card1.scale.setTo(0.1, 0.1);
-    card1.shadow.scale.setTo(0.1, 0.1);*/
+        cardWin = new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
 
-    game.add.existing(card2);
-    card2.scale.setTo(0.1, 0.1);
-    card2.shadow.scale.setTo(0.1, 0.1);
+        game.add.existing(cardWin);
+        cardWin.scale.setTo(0.1, 0.1);
+        cardWin.shadow.scale.setTo(0.1, 0.1);
 
-    /*game.add.existing(card3);
-    card3.scale.setTo(0.1, 0.1);
-    card3.shadow.scale.setTo(0.1, 0.1);*/
+        game.add.tween(cardWin.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
 
-   // game.add.tween(card1.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-    game.add.tween(card2.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-    //game.add.tween(card3.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
+        game.add.tween(cardWin.shadow.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
 
-   // game.add.tween(card1.shadow.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-    game.add.tween(card2.shadow.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-    //game.add.tween(card3.shadow.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-
-    game.add.tween(sprite).to({ x: 640}, 2000, Phaser.Easing.Linear.None, true);
-    game.time.events.add( 2000, (function() { winnerText.visible = true; winTextVisible = true; sprite.animations.play('jumpLeft', 5, true);}), this );
-    game.time.events.add( 7000, (function() { MatchOver();}), this );
+        game.add.tween(sprite).to({x: 640}, 2000, Phaser.Easing.Linear.None, true);
+        game.time.events.add(2000, (function () {
+            winnerText.visible = true;
+            winTextVisible = true;
+            sprite.animations.play('jumpLeft', 5, true);
+        }), this);
+        game.time.events.add(7000, (function () {
+            MatchOver();
+        }), this);
+    }
 }
 
 /**
@@ -1015,7 +1022,7 @@ function win ( sprite ) {
  */
 function MatchOver (){
 
-    card2.visible = false;
+    cardWin.visible = false;
 
     var num = randomInt(0, 4);
 

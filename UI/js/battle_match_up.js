@@ -43,7 +43,7 @@ var match_up_state = {
         playerCharcter.animations.play('walk', 5, true);
 
 
-        var char1StatText = game.add.bitmapText(playerCharcter.x, playerCharcter.y + 140, 'carrier_command_black','ATTACK: 3\n\nMOBILITY: 1\n\nDEFENCE: 2',20);
+        var char1StatText = game.add.bitmapText(playerCharcter.x, playerCharcter.y + 140, 'carrier_command_black','LEVEL: '+ user.opponenr.rating,20);
         char1StatText.anchor.setTo(0.5, 0.5);
         char1StatText.align = 'center';
 
@@ -57,7 +57,7 @@ var match_up_state = {
         var walk = playerCharcter2.animations.add('walk');
         playerCharcter2.animations.play('walk', 5, true);
 
-        var char2StatText = game.add.bitmapText(playerCharcter2.x, playerCharcter2.y + 140, 'carrier_command_black','ATTACK: 1\n\nMOBILITY: 2\n\nDEFENCE: 3',20);
+        var char2StatText = game.add.bitmapText(playerCharcter2.x, playerCharcter2.y + 140, 'carrier_command_black','LEVEL: ' + user.rating,20);
         char2StatText.anchor.setTo(0.5, 0.5);
         char2StatText.align = 'center';
 
