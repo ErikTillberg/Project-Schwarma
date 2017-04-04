@@ -43,9 +43,9 @@ var match_up_state = {
         playerCharcter.animations.play('walk', 5, true);
 
 
-        var char1StatText = game.add.bitmapText(playerCharcter.x, playerCharcter.y + 140, 'carrier_command_black','LEVEL: '+ user.opponenr.rating,20);
+       /* var char1StatText = game.add.bitmapText(playerCharcter.x, playerCharcter.y + 140, 'carrier_command_black','LEVEL: '+ user.opponenr.rating,20);
         char1StatText.anchor.setTo(0.5, 0.5);
-        char1StatText.align = 'center';
+        char1StatText.align = 'center';*/
 
 
         playerCharcter2 = game.add.sprite(330, 400, pickCharacter ( user.character_type));
@@ -57,9 +57,9 @@ var match_up_state = {
         var walk = playerCharcter2.animations.add('walk');
         playerCharcter2.animations.play('walk', 5, true);
 
-        var char2StatText = game.add.bitmapText(playerCharcter2.x, playerCharcter2.y + 140, 'carrier_command_black','LEVEL: ' + user.rating,20);
+       /* var char2StatText = game.add.bitmapText(playerCharcter2.x, playerCharcter2.y + 140, 'carrier_command_black','LEVEL: ' + user.rating,20);
         char2StatText.anchor.setTo(0.5, 0.5);
-        char2StatText.align = 'center';
+        char2StatText.align = 'center';*/
 
 
         // Add the title text to the screen                

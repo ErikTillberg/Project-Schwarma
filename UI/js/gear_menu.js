@@ -130,9 +130,6 @@ var gear_menu_state = {
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
-        this.signin_btn = game.add.button(submitX, submitY, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
-        this.back_btn= game.add.button(homeX, homeY, 'Home_button', this.back_btn_click, this, 2, 1, 0);
-
         player = game.add.sprite(640, 420,  pickCharacter (  user.character_type));
         player.anchor.setTo(0.5, 0.5);
         player.scale.setTo(1.5, 1.5);
@@ -163,7 +160,7 @@ var gear_menu_state = {
             defenceTxt = 2;
         }
 
-        cardMobility = new card(game, 1020, 160,
+        cardMobility = new card(game, 1040, 160,
             user.equipped_gear.equipped_boots.elementalStatBonus.element,
             'boots', user.equipped_gear.equipped_boots.name,
             user.equipped_gear.equipped_boots.statBonus.bonus.toFixed(1),
@@ -182,7 +179,7 @@ var gear_menu_state = {
 
         // cardAttack = new card(game, 1040, 520, 'fire', 'attack', 'big sword of Stupid Stuff', +1, +13);
 
-        cardAttack = new card(game, 1020, 520,
+        cardAttack = new card(game, 1040, 520,
             user.equipped_gear.equipped_weapon.elementalStatBonus.element,
             'weapon',
             user.equipped_gear.equipped_weapon.name,
@@ -200,7 +197,7 @@ var gear_menu_state = {
 
         // cardDefence = new card(game, 240, 360, 'earth', 'defence', 'small shield of Boring Thing', +1, +13);
 
-        cardDefence = new card(game, 260, 360,
+        cardDefence = new card(game, 240, 360,
             user.equipped_gear.equipped_chest.elementalStatBonus.element,
             'shield', user.equipped_gear.equipped_chest.name,
             user.equipped_gear.equipped_chest.statBonus.bonus.toFixed(1),
@@ -222,6 +219,9 @@ var gear_menu_state = {
         statText = game.add.bitmapText(player.x, player.y + 170 ,'carrier_command','Attack:' + attackTxt+ '\n\nDefence: ' + defenceTxt + '\n\nMobility: ' + mobilityTxt, 20);
         statText.anchor.setTo(0.5, 0.5);
         statText.align = 'center';
+
+        this.signin_btn = game.add.button(submitX, submitY, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
+        this.back_btn= game.add.button(homeX, homeY, 'Home_button', this.back_btn_click, this, 2, 1, 0);
 
         debug_console.init_log();
         debug_console.debug_log("You're on the gear menu screen. Signed in as: " + user.username);
