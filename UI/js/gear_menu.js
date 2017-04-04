@@ -231,7 +231,7 @@ var gear_menu_state = {
         this.back_btn= game.add.button(homeX, homeY, 'Home_button', this.back_btn_click, this, 2, 1, 0);
 
         debug_console.init_log();
-        debug_console.debug_log("You're on the gear menu screen. Signed in as: " + user.username);
+        debug_console.debug_log("Signed in as: " + user.username);
 
         this.init_card_selectors();
 

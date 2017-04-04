@@ -45,7 +45,6 @@ var signup_state = {
         titleText.align = 'center';
         // Initialize the debug_console
         debug_console.init_log();
-        debug_console.debug_log("You're on the signup screen.");
 
         // Add input fields for email, username, password and confirm password.
         this.username_input = game.add.inputField(sword.x - 115, sword.y - 130, {

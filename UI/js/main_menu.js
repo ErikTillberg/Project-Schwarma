@@ -53,7 +53,7 @@ var main_menu_state = {
         titleText.align = 'center';
 
         debug_console.init_log();
-        debug_console.debug_log("You're on the main menu screen. Signed in as: " + user.username);
+        debug_console.debug_log("Signed in as: " + user.username);
 
         // Button to select the gear screen
         this.gear_btn_text = game.add.bitmapText(banner.x, 375, 'carrier_command_black','EQUIP GEAR',22);
@@ -198,7 +198,20 @@ var main_menu_state = {
 
         console.log("Matchmaking socket closed.\nCode: " + object.code + "\nMessage: " + object.reason);
         debug_console.message_log(object.reason);
-        this.matchmaking_socket = null;
+        main_menu_state.matchmaking_socket = null;
+
+        // Clear matchmaking metadata
+        main_menu_state.matchmaking_active = false;
+        main_menu_state.matchmaking_time = 0;
+
+        // Clear the timer that is updating the matchmaking elapsed time
+        clearInterval(main_menu_state.matchmaking_timer_id);
+
+        main_menu_state.matchmaking_cancel_btn_text.visible = false;
+        main_menu_state.matchmaking_btn_text.visible = true;
+
+        debug_console.error_log("Couldn't find a match.");
+
     },
 
     /**
@@ -207,7 +220,7 @@ var main_menu_state = {
     matchmaking_timer: function() {
 
         main_menu_state.matchmaking_time += server.matchmaking_timer_interval/1000;
-        debug_console.message_log("Time in matchmaking: " + String(main_menu_state.matchmaking_time) + " seconds.");
+        debug_console.message_log("Matchmaking: " + String(main_menu_state.matchmaking_time) + " seconds.");
     },
 
     /**
