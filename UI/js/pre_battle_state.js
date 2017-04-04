@@ -241,7 +241,10 @@ var pre_battle_state = {
     battle_message: function(message) {
 
         var response = JSON.parse(message.data);
-        console.log(message);
+        console.log("====MESSAGE FROM META-SERVER====");
+        console.log("TYPE:" + response.type);
+        console.log("typof message type " + typeof response.type);
+        console.log(response.message);
 
         // Check to see if this is a standard message or one that means we can start the battle
         if (response.type == "Battle Data1") {
@@ -249,6 +252,7 @@ var pre_battle_state = {
             // If the battle data is not defined, just return to the main menu.
             if (response.message === undefined) {
 
+                console.log("===BATTLE_DATA_1===");
                 console.log("====BATTLE DATA UNDEFINED====");
                 console.log("Battle could not start. Simulation data was undefined.");
                 console.log(response.message);
@@ -265,6 +269,7 @@ var pre_battle_state = {
 
             // If the battle data is not defined, just return to the main menu.
             if (response.message === undefined) {
+
                 console.log("====BATTLE METADATA UNDEFINED====");
                 console.log("Battle could not start. Simulation data was undefined.");
                 console.log(response.message);
@@ -272,6 +277,7 @@ var pre_battle_state = {
 
             }else{
 
+                console.log("===BATTLE_DATA_2===");
                 console.log("====BATTLE START====");
                 console.log(response.message);
                 user.init_battle_metadata(response.message);
@@ -279,13 +285,6 @@ var pre_battle_state = {
                 game.state.start("battle_system");
 
             }
-
-        }else{
-
-            console.log("====MESSAGE FROM META-SERVER====");
-            console.log("type: " + response.type);
-            console.log(response.message);
-
         }
     },
     /**
