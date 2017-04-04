@@ -36,6 +36,9 @@ var load_state = {
         game.load.image('ArrowLeft', 'assets/Art/arrowLeft.png');
         game.load.image('muteon', 'assets/Art/muteon.png');
         game.load.image('muteoff', 'assets/Art/muteoff.png');
+        game.load.image('plus', 'assets/Art/plus.png');
+        game.load.image('minus', 'assets/Art/minus.png');
+
 
 
         game.load.spritesheet('Knight', 'assets/Art/KnightSpriteSheet.png', 384, 384);
