@@ -60,8 +60,11 @@ var battleMusic;
 var healSound;
 
 var playerFirst;
+var playerSecond;
 var winner;
 var reward;
+
+
 
 /**
 * Manages game assets and rendering of all battle animations.
@@ -86,10 +89,12 @@ var battle_system_state = {
         console.log(battleData);
 
         playerFirst = user.opponent.username;
+        playerSecond = user.username
         winner = 'none';
         reward = 'none';
 
         console.log('First player: ' + playerFirst);
+        console.log('Second player: ' + playerSecond)
         console.log('Winner: ' + winner);
         console.log('Reward: ' + reward);
 
@@ -654,28 +659,28 @@ function die( sprite, dieTimer ){
 
         sprite.animations.play('dieRight', 5, false);
         win (playerTwo);
-        actionText.setText(user.opponent.username + '\n\nWINS THE BATTLE');
+        actionText.setText(winner + '\n\nWINS THE BATTLE');
     }
 
     else if ( playerTwoFacing == 'right' && sprite == playerTwo ){
 
         sprite.animations.play('dieRight', 5, false);
         win (playerOne);
-        actionText.setText(user.username + '\n\nWINS THE BATTLE');
+        actionText.setText(winner + '\n\nWINS THE BATTLE');
     }
 
     else if ( playerOneFacing == 'left' && sprite == playerOne ){
 
         sprite.animations.play('dieLeft', 5, false);
         win (playerTwo);
-        actionText.setText(user.opponent.username + '\n\nWINS THE BATTLE');
+        actionText.setText(winner + '\n\nWINS THE BATTLE');
     }
 
     else{
 
         sprite.animations.play('dieLeft', 5, false);
         win (playerOne);
-        actionText.setText(user.username + '\n\nWINS THE BATTLE');
+        actionText.setText(winner + '\n\nWINS THE BATTLE');
     }
 
     //actionText.setText("PLAYER " + playerNum + " DEAD");
@@ -742,14 +747,14 @@ function block( sprite, damageNum){
  */
 function setPlayerNumber( sprite ){
 
-    if ( sprite == playerOne){
+    if ( sprite == playerOne ){
 
-        playerNum =  user.username;
+        playerNum =  playerFirst;
     }
 
     else{
 
-        playerNum = user.opponent.username;
+        playerNum = playerSecond;
     }
 }
 
@@ -973,14 +978,7 @@ function win ( sprite ) {
     playerTwoText.visible = false;
     actionText.visible = false;
 
-    if ( sprite == playerOne){
-
-        winnerText.setText (user.username + ' Is The Winner' );
-    }
-    else{
-
-        winnerText.setText (user.opponent.username + ' Is The Winner' );
-    }
+    winnerText.setText (winner + ' Is The Winner' );
 
     if (sprite.x <= 640) {
 
@@ -991,28 +989,22 @@ function win ( sprite ) {
         sprite.animations.play('rollLeft', 5, true);
     }
 
-    if (reward != 'none') {
+    cardWin = new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+    game.add.existing(cardWin);
+    cardWin.scale.setTo(0.1, 0.1);
+    cardWin.shadow.scale.setTo(0.1, 0.1);
 
-        cardWin = new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
-
-        game.add.existing(cardWin);
-        cardWin.scale.setTo(0.1, 0.1);
-        cardWin.shadow.scale.setTo(0.1, 0.1);
-
-        game.add.tween(cardWin.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
-
-        game.add.tween(cardWin.shadow.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
-
-        game.add.tween(sprite).to({x: 640}, 2000, Phaser.Easing.Linear.None, true);
-        game.time.events.add(2000, (function () {
+    game.add.tween(cardWin.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
+    game.add.tween(cardWin.shadow.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
+    game.add.tween(sprite).to({x: 640}, 2000, Phaser.Easing.Linear.None, true);
+    game.time.events.add(2000, (function () {
             winnerText.visible = true;
             winTextVisible = true;
             sprite.animations.play('jumpLeft', 5, true);
         }), this);
-        game.time.events.add(7000, (function () {
+    game.time.events.add(7000, (function () {
             MatchOver();
         }), this);
-    }
 }
 
 /**
