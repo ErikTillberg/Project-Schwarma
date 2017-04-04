@@ -133,6 +133,9 @@ var battle_system_state = {
             console.log("Loading battle data from the meta-server's response.");
             battleData = user.simulation_data;
         }
+        else{
+            battleData = storedData;
+        }
 
         // Add the menu background and HUD to screen
         background = game.add.sprite(0,0, 'Background');
