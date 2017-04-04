@@ -367,11 +367,11 @@ var battle_system_state = {
         playerTwoText.align = 'right';*/
 
         // Add the player HPText (the numbers above the head when they get hit) to the screen, set to invisible.
-        playerOneHPText = game.add.bitmapText((140 - playerSpacing), 200, 'carrier_command', ' ' , 20);
+        playerOneHPText = game.add.bitmapText((140 - playerSpacing), 200, 'carrier_command', ' ' , 15);
         playerOneHPText.anchor.setTo(0.5, 0.5);
         playerOneHPText.visible = false;
 
-        playerTwoHPText = game.add.bitmapText((1140 + playerSpacing), 200, 'carrier_command', ' ', 20);
+        playerTwoHPText = game.add.bitmapText((1140 + playerSpacing), 200, 'carrier_command', ' ', 15);
         playerTwoHPText.anchor.setTo(0.5, 0.5);
         playerTwoHPText.visible = false;
 
@@ -770,7 +770,7 @@ function block( sprite, damageNum){
     actionText.setText(playerNum +"\n\nBLOCKS");
 
     // Set HPText to invisible after animation plays.
-    game.time.events.add( 1000, (function() { canIdle = true; playerOneHPText.visible = false; playerTwoHPText.visible = false}), this ); 
+   // game.time.events.add( 1000, (function() { canIdle = true; playerOneHPText.visible = false; playerTwoHPText.visible = false}), this );
 }
 
 /**
