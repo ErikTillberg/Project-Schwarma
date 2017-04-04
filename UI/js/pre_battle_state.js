@@ -742,7 +742,7 @@ var pre_battle_state = {
         var card_x = (card_num % this.selector_columns) * this.selector_x_offset;
         var card_y = Math.floor(card_num / this.selector_columns) * this.selector_y_offset;
 
-        // Create a new card object
+        // Create a new card object, sending the direction if its a mobility card
         if(card_data.type == "mobility") {
 
             var new_card = new card(game,
