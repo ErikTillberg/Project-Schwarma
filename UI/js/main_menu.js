@@ -71,7 +71,7 @@ var main_menu_state = {
         this.matchmaking_btn_text.events.onInputDown.add(this.matchmaking_btn_click, this);
 
         // Brings the user to a test battle screen
-        this.logout_btn_text = game.add.bitmapText(banner.x, 485, 'carrier_command_black','LOG OUT',22);
+        this.logout_btn_text = game.add.bitmapText(banner.x, 475, 'carrier_command_black','LOG OUT',22);
         this.logout_btn_text.align = 'center';
         this.logout_btn_text.anchor.set(0.5, 0.5);
         this.logout_btn_text.inputEnabled = true;

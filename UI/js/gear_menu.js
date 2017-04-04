@@ -171,7 +171,7 @@ var gear_menu_state = {
         cardMobility.inputEnabled = true;
         cardMobility.events.onInputDown.add(this.card_click, {card: this.card});
 
-        var mobilityText = game.add.bitmapText(cardMobility.x, cardMobility.y + 160, 'carrier_command','boots',20);
+        var mobilityText = game.add.bitmapText(cardMobility.x, cardMobility.y + 160, 'carrier_command_black','boots',20);
 
         mobilityText.anchor.setTo(0.5, 0.5);
         mobilityText.align = 'center';
@@ -191,7 +191,7 @@ var gear_menu_state = {
         cardAttack.inputEnabled = true;
         cardAttack.events.onInputDown.add(this.card_click, {card: this.card});
 
-        var attackText = game.add.bitmapText(cardAttack.x, cardAttack.y - 160, 'carrier_command','weapon',20);
+        var attackText = game.add.bitmapText(cardAttack.x, cardAttack.y - 160, 'carrier_command_black','weapon',20);
         attackText.anchor.setTo(0.5, 0.5);
         attackText.align = 'center';
 
@@ -208,7 +208,7 @@ var gear_menu_state = {
         cardDefence.inputEnabled = true;
         cardDefence.events.onInputDown.add(this.card_click, {card: this.card});
 
-        var defenceText = game.add.bitmapText(cardDefence.x, cardDefence.y + 160, 'carrier_command','armour',20);
+        var defenceText = game.add.bitmapText(cardDefence.x, cardDefence.y + 160, 'carrier_command_black','armour',20);
         defenceText.anchor.setTo(0.5, 0.5);
         defenceText.align = 'center';
 
@@ -216,7 +216,7 @@ var gear_menu_state = {
         infoText.anchor.setTo(0.5, 0.5);
         infoText.align = 'center';
 
-        statText = game.add.bitmapText(player.x, player.y + 170 ,'carrier_command','Attack:' + attackTxt+ '\n\nDefence: ' + defenceTxt + '\n\nMobility: ' + mobilityTxt, 20);
+        statText = game.add.bitmapText(player.x, player.y + 170 ,'carrier_command_black','Attack:' + attackTxt+ '\n\nDefence: ' + defenceTxt + '\n\nMobility: ' + mobilityTxt, 20);
         statText.anchor.setTo(0.5, 0.5);
         statText.align = 'center';
 

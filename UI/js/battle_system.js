@@ -224,11 +224,11 @@ var battle_system_state = {
             playerOne.animations.add('blockLeft', [36]);
 
             // Add the players text to the screen.
-            playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.opponent.username + '\n\nHP: ' + playerOneHP, 10);
+            playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.opponent.username + '\n\nHP: ' + playerOneHP, 20);
             playerOneText.anchor.setTo(0.5, 0.5);
             playerOneText.align = 'left';
 
-            playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.username + '\n\nHP: ' + playerTwoHP, 10);
+            playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.username + '\n\nHP: ' + playerTwoHP, 20);
             playerTwoText.anchor.setTo(0.5, 0.5);
             playerTwoText.align = 'right';
         }
@@ -287,11 +287,11 @@ var battle_system_state = {
             playerOne.animations.add('blockLeft', [36]);
 
             // Add the players text to the screen.
-            playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.username + '\n\nHP: ' + playerOneHP, 10);
+            playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.username + '\n\nHP: ' + playerOneHP, 20);
             playerOneText.anchor.setTo(0.5, 0.5);
             playerOneText.align = 'left';
 
-            playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.opponent.username + '\n\nHP: ' + playerTwoHP, 10);
+            playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.opponent.username + '\n\nHP: ' + playerTwoHP, 20);
             playerTwoText.anchor.setTo(0.5, 0.5);
             playerTwoText.align = 'right';
         }
@@ -528,7 +528,7 @@ function movePlayer ( sprite, moveNum ){
     }
 
     // Update action text.
-    actionText.setText(playerNum + "\n\nMOVES TO\n\nSPOT " + moveNum );
+    actionText.setText(playerNum + "\n\nMOVES TO\n\nSPOT " + (moveNum + 1) );
 
     // set the player location after the sprite moves to the right location
     game.time.events.add( (1000 * animationTimer), (function() { setPlayerLoc( sprite, moveNum); canIdle = true; jumpSound.stop(); rollSound.stop(); walkSound.stop(); console.log(sprite.x);}), this );
@@ -1045,7 +1045,9 @@ function win ( sprite ) {
  */
 function MatchOver (){
 
-    cardWin.visible = false;
+    if(winner != 'none'){
+        cardWin.visible = false;
+    }
 
     var num = randomInt(0, 4);
 
