@@ -116,10 +116,10 @@ var battle_system_state = {
 
         console.log(battleData);
 
-        playerFirst = user.opponent.username;
-        playerSecond = user.username
-        winner = 'none';
-        reward = 'none';
+        playerFirst = battle_metadata.player1;
+        playerSecond = battle_metadata.player2;
+        winner = battle_metadata.winner;
+        reward = battle_metadata.reward;
 
         console.log('First player: ' + playerFirst);
         console.log('Second player: ' + playerSecond)
