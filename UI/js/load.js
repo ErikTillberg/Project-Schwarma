@@ -51,6 +51,7 @@ var load_state = {
         game.load.spritesheet('Fireball', 'assets/Art/FireBallSS.png', 102.5, 50);
         game.load.spritesheet('Flash', 'assets/Art/FlashSpriteSheet.png', 100, 100);
         game.load.spritesheet('Banner', 'assets/Art/banner_ss.png', 1000, 386);
+        game.load.spritesheet('sim', 'assets/Art/simSS.png', 600, 100);
 
         game.load.spritesheet('Sword', 'assets/Art/sword_ss.png', 750, 750);
         game.load.spritesheet('Button_back', 'assets/Art/button_ss.png', 200, 70);

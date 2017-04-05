@@ -142,8 +142,9 @@ var signup_state = {
     back_btn_click: function(){
 
         menuclick.play();
+        menumusic.stop();
         console.log("signin_state: back_btn_click");
-        location.reload();
+        game.state.start("load");
 
     },
 

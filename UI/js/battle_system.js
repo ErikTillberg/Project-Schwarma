@@ -92,6 +92,7 @@ var playerSecond;
 var winner;
 var reward;
 
+var sim;
 
 
 /**
@@ -170,6 +171,13 @@ var battle_system_state = {
         background = game.add.sprite(0,0, 'Background');
         HUD1 = game.add.sprite(645, 580, 'HUD');
         HUD1.anchor.setTo(0.5, 0.5);
+
+        sim = game.add.sprite(640, 360, 'sim');
+        sim.anchor.setTo(0.5, 0.5);
+        //sim.visible = false;
+        sim.animations.add('simStuff', [0, 1, 2, 3,4,5,6,7,8,9]);
+
+
 
         // get who is first player and set sprites/text accordingly
         if (playerFirst == user.opponent.username){
@@ -380,7 +388,10 @@ var battle_system_state = {
         winnerText.visible = false;
 
         // Run the battleLoop function.
+
         battleLoop(battleData);   
+        playSim();
+
 
     },
 
@@ -1052,7 +1063,6 @@ function win ( sprite ) {
             user.gear.push(user.battle_metadata.reward);
         }
 
-        //cardWin = new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
 
         cardWin = new card(game, 640, 560,
             user.battle_metadata.reward.elementalStatBonus.element,
@@ -1152,6 +1162,7 @@ function logout_btn_click(){
 
     menuclick.play();
     winMusic.stop();
+    menumusic.stop();
     console.log("battle_state: logout_btn_click");
     location.reload();
 }
@@ -1209,4 +1220,9 @@ function equipment_delete_success() {
 
 function equipment_delete_error() {
     console.log("Equipment was not properly deleted.");
+}
+
+function playSim (){
+    sim.animations.play('simStuff', 5, true);
+    game.time.events.add(3800, (function () {sim.visible = false;}), this);
 }
