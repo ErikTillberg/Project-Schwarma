@@ -16,11 +16,13 @@ namespace Schwarma
         private:
             Schwarma::Player* players[2];
         public:
+            //! Bind player objects to the simulaion
             Simulation(Schwarma::Player*player1,Schwarma::Player*player2)
             {
                 this->players[0] = player1;
                 this->players[1] = player2;
             }
+            //! Load player data for bound Player objects from file specified by path
             bool loadPlayerDataFromFile(const char*path)
             {
                 rapidjson::GenericDocument<rapidjson::UTF8<>> json;
@@ -98,8 +100,7 @@ namespace Schwarma
             }
         private:
 
-            //simulates a turn for entity1 "Against" entity2
-            //entity1 will move toward and attack entity2 if those actions are passed 
+            //! Simulates a turn for entity1 "Against" entity2. entity1 will move toward and attack entity2 if those actions are passed 
             template<class T>
             void tickEntityAgainst(Schwarma::Entity*entity1,Schwarma::Entity*entity2,int action,T&stream,const char*formatType = nullptr)
             {
