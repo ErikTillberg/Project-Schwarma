@@ -68,7 +68,8 @@ public class StringLists {
             "Gary-Busey-Like",
             "noobish",
             "lily-livered",
-            "well-cooked"
+            "well-cooked",
+            "acoustic"
     };
 
     public static String[] CARD_NOUNS = {
@@ -119,7 +120,8 @@ public class StringLists {
             "neatness",
             "credit",
             "tubes",
-            "porkchops"
+            "porkchops",
+            "terror"
         //I could go on forever.
     };
 
