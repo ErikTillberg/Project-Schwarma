@@ -36,7 +36,7 @@ card = function (game, x, y, element, cardtype, title, num1, num2) {
     if ( cardtype == 'attack' || cardtype == 'weapon'){
         Card_item.frame = 2;
     }
-    else if (cardtype == 'defence' || cardtype == 'shield'){
+    else if (cardtype == 'defense' || cardtype == 'shield'){
         Card_item.frame = 0;
     }
     else{
@@ -58,12 +58,20 @@ card = function (game, x, y, element, cardtype, title, num1, num2) {
         this.addChild(textNum1);
     }
 
-    if ( element != '' && parseInt(num2) > 0) {
+    if ( element != '' && parseInt(num2) > 0 || cardtype == 'mobility') {
 
-        var textNum2 = game.add.bitmapText(-20, 105, 'carrier_command_black', element + ':' + '+' + num2, 9);
-        textNum2.anchor.setTo(0.5, 0.5);
-        textNum2.align = 'left';
-        this.addChild(textNum2);
+        if (cardtype == 'mobility') {
+            var textNum2 = game.add.bitmapText(-20, 105, 'carrier_command_black', "Dir" + ': ' + num2, 9);
+            textNum2.anchor.setTo(0.5, 0.5);
+            textNum2.align = 'left';
+            this.addChild(textNum2);
+        }else{
+            var textNum2 = game.add.bitmapText(-20, 105, 'carrier_command_black', element + ':' + '+' + num2, 9);
+            textNum2.anchor.setTo(0.5, 0.5);
+            textNum2.align = 'left';
+            this.addChild(textNum2);
+        }
+
     }
 
     if ( this.x > 640 ){
@@ -97,7 +105,7 @@ var gear_menu_state = {
     selector_x_offset: 200,
     selector_y_offset: 200,
     selector_columns: 6,
-    selector_rows: 3,
+    selector_rows: 2,
 
     shield_card: 0,
     weapon_card: 0,
@@ -130,9 +138,6 @@ var gear_menu_state = {
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
-        this.signin_btn = game.add.button(submitX, submitY, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
-        this.back_btn= game.add.button(homeX, homeY, 'Home_button', this.back_btn_click, this, 2, 1, 0);
-
         player = game.add.sprite(640, 420,  pickCharacter (  user.character_type));
         player.anchor.setTo(0.5, 0.5);
         player.scale.setTo(1.5, 1.5);
@@ -163,7 +168,7 @@ var gear_menu_state = {
             defenceTxt = 2;
         }
 
-        cardMobility = new card(game, 1020, 160,
+        cardMobility = new card(game, 1040, 160,
             user.equipped_gear.equipped_boots.elementalStatBonus.element,
             'boots', user.equipped_gear.equipped_boots.name,
             user.equipped_gear.equipped_boots.statBonus.bonus.toFixed(1),
@@ -174,15 +179,14 @@ var gear_menu_state = {
         cardMobility.inputEnabled = true;
         cardMobility.events.onInputDown.add(this.card_click, {card: this.card});
 
-        var mobilityText = game.add.bitmapText(cardMobility.x, cardMobility.y + 160, 'carrier_command','boots',20);
+        var mobilityText = game.add.bitmapText(cardMobility.x, cardMobility.y + 160, 'carrier_command_black','boots',20);
 
         mobilityText.anchor.setTo(0.5, 0.5);
         mobilityText.align = 'center';
 
-
         // cardAttack = new card(game, 1040, 520, 'fire', 'attack', 'big sword of Stupid Stuff', +1, +13);
 
-        cardAttack = new card(game, 1020, 520,
+        cardAttack = new card(game, 1040, 520,
             user.equipped_gear.equipped_weapon.elementalStatBonus.element,
             'weapon',
             user.equipped_gear.equipped_weapon.name,
@@ -194,13 +198,13 @@ var gear_menu_state = {
         cardAttack.inputEnabled = true;
         cardAttack.events.onInputDown.add(this.card_click, {card: this.card});
 
-        var attackText = game.add.bitmapText(cardAttack.x, cardAttack.y - 160, 'carrier_command','weapon',20);
+        var attackText = game.add.bitmapText(cardAttack.x, cardAttack.y - 160, 'carrier_command_black','weapon',20);
         attackText.anchor.setTo(0.5, 0.5);
         attackText.align = 'center';
 
         // cardDefence = new card(game, 240, 360, 'earth', 'defence', 'small shield of Boring Thing', +1, +13);
 
-        cardDefence = new card(game, 260, 360,
+        cardDefence = new card(game, 240, 360,
             user.equipped_gear.equipped_chest.elementalStatBonus.element,
             'shield', user.equipped_gear.equipped_chest.name,
             user.equipped_gear.equipped_chest.statBonus.bonus.toFixed(1),
@@ -211,7 +215,7 @@ var gear_menu_state = {
         cardDefence.inputEnabled = true;
         cardDefence.events.onInputDown.add(this.card_click, {card: this.card});
 
-        var defenceText = game.add.bitmapText(cardDefence.x, cardDefence.y + 160, 'carrier_command','armour',20);
+        var defenceText = game.add.bitmapText(cardDefence.x, cardDefence.y + 160, 'carrier_command_black','armour',20);
         defenceText.anchor.setTo(0.5, 0.5);
         defenceText.align = 'center';
 
@@ -219,12 +223,15 @@ var gear_menu_state = {
         infoText.anchor.setTo(0.5, 0.5);
         infoText.align = 'center';
 
-        statText = game.add.bitmapText(player.x, player.y + 170 ,'carrier_command','Attack:' + attackTxt+ '\n\nDefence: ' + defenceTxt + '\n\nMobility: ' + mobilityTxt, 20);
+        statText = game.add.bitmapText(player.x, player.y + 170 ,'carrier_command_black','Attack:' + attackTxt+ '\n\nDefence: ' + defenceTxt + '\n\nMobility: ' + mobilityTxt, 20);
         statText.anchor.setTo(0.5, 0.5);
         statText.align = 'center';
 
+        this.signin_btn = game.add.button(submitX, submitY, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
+        this.back_btn= game.add.button(homeX, homeY, 'Home_button', this.back_btn_click, this, 2, 1, 0);
+
         debug_console.init_log();
-        debug_console.debug_log("You're on the gear menu screen. Signed in as: " + user.username);
+        debug_console.debug_log("Signed in as: " + user.username);
 
         this.init_card_selectors();
 
@@ -242,22 +249,58 @@ var gear_menu_state = {
         var num_chest_cards = 0;
         var num_boot_cards = 0;
 
+        var banner_x = 540;
+        var banner_y = -220;
+        var banner_font_size = 25;
+
         this.weapon_selector = game.add.group();
         this.chest_selector = game.add.group();
         this.boot_selector = game.add.group();
 
-        this.weapon_selector.add(game.add.sprite(-100,-100, 'menu_background'));
-        this.chest_selector.add(game.add.sprite(-100,-100, 'menu_background'));
-        this.boot_selector.add(game.add.sprite(-100,-100, 'menu_background'));
+        this.weapon_selector.add(game.add.sprite(-120,-300, 'menu_background'));
+        this.chest_selector.add(game.add.sprite(-120,-300, 'menu_background'));
+        this.boot_selector.add(game.add.sprite(-120,-300, 'menu_background'));
 
-        this.boot_selector.x = 100;
-        this.boot_selector.y = 100;
+        var weapon_banner = game.add.sprite(banner_x, banner_y, 'Banner');
+        weapon_banner.frame = 2;
+        weapon_banner.scale.setTo(0.5, 0.5);
+        weapon_banner.anchor.setTo(0.5, 0.2);
 
-        this.chest_selector.x = 100;
-        this.chest_selector.y = 100;
+        var weapon_text = game.add.bitmapText(weapon_banner.x, weapon_banner.y, 'carrier_command_black', "WEAPON", banner_font_size);
+        weapon_text.anchor.setTo(0.5, 0);
 
-        this.weapon_selector.x = 100;
-        this.weapon_selector.y = 100;
+        var boot_banner = game.add.sprite(banner_x, banner_y, 'Banner');
+        boot_banner.frame = 3;
+        boot_banner.scale.setTo(0.5, 0.5);
+        boot_banner.anchor.setTo(0.5, 0.2);
+
+        var boot_text = game.add.bitmapText(weapon_banner.x, weapon_banner.y, 'carrier_command_black', "BOOTS", banner_font_size);
+        boot_text.anchor.setTo(0.5, 0);
+
+        var chest_banner = game.add.sprite(banner_x, banner_y, 'Banner');
+        chest_banner.frame = 1;
+        chest_banner.scale.setTo(0.5, 0.5);
+        chest_banner.anchor.setTo(0.5, 0.2);
+
+        var chest_text = game.add.bitmapText(weapon_banner.x, weapon_banner.y, 'carrier_command_black', "ARMOUR", banner_font_size);
+        chest_text.anchor.setTo(0.5, 0);
+
+        this.weapon_selector.add(weapon_banner);
+        this.boot_selector.add(boot_banner);
+        this.chest_selector.add(chest_banner);
+
+        this.weapon_selector.add(weapon_text);
+        this.boot_selector.add(boot_text);
+        this.chest_selector.add(chest_text);
+
+        this.boot_selector.x = 120;
+        this.boot_selector.y = 300;
+
+        this.chest_selector.x = 120;
+        this.chest_selector.y = 300;
+
+        this.weapon_selector.x = 120;
+        this.weapon_selector.y = 300;
 
         for (var i = 0; i < user.gear.length; i++) {
 
@@ -324,7 +367,7 @@ var gear_menu_state = {
         console.log("selector_card_wrapper");
 
         var card_x = (gear_num % this.selector_columns) * this.selector_x_offset;
-        var card_y = Math.floor(gear_num / this.selector_rows) * this.selector_y_offset;
+        var card_y = Math.floor(gear_num / this.selector_columns) * this.selector_y_offset;
 
         var new_card = new card(game,
             card_x,
@@ -402,7 +445,7 @@ var gear_menu_state = {
        menuclick.play();
 
        console.log("Username: " + user.username);
-       console.log(user.gear[gear_menu_state.shield_card].id);
+       console.log(user.gear[gear_menu_state.shield_card]);
        console.log(user.gear[gear_menu_state.weapon_card]);
        console.log(user.gear[gear_menu_state.boot_card]);
 
@@ -421,14 +464,16 @@ var gear_menu_state = {
            success: this.set_equipment_success,
            error: this.set_equipment_failure
        });
-       game.state.start("main_menu");
 
     },
 
     set_equipment_success: function(data, textStatus, jqXHR) {
-            user.equippedChest = user.gear[gear_menu_state.shield_card];
-            user.equippedWeapon = user.gear[gear_menu_state.weapon_card];
-            user.equippedBoots = user.gear[gear_menu_state.boot_card];
+
+            console.log("Set Equipment success");
+
+            user.equipped_gear.equipped_chest = user.gear[gear_menu_state.shield_card];
+            user.equipped_gear.equipped_weapon = user.gear[gear_menu_state.weapon_card];
+            user.equipped_gear.equipped_boots = user.gear[gear_menu_state.boot_card];
 
             console.log(user);
             game.state.start("main_menu");
@@ -436,9 +481,16 @@ var gear_menu_state = {
 
     set_equipment_failure: function(jqXHR, textStatus, error) {
 
+       console.log("Set equipment failure");
+
+        user.equipped_gear.equipped_chest = user.gear[gear_menu_state.shield_card];
+        user.equipped_gear.equipped_weapon = user.gear[gear_menu_state.weapon_card];
+        user.equipped_gear.equipped_boots = user.gear[gear_menu_state.boot_card];
+        console.log(textStatus);
        console.log(error);
        console.log(jqXHR);
 
+        game.state.start("main_menu");
     },
 
     back_btn_click: function(){

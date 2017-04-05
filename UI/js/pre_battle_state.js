@@ -57,7 +57,7 @@ var pre_battle_state = {
     defense_cards: [],
     defense_triggers: [],
 
-    countdown_time_remaining: 60,
+    countdown_time_remaining: 600,
 
     // List of triggers, name is displayed to the user, condition object is sent to the sim server
     triggers: [
@@ -128,7 +128,7 @@ var pre_battle_state = {
         cardclick.volume = 0.2;
 
         var background = game.add.sprite(0,0, 'menu_background');
-        this.countdown_time_remaining = 60;
+        this.countdown_time_remaining = 600;
 
         // Open the battleSocket
         this.battle_socket = server.battle_socket();
@@ -170,14 +170,14 @@ var pre_battle_state = {
         this.mobility_roll_text = game.add.bitmapText(this.roll_text_x + this.roll_text_x_offset, this.roll_text_y, this.roll_text_font, "MOBILITY " + this.roll_percentages[1] + "%", this.roll_text_font_size);
         this.defense_roll_text = game.add.bitmapText(this.roll_text_x + this.roll_text_x_offset*2, this.roll_text_y, this.roll_text_font, "DEFENSE " + this.roll_percentages[2] + "%", this.roll_text_font_size);
 
-        this.attack_increase_roll = game.add.button(this.roll_text_x + 200, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("attack")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
-        this.attack_decrease_roll = game.add.button(this.roll_text_x - 50, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("attack")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.attack_increase_roll = game.add.button(this.roll_text_x + 200, this.roll_button_y, 'plus', function() {pre_battle_state.increase_roll("attack")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.attack_decrease_roll = game.add.button(this.roll_text_x - 50, this.roll_button_y, 'minus', function() {pre_battle_state.decrease_roll("attack")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
 
-        this.defense_increase_roll = game.add.button(this.roll_text_x + this.roll_text_x_offset*2 + 220, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("defense")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
-        this.defense_decrease_roll = game.add.button(this.roll_text_x + this.roll_text_x_offset*2 - 50, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("defense")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.defense_increase_roll = game.add.button(this.roll_text_x + this.roll_text_x_offset*2 + 220, this.roll_button_y, 'plus', function() {pre_battle_state.increase_roll("defense")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.defense_decrease_roll = game.add.button(this.roll_text_x + this.roll_text_x_offset*2 - 50, this.roll_button_y, 'minus', function() {pre_battle_state.decrease_roll("defense")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
 
-        this.mobility_increase_roll = game.add.button(this.roll_text_x + this.roll_text_x_offset + 240, this.roll_button_y, 'ArroeRight', function() {pre_battle_state.increase_roll("mobility")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
-        this.mobility_decrease_roll = game.add.button(this.roll_text_x + this.roll_text_x_offset - 50, this.roll_button_y, 'ArrowLeft', function() {pre_battle_state.decrease_roll("mobility")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.mobility_increase_roll = game.add.button(this.roll_text_x + this.roll_text_x_offset + 240, this.roll_button_y, 'plus', function() {pre_battle_state.increase_roll("mobility")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
+        this.mobility_decrease_roll = game.add.button(this.roll_text_x + this.roll_text_x_offset - 50, this.roll_button_y, 'minus', function() {pre_battle_state.decrease_roll("mobility")}).scale.setTo(this.roll_btn_scale, this.roll_btn_scale);
 
         this.total_roll = game.add.bitmapText(1120, 50, this.roll_text_font, this.roll_percentages[0] + this.roll_percentages[1] + this.roll_percentages[2] + "%", this.roll_text_font_size);
         this.countdown_timer_text = game.add.bitmapText(1130, 600, this.roll_text_font, this.countdown_time_remaining, this.roll_text_font_size);
@@ -241,28 +241,53 @@ var pre_battle_state = {
     battle_message: function(message) {
 
         var response = JSON.parse(message.data);
-        console.log(message);
+        console.log("====MESSAGE FROM META-SERVER====");
+        console.log("TYPE:" + response.type);
+        console.log("typof message type " + typeof response.type);
+        console.log(response.message);
 
         // Check to see if this is a standard message or one that means we can start the battle
-        if (response.type === "Battle Data") {
+        if (response.type == "Battle Data1") {
 
             // If the battle data is not defined, just return to the main menu.
             if (response.message === undefined) {
-                console.log("====BATTLE UNDEFINED====");
+
+                console.log("===BATTLE_DATA_1===");
+                console.log("====BATTLE DATA UNDEFINED====");
                 console.log("Battle could not start. Simulation data was undefined.");
                 console.log(response.message);
                 game.state.start("main_menu");
+
             }else{
-                console.log("====BATTLE START====");
+
                 user.init_simulation(JSON.parse(response.message));
                 console.log(response.message);
-                game.state.start("battle_system");
+
             }
 
-        }else{
-            console.log("====MESSAGE FROM META-SERVER====");
-            console.log("type: " + response.type);
-            console.log(response.message);
+        }else if (response.type == "Battle Data2") {
+
+            // If the battle data is not defined, just return to the main menu.
+            if (response.message === undefined) {
+
+                console.log("====BATTLE METADATA UNDEFINED====");
+                console.log("Battle could not start. Simulation data was undefined.");
+                console.log(response.message);
+                game.state.start("main_menu");
+
+            }else{
+
+                console.log("===BATTLE_DATA_2===");
+                console.log("====BATTLE START====");
+                console.log(response.message);
+
+                console.log("DATA TYPE:" + typeof response.message)
+
+                user.init_battle_metadata(response.message);
+                console.log(response.message);
+                game.state.start("battle_system");
+
+            }
         }
     },
     /**
@@ -645,14 +670,29 @@ var pre_battle_state = {
 
         var card_y = this.card_y + (this.card_y_offset * slot);
 
-        var new_card = new card(game,
-            card_x,
-            card_y,
-            card_data.elementalStatBonus.element,
-            card_data.type,
-            card_data.name,
-            card_data.statBonus.bonus.toFixed(2),
-            card_data.elementalStatBonus.bonus.toFixed(2));
+        if (card_data.type == "mobility") {
+
+            var new_card = new card(game,
+                card_x,
+                card_y,
+                card_data.elementalStatBonus.element,
+                card_data.type,
+                card_data.name,
+                card_data.statBonus.bonus.toFixed(2),
+                card_data.direction);
+
+        }else{
+
+            var new_card = new card(game,
+                card_x,
+                card_y,
+                card_data.elementalStatBonus.element,
+                card_data.type,
+                card_data.name,
+                card_data.statBonus.bonus.toFixed(2),
+                card_data.elementalStatBonus.bonus.toFixed(2));
+
+        }
 
         new_card.scale.setTo(0.7, 0.7);
         new_card.inputEnabled = true;
@@ -702,15 +742,30 @@ var pre_battle_state = {
         var card_x = (card_num % this.selector_columns) * this.selector_x_offset;
         var card_y = Math.floor(card_num / this.selector_columns) * this.selector_y_offset;
 
-        // Create a new card object
-        var new_card = new card(game,
-            card_x,
-            card_y,
-            card_data.elementalStatBonus.element,
-            card_data.type,
-            card_data.name,
-            card_data.statBonus.bonus.toFixed(2),
-            card_data.elementalStatBonus.bonus.toFixed(2));
+        // Create a new card object, sending the direction if its a mobility card
+        if(card_data.type == "mobility") {
+
+            var new_card = new card(game,
+                card_x,
+                card_y,
+                card_data.elementalStatBonus.element,
+                card_data.type,
+                card_data.name,
+                card_data.statBonus.bonus.toFixed(2),
+                card_data.direction);
+
+        }else{
+
+            var new_card = new card(game,
+                card_x,
+                card_y,
+                card_data.elementalStatBonus.element,
+                card_data.type,
+                card_data.name,
+                card_data.statBonus.bonus.toFixed(2),
+                card_data.elementalStatBonus.bonus.toFixed(2));
+
+        }
 
         // Append some custom data to the card to make assignments and look-ups easier in the click handler.
         new_card.list_index = card_list_index;

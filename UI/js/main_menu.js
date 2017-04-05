@@ -53,7 +53,7 @@ var main_menu_state = {
         titleText.align = 'center';
 
         debug_console.init_log();
-        debug_console.debug_log("You're on the main menu screen. Signed in as: " + user.username);
+        debug_console.debug_log("Signed in as: " + user.username);
 
         // Button to select the gear screen
         this.gear_btn_text = game.add.bitmapText(banner.x, 375, 'carrier_command_black','EQUIP GEAR',22);
@@ -71,11 +71,11 @@ var main_menu_state = {
         this.matchmaking_btn_text.events.onInputDown.add(this.matchmaking_btn_click, this);
 
         // Brings the user to a test battle screen
-        this.battle_btn_text = game.add.bitmapText(banner.x, 485, 'carrier_command_black','BATTLE SYSTEM\nDEMO',18);
-        this.battle_btn_text.align = 'center';
-        this.battle_btn_text.anchor.set(0.5, 0.5);
-        this.battle_btn_text.inputEnabled = true;
-        this.battle_btn_text.events.onInputDown.add(this.battle_btn_click, this);
+        this.logout_btn_text = game.add.bitmapText(banner.x, 475, 'carrier_command_black','LOG OUT',22);
+        this.logout_btn_text.align = 'center';
+        this.logout_btn_text.anchor.set(0.5, 0.5);
+        this.logout_btn_text.inputEnabled = true;
+        this.logout_btn_text.events.onInputDown.add(this.logout_btn_click, this);
        
         // Shown when matchmaking is in progress so it can be cancelled
         this.matchmaking_cancel_btn_text = game.add.bitmapText(banner.x, 425, 'carrier_command_black','CANCEL',22);
@@ -169,6 +169,7 @@ var main_menu_state = {
      */
     cancel_matchmaking: function() {
 
+        menuclick.play();
         console.log("main_menu: cancel_matchmaking");
 
         // This will trigger the matchmaking_end callback for onclose event
@@ -197,7 +198,20 @@ var main_menu_state = {
 
         console.log("Matchmaking socket closed.\nCode: " + object.code + "\nMessage: " + object.reason);
         debug_console.message_log(object.reason);
-        this.matchmaking_socket = null;
+        main_menu_state.matchmaking_socket = null;
+
+        // Clear matchmaking metadata
+        main_menu_state.matchmaking_active = false;
+        main_menu_state.matchmaking_time = 0;
+
+        // Clear the timer that is updating the matchmaking elapsed time
+        clearInterval(main_menu_state.matchmaking_timer_id);
+
+        main_menu_state.matchmaking_cancel_btn_text.visible = false;
+        main_menu_state.matchmaking_btn_text.visible = true;
+
+        debug_console.error_log("Couldn't find a match.");
+
     },
 
     /**
@@ -206,7 +220,7 @@ var main_menu_state = {
     matchmaking_timer: function() {
 
         main_menu_state.matchmaking_time += server.matchmaking_timer_interval/1000;
-        debug_console.message_log("Time in matchmaking: " + String(main_menu_state.matchmaking_time) + " seconds.");
+        debug_console.message_log("Matchmaking: " + String(main_menu_state.matchmaking_time) + " seconds.");
     },
 
     /**
@@ -222,11 +236,11 @@ var main_menu_state = {
     /**
      * Handles back button click. Loads the battle_system state.
      */
-    battle_btn_click: function() {
+    logout_btn_click: function() {
 
         menuclick.play();
-        console.log("main_menu: battle_btn_click");
-        game.state.start("battle_match_up");
+        console.log("main_menu_state: logout_btn_click");
+        location.reload();
     },
     /**
      * Function creates a random integer between min and max and returns it.

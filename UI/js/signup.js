@@ -45,7 +45,6 @@ var signup_state = {
         titleText.align = 'center';
         // Initialize the debug_console
         debug_console.init_log();
-        debug_console.debug_log("You're on the signup screen.");
 
         // Add input fields for email, username, password and confirm password.
         this.username_input = game.add.inputField(sword.x - 115, sword.y - 130, {
@@ -58,17 +57,17 @@ var signup_state = {
             placeHolder: 'USER NAME'
         });
 
-        this.email_input = game.add.inputField(sword.x - 115, sword.y - 80, {
-            font: '30px VT323',
-            fill: '#212121',
-            width: 200,
-            padding: 10,
-            borderWidth: 10,
-            borderColor: '#000',
-            placeHolder: 'EMAIL'
-        });
+        // this.email_input = game.add.inputField(sword.x - 115, sword.y - 80, {
+        //     font: '30px VT323',
+        //     fill: '#212121',
+        //     width: 200,
+        //     padding: 10,
+        //     borderWidth: 10,
+        //     borderColor: '#000',
+        //     placeHolder: 'EMAIL'
+        // });
 
-        this.password_input = game.add.inputField(sword.x - 115, sword.y - 30,  {
+        this.password_input = game.add.inputField(sword.x - 115, sword.y - 80,  {
             font: '30px VT323',
             fill: '#212121',
             width: 200,
@@ -79,7 +78,7 @@ var signup_state = {
             type: PhaserInput.InputType.password
         });
 
-        this.confirm_password_input = game.add.inputField(sword.x - 115, sword.y +20, {
+        this.confirm_password_input = game.add.inputField(sword.x - 115, sword.y -30, {
             font: '30px VT323',
             fill: '#212121',
             width: 200,
@@ -108,7 +107,7 @@ var signup_state = {
         debug_console.message_log("Signing up...");
         menuclick.play();
         var username = this.username_input.value;
-        var email = this.email_input.value;
+        // var email = this.email_input.value;
         var password = this.password_input.value;
         var confirm_password = this.confirm_password_input.value;
 
@@ -119,8 +118,6 @@ var signup_state = {
             debug_console.error_log("Password and confirm password do not match.");
         }else if (username === "") {
             debug_console.error_log("Username is required.");
-        }else if (email == "") {
-            debug_console.error_log("Email is required.");
         }else if (password == "") {
             debug_console.error_log("Password is required");
         }else if (confirm_password == "") {
@@ -132,7 +129,7 @@ var signup_state = {
                 type: "POST",
                 crossDomain: true,
                 dataType: 'json',
-                url: server.signup_endpoint(username, email, password, character),
+                url: server.signup_endpoint(username, username, password, character),
                 success: this.signup_success,
                 error: this.signup_failure
             });
@@ -146,7 +143,7 @@ var signup_state = {
 
         menuclick.play();
         menumusic.stop();
-        console.log("signup_state: back_btn_click");
+        console.log("signin_state: back_btn_click");
         game.state.start("load");
 
     },
