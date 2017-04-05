@@ -96,7 +96,13 @@ public class User {
 
     public int getRating() { return rating; }
 
-    public void setRating(int rating) { this.rating = rating; }
+    public void setRating(int rating) {
+        if (rating < 0){
+            this.rating = 0;
+            return;
+        }
+        this.rating = rating;
+    }
 
     public String getPassword() { return password; }
 
