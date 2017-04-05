@@ -128,7 +128,7 @@ var pre_battle_state = {
         cardclick.volume = 0.2;
 
         var background = game.add.sprite(0,0, 'menu_background');
-        this.countdown_time_remaining = 60;
+        this.countdown_time_remaining = 600;
 
         // Open the battleSocket
         this.battle_socket = server.battle_socket();
