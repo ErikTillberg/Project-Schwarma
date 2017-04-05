@@ -18,7 +18,7 @@ var debug_console = {
      */
     init_log: function(){
         console.log("debug_console: init_log");
-        this.output_box = game.add.text(40, 660, "");
+        this.output_box = game.add.text(40, 697, "");
     },
 
     /**

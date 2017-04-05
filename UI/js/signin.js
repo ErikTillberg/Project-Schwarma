@@ -48,7 +48,6 @@ var signin_state = {
 
         // Initialize the debug_console
         debug_console.init_log();
-        debug_console.debug_log("You're on the signin screen.");
 
         // Add the username text input field to the screen
         this.username_input = game.add.inputField(sword.x - 115, sword.y - 80, {

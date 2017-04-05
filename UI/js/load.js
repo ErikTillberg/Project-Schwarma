@@ -23,6 +23,9 @@ var load_state = {
      */
     preload: function() {
 
+        debug_console.init_log();
+        debug_console.message_log("Loading game assets...");
+
         // TODO load game assets here when they exist
         game.plugins.add(PhaserInput.Plugin);
         game.load.image('red_button_img','assets/buttons/big-buttons/01-red-normal.png');

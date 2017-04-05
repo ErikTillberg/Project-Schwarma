@@ -57,7 +57,7 @@ var pre_battle_state = {
     defense_cards: [],
     defense_triggers: [],
 
-    countdown_time_remaining: 60,
+    countdown_time_remaining: 600,
 
     // List of triggers, name is displayed to the user, condition object is sent to the sim server
     triggers: [
@@ -128,7 +128,7 @@ var pre_battle_state = {
         cardclick.volume = 0.2;
 
         var background = game.add.sprite(0,0, 'menu_background');
-        this.countdown_time_remaining = 60;
+        this.countdown_time_remaining = 600;
 
         // Open the battleSocket
         this.battle_socket = server.battle_socket();
@@ -742,7 +742,7 @@ var pre_battle_state = {
         var card_x = (card_num % this.selector_columns) * this.selector_x_offset;
         var card_y = Math.floor(card_num / this.selector_columns) * this.selector_y_offset;
 
-        // Create a new card object
+        // Create a new card object, sending the direction if its a mobility card
         if(card_data.type == "mobility") {
 
             var new_card = new card(game,
