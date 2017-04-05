@@ -88,6 +88,10 @@ public class BattleSocketCtrl {
             String att_attribute = messageAsMap.get("att_attribute");
             String def_attribute = messageAsMap.get("def_attribute");
             String mov_attribute = messageAsMap.get("mov_attribute");
+
+            String type = messageAsMap.get("type");
+            if (type != null){return;}
+
             List<Card> user_cards = JsonUtil.parseToListOfCards(messageAsMap.get("user_cards"));
 
             activeUsers.put(username, user);
