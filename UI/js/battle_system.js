@@ -2,9 +2,36 @@
 * Created by Bryon on 2017-02-03.
 */
 
-
 // output provided by the sim server
 var battleData = user.simulation_data;
+var storedData =[
+    {"action":"defense","player":"1","number":"21.5981"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"defense","player":"2","number":"3.55549"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"attack","player":"2","number":"0"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"attack","player":"1","number":"0"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"movePlayer","player":"1","number":"1"},
+    {"action":"movePlayer","player":"2","number":"5"},
+    {"action":"attack","player":"1","number":"0"},
+    {}
+]
 
 var playerOne;
 var playerTwo;
@@ -48,9 +75,7 @@ var playerNum;
 var i = 0; 
 var delayTimer = 4000;
 
-var card1;
-var card2;
-var card3;
+var cardWin;
 
 var attackCloseSound;
 var attackFarSound;
@@ -63,6 +88,11 @@ var battleMusic;
 var healSound;
 
 var playerFirst;
+var playerSecond;
+var winner;
+var reward;
+
+
 
 /**
 * Manages game assets and rendering of all battle animations.
@@ -84,11 +114,18 @@ var battle_system_state = {
     create: function() {
         console.log("battle_system_state: create");
 
-        console.log(battleData);
+        console.log(battleData)
 
-        playerFirst = user.opponent.username;
 
-        console.log(playerFirst);
+        playerFirst = user.battle_metadata.player1;
+        playerSecond = user.battle_metadata.player2;
+        winner = user.battle_metadata.winner;
+        reward = user.battle_metadata.reward;
+
+        console.log('First player: ' + playerFirst);
+        console.log('Second player: ' + playerSecond)
+        console.log('Winner: ' + winner);
+        console.log('Reward: ' + reward);
 
         // add music to state
         menumusic.pause();
@@ -124,6 +161,9 @@ var battle_system_state = {
         if (user.simulation_data !== undefined) {
             console.log("Loading battle data from the meta-server's response.");
             battleData = user.simulation_data;
+        }
+        else{
+            battleData = storedData;
         }
 
         // Add the menu background and HUD to screen
@@ -185,11 +225,11 @@ var battle_system_state = {
             playerOne.animations.add('blockLeft', [36]);
 
             // Add the players text to the screen.
-            playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.opponent.username + '\n\nHP: ' + playerOneHP, 10);
+            playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.opponent.username + '\n\nHP: ' + playerOneHP, 20);
             playerOneText.anchor.setTo(0.5, 0.5);
             playerOneText.align = 'left';
 
-            playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.username + '\n\nHP: ' + playerTwoHP, 10);
+            playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.username + '\n\nHP: ' + playerTwoHP, 20);
             playerTwoText.anchor.setTo(0.5, 0.5);
             playerTwoText.align = 'right';
         }
@@ -248,11 +288,11 @@ var battle_system_state = {
             playerOne.animations.add('blockLeft', [36]);
 
             // Add the players text to the screen.
-            playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.username + '\n\nHP: ' + playerOneHP, 10);
+            playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.username + '\n\nHP: ' + playerOneHP, 20);
             playerOneText.anchor.setTo(0.5, 0.5);
             playerOneText.align = 'left';
 
-            playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.opponent.username + '\n\nHP: ' + playerTwoHP, 10);
+            playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.opponent.username + '\n\nHP: ' + playerTwoHP, 20);
             playerTwoText.anchor.setTo(0.5, 0.5);
             playerTwoText.align = 'right';
         }
@@ -327,11 +367,11 @@ var battle_system_state = {
         playerTwoText.align = 'right';*/
 
         // Add the player HPText (the numbers above the head when they get hit) to the screen, set to invisible.
-        playerOneHPText = game.add.bitmapText((140 - playerSpacing), 200, 'carrier_command', ' ' , 20);
+        playerOneHPText = game.add.bitmapText((140 - playerSpacing), 200, 'carrier_command', ' ' , 15);
         playerOneHPText.anchor.setTo(0.5, 0.5);
         playerOneHPText.visible = false;
 
-        playerTwoHPText = game.add.bitmapText((1140 + playerSpacing), 200, 'carrier_command', ' ', 20);
+        playerTwoHPText = game.add.bitmapText((1140 + playerSpacing), 200, 'carrier_command', ' ', 15);
         playerTwoHPText.anchor.setTo(0.5, 0.5);
         playerTwoHPText.visible = false;
 
@@ -368,6 +408,14 @@ var battle_system_state = {
 
         playerOneHPText.x = playerOne.x;
         playerTwoHPText.x = playerTwo.x;
+
+        if ( playerOneHP > 100){
+            playerOneHP = 100;
+        }
+
+        if ( playerTwoHP > 100){
+            playerTwoHP = 100;
+        }
 
         // Update the playersText
         if (playerFirst == user.opponent.username) {
@@ -489,7 +537,7 @@ function movePlayer ( sprite, moveNum ){
     }
 
     // Update action text.
-    actionText.setText(playerNum + "\n\nMOVES TO\n\nSPOT " + moveNum );
+    actionText.setText(playerNum + "\n\nMOVES TO\n\nSPOT " + (moveNum + 1) );
 
     // set the player location after the sprite moves to the right location
     game.time.events.add( (1000 * animationTimer), (function() { setPlayerLoc( sprite, moveNum); canIdle = true; jumpSound.stop(); rollSound.stop(); walkSound.stop(); console.log(sprite.x);}), this );
@@ -651,28 +699,28 @@ function die( sprite, dieTimer ){
 
         sprite.animations.play('dieRight', 5, false);
         win (playerTwo);
-        actionText.setText(user.opponent.username + '\n\nWINS THE BATTLE');
+        actionText.setText(winner + '\n\nWINS THE BATTLE');
     }
 
     else if ( playerTwoFacing == 'right' && sprite == playerTwo ){
 
         sprite.animations.play('dieRight', 5, false);
         win (playerOne);
-        actionText.setText(user.username + '\n\nWINS THE BATTLE');
+        actionText.setText(winner + '\n\nWINS THE BATTLE');
     }
 
     else if ( playerOneFacing == 'left' && sprite == playerOne ){
 
         sprite.animations.play('dieLeft', 5, false);
         win (playerTwo);
-        actionText.setText(user.opponent.username + '\n\nWINS THE BATTLE');
+        actionText.setText(winner + '\n\nWINS THE BATTLE');
     }
 
     else{
 
         sprite.animations.play('dieLeft', 5, false);
         win (playerOne);
-        actionText.setText(user.username + '\n\nWINS THE BATTLE');
+        actionText.setText(winner + '\n\nWINS THE BATTLE');
     }
 
     //actionText.setText("PLAYER " + playerNum + " DEAD");
@@ -727,10 +775,10 @@ function block( sprite, damageNum){
     }
 
     // Update actionText.
-    actionText.setText(playerNum +"\n\nBLOCKS");
+   // actionText.setText(playerNum +"\n\nBLOCKS");
 
     // Set HPText to invisible after animation plays.
-    game.time.events.add( 1000, (function() { canIdle = true; playerOneHPText.visible = false; playerTwoHPText.visible = false}), this ); 
+   game.time.events.add( 1000, (function() { canIdle = true; playerOneHPText.visible = false; playerTwoHPText.visible = false}), this );
 }
 
 /**
@@ -739,14 +787,14 @@ function block( sprite, damageNum){
  */
 function setPlayerNumber( sprite ){
 
-    if ( sprite == playerOne){
+    if ( sprite == playerOne ){
 
-        playerNum =  user.username;
+        playerNum =  playerFirst;
     }
 
     else{
 
-        playerNum = user.opponent.username;
+        playerNum = playerSecond;
     }
 }
 
@@ -807,7 +855,9 @@ function heal( sprite, healNum){
  * what is in thr obj. It delayes 4 sec after each loop to let the animations plat out.
  * @param battleObj
  */
-function battleLoop ( battleObj ) {  
+function battleLoop ( battleObj ) {
+
+    console.log('Battle Loop Started');
 
     setTimeout(function () { 
 
@@ -864,9 +914,9 @@ function battleLoop ( battleObj ) {
         // Find out who won, and call die function on other players sprite, or if it's a tie display tie text.
         else {
 
-            if ( battleData[i].winner == 'none'){
+            if ( winner == 'none'){
 
-                console.log(battleData[i].winner);
+                console.log(winner);
                 battleMusic.stop();
                 winMusic.loopFull(0.05);
 
@@ -881,16 +931,34 @@ function battleLoop ( battleObj ) {
 
             }
 
-            else if (battleData[i].winner == user.opponent.username){
+            else if (winner == user.opponent.username && playerFirst == user.username){
 
                 player = playerOne;
-                console.log(battleData[i].winner);
+                console.log('winner' + winner);
+                console.log('Die1: ' + user.username);
+                die (player, 2000);
+            }
+
+            else if (winner == user.username && playerFirst == user.username){
+
+                player = playerTwo;
+                console.log('Winner:' + winner);
+                console.log('Die2:' + user.opponent.username);
+                die (player, 2000);
+            }
+
+            else if (winner == user.username && playerFirst == user.opponent.username){
+
+                player = playerOne;
+                console.log('Winner:' + winner);
+                console.log('Die3:' + user.opponent.username);
                 die (player, 2000);
             }
 
             else {
                 player = playerTwo;
-                console.log(battleData[i].winner);
+                console.log('Winner:' + winner);
+                console.log('Die4:' + user.username);
                 die (player, 2000);
             }
         }
@@ -961,51 +1029,74 @@ function win ( sprite ) {
     playerTwoText.visible = false;
     actionText.visible = false;
 
-    if ( sprite == playerOne){
+    if (winner == user.username) {
 
-        winnerText.setText (user.username + ' Is The Winner' );
+        winnerText.setText(winner + ' you won!');
+
+        if (sprite.x <= 640) {
+
+            sprite.animations.play('rollRight', 5, true);
+        }
+        else {
+
+            sprite.animations.play('rollLeft', 5, true);
+        }
+
+        // Add the card to the user object, either in gear or card list
+        if (user.battle_metadata.reward.type == "attack" ||
+            user.battle_metadata.reward.type == "mobility" ||
+            user.battle_metadata.reward.type == "defense") {
+
+            user.cards.push(user.battle_metadata.reward);
+        }else{
+            user.gear.push(user.battle_metadata.reward);
+        }
+
+        //cardWin = new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+
+        cardWin = new card(game, 640, 560,
+            user.battle_metadata.reward.elementalStatBonus.element,
+            user.battle_metadata.reward.type,
+            user.battle_metadata.reward.name,
+            user.battle_metadata.reward.statBonus.bonus.toFixed(1),
+            user.battle_metadata.reward.elementalStatBonus.bonus.toFixed(1));
+
+        game.add.existing(cardWin);
+        cardWin.scale.setTo(0.1, 0.1);
+        cardWin.shadow.scale.setTo(0.1, 0.1);
+
+        game.add.tween(cardWin.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
+        game.add.tween(cardWin.shadow.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
+        game.add.tween(sprite).to({x: 640}, 2000, Phaser.Easing.Linear.None, true);
+        game.time.events.add(2000, (function () {
+            winnerText.visible = true;
+            winTextVisible = true;
+            sprite.animations.play('jumpLeft', 5, true);
+        }), this);
+        game.time.events.add(7000, (function () {MatchOver();}), this);
     }
+
     else{
 
-        winnerText.setText (user.opponent.username + ' Is The Winner' );
+        winnerText.setText(user.username +' Lost,you loser');
+
+        if (sprite.x <= 640) {
+
+            sprite.animations.play('rollRight', 5, true);
+        }
+        else {
+
+            sprite.animations.play('rollLeft', 5, true);
+        }
+
+        game.add.tween(sprite).to({x: 640}, 2000, Phaser.Easing.Linear.None, true);
+        game.time.events.add(2000, (function () {
+            winnerText.visible = true;
+            winTextVisible = true;
+            sprite.animations.play('jumpLeft', 5, true);
+        }), this);
+        game.time.events.add(7000, (function () {MatchOver();}), this);
     }
-
-    if (sprite.x <= 640) {
-
-        sprite.animations.play('rollRight', 5, true);
-    }
-    else {
-
-        sprite.animations.play('rollLeft', 5, true);
-    }
-
-    //card1 =  new card(game, 340, 560, 'Water', 'Mobility', 'Mobility card of Head-scratching Effectiveness', +10, +13);
-    card2 =  new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
-    //card3 =  new card(game, 940, 560, 'Earth', 'Defence', 'Mobility card of Head-scratching Effectiveness', +10, +13);
-
-   /* game.add.existing(card1);
-    card1.scale.setTo(0.1, 0.1);
-    card1.shadow.scale.setTo(0.1, 0.1);*/
-
-    game.add.existing(card2);
-    card2.scale.setTo(0.1, 0.1);
-    card2.shadow.scale.setTo(0.1, 0.1);
-
-    /*game.add.existing(card3);
-    card3.scale.setTo(0.1, 0.1);
-    card3.shadow.scale.setTo(0.1, 0.1);*/
-
-   // game.add.tween(card1.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-    game.add.tween(card2.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-    //game.add.tween(card3.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-
-   // game.add.tween(card1.shadow.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-    game.add.tween(card2.shadow.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-    //game.add.tween(card3.shadow.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true);
-
-    game.add.tween(sprite).to({ x: 640}, 2000, Phaser.Easing.Linear.None, true);
-    game.time.events.add( 2000, (function() { winnerText.visible = true; winTextVisible = true; sprite.animations.play('jumpLeft', 5, true);}), this );
-    game.time.events.add( 7000, (function() { MatchOver();}), this );
 }
 
 /**
@@ -1015,7 +1106,9 @@ function win ( sprite ) {
  */
 function MatchOver (){
 
-    card2.visible = false;
+    if( winner == user.username){
+        cardWin.visible = false;
+    }
 
     var num = randomInt(0, 4);
 

@@ -23,6 +23,7 @@ game.state.add('gear_menu', gear_menu_state);
 game.state.add('battle_system', battle_system_state);
 game.state.add('pre_battle', pre_battle_state);
 game.state.add('battle_match_up',  match_up_state);
+game.state.add('credit',  credit_state);
 
 // Start the load state to import game assets
 game.state.start("load");

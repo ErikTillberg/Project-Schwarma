@@ -23,6 +23,9 @@ var load_state = {
      */
     preload: function() {
 
+        debug_console.init_log();
+        debug_console.message_log("Loading game assets...");
+
         // TODO load game assets here when they exist
         game.plugins.add(PhaserInput.Plugin);
         game.load.image('red_button_img','assets/buttons/big-buttons/01-red-normal.png');
@@ -36,6 +39,9 @@ var load_state = {
         game.load.image('ArrowLeft', 'assets/Art/arrowLeft.png');
         game.load.image('muteon', 'assets/Art/muteon.png');
         game.load.image('muteoff', 'assets/Art/muteoff.png');
+        game.load.image('plus', 'assets/Art/plus.png');
+        game.load.image('minus', 'assets/Art/minus.png');
+
 
 
         game.load.spritesheet('Knight', 'assets/Art/KnightSpriteSheet.png', 384, 384);
@@ -134,6 +140,11 @@ var load_state = {
         signUpText.inputEnabled = true;
         signUpText.events.onInputDown.add(signup_btn_click, this);
 
+        var creditText = game.add.bitmapText(150, 650, 'carrier_command_black','CREDITS',20);
+        creditText.anchor.setTo(0.5, 0.5);
+        creditText.align = 'center';
+        creditText.inputEnabled = true;
+        creditText.events.onInputDown.add(credit_btn_click, this);
            
     }
 
@@ -200,4 +211,10 @@ function muteoff_btn_click(){
     menumusic.volume = 0.2;
     buttonMuteOn.visible = true;
     buttonMuteOff.visible = false;
+}
+
+function credit_btn_click(){
+
+    console.log("signin_state: signup_btn_click");
+    game.state.start("credit");
 }

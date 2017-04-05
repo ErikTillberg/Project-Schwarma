@@ -88,5 +88,9 @@ var user = {
      */
     init_simulation: function(battle_simulation) {
         this.simulation_data = battle_simulation;
+    },
+    init_battle_metadata: function(battle_metadata) {
+        console.log("IM A FUNCTION");
+        this.battle_metadata = battle_metadata;
     }
 };

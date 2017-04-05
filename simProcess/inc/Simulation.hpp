@@ -86,10 +86,10 @@ namespace Schwarma
                 }
                 if(formatType && (::strcmp(formatType,"json")) == 0)
                 {
-                    if(this->players[0]->stats.health <= 0)
-                        stream<<"{\"winner\":"<<"\""<<this->players[1]->player_name<<"\"}"<<std::endl;
-                    else if(this->players[1]->stats.health <= 0)
+                    if(this->players[0]->stats.health > this->players[1]->stats.health)
                         stream<<"{\"winner\":"<<"\""<<this->players[0]->player_name<<"\"}"<<std::endl;
+                    else if(this->players[1]->stats.health > this->players[0]->stats.health)
+                        stream<<"{\"winner\":"<<"\""<<this->players[1]->player_name<<"\"}"<<std::endl;
                     else
                         stream<<"{\"winner\":\"none\"}"<<std::endl;
                     stream<<"]";
@@ -128,7 +128,7 @@ namespace Schwarma
                         //entity2->stats.health -= wep.value;
                         double damageToInflict = 0;
                         double baseDamage = (wep.value - entity2->stats.resistanceToDamage);
-                        if(baseDamage < 0)
+                        if(baseDamage < 0)  
                             baseDamage = 0;
                         double fireDamage = 0;
                         double earthDamage = 0;
@@ -141,6 +141,8 @@ namespace Schwarma
                             earthDamage = (wep.elemental_value - entity2->stats.resistanceToEarth);
                         
                         damageToInflict = baseDamage + fireDamage + earthDamage + iceDamage;
+                        if(damageToInflict <= 0)
+                            damageToInflict = 0;
 
                         entity2->stats.health -= damageToInflict;
                         if(!formatType)
@@ -158,13 +160,14 @@ namespace Schwarma
                     const Schwarma::Card&card = *entity1->defend(entity2);
                     if(&card != nullptr)
                     {
-                        entity1->stats.health += card.value;
+                        if(entity1->stats.health <= 100){
+                            entity1->stats.health += card.value;
                         if(!formatType)
                             stream<<entity1->name<<" healed with "<<card.name<<" for "<<card.value<<std::endl;
                         else if(formatType && (::strcmp(formatType,"json") == 0))
                         {
                             stream<<"{\"action\":\"defense\",\"player\":\""<<entity1->name<<"\",\"number\":\""<<card.value<<"\"},"<<std::endl;
-                        }
+                        }}
                     }
                 }
             }
