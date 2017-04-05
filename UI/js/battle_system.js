@@ -92,6 +92,7 @@ var playerSecond;
 var winner;
 var reward;
 
+var sim;
 
 
 /**
@@ -170,6 +171,13 @@ var battle_system_state = {
         background = game.add.sprite(0,0, 'Background');
         HUD1 = game.add.sprite(645, 580, 'HUD');
         HUD1.anchor.setTo(0.5, 0.5);
+
+        sim = game.add.sprite(640, 360, 'sim');
+        sim.anchor.setTo(0.5, 0.5);
+        //sim.visible = false;
+        sim.animations.add('simStuff', [0, 1, 2, 3,4,5,6,7,8,9]);
+
+
 
         // get who is first player and set sprites/text accordingly
         if (playerFirst == user.opponent.username){
@@ -380,7 +388,10 @@ var battle_system_state = {
         winnerText.visible = false;
 
         // Run the battleLoop function.
+
         battleLoop(battleData);   
+        playSim();
+
 
     },
 
@@ -408,6 +419,14 @@ var battle_system_state = {
 
         playerOneHPText.x = playerOne.x;
         playerTwoHPText.x = playerTwo.x;
+
+        if ( playerOneHP > 100){
+            playerOneHP = 100;
+        }
+
+        if ( playerTwoHP > 100){
+            playerTwoHP = 100;
+        }
 
         // Update the playersText
         if (playerFirst == user.opponent.username) {
@@ -767,10 +786,10 @@ function block( sprite, damageNum){
     }
 
     // Update actionText.
-    actionText.setText(playerNum +"\n\nBLOCKS");
+   // actionText.setText(playerNum +"\n\nBLOCKS");
 
     // Set HPText to invisible after animation plays.
-   // game.time.events.add( 1000, (function() { canIdle = true; playerOneHPText.visible = false; playerTwoHPText.visible = false}), this );
+   game.time.events.add( 1000, (function() { canIdle = true; playerOneHPText.visible = false; playerTwoHPText.visible = false}), this );
 }
 
 /**
@@ -926,20 +945,31 @@ function battleLoop ( battleObj ) {
             else if (winner == user.opponent.username && playerFirst == user.username){
 
                 player = playerOne;
-                console.log(winner);
+                console.log('winner' + winner);
+                console.log('Die1: ' + user.username);
                 die (player, 2000);
             }
 
             else if (winner == user.username && playerFirst == user.username){
 
                 player = playerTwo;
-                console.log(winner);
+                console.log('Winner:' + winner);
+                console.log('Die2:' + user.opponent.username);
+                die (player, 2000);
+            }
+
+            else if (winner == user.username && playerFirst == user.opponent.username){
+
+                player = playerOne;
+                console.log('Winner:' + winner);
+                console.log('Die3:' + user.opponent.username);
                 die (player, 2000);
             }
 
             else {
                 player = playerTwo;
-                console.log(winner);
+                console.log('Winner:' + winner);
+                console.log('Die4:' + user.username);
                 die (player, 2000);
             }
         }
@@ -1010,33 +1040,64 @@ function win ( sprite ) {
     playerTwoText.visible = false;
     actionText.visible = false;
 
-    winnerText.setText (winner + ' Is The Winner' );
+    if (winner == user.username) {
 
-    if (sprite.x <= 640) {
+        winnerText.setText(winner + ' you won!');
 
-        sprite.animations.play('rollRight', 5, true);
-    }
-    else {
+        if (sprite.x <= 640) {
 
-        sprite.animations.play('rollLeft', 5, true);
-    }
+            sprite.animations.play('rollRight', 5, true);
+        }
+        else {
 
-    cardWin = new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
-    game.add.existing(cardWin);
-    cardWin.scale.setTo(0.1, 0.1);
-    cardWin.shadow.scale.setTo(0.1, 0.1);
+            sprite.animations.play('rollLeft', 5, true);
+        }
 
-    game.add.tween(cardWin.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
-    game.add.tween(cardWin.shadow.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
-    game.add.tween(sprite).to({x: 640}, 2000, Phaser.Easing.Linear.None, true);
-    game.time.events.add(2000, (function () {
+        //cardWin = new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
+
+        cardWin = new card(game, 640, 560,
+            user.battle_metadata.reward.elementalStatBonus.element,
+            user.battle_metadata.reward.type,
+            user.battle_metadata.reward.name,
+            user.battle_metadata.reward.statBonus.bonus.toFixed(1),
+            user.battle_metadata.reward.elementalStatBonus.bonus.toFixed(1));
+
+        game.add.existing(cardWin);
+        cardWin.scale.setTo(0.1, 0.1);
+        cardWin.shadow.scale.setTo(0.1, 0.1);
+
+        game.add.tween(cardWin.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
+        game.add.tween(cardWin.shadow.scale).to({x: 1, y: 1}, 2000, Phaser.Easing.Linear.None, true);
+        game.add.tween(sprite).to({x: 640}, 2000, Phaser.Easing.Linear.None, true);
+        game.time.events.add(2000, (function () {
             winnerText.visible = true;
             winTextVisible = true;
             sprite.animations.play('jumpLeft', 5, true);
         }), this);
-    game.time.events.add(7000, (function () {
-            MatchOver();
+        game.time.events.add(7000, (function () {MatchOver();}), this);
+    }
+
+    else{
+
+        winnerText.setText(user.username +' Lost,you loser');
+
+        if (sprite.x <= 640) {
+
+            sprite.animations.play('rollRight', 5, true);
+        }
+        else {
+
+            sprite.animations.play('rollLeft', 5, true);
+        }
+
+        game.add.tween(sprite).to({x: 640}, 2000, Phaser.Easing.Linear.None, true);
+        game.time.events.add(2000, (function () {
+            winnerText.visible = true;
+            winTextVisible = true;
+            sprite.animations.play('jumpLeft', 5, true);
         }), this);
+        game.time.events.add(7000, (function () {MatchOver();}), this);
+    }
 }
 
 /**
@@ -1046,7 +1107,7 @@ function win ( sprite ) {
  */
 function MatchOver (){
 
-    if(winner != 'none'){
+    if( winner == user.username){
         cardWin.visible = false;
     }
 
@@ -1149,4 +1210,9 @@ function equipment_delete_success() {
 
 function equipment_delete_error() {
     console.log("Equipment was not properly deleted.");
+}
+
+function playSim (){
+    sim.animations.play('simStuff', 5, true);
+    game.time.events.add(3800, (function () {sim.visible = false;}), this);
 }
