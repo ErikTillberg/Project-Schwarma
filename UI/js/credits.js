@@ -49,8 +49,10 @@ var credit_state = {
 
     back_btn_click: function() {
 
-    console.log("signin_state: back_btn_click");
-    game.state.start('load');
+        menuclick.play();
+        menumusic.stop();
+        console.log("signin_state: back_btn_click");
+        game.state.start('load');
     }
 };
 

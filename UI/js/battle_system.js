@@ -1162,6 +1162,7 @@ function logout_btn_click(){
 
     menuclick.play();
     winMusic.stop();
+    menumusic.stop();
     console.log("battle_state: logout_btn_click");
     location.reload();
 }

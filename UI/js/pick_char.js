@@ -96,6 +96,7 @@ var pick_state = {
     back_btn_click: function(){
 
         menuclick.play();
+        menumusic.stop();
         console.log("signup_state: signin_btn_click");
         game.state.start("load");
     },
