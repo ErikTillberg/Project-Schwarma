@@ -1042,6 +1042,16 @@ function win ( sprite ) {
             sprite.animations.play('rollLeft', 5, true);
         }
 
+        // Add the card to the user object, either in gear or card list
+        if (user.battle_metadata.reward.type == "attack" ||
+            user.battle_metadata.reward.type == "mobility" ||
+            user.battle_metadata.reward.type == "defense") {
+
+            user.cards.push(user.battle_metadata.reward);
+        }else{
+            user.gear.push(user.battle_metadata.reward);
+        }
+
         //cardWin = new card(game, 640, 560, 'Fire', 'AttacK', 'Mobility card of Head-scratching Effectiveness', +10, +13);
 
         cardWin = new card(game, 640, 560,

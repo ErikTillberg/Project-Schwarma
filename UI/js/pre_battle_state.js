@@ -57,7 +57,7 @@ var pre_battle_state = {
     defense_cards: [],
     defense_triggers: [],
 
-    countdown_time_remaining: 60,
+    countdown_time_remaining: 600,
 
     // List of triggers, name is displayed to the user, condition object is sent to the sim server
     triggers: [
