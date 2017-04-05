@@ -23,12 +23,21 @@ namespace Schwarma
             ) : 
             name(name),value(value),element(element),elemental_value(elemental_value),direction(direction){}
             ~Card() = default;
+            //! Card name
             std::string name;
-            double value;
+            //! Card value(interpreted differently depending on how the card is invoked)
+            double value
+            //! Element of the card
             std::string element;
+            //! Special elementl value of the card. Also interpreted differently depending on how the card is invoked
             double elemental_value;
+            //! Direction to travel. Used only for mobility cards
             std::string direction;
 
+            //!Parse the card out of the json object pointed to by obj
+            /*! Will fill properties that don't exist with empty strings.
+                Returns Card full of empty strings on failure
+            */
             template<class T>
             static Schwarma::Card parseCard(T&obj)
             {
