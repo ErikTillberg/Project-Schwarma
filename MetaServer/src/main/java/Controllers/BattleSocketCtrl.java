@@ -136,6 +136,7 @@ public class BattleSocketCtrl {
                         // 20% chance to add equipment on a win
                         Equipment generatedEquipment = Equipment.GenerateEquipment(thisUserObject.getRating(), Equipment.getRandomEquipmentType());
                         InventoryCtrl.addEquipment(otherUser, generatedEquipment);
+
                         userResponse.setReward(generatedEquipment);
                     } else {
                         // 80% chance to add a card on a win
@@ -165,6 +166,9 @@ public class BattleSocketCtrl {
                     }
 
                 }
+
+                thisUserObject.save();
+                otherUserObject.save();
 
                 otherSession.getRemote().sendString(toJson(new WebSocketMessage("Battle Data1", battle_results)));
                 user.getRemote().sendString(toJson(new WebSocketMessage("Battle Data1", battle_results)));

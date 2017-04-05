@@ -194,7 +194,7 @@ public class Battle {
     private static int [] processPlayerEquipment(List <Equipment> equipment){
         String type, element;
         int attack_bonus = 0;
-        int movement_speed = 0;
+        int movement_speed = 1;
         int resistance_to_damage = 0;
         int resistance_to_fire = 0;
         int resistance_to_ice = 0;
