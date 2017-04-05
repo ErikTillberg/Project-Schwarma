@@ -234,6 +234,12 @@ var pre_battle_state = {
         this.battle_socket.send(JSON.stringify(battle_object));
     },
 
+    ping_server: function() {
+
+        pre_battle_state.battle_socket.send(JSON.stringify({type: "ping", message: "keep me alive."}));
+
+    },
+
     /**
      * Message received from the meta-server along the battle_socket.
      * @param message JSON object containing a data attribute which has the message type and message within.
@@ -304,6 +310,11 @@ var pre_battle_state = {
 
         console.log("update_timer");
         console.log(pre_battle_state.countdown_time_remaining);
+
+        if(pre_battle_state.countdown_time_remaining % 20 == 0 && pre_battle_state.countdown_time_remaining !== 600) {
+            console.log("Pinging server for keep alive.");
+            pre_battle_state.ping_server();
+        }
 
         if (pre_battle_state.countdown_time_remaining > 0) {
             pre_battle_state.countdown_time_remaining--;

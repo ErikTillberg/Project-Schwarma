@@ -73,6 +73,7 @@ var server = {
 
         var web_socket;
         web_socket = new WebSocket(server.websocket_protocol + this.host_name + this.port + "/battleSocket");
+
         web_socket.onmessage = pre_battle_state.battle_message;
         web_socket.onclose = pre_battle_state.battle_end;
 
