@@ -4,10 +4,10 @@
  */
 
 var creditText;
+
 /**
- * Loads when the user decided to sign in from the load state landing screen. Handles user interface and server communication pertaining to sign in operations.
- * @type {{preload: signin_state.preload, create: signin_state.create, signin_btn_click: signin_state.signin_btn_click, back_btn_click: signin_state.back_btn_click, signin_success: signin_state.signin_success, signin_failure: signin_state.signin_failure}}
- * @namespace
+ *
+ * @type {{preload: credit_state.preload, create: credit_state.create, back_btn_click: credit_state.back_btn_click}}
  */
 var credit_state = {
 
@@ -36,17 +36,18 @@ var credit_state = {
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
+        // Add credit text to screen
         creditText = game.add.bitmapText(banner.x, banner.y + 250, 'carrier_command_black','UI TEAM\n\n\nANDREW\n' +
             '\n Bryon\n\n\nMETA-SERVER TEAM\n\n\nERIK\n\nFRANCESCO\n\n\nSIM-SERVER TEAM\n\n\nCHRIS\n\nManuel',20);
         creditText.anchor.setTo(0.5, 0.5);
         creditText.align = 'center';
 
-        // Add a signup button to the screen, and when clicked launch Home_button function
+        // Add a home button to the screen, and when clicked launch Home_button function
         this.back_btn= game.add.button(homeX, homeY, 'Home_button', this.back_btn_click, this, 2, 1, 0);
 
     },
 
-
+    // Handles back button click. Transitions the game to the load state.
     back_btn_click: function() {
 
         menuclick.play();

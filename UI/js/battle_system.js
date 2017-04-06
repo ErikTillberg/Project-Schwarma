@@ -4,34 +4,6 @@
 
 // output provided by the sim server
 var battleData = user.simulation_data;
-var storedData =[
-    {"action":"defense","player":"1","number":"21.5981"},
-    {"action":"attack","player":"2","number":"0"},
-    {"action":"defense","player":"2","number":"3.55549"},
-    {"action":"attack","player":"2","number":"0"},
-    {"action":"attack","player":"1","number":"0"},
-    {"action":"attack","player":"2","number":"0"},
-    {"action":"attack","player":"1","number":"0"},
-    {"action":"attack","player":"2","number":"0"},
-    {"action":"attack","player":"2","number":"0"},
-    {"action":"movePlayer","player":"1","number":"1"},
-    {"action":"movePlayer","player":"1","number":"1"},
-    {"action":"movePlayer","player":"2","number":"5"},
-    {"action":"movePlayer","player":"1","number":"1"},
-    {"action":"movePlayer","player":"2","number":"5"},
-    {"action":"movePlayer","player":"1","number":"1"},
-    {"action":"movePlayer","player":"2","number":"5"},
-    {"action":"movePlayer","player":"2","number":"5"},
-    {"action":"attack","player":"1","number":"0"},
-    {"action":"attack","player":"1","number":"0"},
-    {"action":"movePlayer","player":"2","number":"5"},
-    {"action":"attack","player":"1","number":"0"},
-    {"action":"movePlayer","player":"2","number":"5"},
-    {"action":"movePlayer","player":"1","number":"1"},
-    {"action":"movePlayer","player":"2","number":"5"},
-    {"action":"attack","player":"1","number":"0"},
-    {}
-]
 
 var playerOne;
 var playerTwo;
@@ -63,6 +35,7 @@ var playerTwoText;
 
 var playerOneHPText;
 var playerTwoHPText;
+
 
 var winnerText;
 var winTextVisible = false;
@@ -128,7 +101,7 @@ var battle_system_state = {
         console.log('Winner: ' + winner);
         console.log('Reward: ' + reward);
 
-        // add music to state
+        // add music/sounds
         menumusic.pause();
 
         battleMusic = game.add.audio('battlewmusic');
@@ -178,8 +151,7 @@ var battle_system_state = {
         sim.animations.add('simStuff', [0, 1, 2, 3,4,5,6,7,8,9]);
 
 
-
-        // get who is first player and set sprites/text accordingly
+        // determine what user is first player and set sprites/text accordingly
         if (playerFirst == user.opponent.username){
             console.log('first player: ' + playerFirst);
             console.log(user.opponent.character_type);
@@ -260,7 +232,7 @@ var battle_system_state = {
             playerTwoProj.animations.add('shootRight', [0, 1, 2, 3]);
             playerTwoProj.animations.add('shootLeft', [7, 6, 5, 4]);
 
-            // Add the players to the screen, and att the animations
+            // Add the players to the screen, and add the animations
             playerTwo = game.add.sprite(1140 + playerSpacing, 360, pickCharacter(user.opponent.character_type));
             playerTwo.anchor.setTo(0.5, 0.5);
             playerTwo.animations.add('attackRight', [0, 1, 2, 3, 4]);
@@ -311,68 +283,10 @@ var battle_system_state = {
         playerOneShadow.anchor.setTo(0.5, 0.5);
         playerTwoShadow.anchor.setTo(0.5, 0.5);
 
-       /* // Add the players projectiles to the screen and set them invisible, add the animation.
-        playerOneProj = game.add.sprite(140 - playerSpacing, 360, pickCharWeapon ( user.character_type));
-        playerOneProj.anchor.setTo(0.5, 0.5);
-        playerOneProj.visible = false;
-        playerOneProj.animations.add('shootRight', [0, 1, 2, 3]);
-        playerOneProj.animations.add('shootLeft', [7, 6, 5, 4]);
-
-        playerTwoProj = game.add.sprite(1140 + playerSpacing, 360, pickCharWeapon ( user.opponent.character_type));
-        playerTwoProj.anchor.setTo(0.5, 0.5);
-        playerTwoProj.visible = false;
-        playerTwoProj.animations.add('shootRight', [0, 1, 2, 3]);
-        playerTwoProj.animations.add('shootLeft', [7, 6, 5, 4]);
-
-        // Add the players to the screen, and att the animations
-        playerTwo = game.add.sprite(1140 + playerSpacing, 360, pickCharacter (  user.opponent.character_type));
-        playerTwo.anchor.setTo(0.5, 0.5);
-        playerTwo.animations.add('attackRight', [0, 1, 2, 3, 4]);
-        playerTwo.animations.add('attackLeft', [41, 40, 39, 38, 37]);
-        playerTwo.animations.add('idleRight', [8, 9, 10, 11]);
-        playerTwo.animations.add('idleLeft', [33, 32, 31, 30]);
-        playerTwo.animations.add('walkRight', [18, 19, 20]);
-        playerTwo.animations.add('walkLeft', [23, 22, 21]);
-        playerTwo.animations.add('jumpRight', [12, 13, 14]);
-        playerTwo.animations.add('jumpLeft', [29, 28, 27]);
-        playerTwo.animations.add('dieRight', [6, 7]);
-        playerTwo.animations.add('dieLeft', [35, 34]);
-        playerTwo.animations.add('rollRight', [15, 16, 17]);
-        playerTwo.animations.add('rollLeft', [26, 25, 24]);
-        playerTwo.animations.add('blockRight', [5]);
-        playerTwo.animations.add('blockLeft', [36]);
-
-        playerOne = game.add.sprite(140 - playerSpacing, 360, pickCharacter ( user.character_type));
-        playerOne.anchor.setTo(0.5, 0.5);
-        playerOne.animations.add('attackRight', [0, 1, 2, 3, 4]);
-        playerOne.animations.add('attackLeft', [41, 40, 39, 38, 37]);
-        playerOne.animations.add('idleRight', [8, 9, 10, 11]);
-        playerOne.animations.add('idleLeft', [33, 32, 31, 30]);
-        playerOne.animations.add('walkRight', [18, 19, 20]);
-        playerOne.animations.add('walkLeft', [23, 22, 21]);
-        playerOne.animations.add('jumpRight', [12, 13, 14]);
-        playerOne.animations.add('jumpLeft', [29, 28, 27]);
-        playerOne.animations.add('dieRight', [6, 7]);
-        playerOne.animations.add('dieLeft', [35, 34]);
-        playerOne.animations.add('rollRight', [15, 16, 17]);
-        playerOne.animations.add('rollLeft', [26, 25, 24]);
-        playerOne.animations.add('blockRight', [5]);
-        playerOne.animations.add('blockLeft', [36]);*/
-
-
         // Add the actionText to the screen
         actionText = game.add.bitmapText(645, 580, 'carrier_command', 'Simulating Battle', 20);
         actionText.anchor.setTo(0.5, 0.5);
         actionText.align = 'center';
-
-        // Add the players text to the screen.
-       /* playerOneText = game.add.bitmapText(305, 580, 'carrier_command', user.username + '\n\nHP: ' + playerOneHP, 10);
-        playerOneText.anchor.setTo(0.5, 0.5);
-        playerOneText.align = 'left';
-
-        playerTwoText = game.add.bitmapText(1005, 580, 'carrier_command', user.opponent.username + '\n\nHP: ' + playerTwoHP, 10);
-        playerTwoText.anchor.setTo(0.5, 0.5);
-        playerTwoText.align = 'right';*/
 
         // Add the player HPText (the numbers above the head when they get hit) to the screen, set to invisible.
         playerOneHPText = game.add.bitmapText((140 - playerSpacing), 200, 'carrier_command', ' ' , 15);
@@ -388,8 +302,9 @@ var battle_system_state = {
         winnerText.visible = false;
 
         // Run the battleLoop function.
+        battleLoop(battleData);
 
-        battleLoop(battleData);   
+        // Run playSim function
         playSim();
 
 
@@ -637,7 +552,6 @@ function attackClose( sprite, damageNum ){
         game.time.events.add( 500, (function() { block( playerOne, damageNum ); canShoot = false;}), this );
     }
 
-            //delayTimer = 500;
 }
 
 /**
@@ -691,7 +605,7 @@ function attackFar( sprite, damageNum){
         game.time.events.add( 500 * animationTimer2, (function() { block( playerOne, damageNum ); canShoot = false;}), this );
     }
 
-            //delayTimer = 500 * animationTimer2;
+
 }
 
 /**
@@ -784,9 +698,6 @@ function block( sprite, damageNum){
         playerTwoHP -= parseInt(damageNum);
         playerTwoHPText.visible = true;              
     }
-
-    // Update actionText.
-   // actionText.setText(playerNum +"\n\nBLOCKS");
 
     // Set HPText to invisible after animation plays.
    game.time.events.add( 1000, (function() { canIdle = true; playerOneHPText.visible = false; playerTwoHPText.visible = false}), this );
@@ -922,7 +833,7 @@ function battleLoop ( battleObj ) {
             heal (player, battleObj[i].number);
         }
 
-        // Find out who won, and call die function on other players sprite, or if it's a tie display tie text.
+        // Find out who won, and call die function on other players sprite, or if it's a tie display tie text
         else {
 
             if ( winner == 'none'){
@@ -1026,7 +937,7 @@ function pickCharWeapon ( charName ){
 
 /**
  * Function moves the player to the middle of the screen and then plays the jump animation.
- * It also scales the winner message and displays it. It displays the card the player won in battle.
+ * It also scales the winner message and displays itIf user.username = winner display the card the player won in battle.
  * @param sprite
  */
 function win ( sprite ) {
@@ -1112,7 +1023,6 @@ function win ( sprite ) {
 /**
  * set up the match over stuff, adds the sword/sheild image and input so the user
  * can decide to log out or play another match
- * @constructor
  */
 function MatchOver (){
 
@@ -1144,7 +1054,7 @@ function MatchOver (){
 }
 
 /**
- * Stops win misic and takes the user back to the main menu state
+ * Stops win music and takes the user back to the main menu state
  */
 function rematch_btn_click(){
 
@@ -1169,59 +1079,8 @@ function logout_btn_click(){
 
 
 /**
- * Sends the card to the meta-server to remove it from the player's inventory
- * @param card JSON card object
+ * Plays the simutating animation for 3.8 seconds
  */
-function delete_card(card) {
-
-    console.log("Deleting card from player's inventory.");
-
-    $.ajax({
-
-        url: server.delete_card_endpoint(),
-        type: "POST",
-        data: card,
-        success: card_delete_success,
-        error: card_delete_error
-    });
-}
-
-/**
- * Sends the equipment to the meta-server to remove it from the player's inventory
- * @param equipment JSON equipment object
- */
-function delete_equipment(equipment) {
-
-    console.log("Deleting equipment from player's inventory.");
-
-    $.ajax({
-
-        url: server.delete_equipment_endpoint(),
-        type: "POST",
-        data: equipment,
-        success: equipment_delete_success,
-        error: equipment_delete_error
-    });
-}
-
-function card_delete_success() {
-    console.log("Card properly deleted.")
-
-    // TODO add logic to remove the card from user object
-}
-
-function card_delete_error() {
-    console.log("Card was not properly deleted.")
-}
-
-function equipment_delete_success() {
-    console.log("Equipment properly deleted.");
-}
-
-function equipment_delete_error() {
-    console.log("Equipment was not properly deleted.");
-}
-
 function playSim (){
     sim.animations.play('simStuff', 5, true);
     game.time.events.add(3800, (function () {sim.visible = false;}), this);

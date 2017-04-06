@@ -2,6 +2,18 @@
  * Created by Bryon on 2017-03-06.
  */
 
+/**
+ * prototype for card creation
+ *
+ * @param game
+ * @param x
+ * @param y
+ * @param element
+ * @param cardtype
+ * @param title
+ * @param num1
+ * @param num2
+ */
 card = function (game, x, y, element, cardtype, title, num1, num2) {
 
     var textArray = title.split(" ");
@@ -121,23 +133,28 @@ var gear_menu_state = {
     create: function(){
         console.log("gear_menu_state: create");
 
-        menuclick = game.add.audio('menuclick');
+        // Add sounds
+        click = game.add.audio('menuclick');
         menuclick.volume = 0.2;
 
         cardclick = game.add.audio('cardclick');
         cardclick.volume = 0.2;
 
+        // Add background
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
         var background = game.add.sprite(0,0, 'menu_background');
 
+        // Add banner sprite
         var banner = game.add.sprite(640,210,'Banner');
         banner.frame = randomInt(0, 4);
         banner.anchor.setTo(0.5, 0.5);
 
+        // Add ttile text (text on banner)
         var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','GEAR MENU',40);
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
+        // Add character sprite and animations
         player = game.add.sprite(640, 420,  pickCharacter (  user.character_type));
         player.anchor.setTo(0.5, 0.5);
         player.scale.setTo(1.5, 1.5);
@@ -147,6 +164,7 @@ var gear_menu_state = {
         var walk = player.animations.add('walk');
         player.animations.play('walk', 3, true);
 
+        // Set attackTxt, mobilityTxt, defenceTxt base on character type
         if (user.character_type == 'warrior'){
 
             attackTxt = 3;
@@ -168,6 +186,7 @@ var gear_menu_state = {
             defenceTxt = 2;
         }
 
+        // Add cards to screen
         cardMobility = new card(game, 1040, 160,
             user.equipped_gear.equipped_boots.elementalStatBonus.element,
             'boots', user.equipped_gear.equipped_boots.name,
@@ -179,6 +198,7 @@ var gear_menu_state = {
         cardMobility.inputEnabled = true;
         cardMobility.events.onInputDown.add(this.card_click, {card: this.card});
 
+        // Add mobilityTxt to screen
         var mobilityText = game.add.bitmapText(cardMobility.x, cardMobility.y + 160, 'carrier_command_black','boots',20);
 
         mobilityText.anchor.setTo(0.5, 0.5);
@@ -198,6 +218,7 @@ var gear_menu_state = {
         cardAttack.inputEnabled = true;
         cardAttack.events.onInputDown.add(this.card_click, {card: this.card});
 
+        // Add attackTxt to screen
         var attackText = game.add.bitmapText(cardAttack.x, cardAttack.y - 160, 'carrier_command_black','weapon',20);
         attackText.anchor.setTo(0.5, 0.5);
         attackText.align = 'center';
@@ -215,28 +236,38 @@ var gear_menu_state = {
         cardDefence.inputEnabled = true;
         cardDefence.events.onInputDown.add(this.card_click, {card: this.card});
 
+        // Add defencText to screen
         var defenceText = game.add.bitmapText(cardDefence.x, cardDefence.y + 160, 'carrier_command_black','armour',20);
         defenceText.anchor.setTo(0.5, 0.5);
         defenceText.align = 'center';
 
+        // Add text under the title on banner
         var infoText = game.add.bitmapText(banner.x, banner.y - 50 ,'carrier_command_black','Click card to change gear',15);
         infoText.anchor.setTo(0.5, 0.5);
         infoText.align = 'center';
 
+        // Add stst text to screen
         statText = game.add.bitmapText(player.x, player.y + 170 ,'carrier_command_black','Attack:' + attackTxt+ '\n\nDefence: ' + defenceTxt + '\n\nMobility: ' + mobilityTxt, 20);
         statText.anchor.setTo(0.5, 0.5);
         statText.align = 'center';
 
+        // Add submit button to screen
         this.signin_btn = game.add.button(submitX, submitY, 'Submit_button', this.submit_btn_click, this, 2, 1, 0);
+
+        // Add home button to screen
         this.back_btn= game.add.button(homeX, homeY, 'Home_button', this.back_btn_click, this, 2, 1, 0);
 
         debug_console.init_log();
         debug_console.debug_log("Signed in as: " + user.username);
 
+        // Initalize card selector
         this.init_card_selectors();
 
     },
 
+    /**
+     *  update tattackText, defenceTxt, mobilityTxt
+     */
     update: function() {
 
         statText.setText('Attack:' + attackTxt + '\n\nDefence: ' + defenceTxt + '\n\nMobility: ' + mobilityTxt);
@@ -327,6 +358,10 @@ var gear_menu_state = {
 
     },
 
+    /**
+     * Takes a card slot and type and renders that card on screen.
+     *
+     */
     card_wrapper: function(gear_data) {
 
         var card_x;
@@ -362,6 +397,13 @@ var gear_menu_state = {
 
     },
 
+    /**
+     * Takes a card JSON object and its place in the sequence of Cards within its category, and returns a constructed Card that
+     * is in the proper slot within the category's card selector.
+     * @param card_data Card JSON data
+     * @param card_num The index in which the card appears amongst all cards within its type, also its location within the selector
+     * @param card_list_index The index in which the card appears amongst all cards the player has
+     */
     selector_card_wrapper: function(gear_data, gear_num, gear_list_index) {
 
         console.log("selector_card_wrapper");
@@ -392,6 +434,10 @@ var gear_menu_state = {
 
     },
 
+    /**
+     * Set the current_slot and current_type attributes and then open the card selector group for that card type.
+     * @param target The target of the click event, should be a card object
+     */
     card_click: function (target){
 
         // target.shadow.destroy();
@@ -416,6 +462,10 @@ var gear_menu_state = {
         }
     },
 
+    /**
+     * Handles the user clicking on a card in a selector menu. Assigns the clicked card to a slot and renders it.
+     * @param target Event target, should be a card within a card selector
+     */
     selector_card_click: function(target) {
 
         console.log(target.cardtype + " card chosen.");
@@ -438,6 +488,7 @@ var gear_menu_state = {
             gear_menu_state.shield_card = target.list_index;
         }
     },
+
 
    submit_btn_click: function(){
 
@@ -467,6 +518,7 @@ var gear_menu_state = {
 
     },
 
+
     set_equipment_success: function(data, textStatus, jqXHR) {
 
             console.log("Set Equipment success");
@@ -493,6 +545,9 @@ var gear_menu_state = {
         game.state.start("main_menu");
     },
 
+    /**
+     * Transitions user to main_menu state
+     */
     back_btn_click: function(){
 
         menuclick.play();

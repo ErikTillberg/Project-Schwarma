@@ -7,9 +7,8 @@ var playerCharacterShadow;
 var playerCharacterShadow2;
 
 /**
- * Handles the character match up screen.
- * namespace
- * @type {{preload: pick_state.preload, create: pick_state.create, back_btn_click: pick_state.back_btn_click, submit_btn_click: pick_state.submit_btn_click}}
+ *
+ * @type {{preload: match_up_state.preload, create: match_up_state.create, back_btn_click: match_up_state.back_btn_click, submit_btn_click: match_up_state.submit_btn_click}}
  */
 var match_up_state = {
  
@@ -20,6 +19,7 @@ var match_up_state = {
 
     create: function() {
 
+        // load sounds
         menuclick = game.add.audio('menuclick');
         menuclick.volume = 0.2;
 
