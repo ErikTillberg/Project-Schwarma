@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: pick_char.js</title>
+    <title>JSDoc: Source: battle_match_up.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: pick_char.js</h1>
+    <h1 class="page-title">Source: battle_match_up.js</h1>
 
     
 
@@ -27,34 +27,30 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>
-var characterPick = ["Knight", "Wizard", "Thief"];
-var i = 0;
+
 var sword;
 var playerCharcter;
 var playerCharcter2;
-var playerCharcter3;
 var playerCharacterShadow;
-var pickcharSFX;
+var playerCharacterShadow2;
 
 /**
- * Handles the player's character selection during the signup process.
+ * Displays the player and opponent's base stats and character type before the pre battle state commences.
  * @namespace
- * @type {{preload: pick_state.preload, create: pick_state.create, back_btn_click: pick_state.back_btn_click, submit_btn_click: pick_state.submit_btn_click}}
+ * @type {{preload: match_up_state.preload, create: match_up_state.create, back_btn_click: match_up_state.back_btn_click, submit_btn_click: match_up_state.submit_btn_click}}
  */
-var pick_state = {
+var match_up_state = {
  
     preload: function() {
 
-       console.log("pick_state: preload");
+       console.log("match_up_state: preload");
     },
 
     create: function() {
 
+        // load sounds
         menuclick = game.add.audio('menuclick');
         menuclick.volume = 0.2;
-
-        pickcharSFX = game.add.audio('pickchar');
-        pickcharSFX.volume = 0.25;
 
         // Set the background color of the canvas.
         game.stage.backgroundColor = 'rgb(255, 255, 255)';
@@ -65,53 +61,52 @@ var pick_state = {
         banner.frame = randomInt(0, 4);
         banner.anchor.setTo(0.5, 0.5);
 
-        // Add the character sprites and add animations
-        playerCharcter = game.add.sprite(640, 400, characterPick[0]);
+        // Add the character sprite and add animations
+        playerCharcter = game.add.sprite(950, 400,  pickCharacter ( user.opponent.character_type));
         playerCharcter.anchor.setTo(0.5, 0.5);
-        playerCharacterShadow = game.add.sprite(playerCharcter.x, playerCharcter.y + 42, 'Shadow');
+        playerCharcter.scale.setTo(1.5,1.5);
+        playerCharacterShadow = game.add.sprite(playerCharcter.x, playerCharcter.y + 62, 'Shadow');
         playerCharacterShadow.anchor.setTo(0.5, 0.5);
+        playerCharacterShadow.scale.setTo(1.5,1.5);
         var walk = playerCharcter.animations.add('walk');
-        playerCharcter.inputEnabled = true;
-        playerCharcter.events.onInputDown.add(pickCharW, this);
-
-        var warriorStatText = game.add.bitmapText(playerCharcter.x, playerCharcter.y + 140, 'carrier_command_black','ATTACK: 3\n\nMOBILITY: 1\n\nDEFENCE: 2',20);
-        warriorStatText.anchor.setTo(0.5, 0.5);
-        warriorStatText.align = 'center';
+        playerCharcter.animations.play('walk', 5, true);
 
 
-        playerCharcter2 = game.add.sprite(260, 400, characterPick[1]);
+        var char1StatText = game.add.bitmapText(playerCharcter.x, playerCharcter.y + 140, 'carrier_command_black','LEVEL: '+ user.opponent.rating,20);
+        char1StatText.anchor.setTo(0.5, 0.5);
+        char1StatText.align = 'center';
+
+        playerCharcter2 = game.add.sprite(330, 400, pickCharacter ( user.character_type));
         playerCharcter2.anchor.setTo(0.5, 0.5);
-        playerCharacterShadow = game.add.sprite(playerCharcter2.x, playerCharcter2.y + 42, 'Shadow');
-        playerCharacterShadow.anchor.setTo(0.5, 0.5);
+        playerCharcter2.scale.setTo(1.5,1.5);
+        playerCharacterShadow2 = game.add.sprite(playerCharcter2.x, playerCharcter2.y + 62, 'Shadow');
+        playerCharacterShadow2.anchor.setTo(0.5, 0.5);
+        playerCharacterShadow2.scale.setTo(1.5,1.5);
         var walk = playerCharcter2.animations.add('walk');
-        playerCharcter2.inputEnabled = true;
-        playerCharcter2.events.onInputDown.add(pickCharM, this);
+        playerCharcter2.animations.play('walk', 5, true);
 
-        var mageStatText = game.add.bitmapText(playerCharcter2.x, playerCharcter2.y + 140, 'carrier_command_black','ATTACK: 1\n\nMOBILITY: 2\n\nDEFENCE: 3',20);
-        mageStatText.anchor.setTo(0.5, 0.5);
-        mageStatText.align = 'center';
+        var char2StatText = game.add.bitmapText(playerCharcter2.x, playerCharcter2.y + 140, 'carrier_command_black','LEVEL: ' + user.rating,20);
+        char2StatText.anchor.setTo(0.5, 0.5);
+        char2StatText.align = 'center';
 
-        playerCharcter3 = game.add.sprite(1020, 400, characterPick[2]);
-        playerCharcter3.anchor.setTo(0.5, 0.5);
-        playerCharacterShadow = game.add.sprite(playerCharcter3.x, playerCharcter3.y + 42, 'Shadow');
-        playerCharacterShadow.anchor.setTo(0.5, 0.5);
-        var walk = playerCharcter3.animations.add('walk');
-        playerCharcter3.inputEnabled = true;
-        playerCharcter3.events.onInputDown.add(pickCharT, this);
 
-        var theifStatText = game.add.bitmapText(playerCharcter3.x, playerCharcter3.y + 140, 'carrier_command_black','ATTACK: 2\n\nMOBILITY: 3\n\nDEFENCE: 1',20);
-        theifStatText.anchor.setTo(0.5, 0.5);
-        theifStatText.align = 'center';
-
-        
         // Add the title text to the screen                
-        var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','PICK A CHARACTER',40);
+        var titleText = game.add.bitmapText(banner.x, banner.y - 100, 'carrier_command_black','BATTLE MATCH UP',40);
         titleText.anchor.setTo(0.5, 0.5);
         titleText.align = 'center';
 
-        var titleText = game.add.bitmapText(banner.x, banner.y - 50, 'carrier_command_black','CLICK TO SELECT YOUR CHARACTER',20);
-        titleText.anchor.setTo(0.5, 0.5);
-        titleText.align = 'center';
+        var vsText = game.add.bitmapText(640, 360, 'carrier_command_black','VS',60);
+        vsText.anchor.setTo(0.5, 0.5);
+        vsText.align = 'center';
+
+        var user1Text = game.add.bitmapText(playerCharcter.x -100, playerCharcter.y - 200, 'carrier_command_black',user.opponent.username,25);
+        vsText.anchor.setTo(0.5, 0.5);
+        vsText.align = 'center';
+
+        var user2Text = game.add.bitmapText(playerCharcter2.x -100, playerCharcter2.y - 200, 'carrier_command_black',user.username,25);
+        vsText.anchor.setTo(0.5, 0.5);
+        vsText.align = 'center';
+
 
         // Add a submit button to the screen, and when clicked launch submit_button_click function
         this.submit_btn = game.add.button(submitX, submitY,  'Submit_button', this.submit_btn_click, this, 2, 1, 0);
@@ -124,7 +119,6 @@ var pick_state = {
     back_btn_click: function(){
 
         menuclick.play();
-        menumusic.stop();
         console.log("signup_state: signin_btn_click");
         game.state.start("load");
     },
@@ -133,72 +127,9 @@ var pick_state = {
     submit_btn_click: function(){
 
         menuclick.play();
-        console.log("signup_state: signin_btn_click");
-        console.log("charcter: " + character);
-        user.character_type = character;
-        game.state.start("signup");
+        game.state.start("pre_battle");
     },
 };
-
-/**
- * Scales current sprite to 1.9 , starts animation and scales other sprites tp 1, sets chracter to thief
- */
-function pickCharW (){
-
-    pickcharSFX.play();
-    playerCharcter.scale.setTo(1.9,1.9);
-    playerCharcter.animations.play('walk', 3, true);
-
-    playerCharcter2.scale.setTo(1,1);
-    playerCharcter2.animations.stop(null);
-
-    playerCharcter3.scale.setTo(1,1);
-    playerCharcter3.animations.stop(null);
-
-    character = 'warrior';
-    console.log("charcter: " + character);
-
-}
-
-/**
- * Scales current sprite to 1.9, starts animation and scales other sprites tp 1, sets chracter to mage
- */
-function pickCharM (){
-
-    pickcharSFX.play();
-    playerCharcter2.scale.setTo(1.9,1.9);
-    playerCharcter2.animations.play('walk', 3, true);
-
-    playerCharcter.scale.setTo(1,1);
-    playerCharcter.animations.stop(null);
-
-    playerCharcter3.scale.setTo(1,1);
-    playerCharcter3.animations.stop(null);
-
-    character = 'mage';
-    console.log("charcter: " + character);
-
-}
-
-/**
- * Scales current sprite to 1.9, starts animation and scales other sprites tp 1, sets chracter to thief
- */
-function pickCharT (){
-
-    pickcharSFX.play();
-    playerCharcter3.scale.setTo(1.9,1.9);
-    playerCharcter3.animations.play('walk', 3, true);
-
-    playerCharcter2.scale.setTo(1,1);
-    playerCharcter2.animations.stop(null);
-
-    playerCharcter.scale.setTo(1,1);
-    playerCharcter.animations.stop(null);
-
-    character = 'thief';
-    console.log("charcter: " + character);
-
-}
 
 
 /**
@@ -212,6 +143,26 @@ function pickCharT (){
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+/**
+ * Function picks what character sprite to load.
+ * @param charName
+ * @returns {string}
+ */
+function pickCharacter ( charName ){
+
+    if (charName == 'warrior'){
+        return 'Knight';
+    }
+
+    else if (charName == 'thief'){
+        return 'Thief';
+    }
+
+    else {
+        return 'Wizard';
+    }
 }
 
 

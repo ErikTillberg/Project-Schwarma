@@ -7,7 +7,8 @@ var playerCharacterShadow;
 var playerCharacterShadow2;
 
 /**
- *
+ * Displays the player and opponent's base stats and character type before the pre battle state commences.
+ * @namespace
  * @type {{preload: match_up_state.preload, create: match_up_state.create, back_btn_click: match_up_state.back_btn_click, submit_btn_click: match_up_state.submit_btn_click}}
  */
 var match_up_state = {

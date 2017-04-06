@@ -6,7 +6,8 @@
 var creditText;
 
 /**
- *
+ * Displays the game's credits.
+ * @namespace
  * @type {{preload: credit_state.preload, create: credit_state.create, back_btn_click: credit_state.back_btn_click}}
  */
 var credit_state = {

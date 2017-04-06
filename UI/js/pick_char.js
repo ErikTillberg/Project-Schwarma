@@ -10,7 +10,7 @@ var pickcharSFX;
 
 /**
  * Handles the player's character selection during the signup process.
- * namespace
+ * @namespace
  * @type {{preload: pick_state.preload, create: pick_state.create, back_btn_click: pick_state.back_btn_click, submit_btn_click: pick_state.submit_btn_click}}
  */
 var pick_state = {

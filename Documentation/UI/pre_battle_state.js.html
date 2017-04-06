@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pre_battle_state.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pre_battle_state.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Created by Andrew on 2017-03-09.
  */
 
@@ -70,7 +98,7 @@ var pre_battle_state = {
             name: "Low Player HP",
             condition: {
                 lhs: "playerHP",
-                operator: "<=",
+                operator: "&lt;=",
                 rhs: "50"
             }
         },
@@ -102,7 +130,7 @@ var pre_battle_state = {
             name: "Low Enemy HP",
             condition: {
                 lhs: "enemyHP",
-                operator: "<=",
+                operator: "&lt;=",
                 rhs: "50"
             }
         },
@@ -203,25 +231,25 @@ var pre_battle_state = {
         var categories = ["attack", "mobility", "defense"];
 
         // Increase roll percentages at random until they are at 100.
-        while(pre_battle_state.roll_percentages[0] + pre_battle_state.roll_percentages[1] + pre_battle_state.roll_percentages[2] < 100) {
+        while(pre_battle_state.roll_percentages[0] + pre_battle_state.roll_percentages[1] + pre_battle_state.roll_percentages[2] &lt; 100) {
             pre_battle_state.increase_roll(categories[Math.floor((Math.random() * 3))]);
         }
 
         // Set the player's mobility cards
-        for (var i = 0; i < 3; i++) {
+        for (var i = 0; i &lt; 3; i++) {
             user_cards[i] = {};
             $.extend(true, user_cards[i], user.cards[this.mobility_cards[i]]);
             user_cards[i].trigger = this.triggers[this.mobility_triggers[i]].condition;
         }
 
         // Set the player's attack cards
-        for (var j = i; j < i + 3; j++) {
+        for (var j = i; j &lt; i + 3; j++) {
             user_cards[j] = user.cards[this.attack_cards[j % 3]];
             user_cards[j].trigger = this.triggers[this.attack_triggers[j % 3]].condition;
         }
 
         // Set the player's defense cards
-        for (var k = j; k < j + 3; k++) {
+        for (var k = j; k &lt; j + 3; k++) {
             user_cards[k] = user.cards[this.defense_cards[k % 3]];
             user_cards[k].trigger = this.triggers[this.defense_triggers[k % 3]].condition;
         }
@@ -320,7 +348,7 @@ var pre_battle_state = {
         console.log("update_timer");
         console.log(pre_battle_state.countdown_time_remaining);
 
-        if(pre_battle_state.countdown_time_remaining % 20 == 0 && pre_battle_state.countdown_time_remaining !== 600) {
+        if(pre_battle_state.countdown_time_remaining % 20 == 0 &amp;&amp; pre_battle_state.countdown_time_remaining !== 600) {
             console.log("Pinging server for keep alive.");
             pre_battle_state.ping_server();
         }
@@ -345,21 +373,21 @@ var pre_battle_state = {
         var defense_slot = 0;
 
         // Loop through the player's cards and fill in the slots on the screen with the first 3 in each category
-        for (var i = 0; i < user.cards.length; i++) {
+        for (var i = 0; i &lt; user.cards.length; i++) {
 
-            if (user.cards[i].type == "attack" && attack_slot < 3) {
+            if (user.cards[i].type == "attack" &amp;&amp; attack_slot &lt; 3) {
                 console.log("Adding attack card: " + attack_slot);
                 this.attack_cards[attack_slot] = i;
                 game.add.existing(this.slot_card_wrapper(user.cards[i], attack_slot));
                 attack_slot++;
 
-            }else if (user.cards[i].type == "mobility" && mobility_slot < 3) {
+            }else if (user.cards[i].type == "mobility" &amp;&amp; mobility_slot &lt; 3) {
                 console.log("Adding mobility card: " + mobility_slot);
                 this.mobility_cards[mobility_slot] = i;
                 game.add.existing(this.slot_card_wrapper(user.cards[i], mobility_slot));
                 mobility_slot++;
 
-            }else if (user.cards[i].type == "defense" && defense_slot < 3) {
+            }else if (user.cards[i].type == "defense" &amp;&amp; defense_slot &lt; 3) {
                 console.log("Adding defense card: " + mobility_slot);
                 this.defense_cards[defense_slot] = i;
                 game.add.existing(this.slot_card_wrapper(user.cards[i], defense_slot));
@@ -432,7 +460,7 @@ var pre_battle_state = {
         this.attack_selector.x = 120;
         this.attack_selector.y = 300;
 
-        for (var i = 0; i < user.cards.length; i++) {
+        for (var i = 0; i &lt; user.cards.length; i++) {
 
             if (user.cards[i].type === "attack") {
                 console.log("Adding attack card: " + num_attack_cards);
@@ -509,7 +537,7 @@ var pre_battle_state = {
 
             trigger_text_array = this.attack_trigger_text;
 
-            if (this.attack_triggers[trigger_slot] < this.triggers.length-1) {
+            if (this.attack_triggers[trigger_slot] &lt; this.triggers.length-1) {
                 this.attack_triggers[trigger_slot]++;
 
             }else{
@@ -522,7 +550,7 @@ var pre_battle_state = {
 
             trigger_text_array = this.mobility_trigger_text;
 
-            if (this.mobility_triggers[trigger_slot] < this.triggers.length-1) {
+            if (this.mobility_triggers[trigger_slot] &lt; this.triggers.length-1) {
                 this.mobility_triggers[trigger_slot]++;
             }else{
                 this.mobility_triggers[trigger_slot] = 0;
@@ -534,7 +562,7 @@ var pre_battle_state = {
 
             trigger_text_array = this.defense_trigger_text;
 
-            if (this.defense_triggers[trigger_slot] < this.triggers.length-1) {
+            if (this.defense_triggers[trigger_slot] &lt; this.triggers.length-1) {
                 this.defense_triggers[trigger_slot]++;
             }else{
                 this.defense_triggers[trigger_slot] = 0;
@@ -625,7 +653,7 @@ var pre_battle_state = {
         }
 
         // Only increase the roll if it is legal (no sum of categories over 100%)
-        if((this.roll_percentages[0] + this.roll_percentages[1] + this.roll_percentages[2]) < 100 && pre_battle_state.roll_percentages[roll_index] < 100) {
+        if((this.roll_percentages[0] + this.roll_percentages[1] + this.roll_percentages[2]) &lt; 100 &amp;&amp; pre_battle_state.roll_percentages[roll_index] &lt; 100) {
             pre_battle_state.roll_percentages[roll_index] += 5;
 
             if (type === "attack") {
@@ -657,7 +685,7 @@ var pre_battle_state = {
         }
 
         // Only increase the roll if it is legal (no sum of categories less than 100%)
-        if((this.roll_percentages[0] + this.roll_percentages[1] + this.roll_percentages[2]) > 0 && pre_battle_state.roll_percentages[roll_index] > 0) {
+        if((this.roll_percentages[0] + this.roll_percentages[1] + this.roll_percentages[2]) > 0 &amp;&amp; pre_battle_state.roll_percentages[roll_index] > 0) {
             pre_battle_state.roll_percentages[roll_index] -= 5;
 
             if (type === "attack") {
@@ -831,4 +859,26 @@ var pre_battle_state = {
         console.log(pre_battle_state.attack_cards);
 
     }
-};
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="battle_system_state.html">battle_system_state</a></li><li><a href="credit_state.html">credit_state</a></li><li><a href="debug_console.html">debug_console</a></li><li><a href="gear_menu_state.html">gear_menu_state</a></li><li><a href="load_state.html">load_state</a></li><li><a href="main_menu_state.html">main_menu_state</a></li><li><a href="match_up_state.html">match_up_state</a></li><li><a href="pick_state.html">pick_state</a></li><li><a href="pre_battle_state.html">pre_battle_state</a></li><li><a href="server.html">server</a></li><li><a href="signin_state.html">signin_state</a></li><li><a href="signup_state.html">signup_state</a></li><li><a href="user.html">user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#attack">attack</a></li><li><a href="global.html#attackClose">attackClose</a></li><li><a href="global.html#attackFar">attackFar</a></li><li><a href="global.html#battleData">battleData</a></li><li><a href="global.html#battleLoop">battleLoop</a></li><li><a href="global.html#block">block</a></li><li><a href="global.html#card">card</a></li><li><a href="global.html#creditText">creditText</a></li><li><a href="global.html#die">die</a></li><li><a href="global.html#game">game</a></li><li><a href="global.html#heal">heal</a></li><li><a href="global.html#logout_btn_click">logout_btn_click</a></li><li><a href="global.html#MatchOver">MatchOver</a></li><li><a href="global.html#movePlayer">movePlayer</a></li><li><a href="global.html#nouns">nouns</a></li><li><a href="global.html#pickCharacter">pickCharacter</a></li><li><a href="global.html#pickCharM">pickCharM</a></li><li><a href="global.html#pickCharT">pickCharT</a></li><li><a href="global.html#pickCharW">pickCharW</a></li><li><a href="global.html#pickCharWeapon">pickCharWeapon</a></li><li><a href="global.html#playSim">playSim</a></li><li><a href="global.html#randomInt">randomInt</a></li><li><a href="global.html#randomName">randomName</a></li><li><a href="global.html#rematch_btn_click">rematch_btn_click</a></li><li><a href="global.html#setPlayerLoc">setPlayerLoc</a></li><li><a href="global.html#setPlayerNumber">setPlayerNumber</a></li><li><a href="global.html#signin_btn_click">signin_btn_click</a></li><li><a href="global.html#signup_btn_click">signup_btn_click</a></li><li><a href="global.html#win">win</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Apr 06 2017 18:23:09 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

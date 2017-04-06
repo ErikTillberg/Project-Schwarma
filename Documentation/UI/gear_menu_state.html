@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: signin_state</title>
+    <title>JSDoc: Namespace: gear_menu_state</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Namespace: signin_state</h1>
+    <h1 class="page-title">Namespace: gear_menu_state</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>signin_state</h2>
+        <h2>gear_menu_state</h2>
         
     
 </header>
@@ -37,7 +37,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Loads when the user decided to sign in from the load state landing screen. Handles user interface and server communication pertaining to sign in operations.</div>
+            <div class="description">Allows the user to view and change their currently equipped gear and handles sending the changes to the meta-server so they persists between sessions.</div>
         
 
         
@@ -72,7 +72,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="signin.js.html">signin.js</a>, <a href="signin.js.html#line11">line 11</a>
+        <a href="gear_menu.js.html">gear_menu.js</a>, <a href="gear_menu.js.html#line119">line 119</a>
     </li></ul></dd>
     
 
@@ -115,7 +115,7 @@
 
 
 <div class="description">
-    Handles back button click. Returns the user to the landing page, inside the load state.
+    Transitions user to main_menu state
 </div>
 
 
@@ -159,7 +159,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="signin.js.html">signin.js</a>, <a href="signin.js.html#line113">line 113</a>
+        <a href="gear_menu.js.html">gear_menu.js</a>, <a href="gear_menu.js.html#line574">line 574</a>
     </li></ul></dd>
     
 
@@ -190,178 +190,14 @@
 
     
 
-    <h4 class="name" id=".create"><span class="type-signature">(static) </span>create<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".card_click"><span class="type-signature">(static) </span>card_click<span class="signature">(target)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Initializes sprites, buttons, text and event handlers for the signin state. Overrides Phaser state create method.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="signin.js.html">signin.js</a>, <a href="signin.js.html#line22">line 22</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".preload"><span class="type-signature">(static) </span>preload<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Currently empty. Overrides Phaser state preload method.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="signin.js.html">signin.js</a>, <a href="signin.js.html#line16">line 16</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".randomInt"><span class="type-signature">(static) </span>randomInt<span class="signature">(min, max)</span><span class="type-signature"> &rarr; {number}</span></h4>
-
-    
-
-
-
-<div class="description">
-    Function creates a random integer between min and max and returns it.
+    Set the current_slot and current_type attributes and then open the card selector group for that card type.
 </div>
 
 
@@ -397,15 +233,10 @@
 
         <tr>
             
-                <td class="name"><code>min</code></td>
+                <td class="name"><code>target</code></td>
             
 
             <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
             
             </td>
 
@@ -413,30 +244,7 @@
 
             
 
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>max</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
+            <td class="description last">The target of the click event, should be a card object</td>
         </tr>
 
     
@@ -477,7 +285,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="signin.js.html">signin.js</a>, <a href="signin.js.html#line165">line 165</a>
+        <a href="gear_menu.js.html">gear_menu.js</a>, <a href="gear_menu.js.html#line450">line 450</a>
     </li></ul></dd>
     
 
@@ -500,24 +308,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -526,14 +316,15 @@
 
     
 
-    <h4 class="name" id=".signin_btn_click"><span class="type-signature">(static) </span>signin_btn_click<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".card_wrapper"><span class="type-signature">(static) </span>card_wrapper<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Handles signin button click. Sends an ajax request to the server after extracting user data from input fields.
+    Takes a card slot and type and renders that card on screen.
+Registers the callback handler for click events on slot card.
 </div>
 
 
@@ -577,7 +368,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="signin.js.html">signin.js</a>, <a href="signin.js.html#line84">line 84</a>
+        <a href="gear_menu.js.html">gear_menu.js</a>, <a href="gear_menu.js.html#line374">line 374</a>
     </li></ul></dd>
     
 
@@ -608,14 +399,387 @@
 
     
 
-    <h4 class="name" id=".signin_failure"><span class="type-signature">(static) </span>signin_failure<span class="signature">(jqXHR, textStatus, error)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".init_card_selectors"><span class="type-signature">(static) </span>init_card_selectors<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Handles an unsuccessful signin response from the server. Displays an error message to the user.
+    Builds a selector for each card category. Each selector contains all cards within a category, each with a
+callback handler to change the card for the given slot. Hidden after creation and shown when a slot card
+is clicked.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gear_menu.js.html">gear_menu.js</a>, <a href="gear_menu.js.html#line286">line 286</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".selector_card_click"><span class="type-signature">(static) </span>selector_card_click<span class="signature">(target)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Handles the user clicking on a card in a selector menu. Assigns the clicked card to a slot and renders it.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Event target, should be a card within a card selector</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gear_menu.js.html">gear_menu.js</a>, <a href="gear_menu.js.html#line478">line 478</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".selector_card_wrapper"><span class="type-signature">(static) </span>selector_card_wrapper<span class="signature">(card_data, card_num, card_list_index)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Takes a card JSON object and its place in the sequence of Cards within its category, and returns a constructed Card that
+is in the proper slot within the category's card selector.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>card_data</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Card JSON data</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>card_num</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The index in which the card appears amongst all cards within its type, also its location within the selector</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>card_list_index</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The index in which the card appears amongst all cards the player has</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gear_menu.js.html">gear_menu.js</a>, <a href="gear_menu.js.html#line416">line 416</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".set_equipment_failure"><span class="type-signature">(static) </span>set_equipment_failure<span class="signature">(jqXHR, textStatus, error)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Handles unsuccessful call to the meta server to set the player's current gear.
 </div>
 
 
@@ -656,18 +820,13 @@
 
             <td class="type">
             
-                
-<span class="param-type">jqXHR</span>
-
-
-            
             </td>
 
             
 
             
 
-            <td class="description last">jQuery XMLHttpRequest object</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -679,18 +838,13 @@
 
             <td class="type">
             
-                
-<span class="param-type">String</span>
-
-
-            
             </td>
 
             
 
             
 
-            <td class="description last">HTTP Response code</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -702,18 +856,13 @@
 
             <td class="type">
             
-                
-<span class="param-type">String</span>
-
-
-            
             </td>
 
             
 
             
 
-            <td class="description last">Error message from the server</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -754,7 +903,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="signin.js.html">signin.js</a>, <a href="signin.js.html#line153">line 153</a>
+        <a href="gear_menu.js.html">gear_menu.js</a>, <a href="gear_menu.js.html#line557">line 557</a>
     </li></ul></dd>
     
 
@@ -785,14 +934,14 @@
 
     
 
-    <h4 class="name" id=".signin_success"><span class="type-signature">(static) </span>signin_success<span class="signature">(data, textStatus, jqXHR)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".set_equipment_success"><span class="type-signature">(static) </span>set_equipment_success<span class="signature">(data, textStatus, jqXHR)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Handles a successful signin response from the server. Displays a success message to the user and transitions to the main menu state.
+    Handles successful call to the meta-server to set the player's current gear. Reflects the changes locally.
 </div>
 
 
@@ -833,18 +982,13 @@
 
             <td class="type">
             
-                
-<span class="param-type">Object</span>
-
-
-            
             </td>
 
             
 
             
 
-            <td class="description last">HTTP Response data.</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -856,18 +1000,13 @@
 
             <td class="type">
             
-                
-<span class="param-type">String</span>
-
-
-            
             </td>
 
             
 
             
 
-            <td class="description last">HTTP Response code</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -879,18 +1018,13 @@
 
             <td class="type">
             
-                
-<span class="param-type">jqXHR</span>
-
-
-            
             </td>
 
             
 
             
 
-            <td class="description last">jQuery XMLHttpRequest object</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -931,7 +1065,171 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="signin.js.html">signin.js</a>, <a href="signin.js.html#line127">line 127</a>
+        <a href="gear_menu.js.html">gear_menu.js</a>, <a href="gear_menu.js.html#line539">line 539</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".submit_btn_click"><span class="type-signature">(static) </span>submit_btn_click<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Submits the selected gear to the meta server.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gear_menu.js.html">gear_menu.js</a>, <a href="gear_menu.js.html#line505">line 505</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".update"><span class="type-signature">(static) </span>update<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    update attackText, defenceTxt, mobilityTxt
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gear_menu.js.html">gear_menu.js</a>, <a href="gear_menu.js.html#line276">line 276</a>
     </li></ul></dd>
     
 
