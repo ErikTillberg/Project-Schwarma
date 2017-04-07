@@ -68,11 +68,15 @@ var server = {
 
         return web_socket;
     },
-
+    /**
+     * Establishes a WebSocket connection with the meta-server battle endpoint.
+     * @returns {WebSocket} A WebSocket with connection opened with the meta-server's battle endpoint.
+     */
     battle_socket: function() {
 
         var web_socket;
         web_socket = new WebSocket(server.websocket_protocol + this.host_name + this.port + "/battleSocket");
+
         web_socket.onmessage = pre_battle_state.battle_message;
         web_socket.onclose = pre_battle_state.battle_end;
 
@@ -97,15 +101,13 @@ var server = {
         console.log("Host name: " + server.host_name);
         console.log("SSL Enabled: " + server.ssl_mode);
     },
+    /**
+     * Builds a URL to access the meta-server's set equipment endpoint.
+     * @returns {string}
+     */
     gear_endpoint: function() {
         return server.protocol + this.host_name + this.port
                 + "/setActiveEquipment";
-    },
-    delete_card_endpoint: function() {
-        return server.protocol + this.host_name + ":" + this.port + "/deleteCard" + "?username=" + user.username
-    },
-    delete_equipment_endpoint: function() {
-        return server.protocol + this.host_name + ":" + this.port + "/deleteEquipment" + "?username" + user.username
     }
 };
 // Initialize the server

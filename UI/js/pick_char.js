@@ -10,7 +10,7 @@ var pickcharSFX;
 
 /**
  * Handles the player's character selection during the signup process.
- * namespace
+ * @namespace
  * @type {{preload: pick_state.preload, create: pick_state.create, back_btn_click: pick_state.back_btn_click, submit_btn_click: pick_state.submit_btn_click}}
  */
 var pick_state = {
@@ -113,7 +113,7 @@ var pick_state = {
 };
 
 /**
- * Function scales the sprite., and sets the character with setCharacter function..
+ * Scales current sprite to 1.9 , starts animation and scales other sprites tp 1, sets chracter to thief
  */
 function pickCharW (){
 
@@ -132,6 +132,9 @@ function pickCharW (){
 
 }
 
+/**
+ * Scales current sprite to 1.9, starts animation and scales other sprites tp 1, sets chracter to mage
+ */
 function pickCharM (){
 
     pickcharSFX.play();
@@ -149,6 +152,9 @@ function pickCharM (){
 
 }
 
+/**
+ * Scales current sprite to 1.9, starts animation and scales other sprites tp 1, sets chracter to thief
+ */
 function pickCharT (){
 
     pickcharSFX.play();

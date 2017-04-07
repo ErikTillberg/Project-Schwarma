@@ -41,6 +41,9 @@ var server = {
     production_mode: true, // switch to false to use local host
     host_name: null,
     port: null,
+    ssl_mode: true,
+    protocol: null,
+    websocket_protocol: null,
 
     matchmaking_timer_interval: 1000, // controls how often the timer on screen updates with elapsed time
 
@@ -54,7 +57,7 @@ var server = {
      */
     signup_endpoint: function (username, email, password, character_class) {
 
-        return "http://" + this.host_name + this.port
+        return server.protocol + this.host_name + this.port
             + "/signup"
             + "?username=" + username
             + "&amp;email=" + email
@@ -70,7 +73,7 @@ var server = {
      */
     signin_endpoint: function (username, password) {
 
-        return "http://" + this.host_name + this.port
+        return server.protocol + this.host_name + this.port
             + "/login"
             + "?username=" + username
             + "&amp;password=" + password;
@@ -83,7 +86,7 @@ var server = {
     matchmaking_socket: function () {
 
         var web_socket;
-        web_socket = new WebSocket("ws://" + this.host_name + this.port + "/matchmaking");
+        web_socket = new WebSocket(server.websocket_protocol + this.host_name + this.port + "/matchmaking");
         web_socket.onmessage = main_menu_state.matchmaking_message;
         web_socket.onclose = main_menu_state.matchmaking_end;
 
@@ -94,14 +97,45 @@ var server = {
         return web_socket;
     },
     /**
+     * Establishes a WebSocket connection with the meta-server battle endpoint.
+     * @returns {WebSocket} A WebSocket with connection opened with the meta-server's battle endpoint.
+     */
+    battle_socket: function() {
+
+        var web_socket;
+        web_socket = new WebSocket(server.websocket_protocol + this.host_name + this.port + "/battleSocket");
+
+        web_socket.onmessage = pre_battle_state.battle_message;
+        web_socket.onclose = pre_battle_state.battle_end;
+
+        web_socket.onopen = function() {
+            console.log("Connection with the battleSocket is open.");
+            console.log("Starting battle: " + user.battle_id + " with " + user.opponent.username);
+        };
+
+        return web_socket;
+    },
+
+    /**
      * Initializes the proper host_name and port based on the production_mode flag.
      */
     init_server: function() {
         console.log("Server init.");
         server.host_name = server.production_mode === true ? "schwarma-meta-server.herokuapp.com": "localhost";
         server.port = server.production_mode === true ? "" : ":9000";
+        server.protocol = server.ssl_mode === true ? "https://" : "http://";
+        server.websocket_protocol = server.ssl_mode === true ? "wss://" : "ws://";
         console.log("Production: " + server.production_mode);
         console.log("Host name: " + server.host_name);
+        console.log("SSL Enabled: " + server.ssl_mode);
+    },
+    /**
+     * Builds a URL to access the meta-server's set equipment endpoint.
+     * @returns {string}
+     */
+    gear_endpoint: function() {
+        return server.protocol + this.host_name + this.port
+                + "/setActiveEquipment";
     }
 };
 // Initialize the server
@@ -116,13 +150,13 @@ server.init_server();
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="battle_system_state.html">battle_system_state</a></li><li><a href="debug_console.html">debug_console</a></li><li><a href="load_state.html">load_state</a></li><li><a href="main_menu_state.html">main_menu_state</a></li><li><a href="server.html">server</a></li><li><a href="signin_state.html">signin_state</a></li><li><a href="signup_state.html">signup_state</a></li><li><a href="user.html">user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#attack">attack</a></li><li><a href="global.html#attackClose">attackClose</a></li><li><a href="global.html#attackFar">attackFar</a></li><li><a href="global.html#battleData">battleData</a></li><li><a href="global.html#battleLoop">battleLoop</a></li><li><a href="global.html#block">block</a></li><li><a href="global.html#die">die</a></li><li><a href="global.html#game">game</a></li><li><a href="global.html#movePlayer">movePlayer</a></li><li><a href="global.html#nouns">nouns</a></li><li><a href="global.html#pick_state">pick_state</a></li><li><a href="global.html#pickCharacter">pickCharacter</a></li><li><a href="global.html#pickCharWeapon">pickCharWeapon</a></li><li><a href="global.html#pickLeft">pickLeft</a></li><li><a href="global.html#pickRight">pickRight</a></li><li><a href="global.html#randomInt">randomInt</a></li><li><a href="global.html#randomName">randomName</a></li><li><a href="global.html#setCharacter">setCharacter</a></li><li><a href="global.html#setPlayerLoc">setPlayerLoc</a></li><li><a href="global.html#setPlayerNumber">setPlayerNumber</a></li><li><a href="global.html#signin_btn_click">signin_btn_click</a></li><li><a href="global.html#signup_btn_click">signup_btn_click</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="battle_system_state.html">battle_system_state</a></li><li><a href="credit_state.html">credit_state</a></li><li><a href="debug_console.html">debug_console</a></li><li><a href="gear_menu_state.html">gear_menu_state</a></li><li><a href="load_state.html">load_state</a></li><li><a href="main_menu_state.html">main_menu_state</a></li><li><a href="match_up_state.html">match_up_state</a></li><li><a href="pick_state.html">pick_state</a></li><li><a href="pre_battle_state.html">pre_battle_state</a></li><li><a href="server.html">server</a></li><li><a href="signin_state.html">signin_state</a></li><li><a href="signup_state.html">signup_state</a></li><li><a href="user.html">user</a></li></ul><h3>Global</h3><ul><li><a href="global.html#attack">attack</a></li><li><a href="global.html#attackClose">attackClose</a></li><li><a href="global.html#attackFar">attackFar</a></li><li><a href="global.html#battleData">battleData</a></li><li><a href="global.html#battleLoop">battleLoop</a></li><li><a href="global.html#block">block</a></li><li><a href="global.html#card">card</a></li><li><a href="global.html#creditText">creditText</a></li><li><a href="global.html#die">die</a></li><li><a href="global.html#game">game</a></li><li><a href="global.html#heal">heal</a></li><li><a href="global.html#logout_btn_click">logout_btn_click</a></li><li><a href="global.html#MatchOver">MatchOver</a></li><li><a href="global.html#movePlayer">movePlayer</a></li><li><a href="global.html#nouns">nouns</a></li><li><a href="global.html#pickCharacter">pickCharacter</a></li><li><a href="global.html#pickCharM">pickCharM</a></li><li><a href="global.html#pickCharT">pickCharT</a></li><li><a href="global.html#pickCharW">pickCharW</a></li><li><a href="global.html#pickCharWeapon">pickCharWeapon</a></li><li><a href="global.html#playSim">playSim</a></li><li><a href="global.html#randomInt">randomInt</a></li><li><a href="global.html#randomName">randomName</a></li><li><a href="global.html#rematch_btn_click">rematch_btn_click</a></li><li><a href="global.html#setPlayerLoc">setPlayerLoc</a></li><li><a href="global.html#setPlayerNumber">setPlayerNumber</a></li><li><a href="global.html#signin_btn_click">signin_btn_click</a></li><li><a href="global.html#signup_btn_click">signup_btn_click</a></li><li><a href="global.html#win">win</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Mar 02 2017 22:04:18 GMT-0500 (Eastern Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Apr 06 2017 18:23:09 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

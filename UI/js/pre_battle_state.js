@@ -2,6 +2,11 @@
  * Created by Andrew on 2017-03-09.
  */
 
+/**
+ * Handles the battle socket connection to the meta server, and allows the player to establish their loadout for the upcoming battle.
+ * @type {{battle_socket: null, attack_card_x: number, mobility_card_x: number, defense_card_x: number, card_y: number, card_y_offset: number, trigger_next_btn_x_offset: number, trigger_prev_btn_x_offset: number, trigger_btn_y_offset: number, trigger_text_x: number, trigger_text_y: number, trigger_text_x_offset: number, trigger_text_y_offset: number, trigger_font: string, trigger_font_size: number, current_slot: number, current_type: string, roll_text_x: number, roll_text_y: number, roll_text_x_offset: number, roll_text_font: string, roll_text_font_size: number, roll_button_y: number, roll_btn_scale: number, selector_x_offset: number, selector_y_offset: number, selector_columns: number, selector_rows: number, trigger_btn_scale: number, mobility_cards: Array, mobility_triggers: Array, attack_cards: Array, attack_triggers: Array, defense_cards: Array, defense_triggers: Array, countdown_time_remaining: number, triggers: [*], roll_percentages: [*], preload: pre_battle_state.preload, create: pre_battle_state.create, battle_start: pre_battle_state.battle_start, ping_server: pre_battle_state.ping_server, battle_message: pre_battle_state.battle_message, battle_end: pre_battle_state.battle_end, update_timer: pre_battle_state.update_timer, init_cards: pre_battle_state.init_cards, init_card_selectors: pre_battle_state.init_card_selectors, init_triggers: pre_battle_state.init_triggers, next_trigger: pre_battle_state.next_trigger, previous_trigger: pre_battle_state.previous_trigger, increase_roll: pre_battle_state.increase_roll, decrease_roll: pre_battle_state.decrease_roll, slot_card_wrapper: pre_battle_state.slot_card_wrapper, slot_card_click: pre_battle_state.slot_card_click, selector_card_wrapper: pre_battle_state.selector_card_wrapper, selector_card_click: pre_battle_state.selector_card_click}}
+ * @namespace
+ */
 var pre_battle_state = {
 
     battle_socket: null,
@@ -186,7 +191,7 @@ var pre_battle_state = {
 
     },
     /**
-     * The player is ready to start the fight (or time has expired), send their chosen loadout to the server.
+     * The player is ready to start the fight (or time has expired), send their chosen loadout to the meta server.
      */
     battle_start: function() {
 
@@ -232,6 +237,15 @@ var pre_battle_state = {
 
         // Send a message to start the battle along the battle_socket
         this.battle_socket.send(JSON.stringify(battle_object));
+    },
+
+    /**
+     * Send a message of type 'ping' to the meta-server to keep the websocket connection alive.
+     */
+    ping_server: function() {
+
+        pre_battle_state.battle_socket.send(JSON.stringify({type: "ping", message: "keep me alive."}));
+
     },
 
     /**
@@ -299,11 +313,17 @@ var pre_battle_state = {
     },
     /**
      * Update the timer on screen, send the user's loadout as-is when the timer reaches 0.
+     * Ping the meta-server when the time remaining is a multiple of 20.
      */
     update_timer: function() {
 
         console.log("update_timer");
         console.log(pre_battle_state.countdown_time_remaining);
+
+        if(pre_battle_state.countdown_time_remaining % 20 == 0 && pre_battle_state.countdown_time_remaining !== 600) {
+            console.log("Pinging server for keep alive.");
+            pre_battle_state.ping_server();
+        }
 
         if (pre_battle_state.countdown_time_remaining > 0) {
             pre_battle_state.countdown_time_remaining--;
@@ -314,7 +334,7 @@ var pre_battle_state = {
         }
     },
     /**
-     * Put the first 3 cards of each type into the slots, render them to the canvas.
+     * Put the first 3 cards of each type into their slots, render them to the canvas.
      */
     init_cards: function() {
 
@@ -350,6 +370,8 @@ var pre_battle_state = {
 
     /**
      * Initialize the display groups for each card category the player uses to switch the current card in a slot.
+     * Each selector contains all cards within its category, as well as a banner with the category name. Each card
+     * in the selector is given a callback to handle changing the card of the slot that opened the selector.
      */
     init_card_selectors: function() {
 
@@ -436,7 +458,7 @@ var pre_battle_state = {
     },
 
     /**
-     * Put some default triggers in place for each card.
+     * Put default triggers in place for each card and render the text for each.
      */
     init_triggers: function() {
 

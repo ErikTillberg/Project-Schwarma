@@ -125,7 +125,10 @@ namespace Schwarma
                 return nullptr;
             }
 
-
+            //! Attempt to evaluate a defence trigger
+            /*!
+                \return card used to heal
+            */
             const Schwarma::Card*defend(Schwarma::Entity*enemy)
             {
                 auto end = this->triggers.end();

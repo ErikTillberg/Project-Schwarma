@@ -25,6 +25,10 @@ namespace Schwarma
             int damage;
             std::string element;
 
+            //!Parse the weapon out of the json object pointed to by obj
+            /*! Will fill properties that don't exist with empty strings.
+                Returns Weapon full of empty strings on failure
+            */
             template<class T>
             static Schwarma::Weapon parseWeapon(T&obj)
             {

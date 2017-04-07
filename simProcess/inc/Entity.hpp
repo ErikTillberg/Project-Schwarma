@@ -23,6 +23,7 @@ namespace Schwarma
     class Entity
     {
         public:
+            //! A string holding the entitys unique name
             std::string player_name;
             //! A label for the entity
             std::string name = "";
@@ -62,7 +63,7 @@ namespace Schwarma
 
                 return Schwarma::NOOP;
             }
-            //! Loads an entity from file specifed by string file
+            //! Loads an entity from the JSON document json
             bool load(rapidjson::GenericValue<rapidjson::UTF8<> >&json)
             {     
                 if(!json.HasMember("base_stats"))
