@@ -106,6 +106,13 @@ public class Battle {
     }
 
 
+    /**
+     * This drives the compilation of all the data required from each player to execute a battle simulation. Parameters
+     * are gathered and aggregated from multiple sources. A complete JSON file is returned.
+     *
+     * @param player_username
+     * @return player_json
+     */
     private static JsonObject processPlayer(String player_username){
 
         JsonObject player_json, triggers, base_stats, action_percentages;
@@ -191,6 +198,14 @@ public class Battle {
     }
 
 
+    /**
+     * A player's equipment stats alter their attack, defense, and mobility basic bonuses, as well as their resistance to
+     * elemental values. This function iterates over the currently active equipment ahead of a battle to calculate those
+     * parameters.
+     *
+     * @param equipment
+     * @return array of bonus values
+     */
     private static int [] processPlayerEquipment(List <Equipment> equipment){
         String type, element;
         int attack_bonus = 0;

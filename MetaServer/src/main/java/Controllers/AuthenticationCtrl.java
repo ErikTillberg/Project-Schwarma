@@ -78,9 +78,7 @@ public class AuthenticationCtrl {
             //I'm assuming signing up is an auto-login situation, so assign a token here too.
             new_user.setSessionToken(generateToken());
 
-            //Add some cards on sign up
-
-
+            //Add some cards and equipment on sign on.
             ArrayList<Card> cardArrayList = InventoryCtrl.generateInitialCardInventory(new_user.getRating(),
                                                         Constants.int_constants.get("initial_inventory_size"));
 

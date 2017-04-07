@@ -46,6 +46,13 @@ public class BattleCtrl {
 
     }
 
+
+    /**
+     * This function simply queries the database for a given battle ID and returns the corresponding battle object
+     *
+     * @param battleId
+     * @return battle
+     */
     public static Battle getBattle(String battleId){
         final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(new ObjectId(battleId));
 
@@ -60,6 +67,14 @@ public class BattleCtrl {
 
     }
 
+
+    /**
+     * This function converts a battle object into a database storable object and returns the id of the newly
+     * created entry
+     *
+     * @param battle
+     * @return new battle id
+     */
     public static Object addBattle(Battle battle){
 
         try {
@@ -73,6 +88,15 @@ public class BattleCtrl {
     }
 
 
+    /**
+     * This function is invoked when a player is ready to fight. At this point the have selected the cards they wish
+     * to use, and the relative action percentages for each of attack, defense, and mobility. This function updates
+     * the both player and battle with this newly acquired information. It also sets the player status, for this specific
+     * battle to ready.
+     *
+     * @param  battle_id,  user_id,  att_attribute, def_attribute,  mov_attribute, List<Card> user_cards
+     * @return true
+     */
     public static Object updateReadiness(String battle_id, String user_id, String att_attribute,
                                          String def_attribute, String mov_attribute, List<Card> user_cards){
 
@@ -96,6 +120,12 @@ public class BattleCtrl {
     }
 
 
+    /**
+     * This function carries out the specific database updates required to updated player cards, and battle attributes
+     *
+     * @param username,  att_attribute, def_attribute,  mov_attribute, List<Card> user_cards
+     * @return true
+     */
     public static Object updatePlayerAttributesAndCards(String username, String att_attribute, String def_attribute,
                                                         String mov_attribute, List<Card> user_cards){
 
@@ -118,6 +148,12 @@ public class BattleCtrl {
     }
 
 
+    /**
+     * This function carries out the player ready status update with regards to a specific battle
+     *
+     * @param battle_id, player
+     * @return true
+     */
     public static Object updatePlayerReadyStatus(String battle_id, String player){
 
         String player_to_update;
@@ -152,6 +188,14 @@ public class BattleCtrl {
     }
 
 
+
+    /**
+     * This function is performed after each player updated to check if both players are ready to battle. If so,
+     * it returns true, false otherwise
+     *
+     * @param battle_id
+     * @return weather both players are ready to fight or not
+     */
     public static boolean readyToStart(String battle_id){
 
         final Query<Battle> battle_query = datastore.createQuery(Battle.class).field("id").equal(new ObjectId(battle_id));
@@ -171,6 +215,15 @@ public class BattleCtrl {
     }
 
 
+
+    /**
+     * This function executes the POST request from the metaserver to the Simulation server. It packages the request
+     * including all the required battle info in the body of the request, and send it over. The battle results generated
+     * by the Simulation server are sent back as the function return value.
+     *
+     * @param battle_id
+     * @return battle results
+     */
     public static String postToSimServer(String battle_id)
             throws ClientProtocolException, IOException {
 
